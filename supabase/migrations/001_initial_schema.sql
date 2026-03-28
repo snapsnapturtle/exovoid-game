@@ -1,8 +1,11 @@
 -- Exovoid Game Support Tool: Initial Schema
 -- Phase 1: profiles, games, game_members, characters, dice_rolls, shared_notes
+--
+-- Tables are created first, then RLS policies are added after all tables exist
+-- to avoid forward-reference issues between game_members and games.
 
 -- ============================================================
--- PROFILES
+-- TABLES
 -- ============================================================
 
 create table public.profiles (
@@ -12,33 +15,6 @@ create table public.profiles (
   created_at   timestamptz not null default now(),
   updated_at   timestamptz not null default now()
 );
-
-alter table public.profiles enable row level security;
-
-create policy "Profiles are viewable by authenticated users"
-  on profiles for select to authenticated using (true);
-
-create policy "Users can update own profile"
-  on profiles for update to authenticated using (auth.uid() = id);
-
--- Auto-create profile on signup
-create or replace function public.handle_new_user()
-returns trigger language plpgsql security definer set search_path = ''
-as $$
-begin
-  insert into public.profiles (id, display_name)
-  values (new.id, coalesce(new.raw_user_meta_data ->> 'display_name', ''));
-  return new;
-end;
-$$;
-
-create trigger on_auth_user_created
-  after insert on auth.users
-  for each row execute procedure public.handle_new_user();
-
--- ============================================================
--- GAMES
--- ============================================================
 
 create table public.games (
   id          uuid primary key default gen_random_uuid(),
@@ -50,30 +26,6 @@ create table public.games (
   updated_at  timestamptz not null default now()
 );
 
-alter table public.games enable row level security;
-
-create policy "Game members can view game"
-  on games for select to authenticated
-  using (
-    id in (select game_id from public.game_members where user_id = auth.uid())
-  );
-
-create policy "GM can update game"
-  on games for update to authenticated
-  using (gm_id = auth.uid());
-
-create policy "Authenticated users can create games"
-  on games for insert to authenticated
-  with check (gm_id = auth.uid());
-
-create policy "GM can delete game"
-  on games for delete to authenticated
-  using (gm_id = auth.uid());
-
--- ============================================================
--- GAME MEMBERS
--- ============================================================
-
 create table public.game_members (
   id        uuid primary key default gen_random_uuid(),
   game_id   uuid not null references public.games(id) on delete cascade,
@@ -82,29 +34,6 @@ create table public.game_members (
   joined_at timestamptz not null default now(),
   unique (game_id, user_id)
 );
-
-alter table public.game_members enable row level security;
-
-create policy "Members can view other members in their games"
-  on game_members for select to authenticated
-  using (
-    game_id in (select gm.game_id from public.game_members gm where gm.user_id = auth.uid())
-  );
-
-create policy "Users can insert themselves"
-  on game_members for insert to authenticated
-  with check (user_id = auth.uid());
-
-create policy "GM or self can remove members"
-  on game_members for delete to authenticated
-  using (
-    user_id = auth.uid()
-    or game_id in (select g.id from public.games g where g.gm_id = auth.uid())
-  );
-
--- ============================================================
--- CHARACTERS
--- ============================================================
 
 create table public.characters (
   id               uuid primary key default gen_random_uuid(),
@@ -130,6 +59,82 @@ create table public.characters (
   updated_at       timestamptz not null default now()
 );
 
+create table public.dice_rolls (
+  id           uuid primary key default gen_random_uuid(),
+  game_id      uuid not null references public.games(id) on delete cascade,
+  user_id      uuid not null references public.profiles(id) on delete cascade,
+  character_id uuid references public.characters(id) on delete set null,
+  skill_name   text,
+  roll_data    jsonb not null,
+  is_hidden    boolean not null default false,
+  created_at   timestamptz not null default now()
+);
+
+create table public.shared_notes (
+  id          uuid primary key default gen_random_uuid(),
+  game_id     uuid not null references public.games(id) on delete cascade,
+  title       text not null default 'Untitled Note',
+  content     text not null default '',
+  updated_by  uuid references public.profiles(id),
+  created_at  timestamptz not null default now(),
+  updated_at  timestamptz not null default now()
+);
+
+-- ============================================================
+-- ROW LEVEL SECURITY
+-- ============================================================
+
+-- Profiles
+alter table public.profiles enable row level security;
+
+create policy "Profiles are viewable by authenticated users"
+  on profiles for select to authenticated using (true);
+
+create policy "Users can update own profile"
+  on profiles for update to authenticated using (auth.uid() = id);
+
+-- Games
+alter table public.games enable row level security;
+
+create policy "Game members can view game"
+  on games for select to authenticated
+  using (
+    id in (select game_id from public.game_members where user_id = auth.uid())
+  );
+
+create policy "GM can update game"
+  on games for update to authenticated
+  using (gm_id = auth.uid());
+
+create policy "Authenticated users can create games"
+  on games for insert to authenticated
+  with check (gm_id = auth.uid());
+
+create policy "GM can delete game"
+  on games for delete to authenticated
+  using (gm_id = auth.uid());
+
+-- Game Members
+alter table public.game_members enable row level security;
+
+create policy "Members can view other members in their games"
+  on game_members for select to authenticated
+  using (
+    game_id in (select gm.game_id from public.game_members gm where gm.user_id = auth.uid())
+  );
+
+create policy "Users can insert themselves"
+  on game_members for insert to authenticated
+  with check (user_id = auth.uid());
+
+create policy "GM or self can remove members"
+  on game_members for delete to authenticated
+  using (
+    user_id = auth.uid()
+    or game_id in (select g.id from public.games g where g.gm_id = auth.uid())
+  );
+
+-- Characters
 alter table public.characters enable row level security;
 
 create policy "Game members can view characters"
@@ -159,21 +164,7 @@ create policy "Owner or GM can delete character"
     or game_id in (select g.id from public.games g where g.gm_id = auth.uid())
   );
 
--- ============================================================
--- DICE ROLLS (future use)
--- ============================================================
-
-create table public.dice_rolls (
-  id           uuid primary key default gen_random_uuid(),
-  game_id      uuid not null references public.games(id) on delete cascade,
-  user_id      uuid not null references public.profiles(id) on delete cascade,
-  character_id uuid references public.characters(id) on delete set null,
-  skill_name   text,
-  roll_data    jsonb not null,
-  is_hidden    boolean not null default false,
-  created_at   timestamptz not null default now()
-);
-
+-- Dice Rolls
 alter table public.dice_rolls enable row level security;
 
 create policy "Members see non-hidden rolls"
@@ -190,20 +181,7 @@ create policy "Members can create rolls"
     and game_id in (select gm.game_id from public.game_members gm where gm.user_id = auth.uid())
   );
 
--- ============================================================
--- SHARED NOTES (future use)
--- ============================================================
-
-create table public.shared_notes (
-  id          uuid primary key default gen_random_uuid(),
-  game_id     uuid not null references public.games(id) on delete cascade,
-  title       text not null default 'Untitled Note',
-  content     text not null default '',
-  updated_by  uuid references public.profiles(id),
-  created_at  timestamptz not null default now(),
-  updated_at  timestamptz not null default now()
-);
-
+-- Shared Notes
 alter table public.shared_notes enable row level security;
 
 create policy "Game members can manage notes"
@@ -213,9 +191,25 @@ create policy "Game members can manage notes"
   );
 
 -- ============================================================
--- TRIGGERS: updated_at
+-- FUNCTIONS & TRIGGERS
 -- ============================================================
 
+-- Auto-create profile on signup
+create or replace function public.handle_new_user()
+returns trigger language plpgsql security definer set search_path = ''
+as $$
+begin
+  insert into public.profiles (id, display_name)
+  values (new.id, coalesce(new.raw_user_meta_data ->> 'display_name', ''));
+  return new;
+end;
+$$;
+
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute procedure public.handle_new_user();
+
+-- Auto-update updated_at timestamp
 create or replace function public.update_updated_at()
 returns trigger language plpgsql as $$
 begin
