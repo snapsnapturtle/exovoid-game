@@ -81,6 +81,20 @@ create table public.shared_notes (
 );
 
 -- ============================================================
+-- HELPER FUNCTION (bypasses RLS to avoid infinite recursion)
+-- ============================================================
+
+create or replace function public.get_user_game_ids(p_user_id uuid)
+returns setof uuid
+language sql
+security definer
+set search_path = ''
+stable
+as $$
+  select game_id from public.game_members where user_id = p_user_id;
+$$;
+
+-- ============================================================
 -- ROW LEVEL SECURITY
 -- ============================================================
 
@@ -99,7 +113,8 @@ alter table public.games enable row level security;
 create policy "Game members can view game"
   on games for select to authenticated
   using (
-    id in (select game_id from public.game_members where user_id = auth.uid())
+    gm_id = auth.uid()
+    or id in (select public.get_user_game_ids(auth.uid()))
   );
 
 create policy "GM can update game"
@@ -120,7 +135,7 @@ alter table public.game_members enable row level security;
 create policy "Members can view other members in their games"
   on game_members for select to authenticated
   using (
-    game_id in (select gm.game_id from public.game_members gm where gm.user_id = auth.uid())
+    game_id in (select public.get_user_game_ids(auth.uid()))
   );
 
 create policy "Users can insert themselves"
@@ -140,7 +155,7 @@ alter table public.characters enable row level security;
 create policy "Game members can view characters"
   on characters for select to authenticated
   using (
-    game_id in (select gm.game_id from public.game_members gm where gm.user_id = auth.uid())
+    game_id in (select public.get_user_game_ids(auth.uid()))
   );
 
 create policy "Owner can update own character"
@@ -154,7 +169,7 @@ create policy "Members can create characters"
   on characters for insert to authenticated
   with check (
     user_id = auth.uid()
-    and game_id in (select gm.game_id from public.game_members gm where gm.user_id = auth.uid())
+    and game_id in (select public.get_user_game_ids(auth.uid()))
   );
 
 create policy "Owner or GM can delete character"
@@ -170,7 +185,7 @@ alter table public.dice_rolls enable row level security;
 create policy "Members see non-hidden rolls"
   on dice_rolls for select to authenticated
   using (
-    game_id in (select gm.game_id from public.game_members gm where gm.user_id = auth.uid())
+    game_id in (select public.get_user_game_ids(auth.uid()))
     and (is_hidden = false or user_id = auth.uid())
   );
 
@@ -178,7 +193,7 @@ create policy "Members can create rolls"
   on dice_rolls for insert to authenticated
   with check (
     user_id = auth.uid()
-    and game_id in (select gm.game_id from public.game_members gm where gm.user_id = auth.uid())
+    and game_id in (select public.get_user_game_ids(auth.uid()))
   );
 
 -- Shared Notes
@@ -187,7 +202,7 @@ alter table public.shared_notes enable row level security;
 create policy "Game members can manage notes"
   on shared_notes for all to authenticated
   using (
-    game_id in (select gm.game_id from public.game_members gm where gm.user_id = auth.uid())
+    game_id in (select public.get_user_game_ids(auth.uid()))
   );
 
 -- ============================================================

@@ -1,5 +1,7 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, getRouteApi, Link } from '@tanstack/react-router'
 import { useState } from 'react'
+
+const gameRoute = getRouteApi('/_app/games/$gameId')
 
 export const Route = createFileRoute('/_app/games/$gameId/')({
   component: GameLobbyPage,
@@ -7,9 +9,7 @@ export const Route = createFileRoute('/_app/games/$gameId/')({
 
 function GameLobbyPage() {
   const { game, members, characters, currentUserId, isGm } =
-    Route.useRouteContext() as ReturnType<
-      typeof import('./_app.games.$gameId').Route.useLoaderData
-    >
+    gameRoute.useLoaderData()
   const [copied, setCopied] = useState(false)
 
   function copyInviteCode() {
