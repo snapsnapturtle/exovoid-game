@@ -94,6 +94,17 @@ as $$
   select game_id from public.game_members where user_id = p_user_id;
 $$;
 
+-- Look up a game by invite code (bypasses RLS so non-members can join)
+create or replace function public.find_game_by_invite_code(p_invite_code text)
+returns public.games
+language sql
+security definer
+set search_path = ''
+stable
+as $$
+  select * from public.games where invite_code = p_invite_code and status = 'active' limit 1;
+$$;
+
 -- ============================================================
 -- ROW LEVEL SECURITY
 -- ============================================================

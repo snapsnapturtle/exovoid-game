@@ -63,10 +63,7 @@ export const joinGame = createServerFn({ method: 'POST' })
     if (!user) throw new Error('Not authenticated')
 
     const { data: game } = await supabase
-      .from('games')
-      .select('*')
-      .eq('invite_code', data.inviteCode)
-      .eq('status', 'active')
+      .rpc('find_game_by_invite_code', { p_invite_code: data.inviteCode })
       .single()
 
     if (!game) throw new Error('Game not found or inactive')
