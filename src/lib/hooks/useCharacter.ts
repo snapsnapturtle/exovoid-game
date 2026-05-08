@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import type { Database, CharacterAttributes } from '~/lib/types/database'
+import type { Character, CharacterAttributes } from '~/lib/types/database'
 import { updateCharacter } from '~/lib/server/characters'
-
-type Character = Database['public']['Tables']['characters']['Row']
 
 const SAVE_DEBOUNCE_MS = 800
 

@@ -1,4 +1,4 @@
-import type { Database } from '~/lib/types/database'
+import type { Character } from '~/lib/types/database'
 import { useCharacter } from '~/lib/hooks/useCharacter'
 import { computeAllDerivedStats } from '~/lib/game-logic/derived-stats'
 import { CharacterHeader } from './CharacterHeader'
@@ -6,8 +6,6 @@ import { CharacterInfoPanel } from './CharacterInfoPanel'
 import { AttributesPanel } from './AttributesPanel'
 import { DerivedStatsPanel } from './DerivedStatsPanel'
 import { SkillsPanel } from './SkillsPanel'
-
-type Character = Database['public']['Tables']['characters']['Row']
 
 interface CharacterSheetProps {
   initial: Character

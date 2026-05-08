@@ -1,6 +1,6 @@
 import { createServerFn } from '@tanstack/react-start'
 import { getSupabaseServerClient } from '~/lib/supabase/server'
-import type { CharacterAttributes } from '~/lib/types/database'
+import type { Character, CharacterAttributes } from '~/lib/types/database'
 
 export const createCharacter = createServerFn({ method: 'POST' })
   .inputValidator(
@@ -33,7 +33,7 @@ export const createCharacter = createServerFn({ method: 'POST' })
       .single()
 
     if (error) throw new Error(error.message)
-    return character
+    return character as unknown as Character
   })
 
 export const getCharacter = createServerFn()
@@ -64,7 +64,11 @@ export const getCharacter = createServerFn()
 
     const isGm = game?.gm_id === user.id
 
-    return { character, isOwner, canEdit: isOwner || isGm }
+    return {
+      character: character as unknown as Character,
+      isOwner,
+      canEdit: isOwner || isGm,
+    }
   })
 
 export const updateCharacter = createServerFn({ method: 'POST' })
@@ -100,5 +104,5 @@ export const updateCharacter = createServerFn({ method: 'POST' })
       .single()
 
     if (error) throw new Error(error.message)
-    return character
+    return character as unknown as Character
   })

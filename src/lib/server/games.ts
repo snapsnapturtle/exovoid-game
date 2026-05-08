@@ -1,5 +1,8 @@
 import { createServerFn } from '@tanstack/react-start'
 import { getSupabaseServerClient } from '~/lib/supabase/server'
+import type { Database } from '~/lib/types/database'
+
+type GameRow = Database['public']['Tables']['games']['Row']
 
 export const getUserGames = createServerFn().handler(async () => {
   const supabase = getSupabaseServerClient()
@@ -62,10 +65,11 @@ export const joinGame = createServerFn({ method: 'POST' })
     } = await supabase.auth.getUser()
     if (!user) throw new Error('Not authenticated')
 
-    const { data: game } = await supabase
+    const { data: rpcResult } = await supabase
       .rpc('find_game_by_invite_code', { p_invite_code: data.inviteCode })
       .single()
 
+    const game = rpcResult as GameRow | null
     if (!game) throw new Error('Game not found or inactive')
 
     // Check if already a member
