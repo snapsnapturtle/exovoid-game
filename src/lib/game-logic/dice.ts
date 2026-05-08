@@ -8,6 +8,194 @@ export interface DicePool {
   total: number
 }
 
+// ============================================================
+// Dice tables — symbol distributions per die type.
+// Each die is a d20. The symbols array contains entries for each
+// non-blank face; remaining faces (sides - symbols.length) are blank.
+// An entry can be a single symbol or an array of symbols on one face.
+// `explosive` is a marker that triggers a re-roll of the same die type;
+// it is filtered out of the final result count.
+// ============================================================
+
+export type DieType = 'standard' | 'aptitude' | 'expertise' | 'injury'
+
+export type DieSymbol =
+  | 'success'
+  | 'trigger'
+  | 'complication'
+  | 'botch'
+  | 'xp'
+  | 'wound'
+  | 'minion'
+  | 'cyberware'
+  | 'adrenaline'
+  | 'explosive'
+
+interface DieTable {
+  sides: number
+  symbols: (DieSymbol | DieSymbol[])[]
+}
+
+export const DICE_TABLES: Record<DieType, DieTable> = {
+  standard: {
+    sides: 20,
+    symbols: [
+      ['success', 'explosive'],
+      ['success', 'explosive'],
+      'success',
+      'success',
+      'success',
+      'success',
+      'success',
+      'success',
+      'trigger',
+      'trigger',
+      'xp',
+      'botch',
+    ],
+  },
+  aptitude: {
+    sides: 20,
+    symbols: [
+      'success',
+      'success',
+      'success',
+      'success',
+      'trigger',
+      'trigger',
+      'complication',
+    ],
+  },
+  expertise: {
+    sides: 20,
+    symbols: [
+      ['success', 'trigger'],
+      ['success', 'trigger'],
+      'success',
+      'success',
+      'success',
+      'success',
+      'trigger',
+      'trigger',
+      'trigger',
+      'trigger',
+      'complication',
+    ],
+  },
+  injury: {
+    sides: 20,
+    symbols: [
+      'wound',
+      'wound',
+      'wound',
+      'wound',
+      'wound',
+      'minion',
+      'minion',
+      'minion',
+      'minion',
+      'minion',
+      'cyberware',
+      'adrenaline',
+    ],
+  },
+}
+
+export interface RolledDie {
+  type: DieType
+  symbols: DieSymbol[]
+  exploded?: boolean
+}
+
+export type RollPool = Partial<Record<DieType, number>>
+
+export type RollResult = RolledDie[]
+
+function rollOne(type: DieType, exploded: boolean): RolledDie {
+  const table = DICE_TABLES[type]
+  const idx = Math.floor(Math.random() * table.sides)
+  const face = idx < table.symbols.length ? table.symbols[idx] : []
+  const symbols = Array.isArray(face) ? face : [face]
+  return { type, symbols, exploded: exploded || undefined }
+}
+
+/**
+ * Roll a dice pool. For each die type, rolls the requested count and
+ * recursively re-rolls on `explosive` (each subsequent re-roll is marked
+ * `exploded: true`). Returns one entry per physical die rolled.
+ */
+export function rollPool(pool: RollPool): RollResult {
+  const result: RollResult = []
+  ;(Object.keys(DICE_TABLES) as DieType[]).forEach((type) => {
+    const count = pool[type] ?? 0
+    for (let i = 0; i < count; i++) {
+      let exploded = false
+      let die: RolledDie
+      do {
+        die = rollOne(type, exploded)
+        result.push(die)
+        exploded = true
+      } while (die.symbols.includes('explosive'))
+    }
+  })
+  return result
+}
+
+/**
+ * Apply a flat modifier to a dice pool.
+ *
+ * - Positive modifiers add to `aptitude` dice.
+ * - Negative modifiers drain `aptitude` first, then `expertise`.
+ * - The standard die is never modified (per the rules).
+ *
+ * Returns a new pool — does not mutate the input.
+ */
+export function applyModifier(pool: DicePool, modifier: number): DicePool {
+  if (modifier === 0) return pool
+  let { aptitude, expertise } = pool
+  if (modifier > 0) {
+    aptitude += modifier
+  } else {
+    let take = -modifier
+    const fromAptitude = Math.min(take, aptitude)
+    aptitude -= fromAptitude
+    take -= fromAptitude
+    if (take > 0) {
+      const fromExpertise = Math.min(take, expertise)
+      expertise -= fromExpertise
+    }
+  }
+  return {
+    standard: pool.standard,
+    aptitude,
+    expertise,
+    total: pool.standard + aptitude + expertise,
+  }
+}
+
+/**
+ * Aggregate symbol counts from a roll result.
+ *
+ * - Filters out the `explosive` marker (it only triggers re-rolls).
+ * - Discards exploded dice that landed on `botch` (per the rule that the
+ *   player may discard the additional die from an explosive re-roll, and a
+ *   botch on an exploded die is always discarded).
+ *
+ * Does NOT auto-apply optional conversions (2 triggers → 1 success, or
+ * adopting complications for +2 successes) — those are GM/player decisions.
+ */
+export function summarizeRoll(result: RollResult): Record<string, number> {
+  const summary: Record<string, number> = {}
+  result
+    .filter((d) => !(d.exploded && d.symbols.includes('botch')))
+    .flatMap((d) => d.symbols)
+    .filter((s) => s !== 'explosive')
+    .forEach((s) => {
+      summary[s] = (summary[s] ?? 0) + 1
+    })
+  return summary
+}
+
 /**
  * Compute the attribute average for a skill check.
  * Per rules: average of linked attributes, rounded up (ceil).

@@ -18,3 +18,19 @@
   --color-warning-400: #fbbf24;
   --color-warning-500: #f59e0b;
 }
+
+@keyframes roll-flash {
+  0% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+  }
+  20% {
+    box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.35);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+  }
+}
+
+.roll-flash {
+  animation: roll-flash 2.2s ease-out;
+}

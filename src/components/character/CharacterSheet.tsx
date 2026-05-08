@@ -10,9 +10,14 @@ import { SkillsPanel } from './SkillsPanel'
 interface CharacterSheetProps {
   initial: Character
   canEdit: boolean
+  isGm: boolean
 }
 
-export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
+export function CharacterSheet({
+  initial,
+  canEdit,
+  isGm,
+}: CharacterSheetProps) {
   const { character, saveStatus, updateField, updateAttribute, updateSkill } =
     useCharacter(initial, canEdit)
 
@@ -61,6 +66,9 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
         skills={character.skills}
         canEdit={canEdit}
         onSkillChange={updateSkill}
+        gameId={character.game_id}
+        characterId={character.id}
+        isGm={isGm}
       />
     </div>
   )

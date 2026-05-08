@@ -5,8 +5,8 @@ A tiered list of features needed to bring the app from "character sheet viewer" 
 ## Tier 1 — Core play loop (MVP)
 
 - [x] **Realtime sync foundation** — `useRealtimeSubscription` primitive + character row sync (`useRealtimeCharacter`). Cross-tab character edits propagate live. Lobby-level live updates deferred (see Tier 3).
-- [ ] **Dice rolling UI + resolution** — roll from a skill row, compose pool (standard / aptitude / expertise), apply difficulty, surface successes / triggers / complications.
-- [ ] **Shared dice roll feed** — realtime broadcast of rolls to all members, with hidden-roll support for the GM.
+- [x] **Dice rolling UI + resolution** — Roll button per skill row opens a modal with pool + difficulty + GM-only hidden toggle. Server rolls and persists; raw symbol counts shown (no auto-conversion of triggers/complications).
+- [x] **Shared dice roll feed** — right-side panel in `GameLayout` shows recent rolls live via realtime; click for per-die details. Hidden GM rolls visible only to inserter via RLS.
 - [ ] **Live play panel** — quick-adjust health / edge / AP / counters, separate from the editor view.
 - [ ] **Active conditions panel** — manually toggled on/off, persistently visible while active, modify dice rolls and derived stats while on.
 - [ ] **Per-character counters** — ammo, charges, drug doses, etc.
@@ -37,7 +37,10 @@ A tiered list of features needed to bring the app from "character sheet viewer" 
 - [ ] **Downtime activities** — crafting, repair. (1x-per-level uses are already covered by the progression log from the level-up item.)
 - [ ] **Support / collaborative checks** — multi-player roll aggregation.
 - [ ] **Homebrew content** — GM-defined custom talents / cyberware / equipment.
-- [ ] **Live lobby updates** — new players joining and new characters being created should appear in the lobby without a manual refresh. Initial attempt (subscriptions filtered by `game_id` with `router.invalidate()` on change) didn't deliver events even after setting `REPLICA IDENTITY FULL` on the affected tables; root cause not yet identified. For now the lobby reflects fresh state on navigation/refresh.
+- [ ] **Live lobby updates** — new players joining and new characters being created should appear in the lobby without a manual refresh. Initial attempt (subscriptions filtered by `game_id` with `router.invalidate()` on change) didn't deliver events even after setting `REPLICA IDENTITY FULL` on the affected tables. Subsequent docs review (https://supabase.com/docs/guides/realtime/postgres-changes) clarifies that REPLICA IDENTITY FULL only matters for receiving the `old` record on UPDATE/DELETE — it isn't the fix here. Two viable paths to revisit:
+  - **Switch lobby signaling to Realtime broadcast** (same pattern that fixed the dice feed). Most reliable; bypasses RLS/replica-identity entirely.
+  - **Explicitly call `supabase.realtime.setAuth(session.access_token)`** on the browser client after the session loads (and on token refresh). The Supabase docs imply auto-sync isn't guaranteed; explicit auth would unblock postgres_changes for cookie-based SSR sessions and is the more native fix.
+- [ ] **Explicit realtime auth on the browser client** — extend `getSupabaseBrowserClient` to call `supabase.realtime.setAuth(...)` with the current session's access token (and re-call on `onAuthStateChange`). Likely prerequisite for any future postgres_changes use — without it, RLS on the realtime side may evaluate as anon and silently drop events for non-inserter clients.
 
 ## Suggested Tier 1 sequencing
 
