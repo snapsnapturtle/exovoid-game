@@ -18,7 +18,8 @@ export const Route = createFileRoute('/_app/games/$gameId')({
 })
 
 function GameLayout() {
-  const { game, isGm, rolls, currentUserId } = Route.useLoaderData()
+  const { game, isGm, rolls, currentUserId, characters } =
+    Route.useLoaderData()
   const {
     rolls: liveRolls,
     refresh,
@@ -27,6 +28,13 @@ function GameLayout() {
   const ctx = useMemo(
     () => ({ refresh, broadcastNewRoll }),
     [refresh, broadcastNewRoll],
+  )
+  const myCharacters = useMemo(
+    () =>
+      characters
+        .filter((c) => c.user_id === currentUserId)
+        .map((c) => ({ id: c.id, name: c.name })),
+    [characters, currentUserId],
   )
 
   return (
@@ -50,7 +58,13 @@ function GameLayout() {
           <div className="min-w-0 flex-1 overflow-auto">
             <Outlet />
           </div>
-          <DiceFeed rolls={liveRolls} currentUserId={currentUserId} />
+          <DiceFeed
+            rolls={liveRolls}
+            currentUserId={currentUserId}
+            gameId={game.id}
+            isGm={isGm}
+            myCharacters={myCharacters}
+          />
         </div>
       </div>
     </DiceFeedContext.Provider>

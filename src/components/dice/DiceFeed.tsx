@@ -1,21 +1,23 @@
 import { useEffect, useRef, useState } from 'react'
 import { Die } from './Die'
+import { CustomDiceRoller } from './CustomDiceRoller'
 import type { DiceRollEntry } from '~/lib/server/dice'
 import type { DieType } from '~/lib/game-logic/dice'
 
 const TIME_TICK_MS = 15_000
 const HIGHLIGHT_MS = 2200
+const SCROLL_TOP_THRESHOLD_PX = 80
 
 const SYMBOL_ORDER = [
-  'success',
-  'trigger',
-  'complication',
   'botch',
+  'success',
+  'complication',
+  'trigger',
+  'xp',
   'wound',
   'minion',
   'cyberware',
   'adrenaline',
-  'xp',
 ] as const
 
 function orderSymbols(summary: Record<string, number>): string[] {
@@ -55,14 +57,39 @@ function useNow(intervalMs: number): number {
 interface DiceFeedProps {
   rolls: DiceRollEntry[]
   currentUserId: string
+  gameId: string
+  isGm: boolean
+  myCharacters: { id: string; name: string }[]
 }
 
-export function DiceFeed({ rolls, currentUserId }: DiceFeedProps) {
+export function DiceFeed({
+  rolls,
+  currentUserId,
+  gameId,
+  isGm,
+  myCharacters,
+}: DiceFeedProps) {
   const [details, setDetails] = useState<DiceRollEntry | null>(null)
   const [highlighted, setHighlighted] = useState<Set<string>>(() => new Set())
+  const [showScrollTop, setShowScrollTop] = useState(false)
+  const [customOpen, setCustomOpen] = useState(false)
   const seenIds = useRef<Set<string> | null>(null)
   const scrollRef = useRef<HTMLDivElement | null>(null)
   const now = useNow(TIME_TICK_MS)
+
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+    const onScroll = () => {
+      setShowScrollTop(el.scrollTop > SCROLL_TOP_THRESHOLD_PX)
+    }
+    el.addEventListener('scroll', onScroll, { passive: true })
+    return () => el.removeEventListener('scroll', onScroll)
+  }, [rolls.length === 0])
+
+  function scrollToTop() {
+    scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   useEffect(() => {
     // Skip the first run so existing rolls aren't all flashed on mount.
@@ -99,9 +126,16 @@ export function DiceFeed({ rolls, currentUserId }: DiceFeedProps) {
 
   return (
     <>
-      <aside className="flex h-full w-80 shrink-0 flex-col border-l border-void-600 bg-void-900">
-        <div className="shrink-0 border-b border-void-600 px-4 py-3">
+      <aside className="relative flex h-full w-80 shrink-0 flex-col border-l border-void-600 bg-void-900">
+        <div className="flex shrink-0 items-center justify-between border-b border-void-600 px-4 py-3">
           <h3 className="text-sm font-semibold text-white">Dice Feed</h3>
+          <button
+            onClick={() => setCustomOpen(true)}
+            title="Custom roll"
+            className="rounded bg-accent-500/20 px-2 py-1 text-xs font-medium text-accent-400 transition hover:bg-accent-500/30"
+          >
+            + Custom
+          </button>
         </div>
         {rolls.length === 0 ? (
           <p className="flex-1 px-2 py-6 text-center text-sm text-gray-500">
@@ -124,10 +158,41 @@ export function DiceFeed({ rolls, currentUserId }: DiceFeedProps) {
             ))}
           </div>
         )}
+        <button
+          onClick={scrollToTop}
+          aria-label="Scroll to newest"
+          className={`absolute bottom-3 left-1/2 z-20 flex h-9 w-9 -translate-x-1/2 items-center justify-center rounded-full bg-accent-500 text-white shadow-xl shadow-black/50 transition-all duration-200 hover:bg-accent-400 ${
+            showScrollTop
+              ? 'translate-y-0 opacity-100'
+              : 'pointer-events-none translate-y-14 opacity-0'
+          }`}
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M5 15 L12 8 L19 15" />
+          </svg>
+        </button>
       </aside>
 
       {details && (
         <RollDetails roll={details} onClose={() => setDetails(null)} />
+      )}
+      {customOpen && (
+        <CustomDiceRoller
+          gameId={gameId}
+          characters={myCharacters}
+          isGm={isGm}
+          onClose={() => setCustomOpen(false)}
+        />
       )}
     </>
   )
