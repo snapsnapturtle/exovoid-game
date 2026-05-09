@@ -34,3 +34,11 @@
 .roll-flash {
   animation: roll-flash 2.2s ease-out;
 }
+
+/* Adds a 1px white outline around an image's alpha silhouette via stacked
+   drop-shadows. Used on dice result symbols so they read against any die
+   color without modifying the source PNGs. */
+.symbol-outline {
+  filter: drop-shadow(1px 0 0 #fff) drop-shadow(-1px 0 0 #fff)
+    drop-shadow(0 1px 0 #fff) drop-shadow(0 -1px 0 #fff);
+}

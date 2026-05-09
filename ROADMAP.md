@@ -29,6 +29,7 @@ A tiered list of features needed to bring the app from "character sheet viewer" 
 - [ ] **Shared notes UI** — table and RLS are ready, needs a route + component.
 - [ ] **Rules reference / glossary tooltips** — hover-defs for game terms (Trigger, Complication, etc.) and skills.
 - [ ] **Character portrait upload** — Supabase Storage.
+- [ ] **Hidden rolls for players** — let players (not just the GM) toggle a roll as hidden, with the result visible to the roller and the GM only (other players don't see it). Useful for investigation, stealth and similar private checks. Requires a small RLS amendment on `dice_rolls` to also exempt the game's GM from the hidden filter, plus dropping the `isGm` gate on the `DiceRoller` toggle.
 
 ## Tier 3 — System completeness
 
