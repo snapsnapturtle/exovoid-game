@@ -1,0 +1,28 @@
+severity,poolModifier,injury,result
+1,1,Hobble,Reduce your speed by 1. Stacks.
+1,1,Disoriented,Reduce your vigilance by 1. Stacks.
+1,1,Tripping,Immediately lose 4 Action Points.
+1,2,Just A Flesh Wound,No further effects other than the injury pool modifier.
+1,1,Falling,"You are knocked prone. Others within 5 squares have -1 difficulty to hit you, and +1 difficulty if they 10 squares or further away, and you need to spend 2 AP to stand up."
+1,1,Lost It,You let your weapon or some other piece of equipment fall - GM's discretion.
+2,1,Dizzy,Reduce your action points each round by 1. Stacks.
+2,1,Injured Arm,Suffer -1 pool with all checks that use this arm. Stacks.
+2,1,Injured Leg,Halve your speed. Stacks.
+2,1,Nausea,All actions cost +1 AP. Stacks.
+2,3,Pyrrhic Victory,Your next roll gains +3 successes.
+2,2,Concussion,Immediately lose 7 Action Points.
+2,2,Distracting Suffering,Declare an ally. They suffer a -4 pool penalty on their next check.
+3,2,Gruesome Wound,Treating this wound has +2 difficulty.
+3,0,Bleeding,Suffer 1 damage (ignoring armor) at the end of each round for 1d6 rounds. Stacks.
+3,1,Crippled Leg,"You cannot perform free movements any longer, you are permanently prone and your speed becomes 1."
+3,2,Head Injury,Increase the difficulty of all checks that involve Intelligence by +1. Stacks.
+3,0,Internal Trauma,Every time you perform an action you have to roll one single injury die (with no further modifiers).
+3,4,Traumatized,"If you receive this wound, you can immediately discard it by spending 2 edge points."
+4,0,Brutal Mutilation,You suffer a graphic mutilation (like lost fingers or similar) at the GM's discretion. This will result in penalties on social checks (and related checks) until healed.
+4,0,Lost Arm,You lose an arm and cannot use it anymore for any actions. Additionally you suffer 1 damage for 1d6 rounds from bleeding.
+4,0,Lost Leg,"You cannot perform free movements any longer, you are permanently prone and your speed becomes 1. Additionally you suffer 1 damage for 1d6 rounds from bleeding."
+4,1,Blinded,All sight-based checks require +2 difficulty. Stacks.
+4,3,Passed Out,"You become unconscious, but you can attempt a Survival d3 check by spending 5 AP repeatedly to wake up on success."
+5,2,Unconscious,You become unconscious for at least one hour or until treated medically.
+6,0,Bleeding Out,"You become unconscious and will die within 10 rounds, unless treated. To stabilize, another character must succeed with a Medicine d4 check and spend 8 AP. If successful, treat this result as ""Unconscious"" instead."
+7,0,Instant Death,You are dead.

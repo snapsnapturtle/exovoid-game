@@ -1,0 +1,28 @@
+modName,modEffects,cost,rarity
+Advanced Materials,Increase the durability of the armor by +25% (round up).,Armor / 2,2
+Anti-Corrosive,Protects against corrosive atmospheres.,100,1
+Audio Suite,"Gain +3 Skill Levels on Vigilance checks when it's about hearing. The suite also allows you to filter sounds and set up an encrypted network of communication with others within 10km.
+
+Deactivates when the armor reaches 0 durability.",200,1
+Ballistic Net,Adds +2 Soak against ballistic projectiles.,450,1
+Battery Expansion,Triples the duration of the power armor's battery.,600,1
+Diamantine Mesh,Adds +2 Soak against melee attacks and plasma projectiles.,300,1
+Droppack,"Can be activated once to reduce the distance class of a fall by 10. After use, it requires at least 5 Minutes to recharge.",400,3
+Emergency Systems,The armor and its mods remain operable even when durability is 0.,600,3
+Heat Shielding,Protects against extreme heat.,100,1
+Insulation,Protects against extreme cold.,100,1
+Radiation Shielding,Protects against radiation.,100,1
+Reflective Coating,Negates the armor penetration of lasers.,300,1
+Sealed,"The armor gains the Vacuum-Sealed quality and becomes usable in space by protecting against the dangers of vacuum, while providing life support for several hours.",400,2
+Servos,"The user gains +2 Speed and a +1 pool bonus on melee and defense checks.
+
+Deactivates when the armor reaches 0 durability.",900,3
+Shock Absorber,Adds +2 Soak against explosions and falling damage.,200,1
+State-of-the-Art,"Increase the durability of the armor by +50% (round up).
+Cannot be combined with the Advanced Materials.",Armor * 2,5
+Stealth Coating,"Allows the armor's texture to mimick the environment and reduce heat profiles, providing the user with a +5 pool on attempts to stay hidden visually.
+
+Deactivates when the armor reaches 0 durability.",800,4
+Visual Enhancer,"Gain +3 Skill Levels on Vigilance checks when it's about seeing something. The suite also allows zooming, video recording and similar perks.
+
+Deactivates when the armor reaches 0 durability.",600,3

@@ -8,7 +8,7 @@ A tiered list of features needed to bring the app from "character sheet viewer" 
 - [x] **Dice rolling UI + resolution** — Roll button per skill row opens a modal with pool + difficulty + GM-only hidden toggle. Server rolls and persists; raw symbol counts shown (no auto-conversion of triggers/complications).
 - [x] **Shared dice roll feed** — right-side panel in `GameLayout` shows recent rolls live via realtime; click for per-die details. Hidden GM rolls visible only to inserter via RLS.
 - [x] **Live play panel + edit/play mode split** — character sheet now has a play mode (default, locks attributes / skills / info / background) and an edit mode (toggled via the header button, only available to `canEdit` users). A `LivePlayPanel` at the top of the sheet has big +/- trackers for health and edge plus a per-session notes scratchpad — always editable when the user has permission, regardless of mode. AP and ammo / charges / drug doses moved to the combat tracker scope (Tier 2).
-- [ ] **Active conditions panel** — manually toggled on/off, persistently visible while active, modify dice rolls and derived stats while on.
+- [ ] ~~**Active conditions panel**~~ — dropped from v1. The DiceRoller already has a free-form modifier field, which covers the ad-hoc penalty/bonus need without needing a persistent toggle list. The named conditions worth tracking persistently (Hungry, Hypothermia, Radiation Poisoning etc.) are all Survival Clock escalation states and live with that work in Tier 3.
 - [ ] ~~**Per-character counters**~~ — moved to the combat tracker (Tier 2): ammo / charges / drug doses are combat-adjacent.
 - [ ] **Talents panel (action cards)** — list + use button → pre-fills dice roller.
 - [ ] **Cyberware panel (action cards)** — same pattern, plus passive modifiers to derived stats.
@@ -34,7 +34,7 @@ A tiered list of features needed to bring the app from "character sheet viewer" 
 ## Tier 3 — System completeness
 
 - [ ] **Spaceship combat** — separate subsystem. The open design question is how to model ship state and flow its effects into character actions/rolls.
-- [ ] **Environmental hazards** — hunger / radiation / heat / cold / vacuum tracking.
+- [ ] **Environmental hazards (Survival Clocks)** — implements the rulebook's universal Survival Clock mechanic (`10 + CON + Survival levels` ticks per hazard, with named escalation states that apply pool penalties and other effects). Covers Hunger / Thirst, Radiation, Heat, Cold and Vacuum. The escalation states (`Hungry`, `Frostbite`, `Radiation Poisoning`, etc.) are the canonical "active conditions" — when this lands they auto-apply their pool modifier to rolls so we don't need a separate conditions panel.
 - [ ] **Downtime activities + guided "Downtime" button** — guided flow that walks the user through performing a downtime action (Relax & Rest, Seek Inspiration, Train Skill, Modify / Repair Gear, Networking, Forge ID, Install Cyberware, etc.). The button presents the legal options, runs any required check (e.g. Seek Inspiration grants edge beyond the normal limit, capped at +50%), and applies the outcome to the character. 1x-per-level uses are tracked via the progression log from the level-up item.
 - [ ] **Support / collaborative checks** — multi-player roll aggregation.
 - [ ] **Homebrew content** — GM-defined custom talents / cyberware / equipment.
@@ -45,12 +45,12 @@ A tiered list of features needed to bring the app from "character sheet viewer" 
 
 ## Suggested Tier 1 sequencing
 
-Realtime foundation → dice + feed → live play + conditions + counters → data import → action card panels (talents / cyberware / inventory). At that point the app is playable for a first test.
+Realtime foundation → dice + feed → live play → data import → action card panels (talents / cyberware / inventory). At that point the app is playable for a first test.
 
 ## Key design decisions
 
 - **Progression granularity**: tracked per level, not per edit. Captures level-up choices and 1x-per-level downtime ability uses. Light, story-shaped, not an audit trail.
-- **Active effects**: manually toggled by the player. Must be visibly persistent so they don't get forgotten. While on, automatically apply to dice rolls and derived stats.
+- **Active effects**: ad-hoc penalties/bonuses are entered as the modifier on the DiceRoller per-roll — no persistent "conditions" list. Long-running named states (Hungry, Frostbite, etc.) ride along with the Tier 3 Survival Clocks work, where they auto-apply their pool modifier.
 - **NPCs**: lightweight, not full character sheets. GM-only.
 - **Action cards**: unified pattern across talents / cyberware / equipped weapons — single "use" button that pre-fills the dice roller.
 - **Out of scope for now**: tactical maps / encounter builder, marketplace, PDF export, character templates, per-session roll log.

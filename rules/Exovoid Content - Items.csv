@@ -1,0 +1,146 @@
+category,item,name,description,size,cost,rarity
+Gadget,Holo Projector,VividCast Holobeam,"A small, portable device that projects 3D holographic images, useful for displaying maps, blueprints, or decoys.",1,250,1
+Gadget,Data Pad,InfoGlide,"A handheld device for accessing, storing, and transferring data. Can be used to access archives, or communicate remotely.
+
+Device Integrity: 2
+Firewall: 6
+IC Level: 3
+Signal Range: 10",1,70,0
+Gadget,Energy Cell,PowerCore V5,"A compact, rechargeable power source used to fuel various gadgets, tools, and small vehicles.",2,150,1
+Gadget,Field Scanner,Terrascan Pro,"A portable device that scans the environment for life forms, energy signatures, or chemical compositions wihin a 5km radius. Ideal for exploration and investigation.",2,350,3
+Gadget,Plasma Torch,Internatorch,A high-powered cutting tool that uses plasma to slice through metal and other tough materials. Essential for breaching barriers.,1,100,1
+Gadget,Magnetic Grapple,Ascension Sling,A handheld grapple gun that fires a magnetized claw. Ideal for quick ascents or for retrieving metal objects from a distance. Comes with a retractable 15m long cable that can support up to 300 kg.,2,250,2
+Gadget,Anti-EMP Module,Orion EMP Zero Pack,"This module can be worn, and will neutralize one strong EMP wave that would otherwise destroy or disturb worn equipment. The module burns out upon absorbing an EMP wave.",1,100,3
+Survival,Portable Shelter,Envirodome Compact,"A collapsible, lightweight shelter that provides protection from the elements and hostile environments. Can be set up quickly in any terrain.",5,400,2
+Survival,Atmospheric Filter,AirPurity XT,"A breathing apparatus that filters and purifies the air, making it safe to breathe in toxic or low-oxygen environments.",1,200,2
+Survival,Ration Pack,Nutripak Sustain,"Compact, nutrient-rich food supplies designed for long-term storage and consumption during expeditions or emergencies. Each pack sustains for one day.",1,10,0
+Survival,Hydration Synthesizer,Hydrasync,"A portable device that extracts and purifies water from the environment, ensuring a clean and safe water supply in any situation.",2,120,2
+Survival,Thermal Blanket,Heatwave Ultra,A heat-reflective blanket that provides warmth and insulation in extreme cold conditions. Compact and easy to carry.,1,20,0
+Survival,Survival Beacon,Rescuesignal Mk II,A distress signal device that broadcasts your location to nearby allies or rescue teams. Equipped with a variety of signal modes.,2,200,2
+Survival,Grav Boots,G-Force Boots,"Boots equipped with gravity technology or magnets, allowing the wearer to traverse difficult terrain, including zero-gravity environments.",2,150,3
+Survival,Climbing Gear,AscendTech Climbers,"Ropes, hooks and other devices to help safely climb buildings or rocks.",2,120,2
+Survival,Solar Charger,Sunpower Fold,"A portable solar panel that can charge batteries and devices using sunlight, essential for long-term survival away from civilization.",2,80,2
+Survival,Atmospheric Analyzer,AeroScout Pro,"A handheld device that analyzes the local air quality, detecting toxins, radiation levels, and oxygen content.",1,120,2
+Medicine,Biofoam Dispenser,Medifoam XT,A medical tool that injects biofoam into wounds to stop bleeding. Requires 4 AP to use.,1,30,1
+Medicine,Medigel,HealGel Alpha,"A healing salve that promotes rapid tissue regeneration, effective for treating wounds, burns, and other injuries. Once applied, it provides +4 pool bonus to the nightly regeneration, and regenerates and extra 20% of the maximum health.",1,20,1
+Medicine,Healing Patch,Somaseal Bio-Repair,"A single-use patch that adheres to wounds, promoting rapid healing through bio-stimulants. Restores 30% of a character's maximum health instantly (round up). Is only useful once per day, as an overflow of the stimulants causes averse effects (e.g. dizzyness or nausea).",1,50,2
+Medicine,Stim Pack,Quickboost Inject,"A quick-injection drug (requires 3 AP to use) that boosts physical performance, increasing strength, speed and constitution by +2 for 10 minutes.
+
+After that, the user loses 1d6 health (cannot cause an injury roll).",1,40,1
+Medicine,Adrenaline Injector,Adrena Max,"A quick-injection drug (requires 3 AP to use) that either provides +2 AP for 5 minutes, or that wakes up someone who became unconscious.
+
+After the 5 Minutes are over, an Injury roll with 5 dice must be made, but the maximum severity suffered is limited to 1.",1,25,1
+Medicine,Neuro-Enhancer,Cerebraboost,"A cognitive booster in the form of a pill that sharpens mental faculties, improving memory, focus, and problem-solving abilities for a limited time.
+It takes 5 Minutes for the effects to kick in. The user then gains +1 Intelligence and Education for 6 hours.
+
+When the effects wear off, the user suffers the ""Dizzy"" wound.",0,50,3
+Medicine,Anti-Viral Serum,Vira Guard,"A cure for most viruses and infections, providing immunity or relief from symptoms.",1,35,2
+Medicine,Pain Nullifier,Nocicept Block,"A drug that blocks pain receptors, allowing the user to function normally despite injuries or other debilitating conditions.
+It takes 5 Minutes for the effects of the pill to kick in. The user then ignores the effects (but not injury pool modifiers) of all severity 1 and 2 wounds for 1d6 hours.
+
+When the effects wear off, the user suffers the ""Nausea"" wound and has to make a Survival d2 roll. If failed, they become addicted or suffer withdrawal symptoms.",0,10,0
+Medicine,Combat Stims,BattleX Stims,"A quick-injection drug (requires 3 AP to use) that increases combat efficiency, boosting reflexes, accuracy, and aggression.
+The user gains +1 pool bonus to all physical combat related checks, and reduces the pool of their injury checks by 2 (to a Minimum of 0). Lasts for 10 Minutes.
+
+When the effects wear off, the user suffers 2d6 damage (ignoring armor).",1,50,1
+Medicine,Sleep Regulator,Slumbersync,"A drug that can either suppress the need for sleep or induce restful sleep, depending on the dosage and application.",0,20,1
+Medicine,Cyberware Immune Suppressor,Cyberceptin,"Reduces the risks of adverse effects from cyberware temporarily. For 24h, deactivate eight cyberware malfunction results (numbers between 2 and 40) and ignore their effects. When the effects wear off, you suffer a -1 pool penalty to all checks for 1d6 hours unless you take another dose.",0,30,3
+Medicine,Hallucinogen,Dreamwave,"A drug that induces vivid hallucinations, which can be used recreationally or for nefarious purposes, like disorienting an enemy.",0,15,1
+Medicine,Medkit,Ares Lifesaver,A set of tools and basic supplies to perform first aid or even surgery.,3,150,1
+Medicine,Engram Reader,Mindmirror,"This circular tool can be placed around a person's alive or dead head. Over 5 Minutes it will create a scan to create an engram of their mind, but it will irrevocably destroy the brain in the process. The engram is typically faulty or incomplete, but can be sufficient to be used in a simulation for further questioning.",4,2400,5
+Espionage,Infiltration Kit,Shadow-Ops Gear,"A set of tools specifically designed for bypassing security systems, including lockpicks, signal jammers, and data scramblers.",2,300,3
+Espionage,MagLock Breaker,Ciphercrack,"Once applied to a MagLock, the device requires 1d6 minutes to find the right combination, opening the lock once.",1,225,3
+Espionage,Environmental Cloak,Chameleonwrap,"A wearable cloak that adapts to the surrounding environment, providing camouflage. While being stationary or moving cautiously, gain +3 pool to any attempts to stay hidden.",1,450,4
+Espionage,Face Shaping Cream,Nanoclone,"Allows to apply a paste that will change the facial structure into a specific shape, by programming it once through a Data Pad. The cream can be re-used later by mixing it with a solution that costs half the price of the cream itself.",1,400,4
+Espionage,Voice Modulator,Vox Morph,"A device hidden near the throat that alters the user’s voice to mimic others or create entirely new vocal patterns, useful for impersonation or deception.",1,200,3
+Espionage,Bug Detector,Scansafe,"A handheld scanner that detects and neutralizes hidden surveillance devices within half a meter of the device, including cameras, microphones, and tracking beacons.",2,300,2
+Espionage,Sound Bug,Echoprobe,A tiny device that sticks to surfaces and will record and broadcast audio in its surroundings to connected devices. Has a broadcasting range of 250m.,0,75,2
+Espionage,Camera Bug,Lensworm,"A small device that can easily be stuck in corners, plants or similar to record video in a fixed angle, broadcasting its signal to connected devices. Has a broadcasting range of 50m.",1,120,2
+Espionage,Memory Scrambler,Mindshift Disruptor,"A neural device that temporarily erases short-term memories, useful for covering tracks or avoiding interrogation.",2,1100,5
+Espionage,Key Copier,Codeclone,Can copy physical and card-based keys swiftly.,2,300,3
+Espionage,Micro-Tracker,Nanotrack,"A tiny, nearly undetectable transmitter that can be planted on a target to track their movements or relay information. Has a broadcasting range of 10km.",0,50,1
+Espionage,White-Noise Generator,Echoshield,"A portable device that emits white noise to mask conversations, preventing eavesdropping and protecting against audio surveillance.",1,100,2
+Espionage,Frequency Jammer,Nullzone,This device emits a jamming signal that blocks all communications and wireless signals within a 100-meter radius for 5 minutes. After use it requires recharging.,2,400,4
+Espionage,Spytool,Spectrascope,"A compact device that combines high-definition zoom with directional audio capture, allowing you to spy on distant targets and eavesdrop on conversations with precision.",2,400,2
+Espionage,Torture Tools,Dr. Evil's Toybox,"An assortment of various tools to torture a subject without killing them (unless you overdo their use). Provides a +3 pool bonus to retrieve information from a given subject, though torture will often require a downtime activity.",3,150,4
+Crafting,3D Printer,PrintForce X1,"A portable fabricator that can create physical objects from digital blueprints using various materials. Ideal for crafting custom tools or parts. The material cost is equal to 5% of the aspired item, and the process takes a few minutes. 3D printed mechanical / electrical items (like weapons) break as soon as a botch or two complications were rolled (regardless if these were triggered or not). Assembling an item from the printed parts requires a few minutes and a Tech check - the difficulty is equal to the rarity of the item - 2 (to a Minimum of 1). 3D-printed weapons or armor are always considered ""No-Name"".",4,300,2
+Crafting,Component Analyzer,Partdetect,"A handheld device that scans items to identify their components, making it easier to disassemble or reverse-engineer technology. Requires a Sensors check to use.",3,200,2
+Crafting,Cybernetic Toolkit,Biomech Set,"A specialized set of tools for installing, repairing, or upgrading cybernetic implants and prosthetics.",4,400,3
+Crafting,Scrap Converter,Recycle Pro,"A device that breaks down junk and scrap into usable materials, reducing waste and providing resources for repairs. You gain 1/4th of the item's value in components - convert the value into Spare Tech or Spare Ship parts.",5,500,3
+Crafting,Multi-Tool,Flexitool 21-in-1,"A versatile tool kit that can transform into different configurations such as a wrench, screwdriver, or laser cutter. Essential for repairs and tinkering.",3,300,1
+Crafting,Chemistry Kit,Labpack Synthesis,A mini lab consisting of various devices to synthesize components using a Science check.,5,450,3
+Crafting,Spare Ship Parts,Ship-Complement 101,"Allows one repair attempt on a critically damaged ship part, it's armor or hull. Is used up with the attempt.",4,500,2
+Crafting,Spare Tech Parts,Azerra Fixermould,"Allows one repair attempt on a damaged firearm, drone or other piece of technology. Is used up with the attempt.",2,50,1
+Crafting,Armor Repair Kit,Triton Sealgel,"Allows for a Tech d0 check, requiring one hour of time. Each success restores 2 points of durability of the damaged armor. Then the Fixgel is used up.",1,25,1
+Everyday,License,A38-License,"Provides a digital, legal permit to possess one specific weapon or cyberware. This is only relevant for items that fall under military regulations and that can be used offensively.",0,50,3
+Everyday,Burner Fake ID,Jane / John Doe Card,A fake identification that can be used for most services and payments and will pass cursory checks. Seeing through the fake ID requires an Investigation d2 check.,0,200,3
+Everyday,Sophisticated Fake ID,U.N. Registry Key,A fake identification that can be used for all services and payments and will pass most checks. Seeing through the fake ID requires an Investigation d4 check.,0,500,5
+Everyday,Holo-Communicator,Echolink Holocomm,"A wrist-mounted or handheld device that allows for real-time holographic communication across vast distances.
+
+Device Integrity: 2
+Firewall: 6
+IC Level: 3
+Signal Range: 5",1,60,0
+Everyday,Universal Translator,Lingua-Master 2200,"A device that instantly translates spoken or written language, allowing communication with any species or dialect. Due to the delay in communication and lack of nuance, you suffer +1 difficulty on all social checks.",1,180,0
+Everyday,Credit Chip,Credivault,A digital currency storage device that allows the user to make transactions and store funds securely.,0,10,0
+Everyday,VR Headset,Immersi Gear,"A device that immerses the user in a virtual environment, useful for entertainment, training, communication or direct drone control. When controlling a drone directly, the drone rigger uses their own skills in Gunnery (shooting), Pilot (melee, stealth and movement), Sensors (perception and data interpretation) and Tech (instead of Survival rolls).",2,350,1
+Everyday,VR Training Holotape,Brilliant,"Such a holotape contains a VR training program to learn a specific talent, regardless of the career it is attached to. You need to spend a downtime to study it, as well as a talent point. This can only be done once for every five full character levels.",1,500,4
+Everyday,AR Glasses,Overlit,"Can display certain virtual overlays, e.g. to make digital ads in front of stores visible, or to read messages on the fly, keeping the hands free.",1,150,0
+Hacking,Repeater,Callisto Extender,This device acts as a node with its own Signal Range of 10 squares. It can be slaved a master device as usual. The direct communication range between this device and its master device is 10km.,1,60,0
+Hacking,Cyberdeck Tier-1,PhantomLink,"Device Integrity: 5
+Firewall: 9
+IC Level: 3
+Signal Range: 20
+
+If others use the ""Locate"" action against you, they need to spend 3 AT instead.",1,200,2
+Hacking,Cyberdeck Tier-2,Quantum Splicer,"Device Integrity: 5
+Firewall: 6
+IC Level: 3
+Signal Range: 50
+
+Treat enemy firewalls as if they are 2 points lower.",1,350,2
+Hacking,Cyberdeck Tier-3,SpecterNode,"Device Integrity: 6
+Firewall: 8
+IC Level: 4
+Signal Range: 25
+
+AT generated with this cyberdeck do not decay over time.",1,700,3
+Hacking,Cyberdeck Tier-4,Overlord Mk-IV,"Device Integrity: 8
+Firewall: 7
+IC Level: 4
+Signal Range: 25
+
+The ""Hijack"" option only costs 2 instead of 3 AT.",2,1200,4
+Hacking,Cyberdeck Tier-5,Nexus X-9,"Device Integrity: 10
+Firewall: 8
+IC Level: 5
+Signal Range: 15
+
+Gain +1 pool bonus when hacking.",2,2500,5
+Hacking,Cyberdeck Upgrade: Integrity,Sentinel Core,"Grants your cyberdeck +2 integrity.
+
+Increase the cost of this upgrade by +250 Credits for each Upgrade that has already been installed. Each type may only be installed once.",0,150,4
+Hacking,Cyberdeck Upgrade: Firewall,Aegis Defender,"Grants your cyberdeck +2 firewall.
+
+Increase the cost of this upgrade by +250 Credits for each Upgrade that has already been installed. Each type may only be installed once.",0,150,4
+Hacking,Cyberdeck Upgrade: IC,Nemesis Protocol,"Grants your cyberdeck +1 IC Level.
+
+Increase the cost of this upgrade by +250 Credits for each Upgrade that has already been installed. Each type may only be installed once.",0,200,5
+Hacking,Cyberdeck Upgrade: Signal Range,BitRepeater,"Doubles the signal range of your cyberdeck.
+
+Increase the cost of this upgrade by +250 Credits for each Upgrade that has already been installed. Each type may only be installed once.",0,150,4
+Hacking,Netrunner Suite: Control,Hijack Dominus,"Enemy hackers need to spend twice the amount of AT on the Cancel option to remove any Hijack option you have ongoing.
+
+Installing a Netrunner Suite reduces your device's integrity by 1.",0,200,4
+Hacking,Netrunner Suite: BioDeath,Neural Reaper,"Whenever you use an AT on a target device, you may decide to cause 4 Biofeedback damage (ignoring armor) against any neurally linked user for each AT spent.
+
+Installing a Netrunner Suite reduces your device's integrity by 1.",0,250,5
+Hacking,Netrunner Suite: Closure,ZeroDay Purge,"When you use the Cancel option to remove AT from a target system, you remove 2 AT per usage of the option instead of just 1.
+
+Installing a Netrunner Suite reduces your device's integrity by 1.",0,200,4
+Hacking,Netrunner Suite: Corrupt,HexCorruptor,"Whenever you use an AT on a target device, you may decide to cause 1 Data Corruption for each AT spent. You can decide to spend your AT directly on disrupting the device's integrity, in which case you cause 3 Data Corruption per AT spent.
+
+Installing a Netrunner Suite reduces your device's integrity by 1.",0,200,4
+Hacking,Netrunner Suite: Mislead,Phantomtrail,"You can spend 2 AT on a target device to cause it to get a falsified location when it uses the Locate option against you. The locating hacker can attempt a Computers d4 check to notice the false lead.
+
+Installing a Netrunner Suite reduces your device's integrity by 1.",0,250,5

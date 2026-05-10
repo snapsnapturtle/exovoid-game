@@ -8,10 +8,12 @@ interface CharacterHeaderProps {
   canEdit: boolean
   showModeToggle: boolean
   isEditMode: boolean
+  deleting: boolean
   onNameChange: (name: string) => void
   onCareerChange: (career: string) => void
   onExperienceChange: (value: number) => void
   onModeToggle: () => void
+  onDelete: () => void
 }
 
 export function CharacterHeader({
@@ -22,10 +24,12 @@ export function CharacterHeader({
   canEdit,
   showModeToggle,
   isEditMode,
+  deleting,
   onNameChange,
   onCareerChange,
   onExperienceChange,
   onModeToggle,
+  onDelete,
 }: CharacterHeaderProps) {
   const currentThreshold = XP_THRESHOLDS[level - 1] ?? 0
   const nextThreshold = XP_THRESHOLDS[level] ?? currentThreshold
@@ -98,6 +102,15 @@ export function CharacterHeader({
         </div>
       </div>
       <div className="flex items-center gap-3 text-sm">
+        {showModeToggle && isEditMode && (
+          <button
+            onClick={onDelete}
+            disabled={deleting}
+            className="rounded-lg border border-danger-500/60 bg-danger-500/10 px-3 py-1.5 text-sm text-danger-400 transition hover:bg-danger-500/20 disabled:opacity-50"
+          >
+            {deleting ? 'Deleting…' : 'Delete'}
+          </button>
+        )}
         {showModeToggle && (
           <button
             onClick={onModeToggle}

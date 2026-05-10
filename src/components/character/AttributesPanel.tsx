@@ -1,7 +1,6 @@
 import type { CharacterAttributes } from '~/lib/types/database'
 import {
   ATTRIBUTE_DEFINITIONS,
-  remainingAttributePoints,
   MAX_ATTRIBUTE_LEVEL,
 } from '~/lib/game-logic/attributes'
 import type { AttributeId } from '~/lib/game-logic/attributes'
@@ -12,13 +11,17 @@ interface AttributesPanelProps {
   onAttributeChange: (attrId: AttributeId, value: number) => void
 }
 
+/**
+ * Edit-form attribute panel for a fully-created character. Only the global
+ * hard cap (`MAX_ATTRIBUTE_LEVEL`) applies here — the creation-time
+ * 28-point budget and the 6/4 caps are enforced by the creation wizard,
+ * not by this view.
+ */
 export function AttributesPanel({
   attributes,
   canEdit,
   onAttributeChange,
 }: AttributesPanelProps) {
-  const remaining = remainingAttributePoints(attributes)
-
   return (
     <div className="rounded-xl border border-void-600 bg-void-800 p-3">
       <div className="grid grid-cols-7 gap-2">
@@ -48,7 +51,7 @@ export function AttributesPanel({
                   </button>
                   <button
                     onClick={() => onAttributeChange(attr.id, value + 1)}
-                    disabled={value >= MAX_ATTRIBUTE_LEVEL || remaining <= 0}
+                    disabled={value >= MAX_ATTRIBUTE_LEVEL}
                     aria-label={`Increase ${attr.name}`}
                     className="flex h-5 w-5 items-center justify-center rounded bg-void-600 text-xs text-gray-300 transition hover:bg-void-500 disabled:opacity-30"
                   >
@@ -60,21 +63,6 @@ export function AttributesPanel({
           )
         })}
       </div>
-      {canEdit && (
-        <div className="mt-2 text-center text-xs">
-          <span
-            className={
-              remaining === 0
-                ? 'text-success-400'
-                : remaining < 0
-                  ? 'text-danger-400'
-                  : 'text-warning-400'
-            }
-          >
-            {remaining} attribute points remaining
-          </span>
-        </div>
-      )}
     </div>
   )
 }

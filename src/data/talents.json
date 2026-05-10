@@ -1,0 +1,690 @@
+[
+  {
+    "name": "Air Of Authority",
+    "description": "Once per round, at any time, you may lose 2 AP to provide an ally with 3 AP."
+  },
+  {
+    "name": "Alertness",
+    "description": "Doubles the trigger cost of a Riposte against you during a Parry action."
+  },
+  {
+    "name": "Anatomical Insight",
+    "description": "You do not suffer penalties when treating unfamiliar species."
+  },
+  {
+    "name": "Anticipation",
+    "description": "Once per session, you may declare that your character had prepared for the current situation, and may have spent up to one hour for said preparation."
+  },
+  {
+    "name": "Archer",
+    "description": "You are trained in using bows more proficiently. The Injuring quality increases by one level, and you need one less AP to reload and attack."
+  },
+  {
+    "name": "Assassin",
+    "description": "If you attack an unaware target from out of stealth, you can increase the \"Lethal\" quality of your weapon by +6. If it doesn't have it, it gains Lethal (6)."
+  },
+  {
+    "name": "Astrogation",
+    "description": "When using FTL drives and making a Science check, you may spend one Trigger each to increase the range of the jump by +50%. If you plan to perform several chained jumps, you only make a single roll and apply the bonus to all jumps."
+  },
+  {
+    "name": "Big Boom",
+    "description": "Increase the Area quality of a heavy weapons and grenades by 50% by spending 2 Triggers. Not stackable."
+  },
+  {
+    "name": "Biofeedback Shock",
+    "description": "You can spend 3 Access Tokens against implanted network devices to immediately cause 12 damage (ignoring soak and armor) against the user."
+  },
+  {
+    "name": "Blackmail",
+    "description": "Once per session, you may produce blackmail about one NPC and use it against them to coerce them to do something for you."
+  },
+  {
+    "name": "Blend In",
+    "description": "If you are in a public space among bystanders or crowds, others suffer a -5 pool penalty to notice you."
+  },
+  {
+    "name": "Bountyhunter's Guild",
+    "description": "Once per adventure, you may pull a target from the list of wanted individuals. You obtain a target that is close to you, and that yields 1d6 Assets upon execution. You may cooperate on the execution, and any accomplices gain 1 Asset in addition."
+  },
+  {
+    "name": "Brace For Impact",
+    "description": "You unlock a new action for ship combat: You can spend 4 AP to brace the systems of your ship for impact. Perform a Tech d3 roll. If you succeed, reduce the pool of all malfunction rolls for this and the next round by 3."
+  },
+  {
+    "name": "Breath In, Exhale, Fire",
+    "description": "If you can see your target, you can perform this action by spending 3 AP to gain a free success, trigger or complication on your next shot against them.\nIf you perform any other action in the meantime, the benefit is lost."
+  },
+  {
+    "name": "Call Target",
+    "description": "You may spend 4 AP and perform a Command d2 check. If you succeed, all attacks against your called target gain a free Trigger for this and the next round."
+  },
+  {
+    "name": "Cash Flow",
+    "description": "After each adventure, you obtain 2d6 * 100 Credits from royalties or dividents."
+  },
+  {
+    "name": "Charge",
+    "description": "You can perform a melee attack and increase the AP costs by +2 to first move a number of squares equal to your speed. If you moved at least 5 squares to reach your target, you gain 2 free triggers on the attack."
+  },
+  {
+    "name": "Chart Comprehension",
+    "description": "Once per adventure, you may perform an Investigation or Sensors d3 check. On a success, you become aware of a rare point of interest that may hold secrets or riches."
+  },
+  {
+    "name": "Climber",
+    "description": "You reduce the difficulty to climb by 2 and halve the time it takes to climb. Additionally, reduce the distance class of any fall by 2."
+  },
+  {
+    "name": "Combat Clarity",
+    "description": "Once per encounter, you may immediately gain 2 AP."
+  },
+  {
+    "name": "Combat Docking",
+    "description": "Halve all pool penalties of the Dock action, and your crew gains +2 pool on their first attack upon boarding."
+  },
+  {
+    "name": "Concealed Approach",
+    "description": "Enemies suffer -4 pool to discover your vehicle when you have means to hide it (e.g. a space ship inside a gas giant, or a car in the woods)."
+  },
+  {
+    "name": "Concealment",
+    "description": "When attempting to hide in a stationary position, or when hiding objects, you gain gain +3 pool. If the thing still gets discovered against your will, you re-gain one edge point."
+  },
+  {
+    "name": "Connections",
+    "description": "Once per session, you are guaranteed to find a seller / buyer for an item that you want to buy or sell. Only possible when there is reasonable civilization nearby."
+  },
+  {
+    "name": "Cover Ducking",
+    "description": "Once per round, if you benefit from cover, you may attempt to dodge that attack without AP cost."
+  },
+  {
+    "name": "Custom Model",
+    "description": "You may apply a unique modification to one of your drones that you won't have to pay for. Talk to the GM to come up with ideas. If the drone is lost, you may reapply that same modification to another drone."
+  },
+  {
+    "name": "Cyberadaption Training",
+    "description": "You gain +4 Cyberimmunity."
+  },
+  {
+    "name": "Cybernetic Maintenance",
+    "description": "Reduce the difficulty of tech checks to repair cyberware by 1."
+  },
+  {
+    "name": "Cybernetic Overload",
+    "description": "By spending an edge point you may double the effectiveness of a piece of cyberware in your body for the remainder of the encounter. If used outside of an encounter, the overload lasts for 5 Minutes. When the effect ends, roll once on your cyberware malfunction table."
+  },
+  {
+    "name": "Cybersecurity Specialist",
+    "description": "You can attempt to hack an enemy system with -2 Firewall and IC Level. On that roll, you can spend resulting Access Tokens only on the the \"Cancel\" hacking option."
+  },
+  {
+    "name": "Danger Sense",
+    "description": "You convert three dice from your vigilance rolls into expertise dice when you need to perceive danger or threats."
+  },
+  {
+    "name": "Defensive Posture",
+    "description": "If you attempted a parry or dodge but still get hit, you gain +2 soak."
+  },
+  {
+    "name": "Demand Obedience",
+    "description": "You may perform a Command d3 check against a neutral NPC or bystander. If you succeed, that NPC will perform one helpful action, plus another action for every surplus success. In combat, you need to spend 6 AP and have a range of 10."
+  },
+  {
+    "name": "Diplomatic Immunity",
+    "description": "Once per session, you can make your diplomatic immunity known. Due to the resulting hesitation of enemies, they require +1 success to hit you, and you reduce all injury rolls by 3 dice (to a Minimum of 0)."
+  },
+  {
+    "name": "Directional Explosions",
+    "description": "When using a heavy weapon or grenade, after determining the affected Area of a weapon with that quality, you can remove 2 affected squares and instead affect 2 other squares, so long as they are connected to the remaining Area."
+  },
+  {
+    "name": "Disposable Drone Army",
+    "description": "Declare a drone with a base value of 3000 Credits or less. After each adventure, if that drone got destroyed, you get a free repair or even replacement, including any mounted weapons and upgrades."
+  },
+  {
+    "name": "Drone Fixer",
+    "description": "Reduce the difficulty to repair your drones by 1 and halve the resources required."
+  },
+  {
+    "name": "Drug Expert",
+    "description": "If you administer drugs, you may attempt a Medicine d2 check. If you succeed, the target may ignore any draw backs or risks of addiction."
+  },
+  {
+    "name": "Drug Manufacturing",
+    "description": "As a downtime activity, if you have access to a lab, you may perform a Science d0 check. For each success you may create one drug of your choice (e.g. Stim Pack, Pain Meds. etc). You have to pay half the price of the item in raw materials."
+  },
+  {
+    "name": "Dual Wield",
+    "description": "You can perform an attack with two one-handed weapons (or fists) at once. Pay the full AP costs of one weapon, and half the AP costs (round down) of the other. You make two separate attacks."
+  },
+  {
+    "name": "Effective Demolition",
+    "description": "When using heavy weapons or grenades, you gain one free trigger on each roll to attack."
+  },
+  {
+    "name": "Effective Navigation",
+    "description": "When performing the Maneuver action, you may accept a -1 pool penalty to then gain either +1 speed or +1 maneuverability."
+  },
+  {
+    "name": "Efficient Subroutines",
+    "description": "You can spend the first 2 Triggers of any hacking attempt to gain an additional Access Token."
+  },
+  {
+    "name": "Efficient Treatment",
+    "description": "When performing First Aid, you may count every Trigger as an additional success."
+  },
+  {
+    "name": "Embracing Chaos",
+    "description": "You may perform a new reaction during combat: If you get affected by a weapon with the \"Area\" quality, you may spend 2 AP to halve the damage before applying it to your armor and health."
+  },
+  {
+    "name": "Emergency Evasion",
+    "description": "Once per encounter, you can perform the Evade action without having to spend Action Points, and add +5 pool to that attempt."
+  },
+  {
+    "name": "Evasive",
+    "description": "You remove the default -3 pool penalty for your dodge & parry checks, and you can perform one dodge or parry per round for only 1 AP cost instead of 2."
+  },
+  {
+    "name": "Evasive Positioning",
+    "description": "When you perform the Evade ship action, you gain +1 Soak against that attack for every Trigger rolled (you can spend them on other things)."
+  },
+  {
+    "name": "Experimental Upgrade",
+    "description": "You may apply a unique upgrade to one of your ship's modules. If the module is ever destroyed or lost, you may create a different, new one as a downtime activity."
+  },
+  {
+    "name": "Expert Jury-Rigger",
+    "description": "You reduce the difficulty of the Jury-Rig action, as well as the Repair Ship downtime activity by 1."
+  },
+  {
+    "name": "Exploit Weakspot",
+    "description": "You may give yourself a -2 pool penalty before your melee attack, but the attack gains Penetrating (+3) and Murderous. The latter applies even if the target is aware of the attack."
+  },
+  {
+    "name": "Far Shot",
+    "description": "Increase the upper ranges (optimal and maximum) of all firearms you use by 30%. When shooting within max range, you suffer -1 pool penalty instead of +1 difficulty."
+  },
+  {
+    "name": "Fasthack",
+    "description": "When you perform Probed Hacking, you halve the time required."
+  },
+  {
+    "name": "Field Doctor",
+    "description": "Medicine checks to provide First Aid only require 5 instead of 8 AP."
+  },
+  {
+    "name": "Fighter Piloting",
+    "description": "When performing the Maneuver action, you may spend 2 Triggers. If you do, you reduce the AP cost of your next vehicle / space combat action by the AP cost of your maneuver action."
+  },
+  {
+    "name": "First Impression",
+    "description": "If you meet an NPC for the first time, you may attempt an Empathy d3 check.\nIf you succeed, the NPC will meet you with a friendlier demeanor (which may benefit further social checks)."
+  },
+  {
+    "name": "Flight Tracking",
+    "description": "When using the Calculate Flight Path ship action, you may ignore the first 3 vessels before you increase the difficulty of the check."
+  },
+  {
+    "name": "Flurry",
+    "description": "You can halve the AP costs of your melee attack (round up), but need to accept a -2 pool penalty."
+  },
+  {
+    "name": "Galaxy-Wide Fans",
+    "description": "Once per session, you may declare an NPC to be a fan of your art. They will do their best to help or comfort you."
+  },
+  {
+    "name": "Gamer Mindset",
+    "description": "When controlling a drone through a VR Headset, reduce the AP cost of all actions by 1 (to a minimum of 2)."
+  },
+  {
+    "name": "Grand Theft Ship",
+    "description": "You become a member of an esteemed underworld ring of pirates. You can bring them stolen ships to gain 20% of that ship's total asset value, no questions asked."
+  },
+  {
+    "name": "Grip On Life",
+    "description": "Triple the duration of the \"Dying\" condition when you suffer from it. Additionally, you can ignore the \"Unconscious\" condition, but suffer +1 difficulty on all actions."
+  },
+  {
+    "name": "Gun Nut",
+    "description": "The difficulty to modify or repair firearms is reduced by 1.\nAdditionally, you only need half the usual AP costs to fix minor issues (like jamming) during an encounter."
+  },
+  {
+    "name": "Haggler",
+    "description": "Instead of rolling to negotiate, you may reduce the asset / credits cost of all things you buy by a flat 20%."
+  },
+  {
+    "name": "Heavy Blow",
+    "description": "You may double the AP costs of your melee attack, but if successfull, you gain 3 free triggers."
+  },
+  {
+    "name": "Helping Hand",
+    "description": "Whenever you support another character in a task, you may use your expertise in Command instead of using the involved skill. Additionally, you roll one additional die when supporting."
+  },
+  {
+    "name": "Impenetrable Shell",
+    "description": "The weapon qualities Penetrating and Shredding are halved when used against you."
+  },
+  {
+    "name": "Inheritance",
+    "description": "You immediately obtain 20 Assets."
+  },
+  {
+    "name": "Intimidation",
+    "description": "You may attempt a Command d3 check by spending 4 AP against a target in range 10. If you succeed, the target immediately loses 4 AP."
+  },
+  {
+    "name": "Iron Skin",
+    "description": "Gain +1 soak and +4 maximum health."
+  },
+  {
+    "name": "Iron Wall",
+    "description": "After your second parry during the same round, further parry actions cost 1 less AP."
+  },
+  {
+    "name": "Irreproducible Prototype",
+    "description": "You obtain one weapon, gagdet, tool, armor or drone that you personally made, but are unable to mass-produce. If your prototype is ever destroyed, you may come up with a completely new prototype by spending a downtime activity."
+  },
+  {
+    "name": "Jack Of All Trades",
+    "description": "After rolling, you may spend an Edge point to add a Complication to any roll. Additionally, increase your maximum edge points by +1."
+  },
+  {
+    "name": "Jerryrigging",
+    "description": "You can spend an Edge point to improvise a temporary tool, item or other aid. It provides someone with a +1 pool bonus for a given skill, or can substitute any low-tech item worth 200 credits or less. The item becomes unusable after one scene."
+  },
+  {
+    "name": "Juiced Up",
+    "description": "When performing First Aid, you can spend one Trigger to provide the target with +1 Soak and +2 pool bonus to all physical checks for this and the next round."
+  },
+  {
+    "name": "Killer Instincts",
+    "description": "You gain +1 Heft for your melee attacks."
+  },
+  {
+    "name": "Lethal Attacks",
+    "description": "If you cause an injury roll, the target adds three dice to that roll."
+  },
+  {
+    "name": "Linguist",
+    "description": "Immediately determine two additional languages which you now speak fluently."
+  },
+  {
+    "name": "Linked Control",
+    "description": "You can actively control two drones at once. Whenever you perform an action, you have to perform the same action with the other drone as well (or skip it on the 2nd drone). You only spend Action Points once - if the Action Point cost would differ, you spend the higher cost between the two."
+  },
+  {
+    "name": "Living Shadow",
+    "description": "When you are surrounded by darkness, you gain +1 defense and reduce the difficulty of infiltration and skullduggery tests by 1."
+  },
+  {
+    "name": "Lockpicker",
+    "description": "You reduce the difficulty to pick mechanical and technological locks by 1."
+  },
+  {
+    "name": "Lurking Death",
+    "description": "If you incapacitate or kill a target from out of stealth, you may make an Infiltration d3 roll. On a success, you remain stealthed. You may also spend a trigger to immediately hide the body."
+  },
+  {
+    "name": "Malfunction Resilience",
+    "description": "Once per session, you may ignore all Cyber Malfunction symbols of a given injury roll."
+  },
+  {
+    "name": "Martial Artist",
+    "description": "Treat your unarmed attacks like a 2-handed weapon (concerning Heft) and add the Murderous trigger option. Additionally, you can parry real weapons even while being unarmed."
+  },
+  {
+    "name": "Master Detective",
+    "description": "Once per session, you may produce a clue for a crime scene (or similar) that will help you progress."
+  },
+  {
+    "name": "Master Of Improvisation",
+    "description": "If you spend an edge point on a Tech check, you gain +2 pool (even if you used the edge point to just get a re-roll)."
+  },
+  {
+    "name": "Merchant's Guild",
+    "description": "You treat the rarity of all items as if it was 2 lower, and you gain an additional 10% discount."
+  },
+  {
+    "name": "Mind Reader",
+    "description": "Once per session, you may attempt an Empathy d3 check and target an individual. On a success, you get to know the true emotional state and vague intent of that individual. You also get to anticipate their next action."
+  },
+  {
+    "name": "Minion Master",
+    "description": "Increase the AI values of your drones by +1 | +1."
+  },
+  {
+    "name": "Miracle Worker",
+    "description": "Once per week, instead of rolling your Medicine check, you may treat it as if you had rolled 5 successes."
+  },
+  {
+    "name": "Mirror",
+    "description": "You can perfectly imitate voices and mannerisms of others after you heard & saw them for a while, adding +5 pool on Infiltration tests when you impersonate them."
+  },
+  {
+    "name": "Mob Of Fans",
+    "description": "If you are in a public area, once per session, you may trigger a mob of fans to appear and help you. They will either cause a helpful distraction or even fight for you (within reason)."
+  },
+  {
+    "name": "Monitoring",
+    "description": "Whenever a device gains an access token on your system, the DM may make a secret Computers check for you. If you have at least 4 successes, you become aware of the attempt and the network address of the attacker."
+  },
+  {
+    "name": "Monkey Patch",
+    "description": "You unlock a new action for ship combat: You can spend 8 AP to perform a Tech d0 check. For each success, your ship regains 2 hull points, but reduces its maximum hull by 1 until it received major maintenance at a space port. You may also spend one Trigger each to restore one armor durability."
+  },
+  {
+    "name": "Motivational Speech",
+    "description": "Once per session, you can spend 30 minutes and make an Empathy d0 check. For each success, you may restore one Edge point among those who observe you - distribute as you like."
+  },
+  {
+    "name": "Multi-Rigger",
+    "description": "When attempting the Jury-Rig action, you may attempt to repair two systems at once, but increase the difficulty of both rolls by +1."
+  },
+  {
+    "name": "Multitasking Admiral",
+    "description": "Once per round, you can spend 1 AP to make a supporting skill check to aid any one allied crew member in their next task. Additionally, increase the multitasking capacity of your ship's AI by +1."
+  },
+  {
+    "name": "Notorious Liar",
+    "description": "Once per day you may declare a lie as being so bullet-proof that no test is necessary to make NPCs believe it."
+  },
+  {
+    "name": "Overload",
+    "description": "You can spend 4 Access Tokens on a target device to destroy it, making longer repairs necessary before it functions again."
+  },
+  {
+    "name": "Perfected Ship Care",
+    "description": "Declare one ship that you regularly spend time on. That ship reduces the accumulated pool modifier from suffered malfunctions by 4 (to a minimum of 0)."
+  },
+  {
+    "name": "Perimeter Scan",
+    "description": "You can spend an hour and make a Sensors d0 roll to scan an compound. For each sucess, you gain one Edge Point that can only be spent on the next scene within that compound. You can spend such Edge Points to produce facts about the compound, e.g. special exits or similar."
+  },
+  {
+    "name": "Permit Collection",
+    "description": "Nothing you carry on your ship can be marked as illegal, and you can demand docking rights on any official space port."
+  },
+  {
+    "name": "Personal Protection",
+    "description": "Once per adventure, you may demand up to two police officers or similar to accompany you for the duration of a scene. They are obligated to protect you with their life."
+  },
+  {
+    "name": "Phantom Scan",
+    "description": "You can use the Scan Interior ship action even if the target vessel has active shields and others have to perform a Sensors d4 check to even notice your scan."
+  },
+  {
+    "name": "Phishing Network",
+    "description": "When your system gets compromised, there is a 50% chance that the countering system locates a wrong device (of an innocent bystander)."
+  },
+  {
+    "name": "Point Blank",
+    "description": "You reduce the difficulty increase of your ranged attacks while being near melee fighters to +1 instead of +2. Additionally, deal +2 damage (with ranged attacks) against targets within range 2."
+  },
+  {
+    "name": "Point Defense",
+    "description": "If you use the \"Point Defense\" weapon quality of a space ship weapon, you reduce the difficulty to hit a missile or torpedo by 2."
+  },
+  {
+    "name": "Police Handler",
+    "description": "Whenever you need to deal with police or other officials, you gain +4 pool on any checks to get away without problems."
+  },
+  {
+    "name": "Precision Trauma",
+    "description": "When attacking biological entities, you may spend one Trigger each to add +1 injury die."
+  },
+  {
+    "name": "Pull Together",
+    "description": "Once per day, you can declare any one wound you are suffering from and ignore its effects for the remainder of that day (so long as it is technically possible - you cannot ignore that you lost an arm)."
+  },
+  {
+    "name": "Quickfingers",
+    "description": "Gain a +3 pool bonus to pickpocketing or sleight of hand checks, and halve the AP costs to reload pistols, revolvers and MPs (round up)."
+  },
+  {
+    "name": "Quick Recovery",
+    "description": "Treating or regenerating your injuries has -1 difficulty."
+  },
+  {
+    "name": "Quick Reload",
+    "description": "Reduce the AP costs to reload any firearms weapon by 1.\n\nFor firearms that load individual shells, you instead load 2 shells per action spent."
+  },
+  {
+    "name": "Quick Witted",
+    "description": "You only need to spend 1 AP to ready your weapon instead of 3, and your first attack of a given encounter gains +2 pool."
+  },
+  {
+    "name": "Rank and File",
+    "description": "You may draft 2 NPCs that will serve you as crew members. They have all attributes on level 4 and expertise 1 in all relevant skills. Choose 2 skills for each of them which they gain +2 expertise in. They can perform the \"Train Skill\" downtime activity a number of times based on your own level."
+  },
+  {
+    "name": "Reanimation",
+    "description": "If the target has been dead for less than 5 minutes, you may attempt a Medicine check with difficulty 5. On a success, the target is successfully reanimated, but will be uncapable to actively act for at least one hour."
+  },
+  {
+    "name": "Reboot Shield Matrix",
+    "description": "Once per encounter, you can spend 6 AP to perform a Tech d0 check. For each success, your ship regains 5 shield points."
+  },
+  {
+    "name": "Recoil Control",
+    "description": "When shooting in Burst or Full Auto mode, you require 40% less ammo (round up)."
+  },
+  {
+    "name": "Relentless Pursuit",
+    "description": "If you pursue a target that tries to escape, you can spend an edge point and then make a roll on Infiltration, Athletics or Acrobatics to create a shortcut, distraction or other helpful aid to make your pursuit a success."
+  },
+  {
+    "name": "Resourceful",
+    "description": "Increase your maximum edge points by +3."
+  },
+  {
+    "name": "Riposte",
+    "description": "When you perform the Parry action, you only require one Trigger to perform the counter attack, and you may spend surplus triggers (after the needed Trigger for the counter attack) as usual to activate talents or your weapon's trigger options."
+  },
+  {
+    "name": "Ripper",
+    "description": "If you attack an unaware target from out of stealth, you can spend 2 Triggers to immediately make them roll for injury as if they had 0 health. You also bypass their armor. You can spend one additional trigger each to add +3 injury dice."
+  },
+  {
+    "name": "Rush In",
+    "description": "When you perform a Maneuver action, all ranged attacks against you have +2 difficulty until the rest of the round."
+  },
+  {
+    "name": "Saboteur",
+    "description": "Gain a +3 pool bonus on checks to sabotage equipment or machinery. Sabotaged items malfunction in a specified way, and the malfunction isn't immediately obvious."
+  },
+  {
+    "name": "Salvager",
+    "description": "When repairing systems or equipment, you only need half the materials."
+  },
+  {
+    "name": "Sample Collector",
+    "description": "You gain access to a new downtime activity so long as you are on a planet or large asteroid: you may perform a Survival d0 check. For each success you collect a unique mineral or plant sample that you can sell for 75 Credits each."
+  },
+  {
+    "name": "Second Skin",
+    "description": "Ignore the speed penalty while wearing armor and increase the maximum durability of worn armor by +25%."
+  },
+  {
+    "name": "Secret Stash",
+    "description": "After each adventure, roll 1d6 and multiply the result by 100. Track the result and add it to a new total. At any point during a session you may claim knowledge about a secret stash nearby. It contains items but you have to spend Credits from the pool of this talent to pay for them."
+  },
+  {
+    "name": "Seducer",
+    "description": "Once per session, you may use seduction as a component of your Con Arts check - you must announce the use before the roll. If you do, you may re-roll the check once and keep the better result."
+  },
+  {
+    "name": "Self-Treatment",
+    "description": "You may ignore the penalty to perform First Aid or Surgery on yourself."
+  },
+  {
+    "name": "Space Port Owner",
+    "description": "You may spend 10 Assets to become a board member of a large space station. All services at that station provide you with a 50% discount, and you generate 3d6 x 100 Credits (or 1d6 Assets) in cash flow after each adventure through dividends."
+  },
+  {
+    "name": "Specialized Gunner",
+    "description": "Choose a specific type of ship weapon (e.g. laser, missile, railgun etc.) upon learning this talent. You always gain 1 free trigger when attacking with that weapon."
+  },
+  {
+    "name": "Speed Trigger",
+    "description": "Once per round, you can spend 2 Triggers on a firearms related attack (so long as you do not shoot in Burst or Full Auto) to immediately perform a free single shot against the same target - you have to roll the attack as usual and spend additional ammo."
+  },
+  {
+    "name": "Sprinter",
+    "description": "You passively gain +3 speed."
+  },
+  {
+    "name": "Spy",
+    "description": "When you hide listening bugs or espionage viruses, you gain +3 pool to hide them well."
+  },
+  {
+    "name": "Steady Aim",
+    "description": "If you used the \"Prepare\" action at least twice, you also add a free trigger to the attack.\n\nAdditionally, you can stack the bonus from \"Prepare\" up to +5."
+  },
+  {
+    "name": "Sterilization",
+    "description": "When you perform Surgery, you can spend one Trigger each to provide the target with +2 pool during its next rest, or an additional 10% health recovered."
+  },
+  {
+    "name": "Stock Broker",
+    "description": "As a downtime activity, you can obtain one asset by only spending 1500 Credits. When making one asset fluid, you obtain 1000 Credits instead. Additionally, you may perform 1d6 conversions per downtime instead of just one."
+  },
+  {
+    "name": "Stroke of Genius",
+    "description": "Once per session, you may request the GM to provide insight on a current scientific or technological problem."
+  },
+  {
+    "name": "Sub-System Targeting",
+    "description": "You may spend one Trigger on your gunnery checks. If the target ship suffers a malfunction, you may choose a malfunction within the rolled severity level."
+  },
+  {
+    "name": "Surgeon",
+    "description": "Reduce the difficulty of checks during surgery by 1. Alternatively you may halve the time."
+  },
+  {
+    "name": "Sweep",
+    "description": "When you perform a melee attack, you can spend 1 Trigger each to hit an additional target within range for half the damage - you do not apply other trigger options to those hits."
+  },
+  {
+    "name": "Synergetic Installation",
+    "description": "All cyberware you install costs 25% less occupation (round down)."
+  },
+  {
+    "name": "System Hardening",
+    "description": "As a new downtime activity, you may declare one device. You install custom subroutines, permanently granting that device +1 Firewall and +1 IC Level. Cannot be stacked multiple times on the same device."
+  },
+  {
+    "name": "System Redundancies",
+    "description": "Increase the maximum integrity your device can suffer before becoming compromised by 30%.\nAdditionally reduce the difficulty to restore your device by 1."
+  },
+  {
+    "name": "Tactical Advance",
+    "description": "Once per round, when you perform a reload or attack action with a firearm, your free movement becomes half your speed (round up) instead of just 1."
+  },
+  {
+    "name": "Tactical Commander",
+    "description": "You may distribute the generated triggers from \"Assist\" freely among team members, and you may convert your own triggers into successes on a 1:1 basis (instead of 2:1)."
+  },
+  {
+    "name": "Take What's Needed",
+    "description": "After looting an enemy or pickpocketing someone, you can spend Edge points to claim that they had specific items on them which you now possess. The value of the items is 100 Credits per Edge point spent. The GM can refuse this."
+  },
+  {
+    "name": "Third Wind",
+    "description": "You can use the \"Second Wind\" action up to twice per day, and halve its AP costs."
+  },
+  {
+    "name": "Thug Language",
+    "description": "If you become threatened or provoked by thugs, bandits or similar scum, you gain +4 pool for any attempts to avoid conflict."
+  },
+  {
+    "name": "Tinkerer",
+    "description": "You may declare one personal weapon or armor that gains +1 Mod Slot, and a unique modification that you invented. Due to the quirkiness of the modification, only you can make use of it."
+  },
+  {
+    "name": "Tough As Nails",
+    "description": "Ignore the first severity 1 or 2 wound of each day by simply discarding it."
+  },
+  {
+    "name": "Tracker",
+    "description": "When you attempt to track a person or creature, you gain a +3 Pool Modifier and you gain +2 Vigilance while tracking your target."
+  },
+  {
+    "name": "Training: Agility",
+    "description": "Gain +1 Agility. If you already have 8 Agility (not counting cybernetic enhancements), you may increase another attribute instead."
+  },
+  {
+    "name": "Training: Constitution",
+    "description": "Gain +1 Constitution. If you already have 8 Constitution (not counting cybernetic enhancements), you may increase another attribute instead."
+  },
+  {
+    "name": "Training: Coolness",
+    "description": "Gain +1 Coolness. If you already have 8 Coolness (not counting cybernetic enhancements), you may increase another attribute instead."
+  },
+  {
+    "name": "Training: Education",
+    "description": "Gain +1 Education. If you already have 8 Education (not counting cybernetic enhancements), you may increase another attribute instead."
+  },
+  {
+    "name": "Training: Intelligence",
+    "description": "Gain +1 Intelligence. If you already have 8 Intelligence (not counting cybernetic enhancements), you may increase another attribute instead."
+  },
+  {
+    "name": "Training: Personality",
+    "description": "Gain +1 Personality. If you already have 8 Personality (not counting cybernetic enhancements), you may increase another attribute instead."
+  },
+  {
+    "name": "Training: Strength",
+    "description": "Gain +1 Strength. If you already have 8 Strength (not counting cybernetic enhancements), you may increase another attribute instead."
+  },
+  {
+    "name": "Trigger Discipline",
+    "description": "If you successfully attack, you may convert up to 2 surplus successes into one trigger each instead."
+  },
+  {
+    "name": "Unkillable Beast",
+    "description": "Reduce the pool of all injury rolls by 4 dice, to a minimum of 1."
+  },
+  {
+    "name": "Unpredictable Aim",
+    "description": "When targets attempt to actively dodge your shots, they suffer a -2 pool penalty."
+  },
+  {
+    "name": "Vanish",
+    "description": "You can spend an edge point to make an infiltration roll against the best vigilance pool among your enemies. If you succeed, you cause a distraction and become practically undetectable for one round."
+  },
+  {
+    "name": "Vehicle Specialization",
+    "description": "Gain +2 pool when operating a type of vehicle that you need to declare upon obtaining this talent:\nGround Vehicles, Atmospheric Vehicle, Space Ships or Drones."
+  },
+  {
+    "name": "Weakspot Analysis",
+    "description": "When attacking mechanical entities and you make them roll for malfunction, they add +3 dice."
+  },
+  {
+    "name": "Weapon Mastery",
+    "description": "Choose a specific melee weapon upon learning this talent. You always gain 1 free trigger when attacking with that weapon."
+  },
+  {
+    "name": "White Lies",
+    "description": "Everyone who tries to uncover or see through your lies suffers a -3 pool penalty on any test relevant to the lie."
+  },
+  {
+    "name": "Will To Survive",
+    "description": "Halve the injury modifiers that you receive from injuries (add them all up, then halve, round up)."
+  },
+  {
+    "name": "Wonder Doctor",
+    "description": "You can perform Surgery and First Aid up to twice per patient per day / encounter."
+  },
+  {
+    "name": "Xeno Engineer",
+    "description": "You do not suffer penalties when you use or repair alien technology."
+  },
+  {
+    "name": "Zero-G Finesse",
+    "description": "You ignore penalties on physical actions resulting from Zero-G environments."
+  }
+]

@@ -1,0 +1,310 @@
+{
+  "origin": [
+    {
+      "id": 1,
+      "name": "Wasteland World",
+      "description": "You hail from a harsh, desolate planet where survival is a daily struggle. Resources are scarce, and the environment is unforgiving, forcing you to rely on your wits and resilience to endure. Whether you grew up scavenging ruins or defending your territory from raiders, your experiences have shaped you into a resourceful and hardened individual.",
+      "bonus": "Gain one Tier-0 talent from the Field Medic or Criminal careers."
+    },
+    {
+      "id": 2,
+      "name": "Industry World",
+      "description": "Born in the heart of a sprawling industrial planet, your life has been shaped by the relentless grind of factories and production lines. The air is thick with smog, and the landscape is dominated by towering machinery. You’ve grown up understanding the value of hard work and the cost of progress, often at the expense of the environment and the people around you.",
+      "bonus": "Gain one Tier-0 talent from the Engineer or Drone Rigger careers."
+    },
+    {
+      "id": 3,
+      "name": "High Society World",
+      "description": "Raised in the lap of luxury, you come from a world of wealth, privilege, and influence. High Society Worlds are centers of culture, politics, and power, where status means everything. Your upbringing has provided you with education, connections, and an understanding of the complex social hierarchies that govern the elite.",
+      "bonus": "Gain one Tier-0 talent from the Diplomat or Celebrity careers."
+    },
+    {
+      "id": 4,
+      "name": "Asteroid Society",
+      "description": "You come from a small, tight-knit community that inhabits an asteroid or a cluster of asteroids. Life in such a confined and isolated environment requires cooperation, ingenuity, and a strong sense of community. You’ve grown accustomed to the challenges of low-gravity living, resource management, and the ever-present threat of cosmic dangers.",
+      "bonus": "Gain one Tier-0 talent from the Pirate or Commander careers."
+    },
+    {
+      "id": 5,
+      "name": "Alien World",
+      "description": "You were born and raised on a world inhabited by alien species, either as a human among them or as one of their own. This unique upbringing has given you insights into cultures, technologies, and ways of life that are vastly different from the human norm. You may be fluent in alien languages, customs, or technologies, and you carry the influence of this diverse environment with you.",
+      "bonus": "Gain one Tier-0 talent from the Explorer or Agent careers."
+    },
+    {
+      "id": 6,
+      "name": "Old World",
+      "description": "You come from one of the first planets of mankind, such as Earth or Mars, where civilization has deep roots and a rich tapestry of history and culture. These worlds are marked by ancient architecture, a mix of old and new technologies, and a complex blend of diverse cultures that regularly clash in small-scale skirmishes. Growing up in an Old World environment, you’ve been immersed in tradition, learned to navigate intricate social structures, and experienced the enduring legacy of humanity’s first steps into the cosmos.",
+      "bonus": "Gain one Tier-0 talent from the Detective or Infantry careers."
+    },
+    {
+      "id": 7,
+      "name": "Underworld Hotspot",
+      "description": "You grew up in the shadows of society, where crime, smuggling, and black-market dealings are the norm. An Underworld Hotspot is a place where the law is weak, and the strong thrive on their wits and connections. You’ve learned to navigate this dangerous environment, becoming adept at survival, negotiation, and perhaps bending the rules to your advantage.",
+      "bonus": "Gain one Tier-0 talent from the Smuggler or Enforcer careers."
+    },
+    {
+      "id": 8,
+      "name": "AI World",
+      "description": "Your home is a planet where advanced robots and AI systems dominate daily life, managing everything from infrastructure to personal services. Though these machines lack true consciousness, they are deeply integrated into society. Growing up in an AI World, you’ve become accustomed to interacting with advanced robotics, and you may have a unique understanding of their capabilities and limitations.",
+      "bonus": "Gain one Tier-0 talent from the Scientist, Tactical Enhanced Forces or Hacker careers."
+    },
+    {
+      "id": 9,
+      "name": "Distant Colony",
+      "description": "Born in a remote outpost far from the core worlds, you’ve lived on the frontier of human expansion. Distant Colonies are often self-sufficient and isolated, requiring settlers to be adaptable and resilient. You’ve grown up in a community where everyone has a role to play, and the harsh conditions have forged a strong sense of independence and resourcefulness in you.",
+      "bonus": "Gain one Tier-0 talent from the Bounty Hunter or Trader careers."
+    },
+    {
+      "id": 10,
+      "name": "Travelling Spaceship",
+      "description": "Your origin lies in the vastness of space, aboard a traveling spaceship that serves as your home. Whether it’s a trade vessel, a research ship, or a nomadic fleet, you’ve spent your life on the move, adapting to the ever-changing starscapes. Life aboard a ship has made you versatile, quick to learn new skills, and accustomed to the confined, close-knit quarters of space travel.",
+      "bonus": "Gain one Tier-0 talent from the Space Marine or Navy careers."
+    }
+  ],
+  "childhood": [
+    {
+      "id": 1,
+      "name": "Orphaned",
+      "description": "You grew up without parents, whether due to tragedy, abandonment, or circumstances beyond your control. Raised in an orphanage, by distant relatives, or perhaps even fending for yourself, you’ve learned to be self-reliant and resourceful. The absence of a traditional family structure has shaped you into someone who values independence and the bonds you form with others, often seeking belonging in unconventional places.",
+      "bonus": "You gain +2 levels on Survival."
+    },
+    {
+      "id": 2,
+      "name": "Happy Family",
+      "description": "Your childhood was marked by stability, love, and support from a close-knit family. Whether you were an only child or one of many, your upbringing provided you with a strong foundation, nurturing your development and instilling in you a sense of confidence and security. This background has given you a positive outlook on life and a strong moral compass, making you well-adjusted and resilient in the face of adversity.",
+      "bonus": "You gain +1 level on Empathy and 5 Assets."
+    },
+    {
+      "id": 3,
+      "name": "Brought Up By Gang",
+      "description": "From a young age, you found yourself under the wing of a gang or criminal organization, where loyalty and survival were the guiding principles. The streets became your school, and you learned to navigate the harsh realities of life through cunning, strength, and street smarts. Your upbringing in this environment has made you tough, resourceful, and unafraid to bend the rules to get what you need.",
+      "bonus": "You gain +1 level on Skullduggery and Streetwise."
+    },
+    {
+      "id": 4,
+      "name": "Raised By AI",
+      "description": "Your caregivers were advanced AI systems, programmed to nurture and educate you in a world dominated by technology. While these machines provided for your physical needs and education, they lacked the warmth and empathy of human interaction. This upbringing has given you a unique perspective on technology and its capabilities, but it may also have left you with a somewhat detached or analytical view of human emotions and relationships.",
+      "bonus": "You gain +1 level on Computers and Tech."
+    },
+    {
+      "id": 5,
+      "name": "Raised By Aliens",
+      "description": "Whether as a human among them or as one of their own, your childhood was shaped by an alien culture vastly different from humanity’s. Immersed in their customs, languages, and ways of thinking, you’ve developed an understanding of life beyond human norms. This upbringing has made you adaptable and open-minded, with knowledge and insights that set you apart from others who have only known human society.",
+      "bonus": "You learn an alien language of your choice, and gain +3 pool when interacting with that race."
+    },
+    {
+      "id": 6,
+      "name": "Traumatic Childhood",
+      "description": "Your early years were marred by significant trauma, whether from violence, loss, or other deeply scarring experiences. These events have left an indelible mark on your psyche, shaping how you see the world and interact with others. You may have developed coping mechanisms to survive, such as heightened alertness or emotional detachment, and these experiences have made you stronger in some ways but vulnerable in others.",
+      "bonus": "You may regain one edge point at any point each session, but your sleep is often disurbed, resulting in a -2 pool penalty on nightly regeneration."
+    },
+    {
+      "id": 7,
+      "name": "Lab Child",
+      "description": "Your upbringing was not in a traditional home but in a laboratory, where you were the subject of scientific experiments or a product of genetic engineering. Your childhood was filled with tests, observations, and perhaps even modifications. This has given you a unique set of abilities or knowledge, but it may also have left you feeling like an outsider, disconnected from a normal childhood and the world at large.",
+      "bonus": "In the next step of character generation, you spend 3 less skill points, but you gain +4 Cyber Immunity or +2 maximum health."
+    },
+    {
+      "id": 8,
+      "name": "Mysterious Past",
+      "description": "For reasons unknown, your memories of childhood are fragmented or missing entirely. You might remember vague details, or perhaps nothing at all, leaving you with a sense of mystery about your origins. This blank slate has driven you to seek out the truth of your past, but it also means that you’ve had to forge your identity without the usual anchors of a remembered childhood. The uncertainty may haunt you, but it also gives you the freedom to define yourself anew.",
+      "bonus": "You already gain access to your 2nd and 3rd career, instead of unlocking them at the levels 5 and 10 (only your primary career provides you with starting skills and gear).\n\nOnce you reach level 10, you gain +2 skill points as you slowly remember parts of your past."
+    },
+    {
+      "id": 9,
+      "name": "Cult Escapee",
+      "description": "Your childhood was spent in a tightly controlled, isolated community that followed the teachings of a charismatic leader or dogmatic belief system. As you grew older, you began to question the teachings and eventually escaped. Your experience has given you insight into manipulation and control, and you may either carry scars from your past or feel a strong sense of purpose in exposing similar threats.",
+      "bonus": "You gain +1 levels on Command and Con Arts."
+    },
+    {
+      "id": 10,
+      "name": "Elite Child",
+      "description": "From a young age, you were selected for an elite educational program, perhaps because of your intellect, talents, or family connections. You were groomed to be the best in your field, with access to the finest resources and mentors. While this has made you highly skilled and knowledgeable, it may also have isolated you from your peers or burdened you with high expectations.",
+      "bonus": "You gain +1 levels on Politics and Science."
+    }
+  ],
+  "adolescence": [
+    {
+      "id": 1,
+      "name": "Higher School Education",
+      "description": "Education was seen as the key to success, and either you or your parents were determined to secure the best opportunities for your future. You devoted years to studying various disciplines, pushing yourself to excel academically. This rigorous pursuit of knowledge left you with a wealth of skills and a considerable debt to match. Your time in school may have opened doors, but it also shaped your outlook on the importance of education and the sacrifices required to achieve greatness.",
+      "bonus": "You gain +1 Education, but lose 5 Assets during character creation."
+    },
+    {
+      "id": 2,
+      "name": "Military Draft",
+      "description": "Whether driven by duty, necessity, or lack of alternatives, you found yourself enlisted in military service. The early years were spent on menial tasks and following orders, with little to show for it beyond the routine. However, the discipline, physical training, and occasional combat drills have left a lasting mark on you, forging a strong body and a set of skills that could mean the difference between life and death in the field. The camaraderie and challenges of military life have shaped your character in profound ways.",
+      "bonus": "You gain +2 levels on Firearms or Melee, and +1 maximum health."
+    },
+    {
+      "id": 3,
+      "name": "Gang Member",
+      "description": "At some point in your life, you became part of a gang, whether out of necessity, attraction to their strength, or a search for belonging. The gang became your family, and together you navigated the dangerous and often illegal activities that came with the territory. Whatever the reasons for joining, you learned to survive and thrive in a world where loyalty and toughness were everything. The bonds you formed with your gang are unbreakable, and the experiences have left you streetwise and resilient.",
+      "bonus": "You gain +1 Coolness, but lose 5 Assets during character creation."
+    },
+    {
+      "id": 4,
+      "name": "Personal Projects",
+      "description": "You spent your adolescence deeply engrossed in a personal passion project, whether it was building something, collecting rare items, or mastering a specific skill. Your dedication to this project saw you either working on it yourself or hustling to fund the necessary materials and expertise to bring your vision to life. This project has become a defining part of your identity, and the skills and knowledge you gained during this time continue to influence your life.",
+      "bonus": "You obtain one item, cyberware, drone, weapon or armor up to a value of 1000 Credits (or vehicle up to a value of 2 Assets) with one unique modification or upgrade - discuss with the GM to come up with rules for it.\n\nIf you lose the item later, you can spend two downtimes to re-create it."
+    },
+    {
+      "id": 5,
+      "name": "Honorary Work",
+      "description": "During your formative years, you dedicated yourself to honorary work, serving a reputable organization, a city, or perhaps a political campaign. Your efforts earned you a reputation as a reliable and trustworthy member of society, someone who contributes to the greater good. This experience not only broadened your perspective but also instilled a strong sense of duty and civic responsibility that continues to guide your actions.",
+      "bonus": "Your honorary deeds are logged in the books of the officials. If you get in trouble, you can use this to your benefit to gain a +3 pool modifier on attempts to mitigate your own consequences.\n\nAdditionally, you have one powerful contact from that time (like a politician, city leader or similar) who will help you out whenever possible."
+    },
+    {
+      "id": 6,
+      "name": "Discovering Worlds",
+      "description": "Fortune smiled on you when you secured a position as one of the youngest crew members aboard a ship. Whether it was a colony vessel, a merchant trader, or a military gunship, your time aboard allowed you to witness the vastness of the universe and the wonders of alien worlds. While your duties may have been modest, the experiences you gained and the sights you saw have left you with a deep sense of curiosity and a longing for exploration.",
+      "bonus": "You discovered and kept an alien artifact, but so far no one was able to tell you how it works or what it does."
+    },
+    {
+      "id": 7,
+      "name": "Drifter",
+      "description": "Your adolescence was marked by aimlessness, as you drifted from place to place without a clear purpose or direction. Living in the moment and embracing whatever life threw at you, you experienced a wide array of situations and met many different people. While you may not have had a set goal, the adventures and encounters along the way taught you valuable life lessons and skills. Though your path was uncertain, you emerged with a wealth of practical experience and a flexible mindset.",
+      "bonus": "In the next step of character creation, gain +3 skill points that you can freely distribute."
+    },
+    {
+      "id": 8,
+      "name": "Criminal Past",
+      "description": "What started as small, morally ambiguous jobs eventually escalated into a full-blown life of crime. The allure of quick rewards and the thrill of danger led you deeper into illegal activities, shifting your sense of right and wrong. Whether you pulled off daring heists or found yourself involved in darker deeds, your actions left a mark on the record books—and on your conscience. The risks may have been high, but so were the rewards, and you emerged from this past with the skills of a seasoned criminal.",
+      "bonus": "You did some terrible crimes for which some systems are still looking for you. However, your deeds yielded either 2000 Credits or 5 Assets."
+    },
+    {
+      "id": 9,
+      "name": "Addict",
+      "description": "Curiosity, peer pressure, or unfortunate circumstances led you down a dangerous path of drug addiction during your adolescence. Those years were spent in a haze, chasing the next high and doing whatever it took to sustain your habit. It was a dark time, but you eventually clawed your way out, emerging with a steely resolve and a deeper understanding of the struggles others face. The experience left you scarred, but also stronger and more determined than ever.",
+      "bonus": "You gain +1 Constitution.\n\nDrugs (like Stim Packs, Pain Killers etc.) don't provide any of the positive effects for you any more."
+    },
+    {
+      "id": 10,
+      "name": "Labor",
+      "description": "Your teenage years were spent performing hard labor under difficult conditions, working to make ends meet. The physical toll of the work strengthened your body, but exposure to harsh environments and hazardous materials left you dependent on immunity boosters to maintain your health. While the work was grueling, it also instilled a strong work ethic and an appreciation for the value of perseverance. You learned to endure and push through adversity, no matter the cost.",
+      "bonus": "You gain +1 Strength, but you need to take daily medicine worth 10 Credits per pill. If you do not take your medicine, you suffer -1 pool penalty on all checks."
+    }
+  ],
+  "lifeEvents": [
+    {
+      "id": 1,
+      "name": "Made Lifelong Friend",
+      "description": "You formed a deep and lasting bond with someone who has been there for you through thick and thin. Whether they’re a childhood friend, a fellow soldier, or a mentor, this person has played a significant role in shaping who you are today.",
+      "bonus": "Define the nature and profession of your friend. Once per adventure, if they are available, you may call upon their aid and they will do everything within reason to help you."
+    },
+    {
+      "id": 2,
+      "name": "Lost A Loved One",
+      "description": "The death of someone close to you, whether a family member, friend, or partner, left a deep scar on your heart. The grief may have driven you to seek justice, take on new responsibilities, or changed your outlook on life.",
+      "bonus": "From their death you obtained some belongings worth 2000 Credits or 5 Assets."
+    },
+    {
+      "id": 3,
+      "name": "Witnessed Cruel Crime",
+      "description": "You were an unwilling witness to a heinous crime, such as a murder, assault, or major theft. The event shook you to your core, possibly making you more vigilant, distrustful, or driven to ensure such a thing never happens again.",
+      "bonus": "Gain +1 Coolness."
+    },
+    {
+      "id": 4,
+      "name": "Betrayed By Ally",
+      "description": "Someone you trusted deeply turned on you, leaving you vulnerable or in danger. This betrayal has left you wary of others and may have sparked a desire for revenge or a drive to never be caught off guard again.",
+      "bonus": "Gain the Danger Sense talent."
+    },
+    {
+      "id": 5,
+      "name": "Sudden Windfall",
+      "description": "A sudden stroke of luck, such as an inheritance, lottery win, or valuable discovery, significantly changed your financial situation. This windfall provided opportunities, but also brought new challenges or responsibilities.",
+      "bonus": "Obtain 3000 Credits that you cannot spend during character creation, but that will be cash on hand when you begin the game."
+    },
+    {
+      "id": 6,
+      "name": "Saved A Life",
+      "description": "You were in the right place at the right time and managed to save someone’s life. This act of heroism might have earned you recognition, a loyal friend, or a newfound sense of purpose.",
+      "bonus": "Formulate an NPC with their rough nature, profession and influence. Once during your entire campaign, you can call for their help and they will go out of their way to do what is necessary, even taking massive risks to save your own life. You can also contact them occasionally to obtain information or other minor help."
+    },
+    {
+      "id": 7,
+      "name": "Suffered Devastating Injury",
+      "description": "A severe injury, either physical or psychological, left you changed forever. Whether it was an accident, an act of violence, or a disease, the event forced you to adapt, and it may have led to significant cybernetic enhancements or other coping mechanisms.",
+      "bonus": "You gain Smarteyes (Beta), a Cyber Arm (Beta), Cyber Legs (Alpha) or Cyber Lungs (Beta) for free."
+    },
+    {
+      "id": 8,
+      "name": "Learned A Dark Secret",
+      "description": "You uncovered a hidden truth that has profound implications, whether it involves a powerful organization, a loved one, or a critical event in history. This knowledge could be a source of leverage, danger, or a burden you carry alone.",
+      "bonus": "At any point during the campaign you may claim to know something about a secretive matter. From that point onwards, your character has continued knowledge about that matter (e.g. an alien race, an organization, a corporation etc.) providing you with advantages when dealing with that topic."
+    },
+    {
+      "id": 9,
+      "name": "Made Discovery Or Invention",
+      "description": "Either through sheer coincidence, a stroke of genius or long-term commitment, you were part of a huge discovery or invention. For some reason, that thing never reached the mass market and so you are left with one of the few remaining prototypes.",
+      "bonus": "Gain a unique piece of equipment - discuss the rules with the GM."
+    },
+    {
+      "id": 10,
+      "name": "Encountered Alien Entity",
+      "description": "You came into contact with an alien being, technology, or artifact that profoundly affected you. The encounter may have expanded your understanding of the universe, granted you unique knowledge, or left you with a deep sense of wonder or fear.",
+      "bonus": "You gain +2 skill levels on Xenology, and you possess a unique alien piece of technology (nothing groundbreaking: it could be a tool, a sidearm or similar)."
+    },
+    {
+      "id": 11,
+      "name": "Survived Catastrophe",
+      "description": "A natural disaster, shipwreck, or large-scale attack nearly claimed your life, but you managed to survive against all odds. This experience left you with a heightened sense of survival instinct and possibly a lingering fear of the forces that nearly ended you.",
+      "bonus": "You gain +2 levels on survival and you may ignore the \"Traumatized\" injury without spending edge points."
+    },
+    {
+      "id": 12,
+      "name": "Served Time In Prison",
+      "description": "Whether you were guilty or wrongly convicted, you spent time in prison. The experience hardened you, taught you new skills, or connected you with individuals in the criminal underworld. It also may have left you with a record that haunts your steps.",
+      "bonus": "Gain the Thug Language talent."
+    },
+    {
+      "id": 13,
+      "name": "Experienced Love And Loss",
+      "description": "You fell deeply in love, but circumstances, fate, or tragedy tore you apart. This intense emotional experience has left a lasting impact on you, whether it’s a longing for what was lost or a determination to never let such a thing happen again.",
+      "bonus": "Gain the Seducer talent."
+    },
+    {
+      "id": 14,
+      "name": "Achieved Major Goal",
+      "description": "After years of effort, you finally accomplished something significant—completing a challenging project, winning a major competition, or achieving a personal dream. This success gave you confidence and shaped your future ambitions.",
+      "bonus": "Gain +1 Personality or 5 Assets."
+    },
+    {
+      "id": 15,
+      "name": "Formed A Rivalry",
+      "description": "Over time, you’ve developed a rivalry with someone who challenges you, whether in your career, personal life, or another pursuit. This rivalry pushes you to be better, but it also keeps you constantly on guard, knowing they’re out there.",
+      "bonus": "Gain +2 levels in a skill of your choice, reflecting the nature of the rivalry. Your rival may appear at some point during the campaign, making your life harder."
+    },
+    {
+      "id": 16,
+      "name": "Rescued From Danger",
+      "description": "You found yourself in a perilous situation from which you couldn’t escape on your own, but someone came to your rescue. This event left you with a deep sense of gratitude or perhaps a lingering vulnerability, and you may feel indebted to your savior.",
+      "bonus": "Gain +1 level on empathy and +1 maximum edge points."
+    },
+    {
+      "id": 17,
+      "name": "Joined A Secret Organization",
+      "description": "You were recruited into a clandestine group with its own agenda, whether for good or ill. The organization provided you with resources, training, or information, but it also demanded loyalty and secrecy, tying you to their cause.",
+      "bonus": "Come up with a description about the nature of the organization. You either gain +3 levels in a suitable skill, or items worth 3000 Credits that reflect that group.\nThe organization may contact you from time to time, demanding you to perform smaller, secretive tasks - if you refuse, they may begin treating you like a traitor."
+    },
+    {
+      "id": 18,
+      "name": "Lost Everything",
+      "description": "Through a series of unfortunate events—such as a financial collapse, betrayal, or a failed venture—you lost everything you once had. This devastating loss forced you to start over, rebuilding your life from the ground up with a new perspective on what truly matters.",
+      "bonus": "You do not gain any of the starting items or assets of your primary career.\nInstead, you are granted a total of 2000 Credits to spend during character creation (instead of the 1000 Credits usually given to every character on top of their starting gear).\nAs a compensation, you gain +5 skill points to spend during the next step of character creation."
+    },
+    {
+      "id": 19,
+      "name": "Participated In A Historic Event",
+      "description": "You played a role in an event of great significance, such as a political revolution, a major battle, or a scientific breakthrough. Your involvement in this event has become a part of your identity, and it continues to influence your life.",
+      "bonus": "Gain the Galaxy-Wide Fans talent."
+    },
+    {
+      "id": 20,
+      "name": "Met A Mentor",
+      "description": "A wise and experienced individual took you under their wing, teaching you valuable skills and imparting crucial knowledge. This mentor profoundly shaped your development, and their influence can still be felt in your decisions and outlook.",
+      "bonus": "You start with one additional talent in your primary career."
+    }
+  ]
+}

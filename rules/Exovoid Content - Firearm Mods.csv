@@ -1,0 +1,54 @@
+modSlot,modName,modEffects,compatibleWith,cost,rarity
+Muzzle / Barrel,Muzzle Compensator,"Increases the ""Compensated"" quality by one level, or grants it at the first level if it wasn't present.",Projectile Firearms,150,1
+,Silencer,"Provides the weapon with the ""Silenced"" quality. If the weapon had the ""Loud"" quality, it loses it instead.",Any,200,2
+,Flash Hider,"Hides the flash of the weapon's muzzle, making it difficult to detect you at long ranges.",Projectile Firearms,100,2
+,Heavy-Duty Coupler,"Increases the base damage by 20%, but reduces magazine capacity by 30%.",Laser Firearms,120,3
+,Focus Lense,Increases the Penetrating quality by 20% (round up).,Laser Firearms,150,3
+,Heat Ventilation System,Allows to use the gun for more than 10 shots in vacuum.,Any,250,2
+,Extended Barrel,"The weapon gains +20% optimum and maximal range and deals +1 damage, but increases its “Concealed” quality by 1 level.",Projectile Firearms,120,2
+Scopes,Red Dot Scope,"Provides Handling (+1) when shooting at optimal range, but -1 within maximum range.",Any,150,1
+,Thermal Imaging Scope,"Provides Handling (+2) when shooting at living creatures, but Handling (-4) against anything else.
+Additionally, all injury rolls that you cause have 2 less dice.",Any,300,3
+,Night Vision Scope,"Turns the difficulty increase during darkness into a mere -1 pool modifier, but adds +1 difficulty when using the scope in bright environments.",Any,250,3
+,ACOG 4x Scope,"Increases all ranges by 50%, but you suffer Handling (-1) when shooting within optimal range or under.",Any,200,2
+,Marksman Scope,"Increases all ranges by 100%, but also increases the lower end of the ""optimal range"" by 20 squares.
+If the new minimum range is equal to or higher than the upper end of the ""optimal range"", then the upper end simply becomes 10 squares higher than the new minimum.",Any,250,2
+,Smart Targeting Scope,Adds a -2 pool penalty to any attempts to actively dodge your attacks.,Any,350,3
+Mechanism,Fast Trigger Unit,The weapon gains the Burst quality equal to 1/5th of the unmodified magazine capacity (to a minimum of 5). It also gains the Full Auto quality equal to three times the weapon's Burst quality.,Any,200,2
+,Overcharged Plasma Cell,Allows you to fire the weapon with a +30% base damage bonus at double the shot amount spent per attack.,Plasma Firearms,250,4
+,Smartgun Integration,"So long as the user possesses a smart eye cyberware, AR glasses or an armor with Visual Enhancers, they add Handling (+2).",Any,200,3
+,AP Chamber,"Increases the ammo purchase price by 30%, but the weapon adds Penetrating (+2).",Projectile Firearms,250,3
+,Waterproof Internals,Makes the weapon operable under water and reduces pool penalties when the weapon is wet.,Any,50,1
+,Extended Frame,"This mod does not count against the mod limit (but does count against the Mechanism slot), but instead adds +1 mod that can be installed in the gun.",Any,120,2
+,Biometric Lock,The weapon can only be used by a number of users programmed into the handle - does not require fingerprints.,Any,75,2
+,Transformable,"The weapon can switch between its usual form and another melee or ranged weapon chosen upon acquiring this mod. Switching the forms requires 2 AP. The other form of the weapon can be modded separately, but both weapons lose a mod slot for “Transformable”, and the costs need to be spent on both.
+The two chosen forms needs to be sensible - the GM is the final arbiter.
+Such weapons tend to look bizarre and complicated, and any attempts to repair or modify them suffer a -2 pool penalty.",Any,300,4
+Stock,Tactical Folding Stock,"Provides the ""Concealed (3)"" quality. If the weapon already was concealed, reduce the level of the quality by 1 instead.
+
+* Not applicable to especially large firearms like Machineguns, Rocket Launchers or similar.
+* Not applicable to pistols.",Any (except *),50,1
+,Adjustable Combat Stock,"Provides Handling (+1).
+
+* Not applicable to pistols.",Any (except *),100,1
+,Shock Absorption Stock,"Increases the ""Compensated"" quality by one level, or grants it at the first level if it wasn't present.
+
+* Not applicable to pistols.",Any (except *),100,2
+Grip,Ergonomic Grip,Provides Handling (+1) on the first attack after switching to a new target.,Any,40,1
+,Foregrip,Provides Handling (+1) when shooting from out of cover.,Any,50,1
+,Precision Grip,Provides Handling (+1) when only shooting single rounds (no Burst or Full Auto fire).,Any,80,2
+,Shock-Absorption Grip,Reduces the total AP cost of Full-Auto attacks by 1.,Any,80,2
+Magazine / Battery,High-Cap,Increases magazine capacity by 50% (round down).,Any,60,1
+,Drum / Block,"Reduces handling by 1, increases reload AP cost by 1, but triples the magazine capacity (increases capacity to a minimum of 15).",Any,80,2
+,Quick-Reload,Reduces the AP cost to reload the weapon by 1 (to a minimum of 1).,Any,50,1
+,Self-Charging Battery,"Reduce the magazine capacity by 20% (round up), but the firearm automatically recharges 1 shot at the beginning of each round.",Laser Firearms,300,4
+Rail Attachments,Laser Sight,Provides a free trigger on every attack after the first against the same target. Having the Laser Sight active makes your position very apparent.,Any,60,1
+,Digital Laser Sight,"Same as Laser Sight but without the drawback - you require AR glasses, smart eyes or an armor with Visual Enhancers to see your laser.",Any,120,2
+,Flashlight,"Illuminates dark areas, but also blinds enemies after aiming at them for the first time (if in a dark area).",Any,50,1
+,Underbarrel Grenade Launcher,"Allows to make one shot with the unmodified weapon profile of the Grenade Launcher.
+
+* Can only be attached to firearms that are two-handed, and are neither pistols nor MPs.",Any (except *),250,2
+,Bayonet Mount,Allows to perform melee attacks with the unmodified weapon profile of a Knife.,Any,60,1
+,Bipod,"Can be braced stationary by spending 3 AP. When doing so, the weapon gains Handling (+2).",Any,60,1
+,Dual Scope Mount,"Allows the installation of two different scopes that you have to pay separately (including the option of just installing one and keeping the unmodified variant, aka stock sights). The second scope you install doesn't count against your mod limit of the gun.
+It costs 1 AP to switch between the available sights.",Any,80,2

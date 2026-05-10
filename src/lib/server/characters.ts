@@ -8,8 +8,13 @@ export const createCharacter = createServerFn({ method: 'POST' })
       gameId: string
       name: string
       career: string
+      gender?: string
+      age?: number | null
+      background_notes?: string
       attributes: CharacterAttributes
       skills: Record<string, number>
+      talents?: string[]
+      credits?: number
     }) => d,
   )
   .handler(async ({ data }) => {
@@ -26,8 +31,13 @@ export const createCharacter = createServerFn({ method: 'POST' })
         user_id: user.id,
         name: data.name,
         career: data.career,
+        gender: data.gender ?? '',
+        age: data.age ?? null,
+        background_notes: data.background_notes ?? '',
         attributes: data.attributes,
         skills: data.skills,
+        talents: (data.talents ?? []) as never,
+        credits: data.credits ?? 1000,
       })
       .select()
       .single()
@@ -105,4 +115,33 @@ export const updateCharacter = createServerFn({ method: 'POST' })
 
     if (error) throw new Error(error.message)
     return character as unknown as Character
+  })
+
+export const deleteCharacter = createServerFn({ method: 'POST' })
+  .inputValidator((d: { characterId: string }) => d)
+  .handler(async ({ data }) => {
+    const supabase = getSupabaseServerClient()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (!user) throw new Error('Not authenticated')
+
+    // RLS ("Owner or GM can delete character") gates the actual permission
+    // check; we still need to read the row first to know which game to
+    // return so the caller can navigate back to the lobby.
+    const { data: character } = await supabase
+      .from('characters')
+      .select('game_id')
+      .eq('id', data.characterId)
+      .single()
+
+    if (!character) throw new Error('Character not found')
+
+    const { error } = await supabase
+      .from('characters')
+      .delete()
+      .eq('id', data.characterId)
+
+    if (error) throw new Error(error.message)
+    return { gameId: character.game_id }
   })

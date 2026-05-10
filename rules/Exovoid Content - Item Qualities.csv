@@ -1,0 +1,41 @@
+type,name,effect
+Item Quality,Area,"The weapon affects all targets in an area of squares. Cover protects targets from the area effect, measured from the epicenter of the effect.
+Oftentimes, an Area weapon is aimed at a specific spot on the ground, rather than an enemy. In these cases, it is not possible to actively dodge the attack.
+
+Should the attacker fail the difficulty of their attack, then the point of impact is moved into a random direction and by a random distance, as determined by the GM."
+Item Quality,Compensated,The first level of this quality halves the pool penalty for firing in Burst or Full-Auto mode. Further levels reduce the pool penalty by a further -1 each.
+Item Quality,Concealed,"The weapon can be concealed, and the character can attempt a Skulduggery test with a difficulty equal to the to the level of the quality to carry the weapon with them unnoticed."
+Item Quality,Defensive,"While held, the weapon increases the difficulty to hit the target by X."
+Item Quality,Destructive,"When this weapon is used within the vehicle scale of damage, then this value is used instead of its normal damage."
+Item Quality,Evasive,Provides a pool bonus equal to the quality to Defense checks (or a penalty if the quality has a negative value)
+Item Quality,Firing Mode: Burst,"The weapon can be fired in a burst mode, requiring a number of ammo as mentioned with the quality. The attack suffers -2 pool penalty, and in turn, any active defense against the roll suffers a -3 pool penalty. In addition to that, the attack gains 2 free triggers."
+Item Quality,Firing Mode: Full Auto,"The weapon can be fired in full-auto mode, requiring a number of ammo as mentioned with the quality. In turn, the attacker can perform three separate attacks at the AP cost of two regular attacks, each done with a -4 pool penalty.
+
+The target distribution of the attacks must be announced before rolling."
+Item Quality,Handling,The attacker gains +X pool bonus when using the weapon.
+Item Quality,Improvised,The attacker increases the difficulty to hit with the weapon by +1.
+Item Quality,Indiscriminate,"The weapon affects all targets in the area, regardless of partial cover or not.
+For precision weapons (like a laser rifle) it means that it can penetrate simple cover with ease, ignoring its effects."
+Item Quality,Injuring,"If the weapon caused at least 1 point of health loss (after armor), immediately cause the target to make an injury roll with an amount of dice equal to the quality."
+,,
+Item Quality,Loud,"The weapon is especially loud, making any chance of staying unnoticed impossible."
+Item Quality,Silenced,"The weapon is especially silent, making it possible to stay hidden when firing."
+Item Quality,Throwable,"The weapon can be thrown with the ranges mentioned, making an Athletics check to attack."
+Trigger Option,Blinding,1 Trigger: The attack causes the target to be blinded for their next action. They increase the difficulty of all sight-based tests by +1 for each trigger spent on this.
+Trigger Option,Burning,1 Trigger: The attack causes the target to burn. Lasts an amount of rounds equal to the triggers spent. The target suffers 3 damage (ignoring armor) at the end of each round.
+Trigger Option,Concussing,1 Trigger: The target loses 1 Action Point for each trigger spent on this. A target cannot lose more than a total of 4 AP per round through concussing effects.
+Trigger Option,Immobilizing,"1 Trigger: The target loses their free movement on their actions, and their speed is halved for this and the next round (or until the source of immobilization, like a net or bolas, was removed)."
+Trigger Option,Incapacitating,"1 Trigger: The target has to perform a Survival d2 check (and +1 difficulty for each additional trigger spent on this option). If failed, the target is rendered unconscious for at least 5 minutes.
+This effect only applies if the target lost at least 1 health point from the attack."
+Trigger Option,Intoxicating,"1 Trigger: The target becomes intoxicated. Whenever they perform an action, they suffer damage (ignoring armor) equal to the amount of AP spent on Maneuver or Attack actions only. Outside of combat, the victim suffers 2 damage (ignoring armor) every five minutes. Lasts until treated. Toxins can stack."
+Trigger Option,Injuring,"1 Trigger: If the weapon caused at least 1 point of health loss (after armor), immediately cause the target to make an injury roll with an amount of dice equal to the quality times the triggers spent on this option."
+Trigger Option,Knocking,"1 Trigger: The target has to perform an Athletics d2 check (and +1 difficulty for each additional trigger spent on this option) to stay on their feet. If failed, the target is prone - others within 5 squares have -1 difficulty to hit, and +1 difficulty if they are 10 squares or further away. It costs 2 AP to stand up.
+While Prone, a target cannot use the Dodge, Parry, Maneuver or Quickstep actions."
+Trigger Option,Lethal,2 Triggers: Increase the damage of the attack by X.
+Trigger Option,Murderous,"1 Trigger: If you attacked an unaware or surprised target, immediately cause them to roll for injury with an amount of dice equal to the health damage they suffered from the attack (after armor). If the base attack causes an injury roll anyway, add the injury dice from this trigger option on top. This Trigger option can only be used once per attack."
+Trigger Option,Penetrating,"1 Trigger: X Damage (based on the level of the quality) of the attack is directly applied to the targets health ignoring soak and durability (or hull in case of ship combat), then apply the remaining damage as usual. Keep in mind this might cause two instances of injury / malfunction rolls in a row.
+Penetrating weapons cannot go past a ship's shield."
+Trigger Option,Plasmascorch,"1 Trigger: The target automatically suffers the ""Just A Flesh Wound"" injury. If they already suffer from it, they suffer the ""Bleeding"" injury instead.
+Can only be used once per attack."
+Trigger Option,Shredding,1 Trigger: Immediately deal X armor durability / shield damage to the target before applying the regular damage.
+Trigger Option,Stunning,"1 Trigger: During the next round, the victim rolls for their Action Points twice and has to take the lower result."

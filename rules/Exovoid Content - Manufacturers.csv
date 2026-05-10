@@ -1,0 +1,278 @@
+manufacturer,applicableTo,,,description,companyDetails,effects,exampleProductNames
+,firearms,melee,armor,,,,
+Galactic Empire Manufacturers,,,,,,,
+<No-Name>,✓,✓,✓,"Generic and affordable, these weapons and armor are mass-produced or crafted by independent small scale manufacturers, prioritizing function over form.",-,"A No-Name weapon is 50% cheaper compared to list price, armor is 25% cheaper. Mods are unaffected.","Scavenger’s Resolve
+Rustplate MK2
+Dusthawk
+Ironshade
+Wastelander’s Edge"
+Akura Micro,✓,✓,X,"Lightweight and elegant, Akura armaments are crafted with precision and functionality, blending style with performance.","Akura Micro traces its roots back to the valor—and vision—of Tamido Kenji, a decorated Japanese soldier who served on the very first intergalactic frontlines of humanity against the Hegemony. When he returned from the battle-torn outskirts of known space, Kenji poured his entire combat stipend into recruiting Aiden Covacz, a brilliant but obscure gunsmith whose aptitude for experimental design was legendary among those in the know.
+
+What began as a small workshop dedicated to crafting a rifle capable of outmaneuvering the Hegemony’s nimble strike teams soon grew into a titan of weapons manufacturing. Each Akura firearm is steeped in Kenji’s firsthand knowledge of on-the-ground warfare—lightweight frames for increased mobility, recoil stabilizers for rapid-fire precision, and rugged designs that endure even under alien battlefield conditions. Covacz’s flare for ingenuity further refined the company’s offerings, integrating experimental power cells and modular attachments that allow for quick customizations in the field.
+
+Today, Akura Micro is more than just a supplier; it’s a symbol of resilience. Frontline troops swear by the reliability of Akura weapons, not only for their cutting-edge performance but for the story they carry—of Tamido Kenji’s personal sacrifices and the dedication that flows through every rifle, sidearm, and heavy ordnance system bearing the Akura crest. Their products aren't just tools of war; they’re testaments to the enduring spirit of those who stand against the Hegemony’s relentless advance.","Reduce the AP required to attack by 1, but also decrease the base damage by 1. For Laser weapons, the base damage is decreased by 2 instead.","Kenji’s Blade
+Whisperstrike 7
+Petal
+Phantom Edge
+Aetherbolt"
+Argonis Framewerks,X,X,✓,"Highly modular and adaptable, Argonis suits support rapid reconfiguration, perfect for operatives who value flexibility.","Born in the orbital shipyards of the Phoros Belt, Argonis Framewerks began as a humble manufacturer of modular exosuits for engineers, miners, and deep-space riggers. Every frame they built had to be adaptable—some days it shielded workers from solar flares, other days it braced them against ice shard storms or vacuum breaches. Efficiency meant survival, and Argonis mastered it.
+
+Everything changed when their suits started appearing on frontier militias—modified and repurposed for combat. Mechanics had bolted on makeshift armor plating, reinforced joints, and old mining servos, turning work suits into battlefield rigs. Instead of fighting the bootleggers, Argonis leaned into it—and evolved.
+
+Now, Argonis Framewerks offers a full range of modular armor systems tailored for tactical flexibility. Each suit is built around a robust “core frame,” covered in attachment rails, magnetic mounts, and quick-release hardpoints. Operators can swap out systems on the fly, turning a recon scout into a fireteam tank between missions—or even mid-fight, if prepared.
+
+But there’s a catch: Argonis insists on control. While their mod system is incredibly versatile, it’s also proprietary. Only official Argonis-compatible mods can be slotted without voiding structural integrity—and they don’t come cheap. That hasn’t stopped professionals and smugglers alike from buying in, though. When adaptability is the difference between life and death, most don’t mind being a little locked in.
+
+Their tagline? “Change Your Loadout, Change the Game.”","The armor has +1 mod slot, and may have a single mod installed outside of the usual mod compatibility list.
+
+Additionally, changing a mod only takes five minutes and requires no Tech check, but the mod must be specifically bought from and for Argonis Framewerks systems.","AFW-R Modular Core
+Snapframe Hardsuit
+DeltaLink Harness
+FlexForge Rig
+Axiom Shiftplate"
+Azerra Firearms,✓,X,X,"Known for proprietary tech, Azerra weapons offer modularity and innovation, favoring cutting-edge performance over aesthetics.","In the wake of high-profile antitrust investigations that rocked legendary manufacturers Colt and Heckler & Koch, both companies ultimately dissolved. Their remaining resources, along with a cadre of highly skilled engineers and designers, coalesced into a new venture: Azerra. By doubling down on proprietary technology and cultivating niche markets, Azerra neatly sidestepped the pitfalls that had ensnared its predecessors, while carving out a reputation for cutting-edge innovation and uncompromising quality.
+
+Though some nostalgic customers still refer to certain Azerra models by their Colt or H&K heritage, the new brand has earned widespread recognition as one of the galaxy’s premier arms suppliers. Streamlined energy reactors, advanced recoil suppression systems, and custom alloy frames are just a few of the technological feats that set Azerra apart. Thanks to its forward-thinking approach, Azerra continues to thrive—uninhibited by legal scrutiny and propelled by a singular vision of modernizing the battlefield, one weapon at a time.","Add “Shredding (2)”. If the weapon already has it, increase it by +1.","Apex Synergy
+Striker
+Recon Assassin
+Coreframe X.1
+Shredspire"
+Callisto,✓,✓,X,"Oversized and imposing, Callisto’s guns deliver raw power with a rebellious flair, making them favorites among collectors and outlaws.","Callisto Industries had one of the most unconventional origins in the weapons manufacturing world. It began not as a company, but as a single criminal gunsmith named Amy Callisto. Known as a prodigy with metal and circuitry, Amy was the secret weapon of a notorious gang in Capitol City, crafting custom firearms that tipped the scales in a brutal five-year gang war. Her designs—sleek, lethal, and disturbingly innovative—earned her a reputation in the city’s underworld as the go-to source for high-end weaponry.
+
+When the gang war ended, Amy’s creations began to surface outside the shadows. Videos showcasing her weapons—compact carbines with unparalleled accuracy, pistols with modular smart attachments, and rifles capable of adaptive targeting—caught the attention of gun enthusiasts across the sector. As viral reviews spread like wildfire, a surprising market demand emerged for her ""outlawed"" designs.
+
+Rather than lay low, Amy Callisto seized the moment. With a smirk and zero remorse, she founded Callisto Industries, openly framing her criminal past as a bold origin story. In interviews, she referred to her gangland work as her “R&D phase,” brushing off the darker implications with irreverent charm. By the time authorities tried to investigate, the statute of limitations had expired, leaving her free to legally capitalize on her infamous history.
+
+Today, Callisto Industries is a household name in both military and civilian markets, producing high-performance weapons with an unmistakable edge. Each product carries a trace of Amy’s renegade spirit, blending cutting-edge tech with the gritty, rebellious flair that made her designs famous in the first place. To this day, Callisto’s slogan, “Forged in Chaos, Built for Perfection,” serves as a wry nod to its infamous beginnings.","Gain a free trigger that can only be spent on the weapon's trigger options.
+
+A Callisto firearm has one less mod slot.","Chaos Fang
+Outlaw’s Wrath
+Rogue Inferno
+Reaver Pulse
+Black Talon"
+Cerberus Armory,✓,✓,X,Cerberus Armory is known for tactical weapons that prioritize non-lethal effectiveness while offering versatile battlefield utility.,"Cerberus Armory began as a humanitarian initiative on Mars, focused on developing non-lethal crowd-control technology during the early years of human expansion. Founded by idealistic inventor Dr. Julian Trevane, the company initially created things like kinetic rubber pellets and electric taser darts for law enforcement and colony security forces.
+
+Over time, Cerberus saw its technology adopted by militaries, which appreciated the balance between non-lethal engagement and adaptable lethality. Their signature weapons, which feature stun modes, became staples for special forces units and peacekeeping missions. Now a respected name in the industry, Cerberus continues to innovate, blending ethical considerations with practical battlefield applications. Their slogan, “Pride In Mercy,” reflects their commitment to versatile, non-lethal engagement.","Before attacking, you can decide to perform a non-lethal attack instead, dealing -2 damage but gaining the ""Incapacitating"" and ""Stunning"" trigger options.
+
+The weapon has one less mod slot. ","Guardian Helix
+Resolute Disruptor
+Tempest Enforcer
+Nullstrike Taser
+Pacifier Loop"
+Ekris Companions,✓,✓,X,"Stylish and thematic, Ekris weapons draw inspiration from humanity’s martial history, offering both artistry and combat readiness.","Ekris Companion began as a passion project—a limited collection of firearms created exclusively for gun enthusiasts, where aesthetics took precedence over raw functionality. Inspired by mankind’s rich martial heritage, the initial designs featured intricate craftsmanship and unique embellishments. The base frames were sourced from Azerra models, but the Ekris team heavily modified them with striking outer layers, ornamental engravings, and thematic elements that blurred the line between weaponry and art.
+
+Originally intended as a one-off collector’s series, the project gained unexpected traction when its marketing campaign went viral. Enthusiasts clamored for more, leading to a second production run. Then a third. What started as a niche collection quickly became a cultural phenomenon, and the creators of Ekris Companion made the decision to transition into a full-fledged business.
+
+Today, Ekris Companion specializes in themed firearms that pay homage to humanity’s storied history of combat. Each line showcases a distinct cultural influence, from Samurai-inspired pistols adorned with cherry blossom engravings and katana-like grips to Viking-themed rifles featuring Nordic runes and ship prow-style muzzle designs. Even the Spartan series, with its bold bronze finishes and shield-like accents, channels the unyielding spirit of ancient warriors.
+
+Ekris Companion often partners with established manufacturers to provide the functional base of their weapons, allowing their in-house designers to focus entirely on aesthetics and thematic modifications. The result is a collection of firearms that are not just tools of defense but statements of artistry and heritage. Their motto, “Honor the Past, Arm the Present,” perfectly encapsulates their dedication to blending history with innovation.","If you actively use the weapon, you obtain an extra edge point for that encounter - if it's not spent, it is lost.","Spartan Phalanx
+Samurai Dawn
+Viking Stormbreaker
+Gladiator’s Arc
+Nomad’s Vow"
+Exocore,✓,X,X,"Rugged and reliable, Exocore products are designed for Zero-G and hostile environments, focusing on durability over appearance.","When humanity first began to establish permanent settlements in the outer reaches of the solar system, life was harsh and unforgiving. The vast distance from Mars and Earth brought not only isolation but instability, leading to the rise of piracy and gang wars among the scattered communities of belters. In these perilous environments, where many worked in Zero-G conditions or aboard fragile stations where a single stray bullet could mean disaster, necessity sparked innovation. Resourceful belters began crafting firearms specifically tailored for their unique challenges—simple, reliable, and capable of operating seamlessly in microgravity or vacuum-sealed conditions.
+
+Over a century later, Exocore has risen from these rugged beginnings to become a major force in the solar economy. While primarily a mining corporation, Exocore also holds a dominant position in the production of Zero-G equipment, including firearms. Their weapons, true to their origins, are designed with uncompromising functionality in mind. Built to withstand the toughest conditions, Exocore arms are easy to maintain, perform flawlessly in extreme environments, and prioritize practicality over ornamentation.
+
+Despite their utilitarian nature, Exocore’s firearms have developed a cult following. Their blocky, industrial aesthetic—born of necessity rather than design intent—has come to symbolize the grit and resilience of those who live and work beyond the inner planets. In the belt and beyond, Exocore’s motto, “When Function Is the Only Fashion,” resonates deeply, serving as a reminder of the ingenuity and survival instinct that keeps humanity thriving in the most hostile corners of space.",Functions without drawbacks in vacuum or low-G environments. Reduce the difficulty to repair or mod the weapon by 1. ,"Voidhammer
+ZeroG Sentinel
+Beltforged Breaker
+Astrocarbine
+Eclipse Core"
+Exocore,X,X,✓,See above.,See above.,"Your armor is automatically considered Sealed without taking up a mod slot (only if ""Sealed"" is an option for that armor), and does not lose the benefits of the quality when the durability of the armor drops to 0.","Exoshell
+Voidwalker Suit
+Lifeline
+Spacer's Friend
+Outerskin"
+Ferroclave Systems,X,X,✓,"Heavily reinforced and brutally effective, Ferroclave armor is built for those who'd rather tank the hit than dodge it.","Ferroclave didn’t begin in a lab or corporate boardroom. It started on a derelict freighter called the Mulefist, drifting in dead space, its crew outgunned and out of options. After barely surviving an ambush by Hegemony patrols, the surviving pirates and scavengers decided they’d had enough of fragile armor plates and flashy shield rigs.
+
+So they got to work—with welders, plating ripped from hulls, old reactor shielding, and an unhealthy disregard for ergonomics.
+
+The first Ferroclave suits were nightmares of bolted scrap, powered by jury-rigged servos and sheer spite. They were loud, clunky, and barely mobile—but when one of them tanked a plasma bolt to the chest and kept swinging, the message was clear: sheer mass works.
+
+Over time, the designs were refined. Scrap was replaced with structured alloys, servos were balanced, and the “junk aesthetic” became a design signature rather than a necessity. Ferroclave Systems was born from the chaos, evolving into a legitimate manufacturer with deep roots in outlaw and mercenary circles. Their suits are still heavy, still loud, but now they’re smart about it—using kinetic absorption foam, modular shock plating, and aggressive reinforcement where it counts.
+
+Ferroclave armor is for those who don’t dodge, who walk through gunfire and throw enemies across the room. Their motto, painted in bold warning-stencil font across every backplate, says it all:
+""IF YOU HEAR THIS, IT’S ALREADY TOO LATE.""","Suffer a -2 pool penalty to Defense, but once every two rounds you can declare a single hit against you as completely negated. Does not work against weapons with the destructive quality, and you have to expend 3 points of armor durability to use the effect.","Rivetmaw Shell
+Anvil Vest Mk.III
+Ironhowl Frame
+Deadzone Plating
+Coresuit"
+Forge Titan Dynamics,✓,X,X,"Forge Titan Dynamics builds heavy-duty, high-impact firearms designed to deliver unmatched firepower and durability.","Originally a manufacturer of industrial tools for asteroid mining operations, Forge Titan Dynamics made a dramatic pivot during the Hegemony War, reengineering their mining equipment into makeshift weaponry for resistance fighters. Their first designs—improvised assault rifles and machine guns—were crude but devastating, and their success in the field earned them a reputation as purveyors of sheer destructive power.
+
+After the war cooled down, Forge Titan transitioned into a dedicated arms manufacturer, focusing on heavy infantry weapons and large-scale ordnance. Their designs prioritize durability, heat resistance, and overwhelming firepower, appealing to mercenaries, demolition squads, and anyone looking to dominate the battlefield. With a name evoking strength and resilience, Forge Titan Dynamics operates under the banner of “Built to Break the Unbreakable.”","The weapon spends twice the ammo for each shot fired.
+
+This also means that the Burst and Full Auto qualities are doubled.
+
+Increase the base damage by +2.","Thunderbreaker Cannon
+Atlas Devastator
+Titan’s Maw
+Vulcan Stormbringer
+Ragnarok Obliterator"
+Ghinroh Clan Forge,X,✓,X,The Rhylox are known for their sense of honor and appreciating combat up close. Their melee weapons are forged by tradition and built for brutality.,"Nestled within the volcanic caverns of their ancestral homeworld, the Ghinroh Clan Forge is one of the oldest and most revered martial lineages among the Rhylox. Unlike many of their kin who embraced modern warfare technologies, the Ghinroh have held steadfast to ancient forging rites passed down through blood and fire. Their weapons are shaped not in sterile factories, but by the hands of master smiths, each strike of the hammer infused with generations of tradition and spiritual purpose.
+
+To the Ghinroh, a weapon is not just a tool—it is an extension of one’s honor, and its creation is a sacred act. Every blade, axe, and warpick is individually handcrafted using alloy-infused obsidian, beastbone carbon, and rare minerals harvested during clan rites. These weapons are not “low-tech” by accident, but by deliberate design. In a galaxy of plasma rifles and railguns, Ghinroh blades carve through armor with brutal efficiency, proving that refined brutality and ancestral craftsmanship still have a place on the battlefield.
+
+Though many view the Ghinroh as primitive or superstitious, those who have faced their warriors in close combat speak only of fear and awe. Their weapons do not fail. They do not falter. And when wielded by a Rhylox whose honor burns as hot as the forge that birthed their blade, they become legendary instruments of war.
+
+To own a Ghinroh weapon is to carry the weight of tradition—and the expectation to wield it with the same unflinching resolve as its creators.","The weapon gains the Lethal (3) trigger option. If it already has it, increase it by +3 instead. Even when the weapon suffered the ""Damaged"" quality, it does not impose penalties.
+
+Weapons by this Manufacturer cost twice the weapon’s price, and another 200 Credits (to pay tariffs), and the rarity increases by +2.
+
+Such weapons have one less mod slot, and Ghinroh Clan Forge does not produce high tech weapons like Plasma Blades or Monowire Whips.","Ruk’Tharr Fang
+Molgruun Cleaver
+Ashbone Reaper
+Gharnak Edge
+Vulkran Maul"
+Horizons Arms,✓,X,X,"Sturdy and handcrafted, Horizons weapons embrace old-school designs and uncompromising reliability for frontier survival.","Horizons began as an ambitious corporation with a singular mission: to push humanity to the stars. From generational colony ships to frontier survival gear, their product catalog was as expansive as their vision. Among these offerings were firearms designed to help settlers defend themselves on untamed worlds. However, Horizons quickly became infamous among colonists for the glaring unreliability of most of their equipment—except for one surprising exception: their guns.
+
+Unlike their other products, Horizon firearms were built with rugged simplicity in mind. Often hand-assembled to some degree, these weapons earned a reputation for extreme durability and reliability, thriving where even the harshest conditions destroyed more sophisticated gear. Maintenance was minimal, and their straightforward designs ensured that they worked just as well in a settler’s hands as in the heart of a hostile alien wilderness.
+
+Eventually, Horizons faltered. Plagued by legal disputes over catastrophic failures in their colony ships, the company was forced to dissolve most of its operations. Yet, a single division endured: the firearms arm. Stripped of the sprawling corporate machinery, this smaller operation embraced its roots and refined its focus. Today, Horizon Arms crafts hand-made, reliable weapons with an intentionally old-school aesthetic.
+
+Rejecting high-tech frills like smart targeting systems or biometric locks, Horizon Arms champions the philosophy that less is more. Their motto, “Old-School Solutions for New-World Problems.,” is a tribute to the settlers who first relied on their designs and a promise to those still carving out humanity’s future on the frontier.","The first time such a weapon would suffer “Damaged” or jam during a scene, it can be ignored instead.","Pioneer’s Shield
+Frontier Warden
+Trailbreaker
+Colonial Vindicator
+Ironhaven"
+House Virellan Haute Armoré,X,X,✓,"House Virellan outfits the galaxy’s elite, combining defensive tech with impeccable style. Their clients don’t just survive—they dazzle.","In the palatial orbitals of the Adraleon Cluster, where aristocrats dine beneath crystal-glass domes and duel with rapiers for entertainment, one name reigns supreme in the realm of high-fashion armor: House Virellan.
+
+What began centuries ago as a noble bloodline known for curating ceremonial regalia has evolved into a galactic empire of prestige, influence, and shimmering synth-fiber. House Virellan Haute Armoré blends cutting-edge defense technology with absurdly opulent design, producing combat gear so elegant it's considered insulting to strike first while wearing it.
+
+More than just armor, each Virellan suit is a cultural weapon, adorned in programmable fabrics, jewelry, and pheromone-emitting microbeads tailored to the wearer’s species and status. Their elite clientele includes interstellar diplomats, scandalous pop stars, dueling magnates, and high-ranking courtiers of the Galactic Empire. On the battlefield, the armor performs modestly. In a negotiation room, however, it dominates.
+
+Wearing House Virellan signals more than wealth—it marks someone as untouchable, powerful, or dangerously charismatic. It is rumored that some suits are genetically locked to the buyer’s DNA, and that Virellan tailors reject customers not by credit score, but by vibe.
+
+Despite its focus on appearances, Virellan Haute Armoré has endured assassination attempts, scandalous affairs, and multiple coups. The unofficial slogan whispered by bodyguards and concubines alike is simple: ""If you die in Virellan, you die beautiful.""",Gain +1 pool bonus to all social checks so long as you can be seen.,"Velvet Bastion
+The Regal Frame
+Radiant Aegis
+Pavoné Model-X
+Starlaced Mantle"
+Korvex Spinalworks,X,✓,X,"Biotech horror meets gladiator brutality. Their weapons integrate organic components—twitching muscle fibers, bone-sheathed edges, or parasitic enhancements. Built by a fringe biotech cult that believes pain is part of warfare.","In the underbelly of the gas giant Leviatheon’s orbital husk, deep within bio-industrial spires stitched together from bonecrete and nerve-wire, Korvex Spinalworks thrives in grotesque splendor. Born from the remnants of a rogue xenobiology cult, Korvex believes that the line between weapon and wielder should not just be blurred—it should be vivisected and rethreaded.
+
+Their melee weapons are not manufactured in any traditional sense. They are grown, cultivated in nutrient vats and guided into form by what Korvex calls “combat-driven evolution.” Blades pulse with vestigial tendons, grips respond to heartbeat patterns, and some weapons even twitch in anticipation of violence. Each Korvex weapon bonds slightly to its wielder upon first contact, adapting to their movements over time—or rejecting them outright.
+
+Where others see abomination, Korvex sees purity: the primal expression of violence, refined through bio-artistry. While many major factions have outlawed their creations due to their parasitic nature and unpredictable behavior, Korvex has found eager buyers among pit fighters, death cults, and soldiers too desperate to care what their weapon hungers for—so long as it kills.
+
+For Korvex Spinalworks, pain is sacred, and every strike is a communion.","The weapon gains the ""Intoxicating"" quality, and repairs itself after one downtime (assuming it was not shattered completely).
+
+The rarity for such weapons is increased by +1 (and has a minimum of 4).","Spinehook Lash
+Marrowblade
+Clutchfang
+Viscera Bite
+Parascythe"
+Lugtah Codex,✓,X,X,"Alien in form and function, Lugtah weapons blend organic aesthetics with Rhylox martial ingenuity, coveted by elite warriors.","The Lugtah Codex is the human name for a translated collection of designs and philosophies originating from the proud Rhylox clan known as the Lugtah. The Rhylox are famed for their martial prowess and technological ingenuity, and the Lugtah stood out even among their peers as master weapon designers. Their legacy, however, was marred by betrayal.
+
+During a protracted conflict against the Hegemony, a rival Rhylox clan orchestrated a political scheme to disgrace the Lugtah warlord, stripping him of honor and tarnishing the clan’s reputation. Though the Lugtah knew they had been framed, the complex web of Rhylox politics rendered them powerless to fight back directly. In a bold and unorthodox move, they turned to the broader galaxy for salvation.
+
+Breaking from the insular traditions of their people, the Lugtah established a galactic business venture, offering their unparalleled weapon designs to wealthy members of other vassal races, including humans. Their weapons, which blend devastating functionality with the artistic craftsmanship of Rhylox culture, quickly became coveted status symbols among elite warriors and collectors.
+
+This decision infuriated the broader Rhylox clans, who viewed sharing their martial secrets with outsiders as a deep betrayal of their cultural pride. Yet, the Lugtah’s gamble paid off. The wealth and influence they accrued through their offworld dealings allowed them to slowly rebuild their stature within Rhylox society, edging closer to reclaiming their former power.","These weapons can fire 3D printed ammunition without the usual risks involved, and energy-based weapons can simply be recharged using any power socket.
+
+Weapons by this Manufacturer cost twice the weapon’s price, and another 200 Credits (to pay tariffs), and the rarity increases by +2.
+
+Such weapons have one less mod slot, and Lugtah Codex does not produce Holdout Pistols, Small Pistols or Small MPs (these are considered weak weapons anyway). Mods for these weapons need to be compatible with this particular manufacturer, increasing the effective rarity by +1.","Rhylox Fang
+Shardpiercer
+Honorblade
+Luminal
+Devourer"
+Nova Industries,✓,X,X,"Experimental and futuristic, Nova weapons combine alien-inspired tech with sleek designs, perfect for high-tech combatants.","Nova Industries began with a bold vision and an even bolder founder: Kiara Martinez, a former smuggler turned scientist with an unparalleled knack for innovation. After humanity's subjugation by the Galactic Empire, Kiara resolved to tilt the scales of survival in humanity’s favor. To do so, she leveraged her smuggler connections, taking on dangerous and often illegal work for alien clients. Her true purpose, however, lay beneath the surface—gathering alien tech and artifacts for study.
+
+Over nearly a decade, Kiara meticulously reverse-engineered countless technologies, creating detailed blueprints and prototypes. From cloaking mechanisms to plasma regulators, her collection of alien-derived designs became a treasure trove of potential advancements. When she finally deemed her research complete, she narrowly avoided legal repercussions from the Galactic Empire's convoluted justice system and set her sights on her ultimate goal: arming humanity with the most advanced weaponry imaginable.
+
+Kiara’s pitch to her first angel investor was as audacious as her methods: “I will create the most elaborate, high-tech weapons for mankind. Don’t ask how—I’ll make us rich.” Her charisma and confidence sealed the deal, and Nova Industries was born. Though still a fledgling company, Nova quickly turned heads with its cutting-edge arsenal of experimental energy, laser, and plasma-based weaponry. Soldiers on the frontlines and gun enthusiasts alike were captivated by Nova's bleeding-edge designs, which promised unparalleled firepower and versatility.
+
+However, Nova's rapid rise has not gone unnoticed. Several alien races, recognizing fragments of their own technologies in Nova’s products, have filed patent-theft complaints with the Galactic Empire. Fortunately for Nova, the Empire’s bureaucratic machinery moves at a glacial pace, allowing the company to operate freely - for now.
+
+As whispers of its daring origins spread, Nova’s weapons have become synonymous with risk, ingenuity, and rebellion—a testament to one woman’s determination to equip humanity for whatever lies ahead. Their unofficial slogan, often muttered with a smirk, captures their essence perfectly: ""Because rules don’t win wars.""","Nova exclusively makes plasma, laser or other energy-projectile based weapons. The damage type of a chosen firearm needs to be converted to ""Laser"", ""Electrical"" or ""Fire"". The weapon's cost is doubled, but then you add trigger options & qualities based on the chosen damage type:
+Laser = Penetrating (5) (if it already has it, increase it by +2 instead) and Silenced (remove Loud)
+Electrical = Concussing
+Fire = Plasmascorch","Zenith
+Eclipse
+Solarflare
+Voidpulse Cannon
+Plasmaweaver"
+Orion Tactical,✓,X,X,"Modular and customizable, Orion guns are a modder’s dream, offering unmatched versatility for personalized builds.","Orion Tactical has built its reputation on one simple promise: adaptability. While most firearms manufacturers focus on either aesthetics or performance, Orion Tactical took a different route, creating weapons that are as much a canvas as they are a tool. Their firearms are prized by gunsmiths, modders, and gearheads who thrive on customization, offering a modularity that’s unmatched in the industry.
+
+At first glance, an Orion firearm might seem purely functional—sleek, minimalist, and without the flair of some of its competitors. But a closer look reveals the brilliance of their design: an array of rails, mounts, and hidden attachment points that invite endless possibilities. From extended barrels and enhanced scopes to under-barrel grappling hooks or experimental power modules, an Orion weapon can be transformed into a precision instrument tailored to its user’s exact needs.
+
+Orion Tactical began as a small engineering outfit working on modular tools for industrial and mining equipment. When one of their prototypes—a mining laser rig capable of swapping out heads for different tasks—caught the attention of a local militia, Orion’s engineers realized their designs had far greater potential. They pivoted to firearms, focusing on creating weapons that could be easily reconfigured for any combat scenario.
+
+Now a favorite among mercenaries, tactical teams, and anyone who values versatility, Orion Tactical has become a household name. Their commitment to modularity is reflected in their unofficial motto, often heard among their customers: ""Your Gun, Your Way."" Whether you’re on the battlefield or tinkering in the workshop, Orion Tactical firearms are more than just weapons—they’re an extension of your ingenuity.","The weapon has +1 mod slot.
+
+Additionally, changing a mod on such a weapon does not require a downtime, but can be done within 5 minutes.","Railstrike Mod-X
+Titan’s Grip
+Vector Adaptor
+Shadowbolt MK1
+Vanguard Riser"
+Redline Dynamics,X,X,✓,"Lightweight, performance-enhanced armor used by speed freaks and agile skirmishers. Inspired by racer gear and combat sportswear.","Redline Dynamics was never meant to become a military supplier. In fact, its roots lie in Earth’s pre-Galactics era, where it reigned as the premier outfitter for high-impact sports—football, hover-racing, grav-combat leagues. Known for lightweight padding systems, responsive muscle-support exosuits, and anti-trauma tech, Redline gear became synonymous with speed, agility, and showmanship.
+
+When the Galactic Empire drafted Earth into its vassal ranks, everything changed. With humans suddenly thrown into alien conflicts, Redline saw an opportunity: if their gear could protect athletes from cybernetic linebackers, maybe it could stop a explosives and bullets too.
+
+They retooled overnight. Helmets were reengineered to withstand ballistic shock. Polyfiber jerseys were reforged into flexible, impact-dispersing undersuits. Even their energy recycling tech—originally used to boost athlete stamina—was reworked into combat adrenaline stims. To everyone’s surprise, it worked. Soldiers praised Redline’s armor for how it let them move, dodge, live. Not to mention, it looked damn cool.
+
+Now, Redline Dynamics occupies a unique niche. Their suits aren’t designed for tanking hits—they’re made for those who’d rather not get hit at all. Favored by scouts, recon units, skirmishers, and war-crazed sports fans, Redline gear is flashy, fast, and full of attitude.",Gain +2 speed and +2 pool bonus on Defense.,"Breakrush EX
+Halftime Hardsuit
+Blitzcarve V2
+Dashmantle
+Overdrive Shell"
+Triton Systems,✓,✓,X,"Compact and discreet, Triton firearms are masters of concealment, favored by those who value stealth and portability.","Triton Systems has earned its reputation as the master of subtlety in the firearms industry. Specializing in compact, foldable, and easily disassembled weaponry, Triton’s designs are officially marketed as ideal for efficient storage and transport—perfect for explorers, pilots, or anyone with limited space. But unofficially, these same traits have made Triton a favorite among less savory clientele, including smugglers, assassins, and covert operatives.
+
+Their firearms, often referred to as ""Lego Shooters,"" have a distinctive modular design that not only allows for effortless assembly and disassembly but also gives them a sleek, unassuming appearance. To the untrained eye, a Triton weapon might look like nothing more than a piece of innocuous machinery or a harmless tool. This illusion, coupled with their compact frames, has made them infamous for slipping past checkpoints and into restricted areas.
+
+Triton Systems emerged from a niche demand for practical, space-saving equipment for deep-space crews and planetary explorers. However, as word spread of their firearms’ unparalleled concealability, they quickly became the go-to manufacturer for those working in the shadows. Despite this, Triton avoids heavy weapons entirely, choosing to focus exclusively on sleek, personal firearms designed for discretion and precision.","The weapon gains “Concealed (3)”. If it already has it, decrease the Concealed quality by 1 (to a minimum of 1).
+
+Not applicable to heavy weapons, as Triton does not manufacture these.","Mirage Compact
+Stealthgun
+Blank Mk. 2
+The Guitar Case
+Puzzlemaster 3"
+Umbraweave Collective,X,X,✓,"Crafted from alien-origin stealth tech, Umbraweave suits turn operatives into whispers on the battlefield.","The sleek stealth suits of the Umbraweave Collective were never meant to exist without permission.
+
+During the later years of humanity’s resistance against the Hegemony, the Lurakans—an enigmatic alien species known for their precision engineering and obsession with secrecy—handpicked a covert cell of human operatives. The mission: disrupt Hegemony operations through sabotage, espionage, and targeted assassinations. To aid their human assets, the Lurakans gifted them a limited license to use advanced stealth armor tech—woven photomagnetic thread, sound-cancelling mesh, heat-baffling nanofibers. It worked. And humanity remembered.
+
+After the war, a private human enterprise secured an official lease for the Umbraweave schematics from the Lurakans, hoping to turn black-ops glory into profit. For a while, they succeeded—producing elite-grade stealth suits for planetary intelligence services and corporate security. But licensing alien tech wasn’t cheap, and when the company’s debt eclipsed its military contracts, it collapsed.
+
+Now, the original designers—ex-employees turned fugitive engineers—continue to produce Umbraweave armor in hidden workshops and orbital slums. Each suit is a handcrafted masterpiece of outlaw tech, lacking the official Lurakan seal but every bit as deadly. These ghost-wrights sell their armor to mercs, smugglers, resistance cells, and anyone willing to pay for near-invisibility.
+
+The Lurakans disavow the Collective’s work, but they haven’t shut it down. Some say they like the chaos it sows.","Targets have +1 difficulty to try and notice you. Alternatively, you benefit from -1 difficulty on Infiltration rolls.
+
+Not applicable to Power Armor.","Wraithskin
+Silentcurve
+Nulltrace Shroud
+Ghostform Wrap
+Velshade Mantle"
+Vanguard Precision,✓,X,X,"Vanguard Precision specializes in high-accuracy, long-range firearms engineered for sharpshooters and marksmen who demand the best.","Vanguard Precision emerged during the early days of humanity’s integration into the Galactic Empire as a small boutique operation catering exclusively to elite military snipers. Founded by ex-military engineer Vadim Roshkov, Vanguard quickly gained a reputation for designing firearms with unprecedented accuracy and stability. Their early success came from innovations like integrated targeting algorithms and recoil dampeners, which gave marksmen a decisive edge in combat.
+
+As their reputation grew, Vanguard expanded its offerings to include a full line of precision rifles, laser carbines, and energy-based sniper systems, all designed with the same obsessive attention to detail. Despite their growing size, they remain focused on delivering weapons that embody precision and reliability. With sleek designs and minimalistic aesthetics, Vanguard Precision firearms are tools for those who believe that a single shot can change the tide of battle. Their motto, “One Shot, One Victory,” encapsulates their philosophy.",Increase the optimum and maximum range of the firearm by +100% - this does not stack with other scopes.,"VP Specter Longshot
+Apex R
+Farstriker Mk. 4
+Horizonbolt
+Onyx Widow"
+Vantari BioShell,X,X,✓,Living armor that interfaces with your nervous system and becomes a part of you.,"The technology behind Vantari BioShells was never meant for war.
+
+Originally developed by the Xelar—a reclusive species of subterranean explorers and bioscientists—the BioShell prototype was a neural interface suit designed for deep-environment survival, syncing with the wearer’s nervous system to assist with motion, pressure regulation, and internal health monitoring. It was elegant, gentle, and—like most Xelar tech—built with respect for sentient life.
+
+Enter Victor Vantari: human biotech investor, intergalactic ego, and all-around sociopathic opportunist. Vantari “acquired” the suit’s designs under legally gray circumstances after financing a Xelar research expedition. Rather than fund the Xelar’s vision of peaceful integration and medical utility, Vantari turned their work into something far more profitable—and far more horrifying.
+
+Using political loopholes and a private testing colony, Vantari subjected countless human ""volunteers"" to experimental BioShell iterations. Neural pathways were overstimulated, body heat was siphoned to fuel suit functions, and in some models, the armor ate part of the host’s skin to maintain biomechanical equilibrium. Over time, surviving prototypes emerged faster, stronger, and hyper-responsive.
+
+Today, Vantari BioShells are sold as next-gen “living armor,” mostly to black-ops units, elite mercenaries, or anyone rich and desperate enough to overlook the side effects. The suits pulse faintly when idle and form a crude bond with their wearer—often whispering feedback in a language no one quite understands.
+
+Victor Vantari has since disappeared, leaving only encrypted logs and a trail of lawsuits behind him. His armor designs, however, live on.
+
+Literally.","While the armor is worn, you regenerate 2 health or 2 armor durability at the end of every round.
+Fire-type damage deals +3 damage to you.
+
+Such an armor has +2 rarity and costs twice the usual amount. It is specifically made for one wearer and requires a downtime activity with a Science d4 check to be made available for a different wearer.
+
+Putting the armor on or removing it takes one hour.
+
+","Symbiont Frame
+Gravehide Mk.II
+Leechskin
+Vantari Bloom
+Pulsewomb"
+Hegemony Manufacturers (not typically available to players),,,,,,,
+Keileid Assault Systems (Mordrex),✓,X,X,Smaller sized and often equipped with guard rails to protect the wielders hands during a close fight. The internal gyroscopes help to stabilize shots while the Mordrex rushes in to get close to their target.,<unknown Data>,"You can perform a ranged attack for free as part of any maneuver action. If the action point cost of the attack is higher, then that is the cost of the combined action.",
+Purasi Pack (Mordrex),✓,X,X,"These weapons are often a combination between a melee-oriented tool of war and a firearm, allowing a Mordrex to excel in both situations.",<unknown Data>,"The weapon's optimal and maximum range decrease by 30%, but you do not suffer penalties when firing the weapon in melee reach. The weapon can also be used as a club, knife or sword - this choice is made once upon purchase.",

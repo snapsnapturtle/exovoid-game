@@ -1,0 +1,24 @@
+modSlot,modName,modEffects,cost,rarity
+Material,Bouncy,"When deflecting bullets (using the Omega variant of Move-By-Wire cyberware), the ricochets deal full damage instead of just half.",200,4
+,Hardened,"The first time during each scene the weapon would suffer the Damaged state, it ignores it instead.",150,3
+,Masterfully Crafted,"Adds +1 base damage, or +2 damage for a 2-handed weapon.",As Weapon * 2,5
+,Light,The first parry attempt with the weapon only costs 1 instead of 2 AP each round.,150,2
+Body,Throwable,"The weapon gains the quality ""Throwable (2-5 | 10)"".",120,2
+,Transformable,"The weapon can switch between its usual form and another melee or ranged weapon chosen upon acquiring this mod. Switching the forms requires 2 AP. The other form of the weapon can be modded separately, but both weapons lose a mod slot for “Transformable”, and the costs need to be spent on both.
+The two chosen forms needs to be sensible - the GM is the final arbiter.
+Such weapons tend to look bizarre and complicated, and any attempts to repair or modify them suffer a -2 pool penalty.
+",300,4
+,Binding,"If you use the ""Suppress / Distract"" spending option against the target you just hit, it is twice as effective.",120,3
+,Self-Repairing,"After one hour, remove the ""Damaged"" quality from the weapon.",250,4
+Handle,Balanced,"The weapon gains Handling (1). If it already has it, increase its Handling by +1 instead.",150,2
+,Protective Handle,"The weapon gains Defensive (1, Melee). If it already has it, this mod has no effect.",200,3
+,Magnetized Grip,Drawing or picking up the weapon only costs 1 instead of 3 AP.,80,2
+Head / Blade,Serrated,The weapon gains the Injuring (3) quality. Not applicable to blunt weapons.,50,2
+,Retractable,"The weapon gains Concealed (2) if it is one-handed, or Concealed (3) if it is two-handed. If the weapon already has the quality, reduce it by 1 (to Minimum of 1).
+In its folded form, the weapon appears like a regular item, suitcase or similar. Unfolding the weapon into its weapon-ready form requires spending 2 AP (this is in addition to drawing it).
+",300,4
+,Molecular Edge,"The weapon gains ""Pentrating (3)"" (if it already has it, increase it by +2 instead).
+
+Not applicable to blunt weapons.",200,4
+,System Shock Module,"Upon causing an injury roll, automatically cause a cyberware malfunction roll.",300,4
+,Bludgeoning,"Gain the ""Knocking"" trigger option. It if already has it, the target has +1 difficulty to resist it.",60,2

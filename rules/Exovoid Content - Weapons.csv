@@ -1,0 +1,52 @@
+weaponType,weapon,weaponName,hands,magazine,reloadAP,attackAP,damage,damageType,optimalRange,maxRange,qualities,triggerOptions,specialRules,modLimit,cost,roundCost,rarity
+Firearms,Hold Out Pistol,6mm Triton Vanguard,1,5,2,3,6,Physical,2-5,15,Concealed (1),Concussing,,2,200,3,1
+Firearms,Hold Out Taser,Starfury Tazer,1,2,3,3,3,Electrical,2-4,6,"Concealed (1), Silenced","Incapacitating, Stunning",,2,200,10,1
+Firearms,Small Pistol,10mm Akura Infiltrator Mk. 2,1,15,2,3,6,Physical,2-8,30,"Burst (5), Concealed (2)",Shredding (1),,3,250,4,1
+Firearms,Medium Pistol,.45 ACP Xeno Hunter,1,12,2,4,7,Physical,2-8,35,"Handling (1), Concealed (2)",Penetrating (2),,3,300,5,1
+Firearms,Revolver,.308 Horizons Revolver,1,6,4,4,9,Physical,2-10,50,Concealed (2),"Lethal (5), Shredding (2)","Once per encounter, you may ignore the first weapon jam or ""Damaged"" quality that would otherwise be applied to the Revolver.",2,250,7,1
+Firearms,Heavy Pistol,.50 Callisto Eagle,2,7,2,5,11,Physical,3-12,80,"Loud, Concealed (2)","Lethal (5), Knocking, Penetrating (3)","Can be fired in one hand, but then it gains the improvised quality unless the wielder has 6 or more Strength.",3,350,8,2
+Firearms,Laser Pistol,2E Nova Sentinel,1,20,2,3,5,Laser,2-25,120,"Silenced, Handling (2), Burst (6), Compensated (1), Indiscriminate, Concealed (2)","Penetrating (5), Shredding (2)",,3,800,1,3
+Firearms,Small MP,.380 Vega Scorpion,1,36,2,4,6,Physical,2-8,40,"Burst (6), Full Auto (18), Concealed (2)",Penetrating (2),,3,300,4,1
+Firearms,Medium MP,.45 ACP Callisto Spitter,1,20,2,4,7,Physical,2-6,30,"Burst (5), Concealed (3)",Lethal (3),"Gains ""Compensated (1)"" when used with two hands.",4,350,5,1
+Firearms,Tactical MP,12mm Akura Tactical MP-9,2,30,2,4,7,Physical,2-15,75,"Handling (2), Burst (5)",Concussing,,4,400,5,2
+Firearms,Self-Defence MP,8mm Bullpup P95,2,50,4,4,6,Physical,2-12,50,"Compensated (1), Full Auto (15)",Penetrating (3),,4,450,4,2
+Firearms,Common Assault Rifle,5.6mm Orion Striker,2,35,3,4,8,Physical,3-20,120,"Handling (1), Burst (5), Full Auto (15)",Lethal (4),,5,450,6,2
+Firearms,Heavy Assault Rifle,7.6mm Azerra Companion,2,25,3,4,9,Physical,3-20,150,"Loud, Burst (5)","Lethal (5), Penetrating (3)",,6,600,7,2
+Firearms,Laser Assault Rifle,3E Pulsar Repeater,2,80,5,3,7,Laser,3-40,200,"Silenced, Handling (3), Burst (10), Full Auto (30), Compensated (1), Indiscriminate","Penetrating (6), Shredding (2)",,5,1400,1.5,4
+Firearms,Double Barrelled Shotgun,12-Gauge Nova Breaker,2,2,3,5,14,Physical,2-6,15,"Loud, Burst (2)","Concussing, Lethal (8), Shredding (3), Knocking",,4,400,6,2
+Firearms,Tactical Shotgun,20-Gauge Orion Tactical,2,7,7,4,12,Physical,2-6,20,,"Lethal (5), Shredding (2), Knocking",,5,450,6,2
+Firearms,Full-Auto Shotgun,20-Gauge Liberator,2,20,5,4,10,Physical,2-6,20,"Burst (5), Full Auto (15)","Lethal (3), Shredding (2), Knocking",,4,500,6,2
+Firearms,Anti-Riot Shotgun,Azerra Rioter,2,6,6,4,7,Electrical,2-5,12,Handling (1),"Incapacitating, Concussing, Stunning, Knocking",,4,450,10,2
+Firearms,Marksman Rifle,Viper Precision 20mm,2,15,3,4,10,Physical,8-30,150,Handling (1),"Penetrating (3), Lethal (3)",,6,800,7,3
+Firearms,Sniper Rifle,Widowmaker .408,2,5,3,5,12,Physical,15-80,300,Handling (2),"Penetrating (4), Lethal (4)",,5,1000,10,3
+Firearms,Anti-Materiel Rifle,Titan Slayer 50cal,2,1,4,6,15,Physical,20-120,1000,"Handling (1), Destructive (7), Loud","Penetrating (6), Shredding (4), Lethal (4)",Every trigger spent on the weapon's options is automatically spent on all options at once.,5,1300,30,4
+Firearms,Plasma Rifle,Solaris Incinerator,2,10,4,4,12,Fire,3-30,150,"Burst (4), Compensated (1), Handling (2)","Shredding (5), Burning, Lethal (5), Plasmascorch",Also gain one free Trigger on each attack that can only be spent on the weapon's trigger options.,5,4000,15,5
+Firearms,Compound Bow,Carbon Hunter Mk. II,2,1,4,3,8,Physical,3-20,60,Silenced,Injuring (3),The wielder's Heft is added to the damage.,0,250,3,2
+Heavy Weapons,Machine Gun,7.62mm Hellfire MG,2,100,10,5,12,Physical,5-20,150,"Loud, Burst (8), Full Auto (20), Compensated (1), Improvised","Penetrating (3), Shredding (2), Lethal (5), Concussing","Gains Handling (3) when used braced or prone - bracing the weapon requires 3 AP. In that case, it also loses Improvised.",6,700,7,3
+Heavy Weapons,Flame Thrower,Pyroclasm Projector,2,10,8,4,15,Fire,3-8,15,"Burst (2), Full Auto (4), Compensated (1), Area (1), Indiscriminate","Burning, Penetrating (5)","When using  Full Auto, the attacks have to happen against different targets / squares that must not be further away than 3 squares from each other.",2,600,3,2
+Heavy Weapons,Grenade Launcher,Thunderstrike GL-6,2,6,6,4,12,Explosive,5-15,30,"Loud, Area (2), Indiscriminate, Destructive (6)","Penetrating (3), Shredding (2), Lethal (3), Concussing, Stunning","Can be loaded with non-lethal grenades, which reduces the damage to 4, and removes the Penetrating, Shredding and Lethal options, while increasing the Area quality to 3 and adding the Incapacitating trigger option.",2,550,50,3
+Heavy Weapons,Mini-Gun,Devastator 7.62mm Minigun,2,150,12,5,12,Physical,5-20,150,"Loud, Burst (10), Full Auto (30), Compensated (1), Improvised","Penetrating (3), Shredding (4), Lethal (5)",Characters with 6 Strength or more ignore Improvised.,4,900,6,3
+Heavy Weapons,Plasma Launcher,Vulcan P-12,2,4,5,4,15,Fire,5-20,50,"Area (4), Indiscriminate","Shredding (5), Burning, Lethal (5), Plasmascorch",Also gain one free Trigger on each attack that can only be spent on the weapon's trigger options.,2,5000,120,5
+Heavy Weapons,Rocket Launcher,Manticore RL-1,2,1,6,6,15,Explosive,10-100,200,"Loud, Handling (4), Area (3), Indiscriminate, Destructive (8)","Penetrating (3), Shredding (4), Lethal (5), Concussing, Stunning",,2,900,150,4
+Throwing,Flash Grenade,Dazzler Flashbang,1,-,-,5,5,Explosive,1-8,12,"Concealed (2), Loud, Handling (2), Area (3), Indiscriminate","Concussing, Stunning",,0,40,-,2
+Throwing,Frag Grenade,Havoc Frag Boy,1,-,-,5,12,Explosive,1-8,12,"Concealed (2), Loud, Area (2), Indiscriminate",Lethal (4),,0,80,-,3
+Throwing,Gas Grenade,Noxon Choker,1,-,-,5,5,Physical,1-8,12,"Concealed (2), Area (3), Indiscriminate",Incapacitating,Ignores armor. Incapacitating option is automatically active. The Area lingers for this and two more rounds. Anyone ending a round within the area needs to resist the Incapacitating trigger option.,0,100,-,4
+Throwing,Smoke Grenade,Azerra Shroud Maker,1,-,-,4,0,Physical,1-8,12,"Concealed (2), Area (3), Handling (1)",,The Area lingers for this and two more rounds. Anyone trying to attack through or across the smoke suffers +2 difficulty.,0,30,-,2
+Throwing,EMP Grenade,Ekris Equalizer Orb,1,-,-,5,0,Electrical,1-8,12,"Concealed (2), Area (2), Handling (1), Indiscriminate, Destructive (6)",,"Everyone struck by such a grenade needs to roll a d6 for each electronic piece of equipment, including cyberware or individual mods (if applicable). On a 4+, the piece is considered Damaged (incurring a -2 pool modifier when using it until repaired).",0,200,-,4
+Throwing,Throwing Knife,Phantom Throwing Knife,1,-,-,3,5,Physical,1-5,8,"Silenced, Concealed (1)","Lethal (2), Murderous",Adds Heft to the damage like a melee weapon would.,1,40,-,1
+Melee,Unarmed,Unarmed Combat,1,-,-,3,2,Physical,1,-,"Silenced, Handling (1)","Knocking, Incapacitating, Penetrating (2)",Cannot perform a Parry against real melee weapons.,0,Free!,-,-
+Melee,Knife,Wraith Combat Knife,1,-,-,3,5,Physical,1,-,"Silenced, Concealed (1)","Lethal (2), Murderous",,1,50,-,1
+Melee,Brass Knuckles,Iron Fist Knuckles,1,-,-,3,4,Physical,1,-,"Silenced, Concealed (1)","Stunning, Incapacitating, Knocking",Cannot do a parry against real melee weapons.,1,50,-,1
+Melee,Club,Enforcer Club,1,-,-,4,5,Physical,1,-,"Silenced, Concealed (2)","Concussing, Incapacitating",,2,40,-,1
+Melee,Bat,Titan Sports Bat,2,-,-,4,6,Physical,1,2,"Silenced, Handling (1)","Lethal (2), Concussing",,2,40,-,1
+Melee,Stun Baton,Voltguard Stun Baton,1,-,-,4,3,Electrical,1,-,"Silenced, Handling (3)","Incapacitating, Stunning",,2,80,-,1
+Melee,Blade,Ekris Warrior Blade,1,-,-,4,5,Physical,1,-,"Silenced, Defensive (1, Melee)",Lethal (4),,2,150,-,1
+Melee,Katana,Ekris Ronin Companion,2,-,-,4,6,Physical,1,2,"Silenced, Defensive (1, Melee)",Lethal (4),"Can be wielded in one hand, but then it gains the Improvised quality.",2,250,-,2
+Melee,Mono-Wire Whip,Phantom Slicer Cables,1,-,-,3,10,Physical,2-4,-,"Silenced, Concealed (1)","Murderous, Penetrating (4)",Heft is never added to the damage of attacks with this weapon. A rolled Botch means harming yourself or an ally within range for the full damage.,0,2000,-,4
+Melee,Plasma Blade,Inferno Plasma Pike,2,-,-,4,7,Fire,1-2,-,"Defensive (1, Melee)","Penetrating (3), Lethal (5), Shredding (3), Plasmascorch",Requires a Plasma cell that allows the blade to be active for a total of 10 rounds (turning the Blade on and off is near-instantaneous). Replacing the cell costs 40 Credits.,3,4500,-,4
+Melee,Spear,Guardsteel Battle Spear,1,-,-,4,6,Physical,1-2,-,"Silenced, Throwable (2-8 | 15), Defensive (1, Melee)","Penetrating (2), Lethal (2)","Can be wielded in two hands, providing Handling (2). Heft remains that of a one-handed weapon.",3,200,-,1
+Melee,Maul,Thunderstrike Maul,2,-,-,5,8,Physical,1,-,Improvised,"Penetrating (3), Lethal (2), Concussing, Knocking",Characters with 6 Strength or more ignore Improvised.,3,225,-,1
+Melee,War Axe,Ravager War Axe,2,-,-,5,8,Physical,1,-,Silenced,Lethal (5),,3,250,-,2
+Melee,Mining Pickaxe,Exocore Rocksplitter,2,-,-,5,8,Physical,1,-,"Silenced, Improvised","Penetrating (5), Lethal (4)",Characters with 6 Strength or more ignore Improvised.,1,200,-,1
+Melee,Small Shield,Riot Repellant,1,-,-,4,4,Physical,1,-,Defensive (1),Concussing,,1,120,-,1
+Melee,Ballistic Shield,Bulwark,1,-,-,5,4,Physical,1,-,"Defensive (2), -2 Speed","Stunning, Incapacitating",Adds +1 difficulty to all attacks made due to limited vision.,2,250,-,2

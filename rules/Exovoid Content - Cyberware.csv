@@ -1,0 +1,101 @@
+cyberware,cyberwareName,tier,description,cyberImmunityCost,cost,rarity
+Reflexbooster,ReflexaGen V2,Alpha,"Increase your Action Points by +2, but if you have 2 or less Action Points during a round, you cannot perform any actions (but reactions).",5,1000,3
+,NeuraBoost XR,Beta,"Increase your Action Points by +3. Additionally, even if you have up to -5 AP, you can still perform reactions.",6,3000,4
+,Velocitec Reflex Enhancer,Omega,"Increase your Action Points by +4. Additionally, you gain +1 pool on dodge and parry actions.",8,7500,5
+Move By Wire,OptimaSync MBW-3000,Alpha,"You gain +1 Action Point, +2 Speed and +2 pool bonus when you attempt to dodge or parry.",10,4000,4
+,KinetiDrive Mk IV,Beta,"You gain +1 Action Point, +2 Speed and +2 pool bonus when you attempt to dodge or parry. You also gain a free trigger on dodges, parries and melee attacks.",12,6000,5
+,WireStride 2.1,Omega,"You gain +1 Action Point, +2 Speed and +2 pool bonus when you attempt to dodge or parry. You also gain a free trigger on dodges, parries and melee attacks. You may now attempt to parry ranged attacks if you wield a suitable melee weapon, but can only do so up to two times per round.
+
+A successful Riposte will ricochet the bullets back at any target within range 10 of you, for half the damage.",14,10000,6
+Dermal Armor,Duraskin Aegis,Alpha,You gain +1 Soak.,5,800,3
+,DermalShield D600,Beta,You gain +1 Soak and may discard the first severity 1 injury during each encounter.,7,1200,3
+,IntegriPlate Pro,Omega,You reduce all incoming damage by 2 before applying any other factors (even your usual Soak or qualities like Penetrating).,8,2500,4
+Neural Interface,NeuraLink X7,Alpha,Allows to connect the brain to compatible devices. Being directly linked to a piece of equipment (like a vehicle) provides a +1 pool bonus.,4,900,2
+,SynapTech NI-5,Beta,"Allows to connect the brain to compatible devices. Being directly linked to piece of equipment provides a +1 pool bonus.
+
+The Beta variant prevents any Biofeedback damage that directly results from the linked device.",3,1400,3
+Smarteyes,Visionix SmartOptic,Alpha,Allows to record what you see or overlay your vision with certain feeds or visual aids.,4,1000,2
+,Percepta XR-400,Beta,"Allows to record what you see or overlay your vision with certain feeds or visual aids, and you can now zoom up to 16x, or even apply filters that go beyond human vision (like thermal, infrared, ultraviolet).",4,1800,3
+Smartears,Sonix Auralis Pro,Alpha,"Allows to record what you hear, receive audio comms and filter audio, allowing to eavesdrop even in crowded areas.",2,600,2
+,EchoCore Audio Suite,Beta,"Allows to record what you hear, receive audio comms and filter audio, allowing to eavesdrop even in crowded areas. Converts up to three dice from your Vigilance roll into Expertise dice when it's about hearing something hidden or distant.",3,1000,3
+Smartnose,Aromatrace Analyzer,Alpha,"Allows you to record smells, simulate smells, as well as exactly matching pheromones to recognize / trace people.",2,600,2
+,Chemisense Olfactor-X,Beta,"Allows you to record smells, simulate smells, as well as exactly matching pheromones to recognize / trace people. Additionally, you can recognize specific chemical compounds or gasses.",3,900,3
+Smartskin,Tactilis Sensora,Alpha,"Amplifies tactile sensitivity, enabling the detection of fine textures, pressure changes, and micro-vibrations.",2,600,2
+,Neo Touch,Beta,"Advanced smart skin with enhanced haptic feedback, designed for detailed tactile analysis and heightened environmental awareness.",3,900,3
+Smartlink,Dermalgunner Minion,Alpha,"Removes the necessity for Smarteyes to be connected to gun's smartlink through a wireless signal, making it prone to be hacked. The Smartlink creates a direct connection that is unhackable.",2,300,3
+Sixth Sense,EchoViz Array,Alpha,"Provides advanced echolocation to map surroundings, revealing hidden objects and movements beyond obstacles. The user can perceive rough geometry and movement up to five squares around obstacles and corners.",4,1000,3
+,Perceptis Omnisense,Beta,"Revolutionary spatial awareness technology that integrates multi-spectrum detection, offering intuitive visualization of areas out of sight. The user can get a fairly detailed glimpse at things up to ten squares around obstacles and corners.",6,2000,4
+Skeletal Reinforcement,EndoSteel Mk III,Alpha,Increases your maximum health by +3.,4,600,3
+,BoneForge S2,Beta,Increases your maximum health by +3 and you become immune to losing your limbs from regular combat-related outcomes.,4,1100,4
+Synthetic Muscles,Myoflex Bionic Fiber,Alpha,Grants +1 Agility.,6,2000,4
+,KinetiFibers Pro,Beta,Grants +1 Agility and Constitution.,6,3500,5
+Cybernetic Arm,TitanArm A200,Alpha,"Replaces one arm with a visible cybernetic variant. When using that arm, you gain +1 Strength.
+You may install up to one pistol-sized firearm 1-handed melee weapon or tool that can retract from within the internals - you have to pay for the weapon or tool seperately.",7,1400,3
+,PowerLimb CX,Beta,"Replaces one arm with a visible cybernetic variant. When using that arm, you gain +2 Strength.
+You may install up to one pistol-sized firearm 1-handed melee weapon or tool that can retract from within the internals - you have to pay for the weapon or tool seperately.",7,2000,4
+,Armatek Series 7,Omega,"Replaces one arm with a natural looking cybernetic limb that is nearly indetectable as such. When using that arm, you gain +2 Strength. You may install up to one pistol-sized firearm 1-handed melee weapon or tool that can retract from within the internals - you have to pay for the weapon or tool seperately.",5,3500,5
+Cybernetic Legs,Legionis Mk II,Alpha,"Replaces both legs with visible cybernetic variants. Grants +2 speed and +2 pool bonus on all physical tests where your legs are heavily involved, mostly running, jumping and landing.",9,1800,3
+,PaceMaster Pro,Beta,"Replaces both legs with visible cybernetic variants. Grants +3 speed and +2 pool bonus on all physical tests where your legs are heavily involved, mostly running, jumping and landing.
+
+Additionally, you can jump twice as high or far as a normal human.",9,2600,4
+,StriderLeg XT,Omega,"Replaces both legs with natural looking cybernetic limbs that are nearly indetectable as such. Grants +3 speed and +2 pool bonus on all physical tests where your legs are heavily involved, mostly running, jumping and landing.
+
+Additionally, you can jump twice as high or far as a normal human.",6,4200,5
+Adrenaline Booster,SurgeMod XJ,Alpha,"Can be triggered once per day. If you do so, you may ignore the effects of one wound up to severity 3 for 5 minutes. You also regain one edge point.",4,900,4
+,Excitera-BX,Beta,"Can be triggered once per day. If you do so, you may ignore the effects of one wound up to severity 5 for 20 minutes, or remove unconsciousness. You also regain one edge point.",5,1600,4
+Pain Editor,NeuroQuell-X,Alpha,"You may ignore the effects of up to one severity 1 injury - you still have to suffer its injury pool modifier and eventually treat it, you merely ignore its impact. At the beginning of each round, you can re-determine which severity 1 injury your pain editor targets.",3,1100,3
+,SomaCalm Pro,Beta,"You may ignore the effects of up to two severity 1 injuries or a single severity 2 injury - you still have to suffer their injury pool modifiers and eventually treat them, you merely ignore their impact. At the beginning of each round, you can re-determine which injuries your pain editor targets.",6,1800,4
+Internal Cyberdeck,DeckTek iN-900,Alpha,"A cyberdeck mostly to be used as a Computer or for hacking. You need to choose and separately pay for a cyberdeck model which is then implanted. Detecting such a deck is a difficult task (as they often come out as mere Neural Links in cursory scans).
+
+When using an internal Cyberdeck, all hacking attempts generate a free trigger.",6,1000,4
+,Intruder Mk IV,Beta,"A cyberdeck mostly to be used as a Computer or for hacking. You need to choose and separately pay for a cyberdeck model which is then implanted. Detecting such a deck is a difficult task (as they often come out as mere Neural Links in cursory scans).
+
+When using an internal Cyberdeck, all hacking attempts gain +1 pool bonus and generate a free trigger. The installed device gains +20% device integrity.",6,2000,5
+Cognitive Enhancement,Mnemonic Vault,Alpha,Grants perfect recall of any information seen or heard in the past 30 days.,2,800,2
+,Dreamsync Cortex,Beta,"Grants perfect recall of any information seen or heard in the past 180 days. Additionally, it enables the user to control their dreams and interface with virtual reality the same way a ""VR Headset"" would.",4,1500,3
+Integrated Comms,Azerra Stealthlink,Alpha,"Implants a basic communication device, allowing for audio transmissions to other devices within 10km. The user can merely think what they want to say, rather than having to actually talk.",3,750,3
+Improved Metabolism,UltraMend 7.2,Alpha,"You gain +5 pool bonus for your nightly regeneration, and regain 40% instead of just 20% of your health.",5,800,4
+,HealSync N500,Beta,"You gain +3 pool bonus for your natural regeneration, but you may roll for it once every 6 hours, even if you don't rest.",5,2000,5
+,Regenix Suite,Omega,"You may perform your natural regeneration every hour instead. As a drawback, surgery on you suffers a -4 pool penalty and drugs don't have any effect. You also need to eat twice as much.",5,6000,6
+Cybernetic Lungs,RespiraTech LX,Alpha,"Your lungs filtrate hazards and pollutants out of the air, and provide you with a 30 Minute buffer before these become dangerous to you. You also gain a 10 Minute long lasting emergency oxygen tank.",3,750,3
+,PulmoSynth V8,Beta,"You become fully immune to airborne pollutants or hazards, and you gain a 30 Minute long lasting emergency oxygen tank.",4,1300,4
+,AirForge AL200,Omega,"You don't need to breathe anymore, but your body needs access to oxygen at least once every 24 hours.",6,2500,5
+Cybernetic Liver,HepatiCore Basic,Alpha,"A streamlined liver augmentation designed for efficient alcohol metabolism, minimizing harmful effects and enabling prolonged social indulgence.",2,400,2
+,BioPurge Omega,Beta,"Advanced cybernetic filtration technology offering protection against toxins, poisons, unwanted drugs, and ingested environmental contaminants. When using drugs, roll a d6. On a 4+, you may ignore any related drawbacks.",5,1800,4
+Emotional Regulator,MoodModulator S5,Alpha,"Allows you to alter your mood as you wish, including the simulation of drug like effects. In turn, you can hide fear, induce confidence and similar.
+
+You gain +1 pool bonus for all related checks, including social ones like Con Arts or Command.",6,1300,3
+,CalmLink ER-3,Beta,"Allows you to alter your mood as you wish, including the simulation of drug like effects. In turn, you can hide fear, induce confidence and similar.
+
+You gain +1 Coolness and +1 pool bonus for all suitable checks, including social ones like Con Arts or Command.",6,3500,4
+Cognitech Processor,NeuroEnhance VX,Alpha,Grants +1 Intelligence.,5,2400,4
+,SynapseX-200,Beta,"Grants +2 Intelligence, but the device becomes prone to deal biofeedback damage to you in case someone hacks you.",5,6000,5
+Skillwire Slot,SkillSlot V3,Alpha,"Allows you to insert a single chip at any given time. Each chip corresponds to a skill, and puts that skill to level 3 (regardless of your own levels). If your own level in the skill is equal or higher, you gain +1 pool bonus instead. Changing a chip is an action that costs 5 AP.
+
+Chips are sold separately at rarity 4 and 500 Credits each.",5,1300,4
+,AbilityLink AS,Beta,"Allows you to insert up to two chips at any given time. Each chip corresponds to a skill, and puts that skill to level 3 (regardless of your own levels). If your own level in the skill is equal or higher, you gain +1 pool bonus instead. Changing a chip is an action that costs 5 AP.
+
+Chips are sold separately at rarity 4 and 500 Credits each.",7,2250,4
+,TalentJack 2.1,Omega,"You gain +1 Education, and you can insert up to two chips at any given time. Each chip corresponds to a skill, and puts that skill to level 3 (regardless of your own levels). If your own level in the skill is equal or higher, you gain +1 pool bonus instead. Changing a chip is an action that costs 5 AP.
+
+Chips are sold separately at rarity 4 and 500 Credits each.",7,4000,5
+Vacuum Skin,Vacuseal Dermis,Alpha,Makes your outer body layer resistant to the effects of the vaccuum for up to 30 Minutes. The skin looks visibly altered and has an alien texture to it.,6,1500,4
+,Starshield Epidermal Layer,Beta,Makes your outer body layer resistant to the effects of the vacuum indefinitely. The skin looks visibly altered and has an alien texture to it.,7,2800,4
+,XenoDerm Exo-Layer,Omega,"As above, and allows you to withstand extreme weather (heat, cold or corrosion) for up to 30 Minutes - you still need to ensure a suitable oxygen intake. The skin looks visibly altered and has an alien texture to it.",7,4500,5
+Stealth Skin,Shadow Veil,Alpha,"Attempts to recognize the user's face with surveillance, as well as biometric scanning or heat detection suffer a -3 pool penalty.",4,1800,4
+,Lightbender Skin,Beta,"Attempts to recognize the user's face with surveillance, as well as biometric scanning or heat detection suffer a -3 pool penalty.
+
+The skin tech can mimic surrounding textures and colors, granting +3 pool on checks to stay hidden - can also be used to display cool tattoos at will.",6,4000,5
+Navigation Suites,Navix Orientier,Alpha,"Provides you with an internal magnetometer and gyro-compass, capable of keeping you oriented in most planetary, ship-board, and station-side environments. You may reroll any roll related to local scale navigation and maneuvering, except in areas devoid of magnetic fields like deep space.",2,550,2
+,StarLink Inner Guide 2,Beta,"Integrates inertial guidance with internal magnetometers and path optimization algorithms to facilitate navigation and maneuvering in any environment. You may reroll any roll related to personal navigation regardless of scale or environment. Additionally, you gain +1 Speed.",3,1100,3
+,Navix FDS,Omega," Implements a multi-node magnetometer network throughout your body that precisely measures local magnetic fields and overlays them on your vision. You can see masses of metal, flows of electricity, and magnetic fields within 5 squares with the clarity of normal vision, including through most barriers. You may reroll any roll related to personal navigation regardless of scale or environment.",4,2400,4
+Sensor Arrays,Heisenberg Systems Rad Alert,Alpha,"Implanted particle and radiation sensors monitor local radiation conditions and provide warning at configurable danger thresholds. You always know the intensity and types of radiation present in your environment, and whether they present a health hazard.",2,500,2
+,Heisenberg Systems MS-SpectraFeel,Beta,"You always know current radiation levels (and whether they pose a health risk or not), and through a combination of emitters and sensors embedded in your palms you are enabled to identify substances by touch, allowing you to discern chemical compositions in detail, and analyze the internal structure of objects to a depth of approximately 20cm. Such active scanning can be detected. When repairing something, you gain +1 pool due to the added layers of information.",5,2000,4
+Pheromone Glands,Pheroslaver 3,Alpha,Grants +1 pool bonus to all social checks when trying to manipulate others within range 5.,5,1000,4
+,Pacifier Pixiedust XT,Beta,"Grants +1 pool bonus to all social checks when trying to manipulate others within range 5. Once per day you can release a cloud of strong pheromones within range 5. You can attempt a Con Arts or Command check, and victims have to pass a Survival or Empathy check with more successes than you - they gain a pool bonus the more ridiculous your demands are. If they fail, they will temporarily follow your request.",5,2500,5
+Cortexbomb,Martyrmaker v5,Alpha,"Implants a bomb in the target's head that can be detonated by broadcasting a special encrypted signal.
+It explodes with the profile of a frag grenade with 2 Triggers.",6,800,4
+,Flowershower Mk-2,Beta,"Implants a bomb in the target's head that can be detonated by broadcasting a special encrypted signal.
+It explodes with the profile of a rocket launcher and as if 2 Triggers had been rolled for each of the trigger options.",6,2000,5
+,Ares Shroomhead,Omega,"Implants a bomb in the target's head that can be detonated by broadcasting a special encrypted signal. The implant merely shows as a Neural Link in cursory cyberware scans.
+It explodes with the profile of a small tactical nuke, dealing 30 damage to everything in a 50 square radius (and half that damage for every 50 squares after that).",8,5000,6

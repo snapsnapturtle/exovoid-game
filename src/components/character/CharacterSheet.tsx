@@ -1,7 +1,9 @@
 import { useState } from 'react'
+import { useNavigate } from '@tanstack/react-router'
 import type { Character } from '~/lib/types/database'
 import { useCharacter } from '~/lib/hooks/useCharacter'
 import { computeAllDerivedStats } from '~/lib/game-logic/derived-stats'
+import { deleteCharacter } from '~/lib/server/characters'
 import { CharacterHeader } from './CharacterHeader'
 import { AttributesPanel } from './AttributesPanel'
 import { DerivedStatsPanel } from './DerivedStatsPanel'
@@ -24,12 +26,31 @@ export function CharacterSheet({
   isGm,
 }: CharacterSheetProps) {
   const [mode, setMode] = useState<SheetMode>('play')
+  const [deleting, setDeleting] = useState(false)
+  const navigate = useNavigate()
   const { character, saveStatus, updateField, updateAttribute, updateSkill } =
     useCharacter(initial, canEdit)
 
   const derivedStats = computeAllDerivedStats(character.attributes)
   const isEditMode = mode === 'edit'
   const editScopeCanEdit = canEdit && isEditMode
+
+  async function handleDelete() {
+    const confirmed = window.confirm(
+      `Delete ${character.name || 'this character'}? This cannot be undone.`,
+    )
+    if (!confirmed) return
+    setDeleting(true)
+    try {
+      const { gameId } = await deleteCharacter({
+        data: { characterId: character.id },
+      })
+      navigate({ to: '/games/$gameId', params: { gameId } })
+    } catch (e) {
+      setDeleting(false)
+      alert(e instanceof Error ? e.message : 'Failed to delete character')
+    }
+  }
 
   return (
     <div className="space-y-4 p-6">
@@ -41,12 +62,14 @@ export function CharacterSheet({
         canEdit={editScopeCanEdit}
         showModeToggle={canEdit}
         isEditMode={isEditMode}
+        deleting={deleting}
         onNameChange={(v) => updateField('name', v)}
         onCareerChange={(v) => updateField('career', v)}
         onExperienceChange={(v) => updateField('experience', v)}
         onModeToggle={() =>
           setMode((m) => (m === 'play' ? 'edit' : 'play'))
         }
+        onDelete={handleDelete}
       />
 
       <div className="grid gap-3 lg:grid-cols-[1fr_auto]">

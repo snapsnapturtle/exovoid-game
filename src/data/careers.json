@@ -1,0 +1,1921 @@
+[
+  {
+    "name": "Space Marine",
+    "description": "The Space Marine is an elite soldier, equipped with advanced armor and weaponry designed for combat in zero-g, confined environments, like space ships and stations. Trained for boarding actions, they excel in heavy combat and can withstand the rigors of space warfare.",
+    "startingSkills": [
+      {
+        "name": "Zero-G",
+        "level": 3
+      },
+      {
+        "name": "Firearms",
+        "level": 2
+      },
+      {
+        "name": "Melee",
+        "level": 2
+      },
+      {
+        "name": "Defense",
+        "level": 2
+      },
+      {
+        "name": "Survival",
+        "level": 1
+      }
+    ],
+    "startingEquipment": [
+      "Weapons (incl. Mods) worth 250 Credits.",
+      "Armor (incl. Mods) worth 10.000 Credits.",
+      "Cybernetics worth 1000 Credits."
+    ],
+    "talents": [
+      {
+        "talent": "Impenetrable Shell",
+        "tier": 0
+      },
+      {
+        "talent": "Second Skin",
+        "tier": 0
+      },
+      {
+        "talent": "Zero-G Finesse",
+        "tier": 0
+      },
+      {
+        "talent": "Lockpicker",
+        "tier": 1
+      },
+      {
+        "talent": "Martial Artist",
+        "tier": 1
+      },
+      {
+        "talent": "Combat Clarity",
+        "tier": 2
+      },
+      {
+        "talent": "Point Blank",
+        "tier": 2
+      },
+      {
+        "talent": "Defensive Posture",
+        "tier": 3
+      },
+      {
+        "talent": "Riposte",
+        "tier": 3
+      },
+      {
+        "talent": "Training: Constitution",
+        "tier": 4
+      },
+      {
+        "talent": "Alertness",
+        "tier": 5
+      },
+      {
+        "talent": "Tactical Advance",
+        "tier": 5
+      },
+      {
+        "talent": "Exploit Weakspot",
+        "tier": 6
+      },
+      {
+        "talent": "Iron Skin",
+        "tier": 6
+      },
+      {
+        "talent": "Training: Strength",
+        "tier": 7
+      }
+    ]
+  },
+  {
+    "name": "Infantry",
+    "description": "Infantry soldiers are the backbone of any military force, versatile and adaptable. They are well-trained in a variety of weapons and tactics, capable of holding the line in ground battles, urban warfare, or planetary invasions. Infantry can adapt to many combat situations and provide essential support in larger operations.",
+    "startingSkills": [
+      {
+        "name": "Firearms",
+        "level": 4
+      },
+      {
+        "name": "Heavy Weapons",
+        "level": 2
+      },
+      {
+        "name": "Athletics",
+        "level": 2
+      },
+      {
+        "name": "Survival",
+        "level": 1
+      },
+      {
+        "name": "Melee",
+        "level": 1
+      }
+    ],
+    "startingEquipment": [
+      "Weapons (incl. Mods) worth 2.000 Credits.",
+      "Military-Grade Combat Suit and mods worth 400 Credits.",
+      "Cybernetics worth 2.000 Credits.",
+      "10 Assets."
+    ],
+    "talents": [
+      {
+        "talent": "Directional Explosions",
+        "tier": 0
+      },
+      {
+        "talent": "Pull Together",
+        "tier": 0
+      },
+      {
+        "talent": "Recoil Control",
+        "tier": 0
+      },
+      {
+        "talent": "Cover Ducking",
+        "tier": 1
+      },
+      {
+        "talent": "Far Shot",
+        "tier": 1
+      },
+      {
+        "talent": "Quick Reload",
+        "tier": 2
+      },
+      {
+        "talent": "Sprinter",
+        "tier": 2
+      },
+      {
+        "talent": "Cyberadaption Training",
+        "tier": 3
+      },
+      {
+        "talent": "Tough As Nails",
+        "tier": 3
+      },
+      {
+        "talent": "Training: Coolness",
+        "tier": 4
+      },
+      {
+        "talent": "Effective Demolition",
+        "tier": 5
+      },
+      {
+        "talent": "Trigger Discipline",
+        "tier": 5
+      },
+      {
+        "talent": "Embracing Chaos",
+        "tier": 6
+      },
+      {
+        "talent": "Speed Trigger",
+        "tier": 6
+      },
+      {
+        "talent": "Training: Agility",
+        "tier": 7
+      }
+    ]
+  },
+  {
+    "name": "Field Medic",
+    "description": "The Field Medic is a crucial support class, skilled in battlefield medicine and emergency surgery. They can stabilize wounded comrades and treat injuries in the field. Field Medics keep their team alive in the most dangerous situations, making them indispensable in prolonged engagements.",
+    "startingSkills": [
+      {
+        "name": "Medicine",
+        "level": 4
+      },
+      {
+        "name": "Survival",
+        "level": 2
+      },
+      {
+        "name": "Tech",
+        "level": 2
+      },
+      {
+        "name": "Empathy",
+        "level": 1
+      },
+      {
+        "name": "Defense",
+        "level": 1
+      }
+    ],
+    "startingEquipment": [
+      "Weapons (incl. Mods) worth 500 Credits.",
+      "Medi Suit and mods worth 400 Credits.",
+      "Engram Reader and medicine items worth 400 Credits.",
+      "15 Assets."
+    ],
+    "talents": [
+      {
+        "talent": "Field Doctor",
+        "tier": 0
+      },
+      {
+        "talent": "Sprinter",
+        "tier": 0
+      },
+      {
+        "talent": "Third Wind",
+        "tier": 0
+      },
+      {
+        "talent": "Efficient Treatment",
+        "tier": 1
+      },
+      {
+        "talent": "Trigger Discipline",
+        "tier": 1
+      },
+      {
+        "talent": "Juiced Up",
+        "tier": 2
+      },
+      {
+        "talent": "Steady Aim",
+        "tier": 2
+      },
+      {
+        "talent": "Evasive",
+        "tier": 3
+      },
+      {
+        "talent": "Reanimation",
+        "tier": 3
+      },
+      {
+        "talent": "Training: Intelligence",
+        "tier": 4
+      },
+      {
+        "talent": "Drug Expert",
+        "tier": 5
+      },
+      {
+        "talent": "Precision Trauma",
+        "tier": 5
+      },
+      {
+        "talent": "Lethal Attacks",
+        "tier": 6
+      },
+      {
+        "talent": "Self-Treatment",
+        "tier": 6
+      },
+      {
+        "talent": "Training: Agility",
+        "tier": 7
+      }
+    ]
+  },
+  {
+    "name": "Scientist",
+    "description": "Scientists are the intellectual powerhouses of the group, possessing deep knowledge in various scientific fields such as biology, chemistry, physics, and xenology. They can analyze data, conduct experiments, and apply scientific principles to solve complex problems, often providing innovative solutions to technical challenges.",
+    "startingSkills": [
+      {
+        "name": "Science",
+        "level": 4
+      },
+      {
+        "name": "Tech",
+        "level": 2
+      },
+      {
+        "name": "Computers",
+        "level": 2
+      },
+      {
+        "name": "Xenology",
+        "level": 2
+      }
+    ],
+    "startingEquipment": [
+      "Regular items worth 2000 Credits.",
+      "Regular Home with Lab or Workshop.",
+      "Servitor Drone.",
+      "15 Assets."
+    ],
+    "talents": [
+      {
+        "talent": "Anatomical Insight",
+        "tier": 0
+      },
+      {
+        "talent": "Drug Manufacturing",
+        "tier": 0
+      },
+      {
+        "talent": "Linguist",
+        "tier": 0
+      },
+      {
+        "talent": "Anticipation",
+        "tier": 1
+      },
+      {
+        "talent": "Xeno Engineer",
+        "tier": 1
+      },
+      {
+        "talent": "Flight Tracking",
+        "tier": 2
+      },
+      {
+        "talent": "Sterilization",
+        "tier": 2
+      },
+      {
+        "talent": "Irreproducible Prototype",
+        "tier": 3
+      },
+      {
+        "talent": "Surgeon",
+        "tier": 3
+      },
+      {
+        "talent": "Training: Education",
+        "tier": 4
+      },
+      {
+        "talent": "Reboot Shield Matrix",
+        "tier": 5
+      },
+      {
+        "talent": "Stroke of Genius",
+        "tier": 5
+      },
+      {
+        "talent": "Phantom Scan",
+        "tier": 6
+      },
+      {
+        "talent": "Wonder Doctor",
+        "tier": 6
+      },
+      {
+        "talent": "Training: Intelligence",
+        "tier": 7
+      }
+    ]
+  },
+  {
+    "name": "Agent",
+    "description": "Agents are masters of stealth, deception, and infiltration. Trained in espionage, covert operations, and close-quarters combat, they excel in missions that require subtlety and precision. Agents are the go-to class for intelligence gathering, sabotage, and high-stakes undercover operations.",
+    "startingSkills": [
+      {
+        "name": "Infiltration",
+        "level": 3
+      },
+      {
+        "name": "Con Arts",
+        "level": 2
+      },
+      {
+        "name": "Firearms",
+        "level": 2
+      },
+      {
+        "name": "Investigation",
+        "level": 2
+      },
+      {
+        "name": "Skullduggery",
+        "level": 1
+      }
+    ],
+    "startingEquipment": [
+      "Weapons (incl. Mods) worth 1000 Credits.",
+      "Civilian Combat Suit and mods worth 400 Credits.",
+      "Espionage items worth 2000 Credits.",
+      "Cybernetics worth 1000 Credits.",
+      "10 Assets."
+    ],
+    "talents": [
+      {
+        "talent": "Far Shot",
+        "tier": 0
+      },
+      {
+        "talent": "Lockpicker",
+        "tier": 0
+      },
+      {
+        "talent": "Spy",
+        "tier": 0
+      },
+      {
+        "talent": "Concealment",
+        "tier": 1
+      },
+      {
+        "talent": "Linguist",
+        "tier": 1
+      },
+      {
+        "talent": "Breath In, Exhale, Fire",
+        "tier": 2
+      },
+      {
+        "talent": "Mirror",
+        "tier": 2
+      },
+      {
+        "talent": "Relentless Pursuit",
+        "tier": 3
+      },
+      {
+        "talent": "White Lies",
+        "tier": 3
+      },
+      {
+        "talent": "Training: Coolness",
+        "tier": 4
+      },
+      {
+        "talent": "Assassin",
+        "tier": 5
+      },
+      {
+        "talent": "Efficient Subroutines",
+        "tier": 5
+      },
+      {
+        "talent": "Danger Sense",
+        "tier": 6
+      },
+      {
+        "talent": "Vanish",
+        "tier": 6
+      },
+      {
+        "talent": "Training: Personality",
+        "tier": 7
+      }
+    ]
+  },
+  {
+    "name": "Hacker",
+    "description": "Hackers are experts in digital warfare, capable of breaching security systems, manipulating data, and taking control of enemy technology. Whether it’s disabling security grids or turning enemy drones against their owners, Hackers play a critical role in modern warfare by controlling the digital battlefield.",
+    "startingSkills": [
+      {
+        "name": "Computers",
+        "level": 4
+      },
+      {
+        "name": "Tech",
+        "level": 3
+      },
+      {
+        "name": "Skullduggery",
+        "level": 2
+      },
+      {
+        "name": "Infiltration",
+        "level": 1
+      }
+    ],
+    "startingEquipment": [
+      "Weapons (incl. Mods) worth 500 Credits.",
+      "Hacking items worth 1000 Credits.",
+      "Cybernetics worth 2000 Credits.",
+      "15 Assets."
+    ],
+    "talents": [
+      {
+        "talent": "Concealment",
+        "tier": 0
+      },
+      {
+        "talent": "Efficient Subroutines",
+        "tier": 0
+      },
+      {
+        "talent": "Fasthack",
+        "tier": 0
+      },
+      {
+        "talent": "Living Shadow",
+        "tier": 1
+      },
+      {
+        "talent": "Phishing Network",
+        "tier": 1
+      },
+      {
+        "talent": "System Redundancies",
+        "tier": 2
+      },
+      {
+        "talent": "Tinkerer",
+        "tier": 2
+      },
+      {
+        "talent": "Cybersecurity Specialist",
+        "tier": 3
+      },
+      {
+        "talent": "Monitoring",
+        "tier": 3
+      },
+      {
+        "talent": "Training: Intelligence",
+        "tier": 4
+      },
+      {
+        "talent": "Synergetic Installation",
+        "tier": 5
+      },
+      {
+        "talent": "System Hardening",
+        "tier": 5
+      },
+      {
+        "talent": "Biofeedback Shock",
+        "tier": 6
+      },
+      {
+        "talent": "Overload",
+        "tier": 6
+      },
+      {
+        "talent": "Training: Intelligence",
+        "tier": 7
+      }
+    ]
+  },
+  {
+    "name": "Celebrity",
+    "description": "The Celebrity is a master of influence and charisma, using their fame and public image to sway opinions, rally support, or manipulate social situations. Whether as a diplomat, spokesperson, or socialite, they can open doors that others cannot and sway the masses with their presence.",
+    "startingSkills": [
+      {
+        "name": "Con Arts",
+        "level": 4
+      },
+      {
+        "name": "Politics",
+        "level": 2
+      },
+      {
+        "name": "Empathy",
+        "level": 2
+      },
+      {
+        "name": "Streetwise",
+        "level": 2
+      }
+    ],
+    "startingEquipment": [
+      "Luxury Home.",
+      "Servitor Drone or 5000 Credits.",
+      "Hover Car.",
+      "15 Assets."
+    ],
+    "talents": [
+      {
+        "talent": "First Impression",
+        "tier": 0
+      },
+      {
+        "talent": "Inheritance",
+        "tier": 0
+      },
+      {
+        "talent": "Motivational Speech",
+        "tier": 0
+      },
+      {
+        "talent": "Connections",
+        "tier": 1
+      },
+      {
+        "talent": "Seducer",
+        "tier": 1
+      },
+      {
+        "talent": "Cash Flow",
+        "tier": 2
+      },
+      {
+        "talent": "Galaxy-Wide Fans",
+        "tier": 2
+      },
+      {
+        "talent": "Grip On Life",
+        "tier": 3
+      },
+      {
+        "talent": "Haggler",
+        "tier": 3
+      },
+      {
+        "talent": "Training: Personality",
+        "tier": 4
+      },
+      {
+        "talent": "Mob Of Fans",
+        "tier": 5
+      },
+      {
+        "talent": "White Lies",
+        "tier": 5
+      },
+      {
+        "talent": "Notorious Liar",
+        "tier": 6
+      },
+      {
+        "talent": "Quick Witted",
+        "tier": 6
+      },
+      {
+        "talent": "Training: Coolness",
+        "tier": 7
+      }
+    ]
+  },
+  {
+    "name": "Smuggler",
+    "description": "Smugglers are resourceful and cunning, specializing in the transport of illicit goods across borders and through blockades. They excel in evasion, negotiation, and black market dealings, making them invaluable for acquiring rare items or navigating the criminal underworld.",
+    "startingSkills": [
+      {
+        "name": "Pilot",
+        "level": 3
+      },
+      {
+        "name": "Skullduggery",
+        "level": 3
+      },
+      {
+        "name": "Streetwise",
+        "level": 2
+      },
+      {
+        "name": "Con Arts",
+        "level": 2
+      }
+    ],
+    "startingEquipment": [
+      "Weapons (incl. Mods) worth 500 Credits.",
+      "Any vehicles / space ships worth 10 Assets (including upgrades or modules).",
+      "20 Assets."
+    ],
+    "talents": [
+      {
+        "talent": "Concealed Approach",
+        "tier": 0
+      },
+      {
+        "talent": "Connections",
+        "tier": 0
+      },
+      {
+        "talent": "Unpredictable Aim",
+        "tier": 0
+      },
+      {
+        "talent": "Effective Navigation",
+        "tier": 1
+      },
+      {
+        "talent": "Thug Language",
+        "tier": 1
+      },
+      {
+        "talent": "Evasive Positioning",
+        "tier": 2
+      },
+      {
+        "talent": "Point Blank",
+        "tier": 2
+      },
+      {
+        "talent": "Concealment",
+        "tier": 3
+      },
+      {
+        "talent": "Secret Stash",
+        "tier": 3
+      },
+      {
+        "talent": "Training: Coolness",
+        "tier": 4
+      },
+      {
+        "talent": "Danger Sense",
+        "tier": 5
+      },
+      {
+        "talent": "Vehicle Specialization",
+        "tier": 5
+      },
+      {
+        "talent": "Dual Wield",
+        "tier": 6
+      },
+      {
+        "talent": "Experimental Upgrade",
+        "tier": 6
+      },
+      {
+        "talent": "Training: Personality",
+        "tier": 7
+      }
+    ]
+  },
+  {
+    "name": "Enforcer",
+    "description": "The Enforcer is a heavy-hitting combatant skilled in enforcing the law (or breaking it). They are the muscle of the group, adept at intimidation, melee combat, and handling high-risk confrontations. Enforcers excel at maintaining order or imposing their will through sheer physical presence.",
+    "startingSkills": [
+      {
+        "name": "Melee",
+        "level": 4
+      },
+      {
+        "name": "Defense",
+        "level": 2
+      },
+      {
+        "name": "Command",
+        "level": 2
+      },
+      {
+        "name": "Survival",
+        "level": 2
+      }
+    ],
+    "startingEquipment": [
+      "Weapons (incl. Mods) worth 1000 Credits.",
+      "Motorcycle or Urban Car.",
+      "Any one armor (incl. Mods) worth 1000 Credits.",
+      "Cybernetics worth 3000 Credits.",
+      "8 Assets."
+    ],
+    "talents": [
+      {
+        "talent": "Charge",
+        "tier": 0
+      },
+      {
+        "talent": "Intimidation",
+        "tier": 0
+      },
+      {
+        "talent": "Will To Survive",
+        "tier": 0
+      },
+      {
+        "talent": "Riposte",
+        "tier": 1
+      },
+      {
+        "talent": "Unkillable Beast",
+        "tier": 1
+      },
+      {
+        "talent": "Heavy Blow",
+        "tier": 2
+      },
+      {
+        "talent": "Malfunction Resilience",
+        "tier": 2
+      },
+      {
+        "talent": "Sweep",
+        "tier": 3
+      },
+      {
+        "talent": "Weapon Mastery",
+        "tier": 3
+      },
+      {
+        "talent": "Training: Strength",
+        "tier": 4
+      },
+      {
+        "talent": "Dual Wield",
+        "tier": 5
+      },
+      {
+        "talent": "Quick Recovery",
+        "tier": 5
+      },
+      {
+        "talent": "Cyberadaption Training",
+        "tier": 6
+      },
+      {
+        "talent": "Lethal Attacks",
+        "tier": 6
+      },
+      {
+        "talent": "Training: Constitution",
+        "tier": 7
+      }
+    ]
+  },
+  {
+    "name": "Commander",
+    "description": "Commanders are natural leaders and strategists, capable of coordinating complex operations and inspiring their troops. They excel in tactical planning, resource management, and battlefield command, often turning the tide of battle through decisive leadership.",
+    "startingSkills": [
+      {
+        "name": "Command",
+        "level": 4
+      },
+      {
+        "name": "Politics",
+        "level": 2
+      },
+      {
+        "name": "Firearms",
+        "level": 2
+      },
+      {
+        "name": "Defense",
+        "level": 1
+      },
+      {
+        "name": "Sensors",
+        "level": 1
+      }
+    ],
+    "startingEquipment": [
+      "Weapons (incl. Mods) worth 1000 Credits.",
+      "Any one armor (incl. Mods) worth 1000 Credits.",
+      "Any vehicles / space ships (incl. modules) worth 15 Assets.",
+      "5 Assets."
+    ],
+    "talents": [
+      {
+        "talent": "Helping Hand",
+        "tier": 0
+      },
+      {
+        "talent": "Tactical Advance",
+        "tier": 0
+      },
+      {
+        "talent": "Tactical Commander",
+        "tier": 0
+      },
+      {
+        "talent": "Combat Clarity",
+        "tier": 1
+      },
+      {
+        "talent": "Pull Together",
+        "tier": 1
+      },
+      {
+        "talent": "Air Of Authority",
+        "tier": 2
+      },
+      {
+        "talent": "Quick Witted",
+        "tier": 2
+      },
+      {
+        "talent": "Call Target",
+        "tier": 3
+      },
+      {
+        "talent": "Demand Obedience",
+        "tier": 3
+      },
+      {
+        "talent": "Training: Coolness",
+        "tier": 4
+      },
+      {
+        "talent": "Danger Sense",
+        "tier": 5
+      },
+      {
+        "talent": "Field Doctor",
+        "tier": 5
+      },
+      {
+        "talent": "Anticipation",
+        "tier": 6
+      },
+      {
+        "talent": "Trigger Discipline",
+        "tier": 6
+      },
+      {
+        "talent": "Training: Personality",
+        "tier": 7
+      }
+    ]
+  },
+  {
+    "name": "Navy",
+    "description": "Navy personnel are specialists in space vessel operations, including navigation, ship-to-ship combat, and fleet management. They excel in commanding or operating spacecraft, making them essential for spaceborne missions, from exploration to combat.",
+    "startingSkills": [
+      {
+        "name": "Gunnery",
+        "level": 3
+      },
+      {
+        "name": "Pilot",
+        "level": 3
+      },
+      {
+        "name": "Sensors",
+        "level": 2
+      },
+      {
+        "name": "Tech",
+        "level": 2
+      }
+    ],
+    "startingEquipment": [
+      "Weapons (incl. Mods) worth 500 Credits.",
+      "Combat-Ready Space Suit.",
+      "30 Assets for space ships / modules."
+    ],
+    "talents": [
+      {
+        "talent": "Astrogation",
+        "tier": 0
+      },
+      {
+        "talent": "Fighter Piloting",
+        "tier": 0
+      },
+      {
+        "talent": "Specialized Gunner",
+        "tier": 0
+      },
+      {
+        "talent": "Brace For Impact",
+        "tier": 1
+      },
+      {
+        "talent": "Zero-G Finesse",
+        "tier": 1
+      },
+      {
+        "talent": "Combat Docking",
+        "tier": 2
+      },
+      {
+        "talent": "Weakspot Analysis",
+        "tier": 2
+      },
+      {
+        "talent": "Flight Tracking",
+        "tier": 3
+      },
+      {
+        "talent": "Point Defense",
+        "tier": 3
+      },
+      {
+        "talent": "Training: Agility",
+        "tier": 4
+      },
+      {
+        "talent": "Expert Jury-Rigger",
+        "tier": 5
+      },
+      {
+        "talent": "Multitasking Admiral",
+        "tier": 5
+      },
+      {
+        "talent": "Rank and File",
+        "tier": 6
+      },
+      {
+        "talent": "Sub-System Targeting",
+        "tier": 6
+      },
+      {
+        "talent": "Training: Intelligence",
+        "tier": 7
+      }
+    ]
+  },
+  {
+    "name": "Pirate",
+    "description": "Pirates are ruthless and opportunistic, thriving in lawless regions of space. They excel in raiding, plundering, and ship boarding operations. Pirates are adaptable fighters who use unconventional tactics and underhanded methods to achieve their goals, often motivated by profit.",
+    "startingSkills": [
+      {
+        "name": "Firearms",
+        "level": 2
+      },
+      {
+        "name": "Gunnery",
+        "level": 2
+      },
+      {
+        "name": "Infiltration",
+        "level": 2
+      },
+      {
+        "name": "Pilot",
+        "level": 2
+      },
+      {
+        "name": "Streetwise",
+        "level": 2
+      }
+    ],
+    "startingEquipment": [
+      "Weapons (incl. Mods) worth 500 Credits.",
+      "Small Space Station.",
+      "20 Assets for space ships / modules."
+    ],
+    "talents": [
+      {
+        "talent": "Combat Docking",
+        "tier": 0
+      },
+      {
+        "talent": "Salvager",
+        "tier": 0
+      },
+      {
+        "talent": "Thug Language",
+        "tier": 0
+      },
+      {
+        "talent": "Intimidation",
+        "tier": 1
+      },
+      {
+        "talent": "Lockpicker",
+        "tier": 1
+      },
+      {
+        "talent": "Fighter Piloting",
+        "tier": 2
+      },
+      {
+        "talent": "Point Blank",
+        "tier": 2
+      },
+      {
+        "talent": "Concealed Approach",
+        "tier": 3
+      },
+      {
+        "talent": "Monkey Patch",
+        "tier": 3
+      },
+      {
+        "talent": "Training: Agility",
+        "tier": 4
+      },
+      {
+        "talent": "Emergency Evasion",
+        "tier": 5
+      },
+      {
+        "talent": "Unpredictable Aim",
+        "tier": 5
+      },
+      {
+        "talent": "Grand Theft Ship",
+        "tier": 6
+      },
+      {
+        "talent": "Sub-System Targeting",
+        "tier": 6
+      },
+      {
+        "talent": "Training: Coolness",
+        "tier": 7
+      }
+    ]
+  },
+  {
+    "name": "Engineer",
+    "description": "Engineers are the technical experts, capable of building, repairing, and modifying equipment, vehicles, and starships. They excel at keeping technology operational and can often find creative solutions to mechanical or electronic problems, making them indispensable in the field.",
+    "startingSkills": [
+      {
+        "name": "Tech",
+        "level": 4
+      },
+      {
+        "name": "Science",
+        "level": 2
+      },
+      {
+        "name": "Computers",
+        "level": 2
+      },
+      {
+        "name": "Sensors",
+        "level": 2
+      }
+    ],
+    "startingEquipment": [
+      "One weapon or armor (incl. mods) worth 5000 Credits.",
+      "Crafting items worth 1000 Credits.",
+      "8 Assets."
+    ],
+    "talents": [
+      {
+        "talent": "Cybernetic Maintenance",
+        "tier": 0
+      },
+      {
+        "talent": "Gun Nut",
+        "tier": 0
+      },
+      {
+        "talent": "Tinkerer",
+        "tier": 0
+      },
+      {
+        "talent": "Perfected Ship Care",
+        "tier": 1
+      },
+      {
+        "talent": "Salvager",
+        "tier": 1
+      },
+      {
+        "talent": "Drone Fixer",
+        "tier": 2
+      },
+      {
+        "talent": "Experimental Upgrade",
+        "tier": 2
+      },
+      {
+        "talent": "Big Boom",
+        "tier": 3
+      },
+      {
+        "talent": "Expert Jury-Rigger",
+        "tier": 3
+      },
+      {
+        "talent": "Training: Intelligence",
+        "tier": 4
+      },
+      {
+        "talent": "Irreproducible Prototype",
+        "tier": 5
+      },
+      {
+        "talent": "Multi-Rigger",
+        "tier": 5
+      },
+      {
+        "talent": "Cybersecurity Specialist",
+        "tier": 6
+      },
+      {
+        "talent": "Master Of Improvisation",
+        "tier": 6
+      },
+      {
+        "talent": "Training: Agility",
+        "tier": 7
+      }
+    ]
+  },
+  {
+    "name": "Drone Rigger",
+    "description": "Drone Riggers specialize in controlling and deploying drones for various purposes, including reconnaissance, combat, and support roles. They excel at multitasking and can coordinate multiple drones simultaneously, providing a significant tactical advantage.",
+    "startingSkills": [
+      {
+        "name": "Tech",
+        "level": 3
+      },
+      {
+        "name": "Pilot",
+        "level": 3
+      },
+      {
+        "name": "Computers",
+        "level": 2
+      },
+      {
+        "name": "Gunnery",
+        "level": 2
+      }
+    ],
+    "startingEquipment": [
+      "VR Headset.",
+      "Tier-1 Cyberdeck.",
+      "Cybernetics worth 2000 Credits.",
+      "Drones worth 5000 Credits.",
+      "5 Assets."
+    ],
+    "talents": [
+      {
+        "talent": "Drone Fixer",
+        "tier": 0
+      },
+      {
+        "talent": "Gun Nut",
+        "tier": 0
+      },
+      {
+        "talent": "Living Shadow",
+        "tier": 0
+      },
+      {
+        "talent": "Gamer Mindset",
+        "tier": 1
+      },
+      {
+        "talent": "Spy",
+        "tier": 1
+      },
+      {
+        "talent": "Custom Model",
+        "tier": 2
+      },
+      {
+        "talent": "Vehicle Specialization",
+        "tier": 2
+      },
+      {
+        "talent": "Monitoring",
+        "tier": 3
+      },
+      {
+        "talent": "Unpredictable Aim",
+        "tier": 3
+      },
+      {
+        "talent": "Training: Agility",
+        "tier": 4
+      },
+      {
+        "talent": "Disposable Drone Army",
+        "tier": 5
+      },
+      {
+        "talent": "System Hardening",
+        "tier": 5
+      },
+      {
+        "talent": "Linked Control",
+        "tier": 6
+      },
+      {
+        "talent": "Minion Master",
+        "tier": 6
+      },
+      {
+        "talent": "Training: Intelligence",
+        "tier": 7
+      }
+    ]
+  },
+  {
+    "name": "Explorer",
+    "description": "Explorers are adventurers and pioneers, skilled in survival, navigation, and the discovery of new worlds or ancient ruins. They excel at surviving in harsh environments, mapping unknown territories, and uncovering hidden secrets, making them ideal for missions into the unknown.",
+    "startingSkills": [
+      {
+        "name": "Survival",
+        "level": 3
+      },
+      {
+        "name": "Xenology",
+        "level": 2
+      },
+      {
+        "name": "Investigation",
+        "level": 2
+      },
+      {
+        "name": "Zero-G",
+        "level": 2
+      },
+      {
+        "name": "Pilot",
+        "level": 1
+      }
+    ],
+    "startingEquipment": [
+      "40 Assets for space ships / modules.",
+      "Survival items worth 500 Credits."
+    ],
+    "talents": [
+      {
+        "talent": "Climber",
+        "tier": 0
+      },
+      {
+        "talent": "Jerryrigging",
+        "tier": 0
+      },
+      {
+        "talent": "Self-Treatment",
+        "tier": 0
+      },
+      {
+        "talent": "Astrogation",
+        "tier": 1
+      },
+      {
+        "talent": "Chart Comprehension",
+        "tier": 1
+      },
+      {
+        "talent": "Jack Of All Trades",
+        "tier": 2
+      },
+      {
+        "talent": "Will To Survive",
+        "tier": 2
+      },
+      {
+        "talent": "Disposable Drone Army",
+        "tier": 3
+      },
+      {
+        "talent": "Resourceful",
+        "tier": 3
+      },
+      {
+        "talent": "Training: Education",
+        "tier": 4
+      },
+      {
+        "talent": "Tracker",
+        "tier": 5
+      },
+      {
+        "talent": "Xeno Engineer",
+        "tier": 5
+      },
+      {
+        "talent": "Effective Navigation",
+        "tier": 6
+      },
+      {
+        "talent": "Sample Collector",
+        "tier": 6
+      },
+      {
+        "talent": "Training: Constitution",
+        "tier": 7
+      }
+    ]
+  },
+  {
+    "name": "Detective",
+    "description": "Detectives are masters of investigation and deduction, skilled at uncovering hidden truths, solving mysteries, and tracking down criminals. They excel in gathering clues, interrogating suspects, and piecing together complex cases, often acting as the moral compass of the group.",
+    "startingSkills": [
+      {
+        "name": "Investigation",
+        "level": 3
+      },
+      {
+        "name": "Empathy",
+        "level": 2
+      },
+      {
+        "name": "Con Arts",
+        "level": 2
+      },
+      {
+        "name": "Firearms",
+        "level": 2
+      },
+      {
+        "name": "Streetwise",
+        "level": 1
+      }
+    ],
+    "startingEquipment": [
+      "Weapons (incl. Mods) worth 500 Credits.",
+      "Regular items worth 1000 Credits.",
+      "Cybernetics worth 2000 Credits.",
+      "Simple Home + Regular Home.",
+      "10 Assets."
+    ],
+    "talents": [
+      {
+        "talent": "Intimidation",
+        "tier": 0
+      },
+      {
+        "talent": "Spy",
+        "tier": 0
+      },
+      {
+        "talent": "Tracker",
+        "tier": 0
+      },
+      {
+        "talent": "Fasthack",
+        "tier": 1
+      },
+      {
+        "talent": "Thug Language",
+        "tier": 1
+      },
+      {
+        "talent": "Danger Sense",
+        "tier": 2
+      },
+      {
+        "talent": "Master Detective",
+        "tier": 2
+      },
+      {
+        "talent": "Blend In",
+        "tier": 3
+      },
+      {
+        "talent": "Relentless Pursuit",
+        "tier": 3
+      },
+      {
+        "talent": "Training: Personality",
+        "tier": 4
+      },
+      {
+        "talent": "Demand Obedience",
+        "tier": 5
+      },
+      {
+        "talent": "Notorious Liar",
+        "tier": 5
+      },
+      {
+        "talent": "Blackmail",
+        "tier": 6
+      },
+      {
+        "talent": "Martial Artist",
+        "tier": 6
+      },
+      {
+        "talent": "Training: Coolness",
+        "tier": 7
+      }
+    ]
+  },
+  {
+    "name": "Criminal",
+    "description": "Criminals are underworld operatives who excel in illegal activities such as theft, smuggling, and black-market dealings. They are resourceful and cunning, often using their connections and street smarts to get what they want, making them useful for missions that require a less-than-legal approach.",
+    "startingSkills": [
+      {
+        "name": "Skullduggery",
+        "level": 3
+      },
+      {
+        "name": "Streetwise",
+        "level": 3
+      },
+      {
+        "name": "Firearms",
+        "level": 2
+      },
+      {
+        "name": "Infiltration",
+        "level": 2
+      }
+    ],
+    "startingEquipment": [
+      "Weapons (incl. Mods) worth 1000 Credits.",
+      "Regular items worth 500 Credits.",
+      "Cybernetics worth 2000 Credits.",
+      "2000 illicit credits as cash on hand (cannot be spent during character generation).",
+      "10 Assets."
+    ],
+    "talents": [
+      {
+        "talent": "Blend In",
+        "tier": 0
+      },
+      {
+        "talent": "Living Shadow",
+        "tier": 0
+      },
+      {
+        "talent": "Martial Artist",
+        "tier": 0
+      },
+      {
+        "talent": "Assassin",
+        "tier": 1
+      },
+      {
+        "talent": "Recoil Control",
+        "tier": 1
+      },
+      {
+        "talent": "Concealment",
+        "tier": 2
+      },
+      {
+        "talent": "Lurking Death",
+        "tier": 2
+      },
+      {
+        "talent": "Flurry",
+        "tier": 3
+      },
+      {
+        "talent": "Take What's Needed",
+        "tier": 3
+      },
+      {
+        "talent": "Training: Constitution",
+        "tier": 4
+      },
+      {
+        "talent": "Quickfingers",
+        "tier": 5
+      },
+      {
+        "talent": "Ripper",
+        "tier": 5
+      },
+      {
+        "talent": "Killer Instincts",
+        "tier": 6
+      },
+      {
+        "talent": "Saboteur",
+        "tier": 6
+      },
+      {
+        "talent": "Training: Coolness",
+        "tier": 7
+      }
+    ]
+  },
+  {
+    "name": "Tactical Enhanced Forces",
+    "description": "Members of the TEF are heavily augmented combatants who have integrated advanced cybernetics into their bodies, enhancing their physical and combat abilities. They excel in brutal combat and can take on roles that would be impossible for unaugmented humans, often at the cost of their humanity.",
+    "startingSkills": [
+      {
+        "name": "Melee",
+        "level": 4
+      },
+      {
+        "name": "Defense",
+        "level": 3
+      },
+      {
+        "name": "Tech",
+        "level": 2
+      },
+      {
+        "name": "Athletics",
+        "level": 1
+      }
+    ],
+    "startingEquipment": [
+      "Weapons (incl. Mods) worth 500 Credits.",
+      "Cybernetics worth 12.000 Credits."
+    ],
+    "talents": [
+      {
+        "talent": "Cybernetic Maintenance",
+        "tier": 0
+      },
+      {
+        "talent": "Drug Expert",
+        "tier": 0
+      },
+      {
+        "talent": "Iron Wall",
+        "tier": 0
+      },
+      {
+        "talent": "Cyberadaption Training",
+        "tier": 1
+      },
+      {
+        "talent": "Self-Treatment",
+        "tier": 1
+      },
+      {
+        "talent": "Alertness",
+        "tier": 2
+      },
+      {
+        "talent": "Malfunction Resilience",
+        "tier": 2
+      },
+      {
+        "talent": "Evasive",
+        "tier": 3
+      },
+      {
+        "talent": "Unkillable Beast",
+        "tier": 3
+      },
+      {
+        "talent": "Training: Agility",
+        "tier": 4
+      },
+      {
+        "talent": "Cybernetic Overload",
+        "tier": 5
+      },
+      {
+        "talent": "Synergetic Installation",
+        "tier": 5
+      },
+      {
+        "talent": "Dual Wield",
+        "tier": 6
+      },
+      {
+        "talent": "Rush In",
+        "tier": 6
+      },
+      {
+        "talent": "Training: Constitution",
+        "tier": 7
+      }
+    ]
+  },
+  {
+    "name": "Trader",
+    "description": "Traders are savvy merchants and negotiators who excel in commerce, barter, and resource management. They are skilled at acquiring goods, striking deals, and managing trade routes, making them vital for maintaining supplies and turning a profit in the galaxy’s markets.",
+    "startingSkills": [
+      {
+        "name": "Streetwise",
+        "level": 3
+      },
+      {
+        "name": "Con Arts",
+        "level": 3
+      },
+      {
+        "name": "Empathy",
+        "level": 2
+      },
+      {
+        "name": "Politics",
+        "level": 2
+      }
+    ],
+    "startingEquipment": [
+      "Weapons (incl. Mods) worth 250 Credits.",
+      "Common space station or 40 Assets for space ships / modules."
+    ],
+    "talents": [
+      {
+        "talent": "Connections",
+        "tier": 0
+      },
+      {
+        "talent": "Haggler",
+        "tier": 0
+      },
+      {
+        "talent": "Vehicle Specialization",
+        "tier": 0
+      },
+      {
+        "talent": "Astrogation",
+        "tier": 1
+      },
+      {
+        "talent": "Permit Collection",
+        "tier": 1
+      },
+      {
+        "talent": "First Impression",
+        "tier": 2
+      },
+      {
+        "talent": "Linguist",
+        "tier": 2
+      },
+      {
+        "talent": "Cash Flow",
+        "tier": 3
+      },
+      {
+        "talent": "Stock Broker",
+        "tier": 3
+      },
+      {
+        "talent": "Training: Education",
+        "tier": 4
+      },
+      {
+        "talent": "Experimental Upgrade",
+        "tier": 5
+      },
+      {
+        "talent": "White Lies",
+        "tier": 5
+      },
+      {
+        "talent": "Merchant's Guild",
+        "tier": 6
+      },
+      {
+        "talent": "Space Port Owner",
+        "tier": 6
+      },
+      {
+        "talent": "Training: Personality",
+        "tier": 7
+      }
+    ]
+  },
+  {
+    "name": "Diplomat",
+    "description": "Diplomats are skilled negotiators and political operators, specializing in forging alliances, brokering peace, and navigating complex political landscapes. They excel in social interactions and can defuse conflicts or manipulate events in their favor through words alone.",
+    "startingSkills": [
+      {
+        "name": "Politics",
+        "level": 4
+      },
+      {
+        "name": "Empathy",
+        "level": 2
+      },
+      {
+        "name": "Con Arts",
+        "level": 2
+      },
+      {
+        "name": "Command",
+        "level": 2
+      }
+    ],
+    "startingEquipment": [
+      "Simulant Drone or 2 Servitor drones or 8000 Credits.",
+      "Luxury Home.",
+      "10 Assets."
+    ],
+    "talents": [
+      {
+        "talent": "Diplomatic Immunity",
+        "tier": 0
+      },
+      {
+        "talent": "Permit Collection",
+        "tier": 0
+      },
+      {
+        "talent": "Police Handler",
+        "tier": 0
+      },
+      {
+        "talent": "Linguist",
+        "tier": 1
+      },
+      {
+        "talent": "Motivational Speech",
+        "tier": 1
+      },
+      {
+        "talent": "Cash Flow",
+        "tier": 2
+      },
+      {
+        "talent": "First Impression",
+        "tier": 2
+      },
+      {
+        "talent": "Personal Protection",
+        "tier": 3
+      },
+      {
+        "talent": "White Lies",
+        "tier": 3
+      },
+      {
+        "talent": "Training: Personality",
+        "tier": 4
+      },
+      {
+        "talent": "Air Of Authority",
+        "tier": 5
+      },
+      {
+        "talent": "Seducer",
+        "tier": 5
+      },
+      {
+        "talent": "Blackmail",
+        "tier": 6
+      },
+      {
+        "talent": "Mind Reader",
+        "tier": 6
+      },
+      {
+        "talent": "Training: Education",
+        "tier": 7
+      }
+    ]
+  },
+  {
+    "name": "Bounty Hunter",
+    "description": "Bounty Hunters are relentless trackers and skilled combatants who specialize in capturing or eliminating targets for a price. They excel in pursuit, combat, and survival, often taking on the most dangerous missions for the right reward.",
+    "startingSkills": [
+      {
+        "name": "Firearms",
+        "level": 3
+      },
+      {
+        "name": "Pilot",
+        "level": 2
+      },
+      {
+        "name": "Infiltration",
+        "level": 2
+      },
+      {
+        "name": "Investigation",
+        "level": 2
+      },
+      {
+        "name": "Survival",
+        "level": 1
+      }
+    ],
+    "startingEquipment": [
+      "Weapons (incl. Mods) worth 1000 Credits.",
+      "Armor (incl. Mods) worth 800 Credits.",
+      "Simple Home.",
+      "20 Assets for vehicles or space ships / modules."
+    ],
+    "talents": [
+      {
+        "talent": "Bountyhunter's Guild",
+        "tier": 0
+      },
+      {
+        "talent": "Far Shot",
+        "tier": 0
+      },
+      {
+        "talent": "Tracker",
+        "tier": 0
+      },
+      {
+        "talent": "Assassin",
+        "tier": 1
+      },
+      {
+        "talent": "Breath In, Exhale, Fire",
+        "tier": 1
+      },
+      {
+        "talent": "Relentless Pursuit",
+        "tier": 2
+      },
+      {
+        "talent": "Third Wind",
+        "tier": 2
+      },
+      {
+        "talent": "Gun Nut",
+        "tier": 3
+      },
+      {
+        "talent": "Iron Skin",
+        "tier": 3
+      },
+      {
+        "talent": "Training: Agility",
+        "tier": 4
+      },
+      {
+        "talent": "Tinkerer",
+        "tier": 5
+      },
+      {
+        "talent": "Trigger Discipline",
+        "tier": 5
+      },
+      {
+        "talent": "Gamer Mindset",
+        "tier": 6
+      },
+      {
+        "talent": "Perimeter Scan",
+        "tier": 6
+      },
+      {
+        "talent": "Training: Intelligence",
+        "tier": 7
+      }
+    ]
+  }
+]

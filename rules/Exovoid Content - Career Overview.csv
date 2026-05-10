@@ -1,0 +1,151 @@
+career,description,startingSkills,startingEquipment
+Space Marine,"The Space Marine is an elite soldier, equipped with advanced armor and weaponry designed for combat in zero-g, confined environments, like space ships and stations. Trained for boarding actions, they excel in heavy combat and can withstand the rigors of space warfare.","Zero-G: 3
+Firearms: 2
+Melee: 2
+Defense: 2
+Survival: 1","Weapons (incl. Mods) worth 250 Credits.
+Armor (incl. Mods) worth 10.000 Credits.
+Cybernetics worth 1000 Credits."
+Infantry,"Infantry soldiers are the backbone of any military force, versatile and adaptable. They are well-trained in a variety of weapons and tactics, capable of holding the line in ground battles, urban warfare, or planetary invasions. Infantry can adapt to many combat situations and provide essential support in larger operations.","Firearms: 4
+Heavy Weapons: 2
+Athletics: 2
+Survival: 1
+Melee: 1","Weapons (incl. Mods) worth 2.000 Credits.
+Military-Grade Combat Suit and mods worth 400 Credits.
+Cybernetics worth 2.000 Credits.
+10 Assets."
+Field Medic,"The Field Medic is a crucial support class, skilled in battlefield medicine and emergency surgery. They can stabilize wounded comrades and treat injuries in the field. Field Medics keep their team alive in the most dangerous situations, making them indispensable in prolonged engagements.","Medicine: 4
+Survival: 2
+Tech: 2
+Empathy: 1
+Defense: 1","Weapons (incl. Mods) worth 500 Credits.
+Medi Suit and mods worth 400 Credits.
+Engram Reader and medicine items worth 400 Credits.
+15 Assets."
+Scientist,"Scientists are the intellectual powerhouses of the group, possessing deep knowledge in various scientific fields such as biology, chemistry, physics, and xenology. They can analyze data, conduct experiments, and apply scientific principles to solve complex problems, often providing innovative solutions to technical challenges.","Science: 4
+Tech: 2
+Computers: 2
+Xenology: 2","Regular items worth 2000 Credits.
+Regular Home with Lab or Workshop.
+Servitor Drone.
+15 Assets."
+Agent,"Agents are masters of stealth, deception, and infiltration. Trained in espionage, covert operations, and close-quarters combat, they excel in missions that require subtlety and precision. Agents are the go-to class for intelligence gathering, sabotage, and high-stakes undercover operations.","Infiltration: 3
+Con Arts: 2
+Firearms: 2
+Investigation: 2
+Skullduggery: 1","Weapons (incl. Mods) worth 1000 Credits.
+Civilian Combat Suit and mods worth 400 Credits.
+Espionage items worth 2000 Credits.
+Cybernetics worth 1000 Credits.
+10 Assets."
+Hacker,"Hackers are experts in digital warfare, capable of breaching security systems, manipulating data, and taking control of enemy technology. Whether it’s disabling security grids or turning enemy drones against their owners, Hackers play a critical role in modern warfare by controlling the digital battlefield.","Computers: 4
+Tech: 3
+Skullduggery: 2
+Infiltration: 1","Weapons (incl. Mods) worth 500 Credits.
+Hacking items worth 1000 Credits.
+Cybernetics worth 2000 Credits.
+15 Assets."
+Celebrity,"The Celebrity is a master of influence and charisma, using their fame and public image to sway opinions, rally support, or manipulate social situations. Whether as a diplomat, spokesperson, or socialite, they can open doors that others cannot and sway the masses with their presence.","Con Arts: 4
+Politics: 2
+Empathy: 2
+Streetwise: 2","Luxury Home.
+Servitor Drone or 5000 Credits.
+Hover Car.
+15 Assets."
+Smuggler,"Smugglers are resourceful and cunning, specializing in the transport of illicit goods across borders and through blockades. They excel in evasion, negotiation, and black market dealings, making them invaluable for acquiring rare items or navigating the criminal underworld.","Pilot: 3
+Skullduggery: 3
+Streetwise: 2
+Con Arts: 2","Weapons (incl. Mods) worth 500 Credits.
+Any vehicles / space ships worth 10 Assets (including upgrades or modules).
+20 Assets."
+Enforcer,"The Enforcer is a heavy-hitting combatant skilled in enforcing the law (or breaking it). They are the muscle of the group, adept at intimidation, melee combat, and handling high-risk confrontations. Enforcers excel at maintaining order or imposing their will through sheer physical presence.","Melee: 4
+Defense: 2
+Command: 2
+Survival: 2","Weapons (incl. Mods) worth 1000 Credits.
+Motorcycle or Urban Car.
+Any one armor (incl. Mods) worth 1000 Credits.
+Cybernetics worth 3000 Credits.
+8 Assets."
+Commander,"Commanders are natural leaders and strategists, capable of coordinating complex operations and inspiring their troops. They excel in tactical planning, resource management, and battlefield command, often turning the tide of battle through decisive leadership.","Command: 4
+Politics: 2
+Firearms: 2
+Defense: 1
+Sensors: 1","Weapons (incl. Mods) worth 1000 Credits.
+Any one armor (incl. Mods) worth 1000 Credits.
+Any vehicles / space ships (incl. modules) worth 15 Assets.
+5 Assets."
+Navy,"Navy personnel are specialists in space vessel operations, including navigation, ship-to-ship combat, and fleet management. They excel in commanding or operating spacecraft, making them essential for spaceborne missions, from exploration to combat.","Gunnery: 3
+Pilot: 3
+Sensors: 2
+Tech: 2","Weapons (incl. Mods) worth 500 Credits.
+Combat-Ready Space Suit.
+30 Assets for space ships / modules."
+Pirate,"Pirates are ruthless and opportunistic, thriving in lawless regions of space. They excel in raiding, plundering, and ship boarding operations. Pirates are adaptable fighters who use unconventional tactics and underhanded methods to achieve their goals, often motivated by profit.","Firearms: 2
+Gunnery: 2
+Infiltration: 2
+Pilot: 2
+Streetwise: 2","Weapons (incl. Mods) worth 500 Credits.
+Small Space Station.
+20 Assets for space ships / modules."
+Engineer,"Engineers are the technical experts, capable of building, repairing, and modifying equipment, vehicles, and starships. They excel at keeping technology operational and can often find creative solutions to mechanical or electronic problems, making them indispensable in the field.","Tech: 4
+Science: 2
+Computers: 2
+Sensors: 2","One weapon or armor (incl. mods) worth 5000 Credits.
+Crafting items worth 1000 Credits.
+8 Assets."
+Drone Rigger,"Drone Riggers specialize in controlling and deploying drones for various purposes, including reconnaissance, combat, and support roles. They excel at multitasking and can coordinate multiple drones simultaneously, providing a significant tactical advantage.","Tech: 3
+Pilot: 3
+Computers: 2
+Gunnery: 2","VR Headset.
+Tier-1 Cyberdeck.
+Cybernetics worth 2000 Credits.
+Drones worth 5000 Credits.
+5 Assets."
+Explorer,"Explorers are adventurers and pioneers, skilled in survival, navigation, and the discovery of new worlds or ancient ruins. They excel at surviving in harsh environments, mapping unknown territories, and uncovering hidden secrets, making them ideal for missions into the unknown.","Survival: 3
+Xenology: 2
+Investigation: 2
+Zero-G: 2
+Pilot: 1","40 Assets for space ships / modules.
+Survival items worth 500 Credits."
+Detective,"Detectives are masters of investigation and deduction, skilled at uncovering hidden truths, solving mysteries, and tracking down criminals. They excel in gathering clues, interrogating suspects, and piecing together complex cases, often acting as the moral compass of the group.","Investigation: 3
+Empathy: 2
+Con Arts: 2
+Firearms: 2
+Streetwise: 1","Weapons (incl. Mods) worth 500 Credits.
+Regular items worth 1000 Credits.
+Cybernetics worth 2000 Credits.
+Simple Home + Regular Home.
+10 Assets."
+Criminal,"Criminals are underworld operatives who excel in illegal activities such as theft, smuggling, and black-market dealings. They are resourceful and cunning, often using their connections and street smarts to get what they want, making them useful for missions that require a less-than-legal approach.","Skullduggery: 3
+Streetwise: 3
+Firearms: 2
+Infiltration: 2","Weapons (incl. Mods) worth 1000 Credits.
+Regular items worth 500 Credits.
+Cybernetics worth 2000 Credits.
+2000 illicit credits as cash on hand (cannot be spent during character generation).
+10 Assets."
+Tactical Enhanced Forces,"Members of the TEF are heavily augmented combatants who have integrated advanced cybernetics into their bodies, enhancing their physical and combat abilities. They excel in brutal combat and can take on roles that would be impossible for unaugmented humans, often at the cost of their humanity.","Melee: 4
+Defense: 3
+Tech: 2
+Athletics: 1
+","Weapons (incl. Mods) worth 500 Credits.
+Cybernetics worth 12.000 Credits."
+Trader,"Traders are savvy merchants and negotiators who excel in commerce, barter, and resource management. They are skilled at acquiring goods, striking deals, and managing trade routes, making them vital for maintaining supplies and turning a profit in the galaxy’s markets.","Streetwise: 3
+Con Arts: 3
+Empathy: 2
+Politics: 2","Weapons (incl. Mods) worth 250 Credits.
+Common space station or 40 Assets for space ships / modules."
+Diplomat,"Diplomats are skilled negotiators and political operators, specializing in forging alliances, brokering peace, and navigating complex political landscapes. They excel in social interactions and can defuse conflicts or manipulate events in their favor through words alone.","Politics: 4
+Empathy: 2
+Con Arts: 2
+Command: 2","Simulant Drone or 2 Servitor drones or 8000 Credits.
+Luxury Home.
+10 Assets."
+Bounty Hunter,"Bounty Hunters are relentless trackers and skilled combatants who specialize in capturing or eliminating targets for a price. They excel in pursuit, combat, and survival, often taking on the most dangerous missions for the right reward.","Firearms: 3
+Pilot: 2
+Infiltration: 2
+Investigation: 2
+Survival: 1","Weapons (incl. Mods) worth 1000 Credits.
+Armor (incl. Mods) worth 800 Credits.
+Simple Home.
+20 Assets for vehicles or space ships / modules."
