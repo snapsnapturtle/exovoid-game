@@ -1,5 +1,3 @@
-import type { SaveStatus } from '~/lib/hooks/useCharacter'
-
 const XP_THRESHOLDS = [0, 20, 50, 90, 140, 200, 270, 350, 440, 540, 650, 770, 900, 1040, 1200]
 
 interface CharacterHeaderProps {
@@ -7,10 +5,13 @@ interface CharacterHeaderProps {
   career: string
   level: number
   experience: number
-  saveStatus: SaveStatus
   canEdit: boolean
+  showModeToggle: boolean
+  isEditMode: boolean
   onNameChange: (name: string) => void
   onCareerChange: (career: string) => void
+  onExperienceChange: (value: number) => void
+  onModeToggle: () => void
 }
 
 export function CharacterHeader({
@@ -18,10 +19,13 @@ export function CharacterHeader({
   career,
   level,
   experience,
-  saveStatus,
   canEdit,
+  showModeToggle,
+  isEditMode,
   onNameChange,
   onCareerChange,
+  onExperienceChange,
+  onModeToggle,
 }: CharacterHeaderProps) {
   const currentThreshold = XP_THRESHOLDS[level - 1] ?? 0
   const nextThreshold = XP_THRESHOLDS[level] ?? currentThreshold
@@ -62,11 +66,28 @@ export function CharacterHeader({
           )}
         </div>
         <div>
-          <div className="mb-1 flex justify-between text-xs text-gray-400">
+          <div className="mb-1 flex items-center justify-between text-xs text-gray-400">
             <span>XP</span>
-            <span>
-              {experience} / {nextThreshold}
-            </span>
+            <div className="flex items-center gap-2">
+              <span>
+                {experience} / {nextThreshold}
+              </span>
+              <button
+                onClick={() => onExperienceChange(Math.max(0, experience - 1))}
+                disabled={experience <= 0}
+                aria-label="Decrease XP"
+                className="flex h-5 w-5 items-center justify-center rounded bg-void-700 text-xs text-gray-300 transition hover:bg-void-600 disabled:opacity-30"
+              >
+                −
+              </button>
+              <button
+                onClick={() => onExperienceChange(experience + 1)}
+                aria-label="Add 1 XP"
+                className="flex h-5 w-5 items-center justify-center rounded bg-void-700 text-xs text-gray-300 transition hover:bg-void-600"
+              >
+                +
+              </button>
+            </div>
           </div>
           <div className="h-2 overflow-hidden rounded-full bg-void-700">
             <div
@@ -76,16 +97,26 @@ export function CharacterHeader({
           </div>
         </div>
       </div>
-      <div className="text-sm">
-        {saveStatus === 'saving' && (
-          <span className="text-gray-400">Saving...</span>
+      <div className="flex items-center gap-3 text-sm">
+        {showModeToggle && (
+          <button
+            onClick={onModeToggle}
+            className={`rounded-lg border px-3 py-1.5 text-sm transition ${
+              isEditMode
+                ? 'border-accent-500 bg-accent-500/20 text-accent-300 hover:bg-accent-500/30'
+                : 'border-void-600 bg-void-700 text-gray-300 hover:border-accent-500 hover:text-white'
+            }`}
+          >
+            {isEditMode ? 'Done editing' : 'Edit'}
+          </button>
         )}
-        {saveStatus === 'saved' && (
-          <span className="text-success-400">Saved</span>
-        )}
-        {saveStatus === 'error' && (
-          <span className="text-danger-400">Save failed</span>
-        )}
+        <button
+          disabled
+          title="Coming soon"
+          className="rounded-lg border border-void-600 bg-void-700/50 px-3 py-1.5 text-sm text-gray-500"
+        >
+          Downtime
+        </button>
       </div>
     </div>
   )

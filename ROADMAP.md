@@ -7,9 +7,9 @@ A tiered list of features needed to bring the app from "character sheet viewer" 
 - [x] **Realtime sync foundation** — `useRealtimeSubscription` primitive + character row sync (`useRealtimeCharacter`). Cross-tab character edits propagate live. Lobby-level live updates deferred (see Tier 3).
 - [x] **Dice rolling UI + resolution** — Roll button per skill row opens a modal with pool + difficulty + GM-only hidden toggle. Server rolls and persists; raw symbol counts shown (no auto-conversion of triggers/complications).
 - [x] **Shared dice roll feed** — right-side panel in `GameLayout` shows recent rolls live via realtime; click for per-die details. Hidden GM rolls visible only to inserter via RLS.
-- [ ] **Live play panel** — quick-adjust health / edge / AP / counters, separate from the editor view.
+- [x] **Live play panel + edit/play mode split** — character sheet now has a play mode (default, locks attributes / skills / info / background) and an edit mode (toggled via the header button, only available to `canEdit` users). A `LivePlayPanel` at the top of the sheet has big +/- trackers for health and edge plus a per-session notes scratchpad — always editable when the user has permission, regardless of mode. AP and ammo / charges / drug doses moved to the combat tracker scope (Tier 2).
 - [ ] **Active conditions panel** — manually toggled on/off, persistently visible while active, modify dice rolls and derived stats while on.
-- [ ] **Per-character counters** — ammo, charges, drug doses, etc.
+- [ ] ~~**Per-character counters**~~ — moved to the combat tracker (Tier 2): ammo / charges / drug doses are combat-adjacent.
 - [ ] **Talents panel (action cards)** — list + use button → pre-fills dice roller.
 - [ ] **Cyberware panel (action cards)** — same pattern, plus passive modifiers to derived stats.
 - [ ] **Inventory / equipment panel** — equip toggle; equipped weapons render as action cards, equipped armor modifies stats.
@@ -21,7 +21,7 @@ A tiered list of features needed to bring the app from "character sheet viewer" 
 
 ## Tier 2 — Important, post-MVP
 
-- [ ] **Combat tracker** — initiative order, turn marker, per-character AP.
+- [ ] **Combat tracker** — initiative order, turn marker, per-character AP, plus per-character counters (ammo, charges, drug doses) since these are combat-scoped resources.
 - [ ] **Level-up wizard + progression history** — guided legal-choice flow, writes to a `character_progression` table keyed by level. Also tracks 1x-per-level downtime ability uses.
 - [ ] **Character creation validation** — verify 28-point budget, creation caps, and starter skill rules are enforced.
 - [ ] **NPC management** — lightweight sheet (name, key stats, health/AP, notes), GM-only. Not a full character sheet.
@@ -35,7 +35,7 @@ A tiered list of features needed to bring the app from "character sheet viewer" 
 
 - [ ] **Spaceship combat** — separate subsystem. The open design question is how to model ship state and flow its effects into character actions/rolls.
 - [ ] **Environmental hazards** — hunger / radiation / heat / cold / vacuum tracking.
-- [ ] **Downtime activities** — crafting, repair. (1x-per-level uses are already covered by the progression log from the level-up item.)
+- [ ] **Downtime activities + guided "Downtime" button** — guided flow that walks the user through performing a downtime action (Relax & Rest, Seek Inspiration, Train Skill, Modify / Repair Gear, Networking, Forge ID, Install Cyberware, etc.). The button presents the legal options, runs any required check (e.g. Seek Inspiration grants edge beyond the normal limit, capped at +50%), and applies the outcome to the character. 1x-per-level uses are tracked via the progression log from the level-up item.
 - [ ] **Support / collaborative checks** — multi-player roll aggregation.
 - [ ] **Homebrew content** — GM-defined custom talents / cyberware / equipment.
 - [ ] **Live lobby updates** — new players joining and new characters being created should appear in the lobby without a manual refresh. Initial attempt (subscriptions filtered by `game_id` with `router.invalidate()` on change) didn't deliver events even after setting `REPLICA IDENTITY FULL` on the affected tables. Subsequent docs review (https://supabase.com/docs/guides/realtime/postgres-changes) clarifies that REPLICA IDENTITY FULL only matters for receiving the `old` record on UPDATE/DELETE — it isn't the fix here. Two viable paths to revisit:

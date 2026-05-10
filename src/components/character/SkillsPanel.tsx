@@ -58,12 +58,10 @@ export function SkillsPanel({
         />
       </div>
       <div className="space-y-1">
-        <div className="grid grid-cols-[1fr_auto_auto_auto_auto] gap-2 px-2 text-xs text-gray-500">
+        <div className="grid grid-cols-[1fr_auto_auto] gap-2 px-2 text-xs text-gray-500">
           <span>Skill</span>
           <span className="w-16 text-center">Level</span>
-          <span className="w-12 text-center">Attr</span>
-          <span className="w-32 text-center">Dice Pool</span>
-          <span className="w-16 text-center">Roll</span>
+          <span className="w-32 text-center">Roll</span>
         </div>
         {filtered.map((skill) => {
           const level = skills[skill.id] ?? 0
@@ -73,7 +71,7 @@ export function SkillsPanel({
           return (
             <div
               key={skill.id}
-              className="grid grid-cols-[1fr_auto_auto_auto_auto] items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-void-700"
+              className="grid grid-cols-[1fr_auto_auto] items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-void-700"
             >
               <div>
                 <span className="text-sm font-medium text-gray-200">
@@ -117,10 +115,11 @@ export function SkillsPanel({
                   </span>
                 )}
               </div>
-              <div className="w-12 text-center text-sm text-gray-400">
-                {attrAvg}
-              </div>
-              <div className="flex w-32 items-center justify-center gap-1.5 text-xs">
+              <button
+                onClick={() => setRolling({ skillName: skill.name, pool })}
+                title={`Roll ${skill.name}`}
+                className="flex w-32 items-center justify-center gap-1.5 rounded-lg border border-transparent px-2 py-1 text-xs transition hover:border-accent-500 hover:bg-void-700"
+              >
                 <span className="rounded bg-gray-600/40 px-1.5 py-0.5 text-gray-300">
                   {pool.standard}S
                 </span>
@@ -134,17 +133,7 @@ export function SkillsPanel({
                     {pool.expertise}E
                   </span>
                 )}
-              </div>
-              <div className="flex w-16 justify-center">
-                <button
-                  onClick={() =>
-                    setRolling({ skillName: skill.name, pool })
-                  }
-                  className="rounded bg-accent-500/20 px-2 py-1 text-xs font-medium text-accent-400 transition hover:bg-accent-500/30"
-                >
-                  Roll
-                </button>
-              </div>
+              </button>
             </div>
           )
         })}
