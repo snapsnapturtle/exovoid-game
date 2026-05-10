@@ -5,28 +5,24 @@ interface SaveStatusToastProps {
 }
 
 /**
- * Bottom-anchored toast for character save state. Slides up from below
- * the viewport while a save is in flight or just resolved, slides back
- * down when the status returns to 'idle' (useCharacter auto-resets the
- * `saved` state to 'idle' after ~2s).
+ * Bottom-anchored toast for character save state. Saving is fast enough
+ * that the in-flight state isn't worth surfacing — the toast only slides
+ * up on the resolved states (`saved` or `error`) and slides back down
+ * when useCharacter auto-resets `saved` → `idle` after ~2s.
  */
 export function SaveStatusToast({ status }: SaveStatusToastProps) {
-  const visible = status !== 'idle'
+  const visible = status === 'saved' || status === 'error'
   const label =
-    status === 'saving'
-      ? 'Saving…'
-      : status === 'saved'
-        ? 'Saved'
-        : status === 'error'
-          ? 'Save failed'
-          : ''
+    status === 'saved'
+      ? 'Saved'
+      : status === 'error'
+        ? 'Save failed'
+        : ''
 
   const tone =
-    status === 'saved'
-      ? 'bg-success-500/90 text-white'
-      : status === 'error'
-        ? 'bg-danger-500/90 text-white'
-        : 'bg-void-700 text-gray-200'
+    status === 'error'
+      ? 'bg-danger-500 text-white'
+      : 'bg-success-500 text-white'
 
   return (
     <div
