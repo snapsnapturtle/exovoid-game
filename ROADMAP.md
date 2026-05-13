@@ -7,11 +7,30 @@ A tiered list of features needed to bring the app from "character sheet viewer" 
 - [x] **Realtime sync foundation** — `useRealtimeSubscription` primitive + character row sync (`useRealtimeCharacter`). Cross-tab character edits propagate live. Lobby-level live updates deferred (see Tier 3).
 - [x] **Dice rolling UI + resolution** — Roll button per skill row opens a modal with pool + difficulty + GM-only hidden toggle. Server rolls and persists; raw symbol counts shown (no auto-conversion of triggers/complications).
 - [x] **Shared dice roll feed** — right-side panel in `GameLayout` shows recent rolls live via realtime; click for per-die details. Hidden GM rolls visible only to inserter via RLS.
-- [x] **Live play panel + edit/play mode split** — character sheet now has a play mode (default, locks attributes / skills / info / background) and an edit mode (toggled via the header button, only available to `canEdit` users). A `LivePlayPanel` at the top of the sheet has big +/- trackers for health and edge plus a per-session notes scratchpad — always editable when the user has permission, regardless of mode. AP and ammo / charges / drug doses moved to the combat tracker scope (Tier 2).
+- [x] **Live play panel + edit/play mode split** — character sheet now has a play mode (default, locks attributes / skills / info / background) and an edit mode (toggled via the header button, only available to `canEdit` users). A `LivePlayPanel` at the top of the sheet has big +/- trackers for health and edge plus a per-session notes scratchpad — always editable when the user has permission, regardless of mode. AP and ammo / charges / drug doses moved to the combat tracker scope.
+- [x] **Structured talent effects (character-level passives)** — `talents.json` annotated with discriminated-union `effects` arrays; `applyPassiveTalentEffects()` layers on top of `computeAllDerivedStats` so passive bonuses reflect on the sheet automatically. Shipped batch: Training: Agility / Constitution / Coolness / Education / Intelligence / Personality / Strength (each +1 attr), Iron Skin (+1 soak / +4 HP), Resourceful (+3 max edge), Sprinter (+3 speed), Cyberadaption Training (+4 cyber immunity), Jack Of All Trades (+1 max edge — passive part only). Cap-at-8 fallback and subsystem-pending effects still TODO (see below).
 - [ ] ~~**Active conditions panel**~~ — dropped from v1. The DiceRoller already has a free-form modifier field, which covers the ad-hoc penalty/bonus need without needing a persistent toggle list. The named conditions worth tracking persistently (Hungry, Hypothermia, Radiation Poisoning etc.) are all Survival Clock escalation states and live with that work in Tier 3.
-- [ ] ~~**Per-character counters**~~ — moved to the combat tracker (Tier 2): ammo / charges / drug doses are combat-adjacent.
-- [ ] **Talents panel (action cards)** — list + use button → pre-fills dice roller. (Read-only summary on the sheet and a tree-based management page at `/talents` are in; what's still missing is the action-card "use" pattern and the auto-applied passive effects — see "Structured talent effects" below.)
-- [ ] **Structured talent effects (character-level)** — annotate each talent in `talents.json` with a discriminated-union `effects` array. Layer `applyPassiveTalentEffects()` on top of `computeAllDerivedStats` so passive bonuses reflect on the sheet automatically. **First batch (this round)**: the 12 clean character-level passives — Training: Agility / Constitution / Coolness / Education / Intelligence / Personality / Strength (each +1 attr, cap-at-8 fallback deferred), Iron Skin (+1 soak / +4 HP), Resourceful (+3 max edge), Sprinter (+3 speed), Cyberadaption Training (+4 cyber immunity), Jack Of All Trades (+1 max edge — passive part only).
+- [ ] ~~**Per-character counters**~~ — moved to the combat tracker (below): ammo / charges / drug doses are combat-adjacent.
+
+### Tier 1 sequencing — the path to first playtest
+
+The remaining Tier 1 items are ordered as the work needs to happen. Each is a precondition for what follows; don't shuffle without thinking about the dependency.
+
+- [ ] **(1) Action card component** — shared pattern reused by talents / cyberware / equipped weapons: title, description, optional "use" button that pre-fills the dice roller. Design once. Precondition for items 2–4.
+- [ ] **(2) Talents panel — action-card "use" button** — the talents page already has the tree-based management UI and passive auto-apply; what's missing is the per-talent "use" affordance on the sheet itself. First consumer of the action-card component. Turns the ~80 activated talents from description text into usable mechanics — highest single capability unlock in Tier 1.
+- [ ] **(3) Cyberware data import + Cyberware panel** — JSON must land before the panel (the panel has nothing to render without it). Action-card pattern for active cyberware, plus passive modifiers to derived stats via the same `effects` annotation used for talents.
+- [ ] **(4) Equipment / weapons data import + Inventory panel** — same order: data first, then panel. Equip toggle; equipped weapons render as action cards. Equipped armor modifies stats — note that `computeAllDerivedStats` currently hard-codes `soak: 0`, so this item is where the armor → soak plumbing closes.
+- [ ] **(5) Conditional roll modifiers** — pool / difficulty modifiers gated by a situation (Tracker, Living Shadow, Quickfingers, Climber, Lockpicker, Saboteur, Spy, Surgeon, etc.). Once they exist as opt-in toggles in the DiceRoller, the corresponding talents stop being indistinguishable from description text.
+- [ ] **(6) Combat tracker** — initiative order (1d6 + AP per round per §196), turn marker, per-character AP, per-character ammo / charges / drug doses (combat-scoped resources), all live via realtime. **Promoted from Tier 2**: combat is the dominant mechanical activity in Exovoid and the first playtest is not viable on this app without it — otherwise the table falls back to paper for AP/initiative and the tool collapses to "fancy character sheet + dice."
+- [ ] **(7) Character creation validation** — verify the 28-point attribute budget (§162), creation caps (max 6 on three attributes, 4 on the others), and starter skill rules (no skill above 6, level 5+ costs 2 each per §176). **Promoted from Tier 2**: the wizard currently produces illegal characters, which means rule arguments at the table during the first playtest.
+
+### Deferred Tier 1 work — refinements, not capability gaps
+
+Useful but not on the critical path to a playable session. The capability they enforce already exists via simpler mechanisms.
+
+- [ ] **Triggered / per-X-session actions** — the ~80 talents that fire on AP spend, per session, or per encounter (Combat Clarity, Anticipation, Heavy Blow, Riposte, etc.). The action-card "use" button covers the basic case; richer state (per-session counters, AP-spend hooks) is a polish pass on top of item (2).
+- [ ] **Structured background bonus application** — parse the textual bonuses in `backgrounds.json` ("Gain the Danger Sense talent", "Gain one Tier-0 talent from the Field Medic or Criminal careers", "+1 to one attribute of your choice") into typed bonus shapes and apply them during the creation wizard's background step. Capability is already covered by the manual-add escape hatch — this item is about enforcement/correctness, and removes the need for that escape hatch.
+- [ ] ~~**Manual talent add (escape hatch)**~~ — temporary affordance on `/talents` to add any talent by name, bypassing budget and tier prereqs. Marked `granted: true` so it doesn't consume a talent point. **Remove once structured background bonus application ships** — at that point all talents the character should have will arrive through proper channels.
 - [ ] **Subsystem-pending talent effects** — passive talents whose effects modify subsystems the app doesn't yet have. Annotate each as part of building the relevant subsystem so we don't drift out of sync with the rulebook. Tracking list:
   - **Cyberware system**: Synergetic Installation (-25% occupation), Cybernetic Maintenance (-1 difficulty to repair cyberware)
   - **Armor system**: Second Skin (ignore speed penalty, +25% durability), Impenetrable Shell (halve Penetrating / Shredding against you)
@@ -19,29 +38,18 @@ A tiered list of features needed to bring the app from "character sheet viewer" 
   - **Drones**: Minion Master (+1 / +1 AI), Drone Fixer (-1 difficulty + half resources to repair)
   - **Economy / items**: Haggler (-20% cost), Merchant's Guild (rarity -2, +10% discount), Salvager (half repair materials)
   - **Vehicles**: Vehicle Specialization (+2 pool for chosen vehicle type)
-- [ ] **Conditional roll modifiers** — pool / difficulty modifiers gated by a situation (Tracker, Living Shadow, Quickfingers, Climber, Lockpicker, Saboteur, Spy, Surgeon, etc.). Need to feed into the dice roller as opt-in toggles before they're worth annotating; otherwise they're indistinguishable from description text.
-- [ ] **Triggered / per-X-session actions** — the ~80 talents that fire on AP spend, per session, or per encounter (Combat Clarity, Anticipation, Heavy Blow, Riposte, etc.). Land alongside the action-card pattern; each becomes a card with a "use" button.
-- [ ] **Structured background bonus application** — parse the textual bonuses in `backgrounds.json` ("Gain the Danger Sense talent", "Gain one Tier-0 talent from the Field Medic or Criminal careers", "+1 to one attribute of your choice") into typed bonus shapes and apply them during the creation wizard's background step. **Removes the need for the manual-add escape hatch on the talents page** (see below).
-- [ ] ~~**Manual talent add (escape hatch)**~~ — temporary affordance on `/talents` to add any talent by name, bypassing budget and tier prereqs. Marked `granted: true` so it doesn't consume a talent point. Covers background grants ("Gain Danger Sense"), "pick one from career X or Y" choices, and GM-granted talents while structured effects don't exist yet. **Remove once structured talent effects + background bonus application both ship** — at that point all talents the character should have will arrive through proper channels and the manual button stops being necessary.
-- [ ] **Cyberware panel (action cards)** — same pattern, plus passive modifiers to derived stats.
-- [ ] **Inventory / equipment panel** — equip toggle; equipped weapons render as action cards, equipped armor modifies stats.
 
-### Cross-cutting prerequisites for Tier 1
+## Tier 2 — Important refinements after the first playtest
 
-- [ ] **Data import** for talents, cyberware, and equipment from Google Sheets. The Tier 1 panels render shells without this — at minimum talents and cyberware are needed to make them functional.
-- [ ] **Action card component** — shared pattern reused by talents / cyberware / weapons. Design once.
+Informed by what the first playtest actually breaks. Best guesses today:
 
-## Tier 2 — Important, post-MVP
-
-- [ ] **Combat tracker** — initiative order, turn marker, per-character AP, plus per-character counters (ammo, charges, drug doses) since these are combat-scoped resources.
 - [ ] **Level-up wizard + progression history** — guided legal-choice flow, writes to a `character_progression` table keyed by level. Also tracks 1x-per-level downtime ability uses.
-- [ ] **Character creation validation** — verify 28-point budget, creation caps, and starter skill rules are enforced.
-- [ ] **NPC management** — lightweight sheet (name, key stats, health/AP, notes), GM-only. Not a full character sheet.
-- [ ] **GM party overview dashboard** — single panel showing all PCs' health / edge / AP / conditions live.
+- [ ] **NPC management** — lightweight sheet (name, key stats, health/AP, notes), GM-only. Not a full character sheet. Likely conjoined with the combat tracker (NPCs need initiative + AP too).
+- [ ] **GM party overview dashboard** — single panel showing all PCs' health / edge / AP / conditions live. Removes the need to page between sheets during a session.
+- [ ] **Hidden rolls for players** — let players (not just the GM) toggle a roll as hidden, with the result visible to the roller and the GM only. Requires a small RLS amendment on `dice_rolls` to also exempt the game's GM from the hidden filter, plus dropping the `isGm` gate on the `DiceRoller` toggle.
 - [ ] **Shared notes UI** — table and RLS are ready, needs a route + component.
 - [ ] **Rules reference / glossary tooltips** — hover-defs for game terms (Trigger, Complication, etc.) and skills.
 - [ ] **Character portrait upload** — Supabase Storage.
-- [ ] **Hidden rolls for players** — let players (not just the GM) toggle a roll as hidden, with the result visible to the roller and the GM only (other players don't see it). Useful for investigation, stealth and similar private checks. Requires a small RLS amendment on `dice_rolls` to also exempt the game's GM from the hidden filter, plus dropping the `isGm` gate on the `DiceRoller` toggle.
 
 ## Tier 3 — System completeness
 
@@ -55,14 +63,11 @@ A tiered list of features needed to bring the app from "character sheet viewer" 
   - **Explicitly call `supabase.realtime.setAuth(session.access_token)`** on the browser client after the session loads (and on token refresh). The Supabase docs imply auto-sync isn't guaranteed; explicit auth would unblock postgres_changes for cookie-based SSR sessions and is the more native fix.
 - [ ] **Explicit realtime auth on the browser client** — extend `getSupabaseBrowserClient` to call `supabase.realtime.setAuth(...)` with the current session's access token (and re-call on `onAuthStateChange`). Likely prerequisite for any future postgres_changes use — without it, RLS on the realtime side may evaluate as anon and silently drop events for non-inserter clients.
 
-## Suggested Tier 1 sequencing
-
-Realtime foundation → dice + feed → live play → data import → action card panels (talents / cyberware / inventory). At that point the app is playable for a first test.
-
 ## Key design decisions
 
 - **Progression granularity**: tracked per level, not per edit. Captures level-up choices and 1x-per-level downtime ability uses. Light, story-shaped, not an audit trail.
 - **Active effects**: ad-hoc penalties/bonuses are entered as the modifier on the DiceRoller per-roll — no persistent "conditions" list. Long-running named states (Hungry, Frostbite, etc.) ride along with the Tier 3 Survival Clocks work, where they auto-apply their pool modifier.
 - **NPCs**: lightweight, not full character sheets. GM-only.
 - **Action cards**: unified pattern across talents / cyberware / equipped weapons — single "use" button that pre-fills the dice roller.
+- **Data-first for content panels**: a panel without its JSON content is useless. Import order: cyberware JSON → cyberware panel; equipment JSON → inventory panel.
 - **Out of scope for now**: tactical maps / encounter builder, marketplace, PDF export, character templates, per-session roll log.
