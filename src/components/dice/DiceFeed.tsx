@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { Die } from './Die'
 import { CustomDiceRoller } from './CustomDiceRoller'
+import { RollResultView } from './RollResultView'
 import type { DiceRollEntry } from '~/lib/server/dice'
-import type { DieType } from '~/lib/game-logic/dice'
 
 const TIME_TICK_MS = 15_000
 const HIGHLIGHT_MS = 2200
@@ -278,17 +277,8 @@ function RollDetails({
   roll: DiceRollEntry
   onClose: () => void
 }) {
-  const dice = roll.data.result ?? []
   const label = roll.character_name ?? roll.player_name ?? 'Unknown'
   const skill = roll.skill_name ?? 'Custom roll'
-
-  // Group dice by type for display
-  const grouped: Record<string, typeof dice> = {}
-  dice.forEach((d) => {
-    grouped[d.type] ??= []
-    grouped[d.type].push(d)
-  })
-  const typeOrder: DieType[] = ['standard', 'aptitude', 'expertise', 'injury']
 
   return (
     <div
@@ -296,7 +286,7 @@ function RollDetails({
       onClick={onClose}
     >
       <div
-        className="w-full max-w-2xl rounded-xl border border-void-600 bg-void-800 p-6 shadow-xl"
+        className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-xl border border-void-600 bg-void-800 p-6 shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex items-baseline justify-between gap-3">
@@ -310,26 +300,7 @@ function RollDetails({
             Close
           </button>
         </div>
-        {typeOrder.map((t) =>
-          grouped[t]?.length ? (
-            <div key={t} className="mb-4">
-              <p className="mb-2 text-xs uppercase tracking-wide text-gray-500">
-                {t}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {grouped[t].map((d, i) => (
-                  <Die
-                    key={i}
-                    type={d.type}
-                    symbols={d.symbols}
-                    exploded={d.exploded}
-                    size="md"
-                  />
-                ))}
-              </div>
-            </div>
-          ) : null,
-        )}
+        <RollResultView data={roll.data} animate={false} />
       </div>
     </div>
   )

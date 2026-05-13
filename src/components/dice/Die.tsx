@@ -31,9 +31,15 @@ const SIZE_PX: Record<NonNullable<DieProps['size']>, number> = {
 }
 
 const SYMBOL_PX: Record<NonNullable<DieProps['size']>, number> = {
-  sm: 20,
-  md: 28,
-  lg: 38,
+  sm: 18,
+  md: 22,
+  lg: 30,
+}
+
+const COUNT_TEXT: Record<NonNullable<DieProps['size']>, string> = {
+  sm: 'text-xl',
+  md: 'text-2xl',
+  lg: 'text-3xl',
 }
 
 /** A single rolled die: filled die silhouette with the rolled symbol(s) on top. */
@@ -88,7 +94,9 @@ export function DieCounter({ type, count, size = 'sm' }: DieCounterProps) {
         bodyClassName={DIE_BODY[type]}
         wireClassName={DIE_WIRE[type]}
       />
-      <span className="relative z-10 text-base font-semibold text-white drop-shadow">
+      <span
+        className={`die-number relative z-10 font-semibold text-white ${COUNT_TEXT[size]}`}
+      >
         {count}
       </span>
     </div>
