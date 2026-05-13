@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import type { Character } from '~/lib/types/database'
 import { useCharacter } from '~/lib/hooks/useCharacter'
-import { computeAllDerivedStats } from '~/lib/game-logic/derived-stats'
+import { applyPassiveTalentEffects } from '~/lib/game-logic/talent-effects'
 import { deleteCharacter } from '~/lib/server/characters'
 import { CharacterHeader } from './CharacterHeader'
 import { AttributesPanel } from './AttributesPanel'
@@ -31,7 +31,11 @@ export function CharacterSheet({
   const { character, saveStatus, updateField, updateAttribute, updateSkill } =
     useCharacter(initial, canEdit)
 
-  const derivedStats = computeAllDerivedStats(character.attributes)
+  const effects = applyPassiveTalentEffects(
+    character.attributes,
+    character.talents,
+  )
+  const derivedStats = effects.derived
   const isEditMode = mode === 'edit'
   const editScopeCanEdit = canEdit && isEditMode
 
@@ -75,6 +79,8 @@ export function CharacterSheet({
       <div className="grid gap-3 lg:grid-cols-[1fr_auto]">
         <AttributesPanel
           attributes={character.attributes}
+          effectiveAttributes={effects.attributes}
+          contributions={effects.attributeContributions}
           canEdit={editScopeCanEdit}
           onAttributeChange={updateAttribute}
         />
@@ -91,7 +97,7 @@ export function CharacterSheet({
 
       <div className="grid gap-4 lg:grid-cols-2">
         <SkillsPanel
-          attributes={character.attributes}
+          attributes={effects.attributes}
           skills={character.skills}
           canEdit={editScopeCanEdit}
           onSkillChange={updateSkill}
@@ -100,7 +106,10 @@ export function CharacterSheet({
           isGm={isGm}
         />
         <div className="space-y-4">
-          <DerivedStatsPanel stats={derivedStats} />
+          <DerivedStatsPanel
+            stats={derivedStats}
+            contributions={effects.derivedContributions}
+          />
           <EquipmentTabs
             gender={character.gender}
             age={character.age}

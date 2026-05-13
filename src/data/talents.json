@@ -105,7 +105,10 @@
   },
   {
     "name": "Cyberadaption Training",
-    "description": "You gain +4 Cyberimmunity."
+    "description": "You gain +4 Cyberimmunity.",
+    "effects": [
+      { "kind": "derivedStat", "stat": "cyberImmunity", "value": 4 }
+    ]
   },
   {
     "name": "Cybernetic Maintenance",
@@ -277,7 +280,11 @@
   },
   {
     "name": "Iron Skin",
-    "description": "Gain +1 soak and +4 maximum health."
+    "description": "Gain +1 soak and +4 maximum health.",
+    "effects": [
+      { "kind": "derivedStat", "stat": "soak", "value": 1 },
+      { "kind": "derivedStat", "stat": "health", "value": 4 }
+    ]
   },
   {
     "name": "Iron Wall",
@@ -289,7 +296,10 @@
   },
   {
     "name": "Jack Of All Trades",
-    "description": "After rolling, you may spend an Edge point to add a Complication to any roll. Additionally, increase your maximum edge points by +1."
+    "description": "After rolling, you may spend an Edge point to add a Complication to any roll. Additionally, increase your maximum edge points by +1.",
+    "effects": [
+      { "kind": "derivedStat", "stat": "edge", "value": 1 }
+    ]
   },
   {
     "name": "Jerryrigging",
@@ -477,7 +487,10 @@
   },
   {
     "name": "Resourceful",
-    "description": "Increase your maximum edge points by +3."
+    "description": "Increase your maximum edge points by +3.",
+    "effects": [
+      { "kind": "derivedStat", "stat": "edge", "value": 3 }
+    ]
   },
   {
     "name": "Riposte",
@@ -533,7 +546,10 @@
   },
   {
     "name": "Sprinter",
-    "description": "You passively gain +3 speed."
+    "description": "You passively gain +3 speed.",
+    "effects": [
+      { "kind": "derivedStat", "stat": "speed", "value": 3 }
+    ]
   },
   {
     "name": "Spy",
@@ -613,31 +629,52 @@
   },
   {
     "name": "Training: Agility",
-    "description": "Gain +1 Agility. If you already have 8 Agility (not counting cybernetic enhancements), you may increase another attribute instead."
+    "description": "Gain +1 Agility. If you already have 8 Agility (not counting cybernetic enhancements), you may increase another attribute instead.",
+    "effects": [
+      { "kind": "attribute", "attr": "agi", "value": 1 }
+    ]
   },
   {
     "name": "Training: Constitution",
-    "description": "Gain +1 Constitution. If you already have 8 Constitution (not counting cybernetic enhancements), you may increase another attribute instead."
+    "description": "Gain +1 Constitution. If you already have 8 Constitution (not counting cybernetic enhancements), you may increase another attribute instead.",
+    "effects": [
+      { "kind": "attribute", "attr": "con", "value": 1 }
+    ]
   },
   {
     "name": "Training: Coolness",
-    "description": "Gain +1 Coolness. If you already have 8 Coolness (not counting cybernetic enhancements), you may increase another attribute instead."
+    "description": "Gain +1 Coolness. If you already have 8 Coolness (not counting cybernetic enhancements), you may increase another attribute instead.",
+    "effects": [
+      { "kind": "attribute", "attr": "coo", "value": 1 }
+    ]
   },
   {
     "name": "Training: Education",
-    "description": "Gain +1 Education. If you already have 8 Education (not counting cybernetic enhancements), you may increase another attribute instead."
+    "description": "Gain +1 Education. If you already have 8 Education (not counting cybernetic enhancements), you may increase another attribute instead.",
+    "effects": [
+      { "kind": "attribute", "attr": "edu", "value": 1 }
+    ]
   },
   {
     "name": "Training: Intelligence",
-    "description": "Gain +1 Intelligence. If you already have 8 Intelligence (not counting cybernetic enhancements), you may increase another attribute instead."
+    "description": "Gain +1 Intelligence. If you already have 8 Intelligence (not counting cybernetic enhancements), you may increase another attribute instead.",
+    "effects": [
+      { "kind": "attribute", "attr": "int", "value": 1 }
+    ]
   },
   {
     "name": "Training: Personality",
-    "description": "Gain +1 Personality. If you already have 8 Personality (not counting cybernetic enhancements), you may increase another attribute instead."
+    "description": "Gain +1 Personality. If you already have 8 Personality (not counting cybernetic enhancements), you may increase another attribute instead.",
+    "effects": [
+      { "kind": "attribute", "attr": "per", "value": 1 }
+    ]
   },
   {
     "name": "Training: Strength",
-    "description": "Gain +1 Strength. If you already have 8 Strength (not counting cybernetic enhancements), you may increase another attribute instead."
+    "description": "Gain +1 Strength. If you already have 8 Strength (not counting cybernetic enhancements), you may increase another attribute instead.",
+    "effects": [
+      { "kind": "attribute", "attr": "str", "value": 1 }
+    ]
   },
   {
     "name": "Trigger Discipline",

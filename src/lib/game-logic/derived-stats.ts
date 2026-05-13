@@ -38,6 +38,7 @@ export interface DerivedStats {
   actionPoints: number
   speed: number
   cyberImmunity: number
+  soak: number
 }
 
 export function computeAllDerivedStats(attrs: CharacterAttributes): DerivedStats {
@@ -49,5 +50,6 @@ export function computeAllDerivedStats(attrs: CharacterAttributes): DerivedStats
     actionPoints: computeActionPoints(attrs),
     speed: computeSpeed(attrs),
     cyberImmunity: computeCyberImmunity(attrs),
+    soak: 0,
   }
 }

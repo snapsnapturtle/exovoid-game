@@ -23,9 +23,12 @@ interface TalentTreePageProps {
   canEdit: boolean
 }
 
+import type { TalentEffect } from '~/lib/game-logic/talent-effects'
+
 interface TalentMeta {
   name: string
   description: string
+  effects?: TalentEffect[]
 }
 const ALL_TALENTS = talentsData as TalentMeta[]
 const ALL_CAREERS = careersData as CareerData[]
@@ -48,6 +51,15 @@ export function TalentTreePage({ initial, canEdit }: TalentTreePageProps) {
 
   const descriptionByName = useMemo(
     () => new Map(ALL_TALENTS.map((t) => [t.name, t.description])),
+    [],
+  )
+  const effectsByName = useMemo(
+    () =>
+      new Map(
+        ALL_TALENTS.filter((t) => t.effects?.length).map(
+          (t) => [t.name, t.effects!] as const,
+        ),
+      ),
     [],
   )
   const careerNames = careersOfCharacter(character)
@@ -243,6 +255,7 @@ export function TalentTreePage({ initial, canEdit }: TalentTreePageProps) {
             tier={selected?.tier ?? null}
             career={selected?.career ?? null}
             granted={selectedGranted}
+            effects={selected ? effectsByName.get(selected.name) : undefined}
             state={selectedState}
             reason={selectedReason}
             canEdit={canEdit}

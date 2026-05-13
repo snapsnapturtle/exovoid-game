@@ -1,4 +1,26 @@
 import type { NodeState } from './TalentNode'
+import type { TalentEffect } from '~/lib/game-logic/talent-effects'
+import { ATTRIBUTE_DEFINITIONS } from '~/lib/game-logic/attributes'
+
+const DERIVED_STAT_LABEL: Record<string, string> = {
+  health: 'max Health',
+  vigilance: 'Vigilance',
+  heft: 'Heft',
+  edge: 'max Edge',
+  actionPoints: 'Action Points',
+  speed: 'Speed',
+  cyberImmunity: 'Cyber Immunity',
+  soak: 'Soak',
+}
+
+function formatEffect(eff: TalentEffect): string {
+  const sign = eff.value >= 0 ? '+' : ''
+  if (eff.kind === 'attribute') {
+    const attr = ATTRIBUTE_DEFINITIONS.find((a) => a.id === eff.attr)
+    return `${sign}${eff.value} ${attr?.name ?? eff.attr}`
+  }
+  return `${sign}${eff.value} ${DERIVED_STAT_LABEL[eff.stat] ?? eff.stat}`
+}
 
 interface TalentDetailRailProps {
   name: string | null
@@ -6,6 +28,7 @@ interface TalentDetailRailProps {
   tier: number | null
   career: string | null
   granted: boolean
+  effects?: TalentEffect[]
   state: NodeState | null
   reason?: string
   canEdit: boolean
@@ -20,6 +43,7 @@ export function TalentDetailRail({
   tier,
   career,
   granted,
+  effects,
   state,
   reason,
   canEdit,
@@ -53,6 +77,19 @@ export function TalentDetailRail({
       <p className="whitespace-pre-wrap text-sm leading-relaxed text-gray-300">
         {description}
       </p>
+
+      {effects && effects.length > 0 && (
+        <div className="rounded-lg border border-accent-500/40 bg-accent-500/5 p-3">
+          <div className="mb-1 text-xs uppercase tracking-wide text-accent-400">
+            Auto-applied
+          </div>
+          <ul className="space-y-0.5 text-sm text-white">
+            {effects.map((eff, i) => (
+              <li key={i}>{formatEffect(eff)}</li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {canEdit && state && (
         <div className="border-t border-void-600 pt-4">
