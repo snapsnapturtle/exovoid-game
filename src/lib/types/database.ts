@@ -58,6 +58,7 @@ export type Database = {
           id: string
           inventory: Json
           level: number
+          malfunction_allocations: Json
           name: string
           notes: string
           skills: Json
@@ -81,6 +82,7 @@ export type Database = {
           id?: string
           inventory?: Json
           level?: number
+          malfunction_allocations?: Json
           name?: string
           notes?: string
           skills?: Json
@@ -104,6 +106,7 @@ export type Database = {
           id?: string
           inventory?: Json
           level?: number
+          malfunction_allocations?: Json
           name?: string
           notes?: string
           skills?: Json
@@ -385,15 +388,31 @@ export type TalentEntry = {
   granted?: boolean
 }
 
+export type CyberwareEntry = {
+  name: string
+  category: string
+  tier: string
+  installedAt: number
+}
+
 type CharacterRow = Database['public']['Tables']['characters']['Row']
 
 export type Character = Omit<
   CharacterRow,
-  'attributes' | 'skills' | 'talents' | 'cyberware' | 'inventory'
+  | 'attributes'
+  | 'skills'
+  | 'talents'
+  | 'cyberware'
+  | 'inventory'
+  | 'malfunction_allocations'
 > & {
   attributes: CharacterAttributes
   skills: Record<string, number>
   talents: TalentEntry[]
-  cyberware: Json[]
+  cyberware: CyberwareEntry[]
   inventory: Json[]
+  /** Cyber Malfunction Table slot numbers (2-40) the player has allocated to.
+   * Length equals current excess Cyberimmunity. Each slot can be allocated at
+   * most once (rulebook example). */
+  malfunction_allocations: number[]
 }

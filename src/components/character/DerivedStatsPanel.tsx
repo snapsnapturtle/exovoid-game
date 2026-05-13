@@ -1,5 +1,5 @@
 import type { DerivedStats } from '~/lib/game-logic/derived-stats'
-import type { Contribution, DerivedStatId } from '~/lib/game-logic/talent-effects'
+import type { Contribution, DerivedStatId } from '~/lib/game-logic/passive-effects'
 
 interface DerivedStatsPanelProps {
   stats: DerivedStats

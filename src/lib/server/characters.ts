@@ -11,6 +11,16 @@ import {
   makeTalentEntry,
   type CareerData,
 } from '~/lib/game-logic/talents'
+import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
+import {
+  canInstall as canInstallCyberware,
+  makeCyberwareEntry,
+  occupationUsed,
+} from '~/lib/game-logic/cyberware'
+import {
+  normalizeAllocations,
+  validateAllocations,
+} from '~/lib/game-logic/cyberware-malfunctions'
 import careersData from '~/data/careers.json'
 
 const careers = careersData as CareerData[]
@@ -252,6 +262,148 @@ export const removeTalent = createServerFn({ method: 'POST' })
     const { data: updated, error } = await supabase
       .from('characters')
       .update({ talents: nextTalents } as never)
+      .eq('id', data.characterId)
+      .select()
+      .single()
+    if (error) throw new Error(error.message)
+    return updated as unknown as Character
+  })
+
+export const installCyberware = createServerFn({ method: 'POST' })
+  .inputValidator((d: { characterId: string; cyberwareName: string }) => d)
+  .handler(async ({ data }) => {
+    const supabase = getSupabaseServerClient()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (!user) throw new Error('Not authenticated')
+
+    const { data: row, error: readErr } = await supabase
+      .from('characters')
+      .select('*')
+      .eq('id', data.characterId)
+      .single()
+    if (readErr || !row) throw new Error('Character not found')
+
+    const character = row as unknown as Character
+    const { derived } = applyPassiveEffects(
+      character.attributes,
+      character.talents,
+      character.cyberware,
+    )
+    const check = canInstallCyberware(
+      character,
+      data.cyberwareName,
+      derived.cyberImmunity,
+    )
+    if (!check.ok) throw new Error(check.reason ?? 'Cannot install cyberware')
+
+    const entry = makeCyberwareEntry(data.cyberwareName, character.level)
+    if (!entry) throw new Error('Unknown cyberware')
+
+    const filtered = check.replaces
+      ? character.cyberware.filter((c) => c.name !== check.replaces)
+      : character.cyberware
+    const nextCyberware = [...filtered, entry]
+    const updates = withAllocationReset(character, nextCyberware)
+
+    const { data: updated, error } = await supabase
+      .from('characters')
+      .update(updates as never)
+      .eq('id', data.characterId)
+      .select()
+      .single()
+    if (error) throw new Error(error.message)
+    return updated as unknown as Character
+  })
+
+export const uninstallCyberware = createServerFn({ method: 'POST' })
+  .inputValidator((d: { characterId: string; cyberwareName: string }) => d)
+  .handler(async ({ data }) => {
+    const supabase = getSupabaseServerClient()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (!user) throw new Error('Not authenticated')
+
+    const { data: row, error: readErr } = await supabase
+      .from('characters')
+      .select('*')
+      .eq('id', data.characterId)
+      .single()
+    if (readErr || !row) throw new Error('Character not found')
+
+    const character = row as unknown as Character
+    const nextCyberware = character.cyberware.filter(
+      (c) => c.name !== data.cyberwareName,
+    )
+    const updates = withAllocationReset(character, nextCyberware)
+
+    const { data: updated, error } = await supabase
+      .from('characters')
+      .update(updates as never)
+      .eq('id', data.characterId)
+      .select()
+      .single()
+    if (error) throw new Error(error.message)
+    return updated as unknown as Character
+  })
+
+/**
+ * Build a partial update for cyberware change. When the new occupation no
+ * longer exceeds capacity, also blank the malfunction allocations — they
+ * only have meaning while overloaded, and stale entries would otherwise
+ * fail the strict total-must-equal-excess validator.
+ */
+function withAllocationReset(
+  character: Character,
+  nextCyberware: Character['cyberware'],
+): { cyberware: Character['cyberware']; malfunction_allocations?: [] } {
+  const { derived } = applyPassiveEffects(
+    character.attributes,
+    character.talents,
+    nextCyberware,
+  )
+  const used = occupationUsed(nextCyberware)
+  if (used <= derived.cyberImmunity) {
+    return { cyberware: nextCyberware, malfunction_allocations: [] }
+  }
+  return { cyberware: nextCyberware }
+}
+
+export const setMalfunctionAllocations = createServerFn({ method: 'POST' })
+  .inputValidator(
+    (d: { characterId: string; allocations: number[] }) => d,
+  )
+  .handler(async ({ data }) => {
+    const supabase = getSupabaseServerClient()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (!user) throw new Error('Not authenticated')
+
+    const { data: row, error: readErr } = await supabase
+      .from('characters')
+      .select('*')
+      .eq('id', data.characterId)
+      .single()
+    if (readErr || !row) throw new Error('Character not found')
+
+    const character = row as unknown as Character
+    const { derived } = applyPassiveEffects(
+      character.attributes,
+      character.talents,
+      character.cyberware,
+    )
+    const used = occupationUsed(character.cyberware)
+    const excess = Math.max(0, used - derived.cyberImmunity)
+    const normalized = normalizeAllocations(data.allocations)
+    const check = validateAllocations(normalized, excess)
+    if (!check.ok) throw new Error(check.reason ?? 'Invalid allocations')
+
+    const { data: updated, error } = await supabase
+      .from('characters')
+      .update({ malfunction_allocations: normalized } as never)
       .eq('id', data.characterId)
       .select()
       .single()

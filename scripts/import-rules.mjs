@@ -7,7 +7,7 @@
 // The CSVs come from Google Sheets exports; they use standard RFC 4180
 // quoting with multi-line cells. The parser below handles those.
 
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
+import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -94,13 +94,36 @@ function writeJson(name, data) {
   console.log(`  wrote src/data/${name} (${Array.isArray(data) ? data.length + ' rows' : 'object'})`)
 }
 
+// Preserve hand-annotated `effects` arrays across re-imports. The CSVs only
+// carry the descriptive text — passive stat modifiers are typed and added by
+// hand to the JSON. Without this, re-running the importer would wipe them.
+function preserveEffects(filename, items) {
+  const path = join(OUT, filename)
+  if (!existsSync(path)) return items
+  const existing = JSON.parse(readFileSync(path, 'utf8'))
+  if (!Array.isArray(existing)) return items
+  const effectsByName = new Map()
+  for (const e of existing) {
+    if (e?.name && Array.isArray(e.effects) && e.effects.length > 0) {
+      effectsByName.set(e.name, e.effects)
+    }
+  }
+  return items.map((item) => {
+    const eff = effectsByName.get(item.name)
+    return eff ? { ...item, effects: eff } : item
+  })
+}
+
 // --- Talents ----------------------------------------------------------------
 console.log('Talents...')
 const talentRows = readTable('Exovoid Content - Talents.csv')
-const talents = talentRows.map((r) => ({
-  name: r.talent,
-  description: r.description,
-}))
+const talents = preserveEffects(
+  'talents.json',
+  talentRows.map((r) => ({
+    name: r.talent,
+    description: r.description,
+  })),
+)
 writeJson('talents.json', talents)
 
 // --- Careers + per-career talent tiers --------------------------------------
@@ -173,5 +196,56 @@ const backgrounds = {
   lifeEvents: readBackground('Exovoid Content - Life Events.csv', '1d20'),
 }
 writeJson('backgrounds.json', backgrounds)
+
+// --- Cyberware --------------------------------------------------------------
+// The `cyberware` column holds the category and only appears on the first row
+// of each category; subsequent variants leave it blank. Forward-fill.
+console.log('Cyberware...')
+const cyberwareRows = readTable('Exovoid Content - Cyberware.csv')
+let currentCyberwareCategory = ''
+const cyberware = preserveEffects(
+  'cyberware.json',
+  cyberwareRows.map((r) => {
+    if (r.cyberware) currentCyberwareCategory = r.cyberware
+    return {
+      category: currentCyberwareCategory,
+      name: r.cyberwareName,
+      tier: r.tier,
+      description: r.description,
+      cyberImmunityCost: parseInt(r.cyberImmunityCost, 10),
+      cost: parseInt(r.cost, 10),
+      rarity: parseInt(r.rarity, 10),
+    }
+  }),
+)
+writeJson('cyberware.json', cyberware)
+
+// --- Cyber Malfunction Table ------------------------------------------------
+// Rulebook §"Exceeding Cyber Immunity": when over capacity, the character
+// must allocate excess points across this table (rolls 2-40). Named rows
+// start an outcome's range; blank rows below them inherit that outcome
+// (forward-fill). Slot 3 is still Critical Shutdown, slot 30 is still
+// Corrupted Data, etc. All 39 rolls are legal allocation slots.
+console.log('Cyber Malfunction Table...')
+const malfunctionRows = readTable('Exovoid Content - Cyberware Malfunction Table.csv')
+let currentMalfunctionOutcome = ''
+let currentMalfunctionDescription = ''
+let currentMalfunctionRepair = ''
+const malfunctions = malfunctionRows
+  .filter((r) => r['2d20roll'] && r['2d20roll'].trim() !== '')
+  .map((r) => {
+    if (r.outcome && r.outcome.trim() !== '') {
+      currentMalfunctionOutcome = r.outcome
+      currentMalfunctionDescription = r.outcomeDescription
+      currentMalfunctionRepair = r.repairInfo
+    }
+    return {
+      roll: parseInt(r['2d20roll'], 10),
+      outcome: currentMalfunctionOutcome,
+      description: currentMalfunctionDescription,
+      repair: currentMalfunctionRepair,
+    }
+  })
+writeJson('cyberware-malfunctions.json', malfunctions)
 
 console.log('done.')

@@ -1,5 +1,5 @@
 import type { NodeState } from './TalentNode'
-import type { TalentEffect } from '~/lib/game-logic/talent-effects'
+import type { PassiveEffect } from '~/lib/game-logic/passive-effects'
 import { ATTRIBUTE_DEFINITIONS } from '~/lib/game-logic/attributes'
 
 const DERIVED_STAT_LABEL: Record<string, string> = {
@@ -13,7 +13,7 @@ const DERIVED_STAT_LABEL: Record<string, string> = {
   soak: 'Soak',
 }
 
-function formatEffect(eff: TalentEffect): string {
+function formatEffect(eff: PassiveEffect): string {
   const sign = eff.value >= 0 ? '+' : ''
   if (eff.kind === 'attribute') {
     const attr = ATTRIBUTE_DEFINITIONS.find((a) => a.id === eff.attr)
@@ -28,7 +28,7 @@ interface TalentDetailRailProps {
   tier: number | null
   career: string | null
   granted: boolean
-  effects?: TalentEffect[]
+  effects?: PassiveEffect[]
   state: NodeState | null
   reason?: string
   canEdit: boolean

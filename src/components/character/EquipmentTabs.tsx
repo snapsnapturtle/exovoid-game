@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { CharacterInfoPanel } from './CharacterInfoPanel'
 import { TalentsTab } from '~/components/talents/TalentsTab'
-import type { TalentEntry } from '~/lib/types/database'
+import { CyberwareTab } from '~/components/cyberware/CyberwareTab'
+import type { CyberwareEntry, TalentEntry } from '~/lib/types/database'
 
 type Tab = 'actions' | 'inventory' | 'talents' | 'cyberware' | 'background'
 
@@ -21,6 +22,8 @@ interface EquipmentTabsProps {
   canEdit: boolean
   liveCanEdit: boolean
   talents: TalentEntry[]
+  cyberware: CyberwareEntry[]
+  cyberImmunityCapacity: number
   level: number
   career: string
   gameId: string
@@ -46,6 +49,8 @@ export function EquipmentTabs({
   canEdit,
   liveCanEdit,
   talents,
+  cyberware,
+  cyberImmunityCapacity,
   level,
   career,
   gameId,
@@ -87,7 +92,15 @@ export function EquipmentTabs({
             canEdit={canEdit}
           />
         )}
-        {tab === 'cyberware' && <PlaceholderTab name="Cyberware" />}
+        {tab === 'cyberware' && (
+          <CyberwareTab
+            cyberware={cyberware}
+            capacity={cyberImmunityCapacity}
+            gameId={gameId}
+            characterId={characterId}
+            canEdit={canEdit}
+          />
+        )}
         {tab === 'background' && (
           <BackgroundTab
             gender={gender}

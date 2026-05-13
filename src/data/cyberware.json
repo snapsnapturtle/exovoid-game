@@ -1,0 +1,801 @@
+[
+  {
+    "category": "Reflexbooster",
+    "name": "ReflexaGen V2",
+    "tier": "Alpha",
+    "description": "Increase your Action Points by +2, but if you have 2 or less Action Points during a round, you cannot perform any actions (but reactions).",
+    "cyberImmunityCost": 5,
+    "cost": 1000,
+    "rarity": 3,
+    "effects": [
+      {
+        "kind": "derivedStat",
+        "stat": "actionPoints",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "category": "Reflexbooster",
+    "name": "NeuraBoost XR",
+    "tier": "Beta",
+    "description": "Increase your Action Points by +3. Additionally, even if you have up to -5 AP, you can still perform reactions.",
+    "cyberImmunityCost": 6,
+    "cost": 3000,
+    "rarity": 4,
+    "effects": [
+      {
+        "kind": "derivedStat",
+        "stat": "actionPoints",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "category": "Reflexbooster",
+    "name": "Velocitec Reflex Enhancer",
+    "tier": "Omega",
+    "description": "Increase your Action Points by +4. Additionally, you gain +1 pool on dodge and parry actions.",
+    "cyberImmunityCost": 8,
+    "cost": 7500,
+    "rarity": 5,
+    "effects": [
+      {
+        "kind": "derivedStat",
+        "stat": "actionPoints",
+        "value": 4
+      }
+    ]
+  },
+  {
+    "category": "Move By Wire",
+    "name": "OptimaSync MBW-3000",
+    "tier": "Alpha",
+    "description": "You gain +1 Action Point, +2 Speed and +2 pool bonus when you attempt to dodge or parry.",
+    "cyberImmunityCost": 10,
+    "cost": 4000,
+    "rarity": 4,
+    "effects": [
+      {
+        "kind": "derivedStat",
+        "stat": "actionPoints",
+        "value": 1
+      },
+      {
+        "kind": "derivedStat",
+        "stat": "speed",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "category": "Move By Wire",
+    "name": "KinetiDrive Mk IV",
+    "tier": "Beta",
+    "description": "You gain +1 Action Point, +2 Speed and +2 pool bonus when you attempt to dodge or parry. You also gain a free trigger on dodges, parries and melee attacks.",
+    "cyberImmunityCost": 12,
+    "cost": 6000,
+    "rarity": 5,
+    "effects": [
+      {
+        "kind": "derivedStat",
+        "stat": "actionPoints",
+        "value": 1
+      },
+      {
+        "kind": "derivedStat",
+        "stat": "speed",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "category": "Move By Wire",
+    "name": "WireStride 2.1",
+    "tier": "Omega",
+    "description": "You gain +1 Action Point, +2 Speed and +2 pool bonus when you attempt to dodge or parry. You also gain a free trigger on dodges, parries and melee attacks. You may now attempt to parry ranged attacks if you wield a suitable melee weapon, but can only do so up to two times per round.\n\nA successful Riposte will ricochet the bullets back at any target within range 10 of you, for half the damage.",
+    "cyberImmunityCost": 14,
+    "cost": 10000,
+    "rarity": 6,
+    "effects": [
+      {
+        "kind": "derivedStat",
+        "stat": "actionPoints",
+        "value": 1
+      },
+      {
+        "kind": "derivedStat",
+        "stat": "speed",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "category": "Dermal Armor",
+    "name": "Duraskin Aegis",
+    "tier": "Alpha",
+    "description": "You gain +1 Soak.",
+    "cyberImmunityCost": 5,
+    "cost": 800,
+    "rarity": 3,
+    "effects": [
+      {
+        "kind": "derivedStat",
+        "stat": "soak",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "category": "Dermal Armor",
+    "name": "DermalShield D600",
+    "tier": "Beta",
+    "description": "You gain +1 Soak and may discard the first severity 1 injury during each encounter.",
+    "cyberImmunityCost": 7,
+    "cost": 1200,
+    "rarity": 3,
+    "effects": [
+      {
+        "kind": "derivedStat",
+        "stat": "soak",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "category": "Dermal Armor",
+    "name": "IntegriPlate Pro",
+    "tier": "Omega",
+    "description": "You reduce all incoming damage by 2 before applying any other factors (even your usual Soak or qualities like Penetrating).",
+    "cyberImmunityCost": 8,
+    "cost": 2500,
+    "rarity": 4
+  },
+  {
+    "category": "Neural Interface",
+    "name": "NeuraLink X7",
+    "tier": "Alpha",
+    "description": "Allows to connect the brain to compatible devices. Being directly linked to a piece of equipment (like a vehicle) provides a +1 pool bonus.",
+    "cyberImmunityCost": 4,
+    "cost": 900,
+    "rarity": 2
+  },
+  {
+    "category": "Neural Interface",
+    "name": "SynapTech NI-5",
+    "tier": "Beta",
+    "description": "Allows to connect the brain to compatible devices. Being directly linked to piece of equipment provides a +1 pool bonus.\n\nThe Beta variant prevents any Biofeedback damage that directly results from the linked device.",
+    "cyberImmunityCost": 3,
+    "cost": 1400,
+    "rarity": 3
+  },
+  {
+    "category": "Smarteyes",
+    "name": "Visionix SmartOptic",
+    "tier": "Alpha",
+    "description": "Allows to record what you see or overlay your vision with certain feeds or visual aids.",
+    "cyberImmunityCost": 4,
+    "cost": 1000,
+    "rarity": 2
+  },
+  {
+    "category": "Smarteyes",
+    "name": "Percepta XR-400",
+    "tier": "Beta",
+    "description": "Allows to record what you see or overlay your vision with certain feeds or visual aids, and you can now zoom up to 16x, or even apply filters that go beyond human vision (like thermal, infrared, ultraviolet).",
+    "cyberImmunityCost": 4,
+    "cost": 1800,
+    "rarity": 3
+  },
+  {
+    "category": "Smartears",
+    "name": "Sonix Auralis Pro",
+    "tier": "Alpha",
+    "description": "Allows to record what you hear, receive audio comms and filter audio, allowing to eavesdrop even in crowded areas.",
+    "cyberImmunityCost": 2,
+    "cost": 600,
+    "rarity": 2
+  },
+  {
+    "category": "Smartears",
+    "name": "EchoCore Audio Suite",
+    "tier": "Beta",
+    "description": "Allows to record what you hear, receive audio comms and filter audio, allowing to eavesdrop even in crowded areas. Converts up to three dice from your Vigilance roll into Expertise dice when it's about hearing something hidden or distant.",
+    "cyberImmunityCost": 3,
+    "cost": 1000,
+    "rarity": 3
+  },
+  {
+    "category": "Smartnose",
+    "name": "Aromatrace Analyzer",
+    "tier": "Alpha",
+    "description": "Allows you to record smells, simulate smells, as well as exactly matching pheromones to recognize / trace people.",
+    "cyberImmunityCost": 2,
+    "cost": 600,
+    "rarity": 2
+  },
+  {
+    "category": "Smartnose",
+    "name": "Chemisense Olfactor-X",
+    "tier": "Beta",
+    "description": "Allows you to record smells, simulate smells, as well as exactly matching pheromones to recognize / trace people. Additionally, you can recognize specific chemical compounds or gasses.",
+    "cyberImmunityCost": 3,
+    "cost": 900,
+    "rarity": 3
+  },
+  {
+    "category": "Smartskin",
+    "name": "Tactilis Sensora",
+    "tier": "Alpha",
+    "description": "Amplifies tactile sensitivity, enabling the detection of fine textures, pressure changes, and micro-vibrations.",
+    "cyberImmunityCost": 2,
+    "cost": 600,
+    "rarity": 2
+  },
+  {
+    "category": "Smartskin",
+    "name": "Neo Touch",
+    "tier": "Beta",
+    "description": "Advanced smart skin with enhanced haptic feedback, designed for detailed tactile analysis and heightened environmental awareness.",
+    "cyberImmunityCost": 3,
+    "cost": 900,
+    "rarity": 3
+  },
+  {
+    "category": "Smartlink",
+    "name": "Dermalgunner Minion",
+    "tier": "Alpha",
+    "description": "Removes the necessity for Smarteyes to be connected to gun's smartlink through a wireless signal, making it prone to be hacked. The Smartlink creates a direct connection that is unhackable.",
+    "cyberImmunityCost": 2,
+    "cost": 300,
+    "rarity": 3
+  },
+  {
+    "category": "Sixth Sense",
+    "name": "EchoViz Array",
+    "tier": "Alpha",
+    "description": "Provides advanced echolocation to map surroundings, revealing hidden objects and movements beyond obstacles. The user can perceive rough geometry and movement up to five squares around obstacles and corners.",
+    "cyberImmunityCost": 4,
+    "cost": 1000,
+    "rarity": 3
+  },
+  {
+    "category": "Sixth Sense",
+    "name": "Perceptis Omnisense",
+    "tier": "Beta",
+    "description": "Revolutionary spatial awareness technology that integrates multi-spectrum detection, offering intuitive visualization of areas out of sight. The user can get a fairly detailed glimpse at things up to ten squares around obstacles and corners.",
+    "cyberImmunityCost": 6,
+    "cost": 2000,
+    "rarity": 4
+  },
+  {
+    "category": "Skeletal Reinforcement",
+    "name": "EndoSteel Mk III",
+    "tier": "Alpha",
+    "description": "Increases your maximum health by +3.",
+    "cyberImmunityCost": 4,
+    "cost": 600,
+    "rarity": 3,
+    "effects": [
+      {
+        "kind": "derivedStat",
+        "stat": "health",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "category": "Skeletal Reinforcement",
+    "name": "BoneForge S2",
+    "tier": "Beta",
+    "description": "Increases your maximum health by +3 and you become immune to losing your limbs from regular combat-related outcomes.",
+    "cyberImmunityCost": 4,
+    "cost": 1100,
+    "rarity": 4,
+    "effects": [
+      {
+        "kind": "derivedStat",
+        "stat": "health",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "category": "Synthetic Muscles",
+    "name": "Myoflex Bionic Fiber",
+    "tier": "Alpha",
+    "description": "Grants +1 Agility.",
+    "cyberImmunityCost": 6,
+    "cost": 2000,
+    "rarity": 4,
+    "effects": [
+      {
+        "kind": "attribute",
+        "attr": "agi",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "category": "Synthetic Muscles",
+    "name": "KinetiFibers Pro",
+    "tier": "Beta",
+    "description": "Grants +1 Agility and Constitution.",
+    "cyberImmunityCost": 6,
+    "cost": 3500,
+    "rarity": 5,
+    "effects": [
+      {
+        "kind": "attribute",
+        "attr": "agi",
+        "value": 1
+      },
+      {
+        "kind": "attribute",
+        "attr": "con",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "category": "Cybernetic Arm",
+    "name": "TitanArm A200",
+    "tier": "Alpha",
+    "description": "Replaces one arm with a visible cybernetic variant. When using that arm, you gain +1 Strength.\nYou may install up to one pistol-sized firearm 1-handed melee weapon or tool that can retract from within the internals - you have to pay for the weapon or tool seperately.",
+    "cyberImmunityCost": 7,
+    "cost": 1400,
+    "rarity": 3
+  },
+  {
+    "category": "Cybernetic Arm",
+    "name": "PowerLimb CX",
+    "tier": "Beta",
+    "description": "Replaces one arm with a visible cybernetic variant. When using that arm, you gain +2 Strength.\nYou may install up to one pistol-sized firearm 1-handed melee weapon or tool that can retract from within the internals - you have to pay for the weapon or tool seperately.",
+    "cyberImmunityCost": 7,
+    "cost": 2000,
+    "rarity": 4
+  },
+  {
+    "category": "Cybernetic Arm",
+    "name": "Armatek Series 7",
+    "tier": "Omega",
+    "description": "Replaces one arm with a natural looking cybernetic limb that is nearly indetectable as such. When using that arm, you gain +2 Strength. You may install up to one pistol-sized firearm 1-handed melee weapon or tool that can retract from within the internals - you have to pay for the weapon or tool seperately.",
+    "cyberImmunityCost": 5,
+    "cost": 3500,
+    "rarity": 5
+  },
+  {
+    "category": "Cybernetic Legs",
+    "name": "Legionis Mk II",
+    "tier": "Alpha",
+    "description": "Replaces both legs with visible cybernetic variants. Grants +2 speed and +2 pool bonus on all physical tests where your legs are heavily involved, mostly running, jumping and landing.",
+    "cyberImmunityCost": 9,
+    "cost": 1800,
+    "rarity": 3,
+    "effects": [
+      {
+        "kind": "derivedStat",
+        "stat": "speed",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "category": "Cybernetic Legs",
+    "name": "PaceMaster Pro",
+    "tier": "Beta",
+    "description": "Replaces both legs with visible cybernetic variants. Grants +3 speed and +2 pool bonus on all physical tests where your legs are heavily involved, mostly running, jumping and landing.\n\nAdditionally, you can jump twice as high or far as a normal human.",
+    "cyberImmunityCost": 9,
+    "cost": 2600,
+    "rarity": 4,
+    "effects": [
+      {
+        "kind": "derivedStat",
+        "stat": "speed",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "category": "Cybernetic Legs",
+    "name": "StriderLeg XT",
+    "tier": "Omega",
+    "description": "Replaces both legs with natural looking cybernetic limbs that are nearly indetectable as such. Grants +3 speed and +2 pool bonus on all physical tests where your legs are heavily involved, mostly running, jumping and landing.\n\nAdditionally, you can jump twice as high or far as a normal human.",
+    "cyberImmunityCost": 6,
+    "cost": 4200,
+    "rarity": 5,
+    "effects": [
+      {
+        "kind": "derivedStat",
+        "stat": "speed",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "category": "Adrenaline Booster",
+    "name": "SurgeMod XJ",
+    "tier": "Alpha",
+    "description": "Can be triggered once per day. If you do so, you may ignore the effects of one wound up to severity 3 for 5 minutes. You also regain one edge point.",
+    "cyberImmunityCost": 4,
+    "cost": 900,
+    "rarity": 4
+  },
+  {
+    "category": "Adrenaline Booster",
+    "name": "Excitera-BX",
+    "tier": "Beta",
+    "description": "Can be triggered once per day. If you do so, you may ignore the effects of one wound up to severity 5 for 20 minutes, or remove unconsciousness. You also regain one edge point.",
+    "cyberImmunityCost": 5,
+    "cost": 1600,
+    "rarity": 4
+  },
+  {
+    "category": "Pain Editor",
+    "name": "NeuroQuell-X",
+    "tier": "Alpha",
+    "description": "You may ignore the effects of up to one severity 1 injury - you still have to suffer its injury pool modifier and eventually treat it, you merely ignore its impact. At the beginning of each round, you can re-determine which severity 1 injury your pain editor targets.",
+    "cyberImmunityCost": 3,
+    "cost": 1100,
+    "rarity": 3
+  },
+  {
+    "category": "Pain Editor",
+    "name": "SomaCalm Pro",
+    "tier": "Beta",
+    "description": "You may ignore the effects of up to two severity 1 injuries or a single severity 2 injury - you still have to suffer their injury pool modifiers and eventually treat them, you merely ignore their impact. At the beginning of each round, you can re-determine which injuries your pain editor targets.",
+    "cyberImmunityCost": 6,
+    "cost": 1800,
+    "rarity": 4
+  },
+  {
+    "category": "Internal Cyberdeck",
+    "name": "DeckTek iN-900",
+    "tier": "Alpha",
+    "description": "A cyberdeck mostly to be used as a Computer or for hacking. You need to choose and separately pay for a cyberdeck model which is then implanted. Detecting such a deck is a difficult task (as they often come out as mere Neural Links in cursory scans).\n\nWhen using an internal Cyberdeck, all hacking attempts generate a free trigger.",
+    "cyberImmunityCost": 6,
+    "cost": 1000,
+    "rarity": 4
+  },
+  {
+    "category": "Internal Cyberdeck",
+    "name": "Intruder Mk IV",
+    "tier": "Beta",
+    "description": "A cyberdeck mostly to be used as a Computer or for hacking. You need to choose and separately pay for a cyberdeck model which is then implanted. Detecting such a deck is a difficult task (as they often come out as mere Neural Links in cursory scans).\r\n\r\nWhen using an internal Cyberdeck, all hacking attempts gain +1 pool bonus and generate a free trigger. The installed device gains +20% device integrity.",
+    "cyberImmunityCost": 6,
+    "cost": 2000,
+    "rarity": 5
+  },
+  {
+    "category": "Cognitive Enhancement",
+    "name": "Mnemonic Vault",
+    "tier": "Alpha",
+    "description": "Grants perfect recall of any information seen or heard in the past 30 days.",
+    "cyberImmunityCost": 2,
+    "cost": 800,
+    "rarity": 2
+  },
+  {
+    "category": "Cognitive Enhancement",
+    "name": "Dreamsync Cortex",
+    "tier": "Beta",
+    "description": "Grants perfect recall of any information seen or heard in the past 180 days. Additionally, it enables the user to control their dreams and interface with virtual reality the same way a \"VR Headset\" would.",
+    "cyberImmunityCost": 4,
+    "cost": 1500,
+    "rarity": 3
+  },
+  {
+    "category": "Integrated Comms",
+    "name": "Azerra Stealthlink",
+    "tier": "Alpha",
+    "description": "Implants a basic communication device, allowing for audio transmissions to other devices within 10km. The user can merely think what they want to say, rather than having to actually talk.",
+    "cyberImmunityCost": 3,
+    "cost": 750,
+    "rarity": 3
+  },
+  {
+    "category": "Improved Metabolism",
+    "name": "UltraMend 7.2",
+    "tier": "Alpha",
+    "description": "You gain +5 pool bonus for your nightly regeneration, and regain 40% instead of just 20% of your health.",
+    "cyberImmunityCost": 5,
+    "cost": 800,
+    "rarity": 4
+  },
+  {
+    "category": "Improved Metabolism",
+    "name": "HealSync N500",
+    "tier": "Beta",
+    "description": "You gain +3 pool bonus for your natural regeneration, but you may roll for it once every 6 hours, even if you don't rest.",
+    "cyberImmunityCost": 5,
+    "cost": 2000,
+    "rarity": 5
+  },
+  {
+    "category": "Improved Metabolism",
+    "name": "Regenix Suite",
+    "tier": "Omega",
+    "description": "You may perform your natural regeneration every hour instead. As a drawback, surgery on you suffers a -4 pool penalty and drugs don't have any effect. You also need to eat twice as much.",
+    "cyberImmunityCost": 5,
+    "cost": 6000,
+    "rarity": 6
+  },
+  {
+    "category": "Cybernetic Lungs",
+    "name": "RespiraTech LX",
+    "tier": "Alpha",
+    "description": "Your lungs filtrate hazards and pollutants out of the air, and provide you with a 30 Minute buffer before these become dangerous to you. You also gain a 10 Minute long lasting emergency oxygen tank.",
+    "cyberImmunityCost": 3,
+    "cost": 750,
+    "rarity": 3
+  },
+  {
+    "category": "Cybernetic Lungs",
+    "name": "PulmoSynth V8",
+    "tier": "Beta",
+    "description": "You become fully immune to airborne pollutants or hazards, and you gain a 30 Minute long lasting emergency oxygen tank.",
+    "cyberImmunityCost": 4,
+    "cost": 1300,
+    "rarity": 4
+  },
+  {
+    "category": "Cybernetic Lungs",
+    "name": "AirForge AL200",
+    "tier": "Omega",
+    "description": "You don't need to breathe anymore, but your body needs access to oxygen at least once every 24 hours.",
+    "cyberImmunityCost": 6,
+    "cost": 2500,
+    "rarity": 5
+  },
+  {
+    "category": "Cybernetic Liver",
+    "name": "HepatiCore Basic",
+    "tier": "Alpha",
+    "description": "A streamlined liver augmentation designed for efficient alcohol metabolism, minimizing harmful effects and enabling prolonged social indulgence.",
+    "cyberImmunityCost": 2,
+    "cost": 400,
+    "rarity": 2
+  },
+  {
+    "category": "Cybernetic Liver",
+    "name": "BioPurge Omega",
+    "tier": "Beta",
+    "description": "Advanced cybernetic filtration technology offering protection against toxins, poisons, unwanted drugs, and ingested environmental contaminants. When using drugs, roll a d6. On a 4+, you may ignore any related drawbacks.",
+    "cyberImmunityCost": 5,
+    "cost": 1800,
+    "rarity": 4
+  },
+  {
+    "category": "Emotional Regulator",
+    "name": "MoodModulator S5",
+    "tier": "Alpha",
+    "description": "Allows you to alter your mood as you wish, including the simulation of drug like effects. In turn, you can hide fear, induce confidence and similar.\n\nYou gain +1 pool bonus for all related checks, including social ones like Con Arts or Command.",
+    "cyberImmunityCost": 6,
+    "cost": 1300,
+    "rarity": 3
+  },
+  {
+    "category": "Emotional Regulator",
+    "name": "CalmLink ER-3",
+    "tier": "Beta",
+    "description": "Allows you to alter your mood as you wish, including the simulation of drug like effects. In turn, you can hide fear, induce confidence and similar.\r\n\r\nYou gain +1 Coolness and +1 pool bonus for all suitable checks, including social ones like Con Arts or Command.",
+    "cyberImmunityCost": 6,
+    "cost": 3500,
+    "rarity": 4,
+    "effects": [
+      {
+        "kind": "attribute",
+        "attr": "coo",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "category": "Cognitech Processor",
+    "name": "NeuroEnhance VX",
+    "tier": "Alpha",
+    "description": "Grants +1 Intelligence.",
+    "cyberImmunityCost": 5,
+    "cost": 2400,
+    "rarity": 4,
+    "effects": [
+      {
+        "kind": "attribute",
+        "attr": "int",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "category": "Cognitech Processor",
+    "name": "SynapseX-200",
+    "tier": "Beta",
+    "description": "Grants +2 Intelligence, but the device becomes prone to deal biofeedback damage to you in case someone hacks you.",
+    "cyberImmunityCost": 5,
+    "cost": 6000,
+    "rarity": 5,
+    "effects": [
+      {
+        "kind": "attribute",
+        "attr": "int",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "category": "Skillwire Slot",
+    "name": "SkillSlot V3",
+    "tier": "Alpha",
+    "description": "Allows you to insert a single chip at any given time. Each chip corresponds to a skill, and puts that skill to level 3 (regardless of your own levels). If your own level in the skill is equal or higher, you gain +1 pool bonus instead. Changing a chip is an action that costs 5 AP.\n\nChips are sold separately at rarity 4 and 500 Credits each.",
+    "cyberImmunityCost": 5,
+    "cost": 1300,
+    "rarity": 4
+  },
+  {
+    "category": "Skillwire Slot",
+    "name": "AbilityLink AS",
+    "tier": "Beta",
+    "description": "Allows you to insert up to two chips at any given time. Each chip corresponds to a skill, and puts that skill to level 3 (regardless of your own levels). If your own level in the skill is equal or higher, you gain +1 pool bonus instead. Changing a chip is an action that costs 5 AP.\n\nChips are sold separately at rarity 4 and 500 Credits each.",
+    "cyberImmunityCost": 7,
+    "cost": 2250,
+    "rarity": 4
+  },
+  {
+    "category": "Skillwire Slot",
+    "name": "TalentJack 2.1",
+    "tier": "Omega",
+    "description": "You gain +1 Education, and you can insert up to two chips at any given time. Each chip corresponds to a skill, and puts that skill to level 3 (regardless of your own levels). If your own level in the skill is equal or higher, you gain +1 pool bonus instead. Changing a chip is an action that costs 5 AP.\n\nChips are sold separately at rarity 4 and 500 Credits each.",
+    "cyberImmunityCost": 7,
+    "cost": 4000,
+    "rarity": 5,
+    "effects": [
+      {
+        "kind": "attribute",
+        "attr": "edu",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "category": "Vacuum Skin",
+    "name": "Vacuseal Dermis",
+    "tier": "Alpha",
+    "description": "Makes your outer body layer resistant to the effects of the vaccuum for up to 30 Minutes. The skin looks visibly altered and has an alien texture to it.",
+    "cyberImmunityCost": 6,
+    "cost": 1500,
+    "rarity": 4
+  },
+  {
+    "category": "Vacuum Skin",
+    "name": "Starshield Epidermal Layer",
+    "tier": "Beta",
+    "description": "Makes your outer body layer resistant to the effects of the vacuum indefinitely. The skin looks visibly altered and has an alien texture to it.",
+    "cyberImmunityCost": 7,
+    "cost": 2800,
+    "rarity": 4
+  },
+  {
+    "category": "Vacuum Skin",
+    "name": "XenoDerm Exo-Layer",
+    "tier": "Omega",
+    "description": "As above, and allows you to withstand extreme weather (heat, cold or corrosion) for up to 30 Minutes - you still need to ensure a suitable oxygen intake. The skin looks visibly altered and has an alien texture to it.",
+    "cyberImmunityCost": 7,
+    "cost": 4500,
+    "rarity": 5
+  },
+  {
+    "category": "Stealth Skin",
+    "name": "Shadow Veil",
+    "tier": "Alpha",
+    "description": "Attempts to recognize the user's face with surveillance, as well as biometric scanning or heat detection suffer a -3 pool penalty.",
+    "cyberImmunityCost": 4,
+    "cost": 1800,
+    "rarity": 4
+  },
+  {
+    "category": "Stealth Skin",
+    "name": "Lightbender Skin",
+    "tier": "Beta",
+    "description": "Attempts to recognize the user's face with surveillance, as well as biometric scanning or heat detection suffer a -3 pool penalty.\n\nThe skin tech can mimic surrounding textures and colors, granting +3 pool on checks to stay hidden - can also be used to display cool tattoos at will.",
+    "cyberImmunityCost": 6,
+    "cost": 4000,
+    "rarity": 5
+  },
+  {
+    "category": "Navigation Suites",
+    "name": "Navix Orientier",
+    "tier": "Alpha",
+    "description": "Provides you with an internal magnetometer and gyro-compass, capable of keeping you oriented in most planetary, ship-board, and station-side environments. You may reroll any roll related to local scale navigation and maneuvering, except in areas devoid of magnetic fields like deep space.",
+    "cyberImmunityCost": 2,
+    "cost": 550,
+    "rarity": 2
+  },
+  {
+    "category": "Navigation Suites",
+    "name": "StarLink Inner Guide 2",
+    "tier": "Beta",
+    "description": "Integrates inertial guidance with internal magnetometers and path optimization algorithms to facilitate navigation and maneuvering in any environment. You may reroll any roll related to personal navigation regardless of scale or environment. Additionally, you gain +1 Speed.",
+    "cyberImmunityCost": 3,
+    "cost": 1100,
+    "rarity": 3,
+    "effects": [
+      {
+        "kind": "derivedStat",
+        "stat": "speed",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "category": "Navigation Suites",
+    "name": "Navix FDS",
+    "tier": "Omega",
+    "description": "Implements a multi-node magnetometer network throughout your body that precisely measures local magnetic fields and overlays them on your vision. You can see masses of metal, flows of electricity, and magnetic fields within 5 squares with the clarity of normal vision, including through most barriers. You may reroll any roll related to personal navigation regardless of scale or environment.",
+    "cyberImmunityCost": 4,
+    "cost": 2400,
+    "rarity": 4
+  },
+  {
+    "category": "Sensor Arrays",
+    "name": "Heisenberg Systems Rad Alert",
+    "tier": "Alpha",
+    "description": "Implanted particle and radiation sensors monitor local radiation conditions and provide warning at configurable danger thresholds. You always know the intensity and types of radiation present in your environment, and whether they present a health hazard.",
+    "cyberImmunityCost": 2,
+    "cost": 500,
+    "rarity": 2
+  },
+  {
+    "category": "Sensor Arrays",
+    "name": "Heisenberg Systems MS-SpectraFeel",
+    "tier": "Beta",
+    "description": "You always know current radiation levels (and whether they pose a health risk or not), and through a combination of emitters and sensors embedded in your palms you are enabled to identify substances by touch, allowing you to discern chemical compositions in detail, and analyze the internal structure of objects to a depth of approximately 20cm. Such active scanning can be detected. When repairing something, you gain +1 pool due to the added layers of information.",
+    "cyberImmunityCost": 5,
+    "cost": 2000,
+    "rarity": 4
+  },
+  {
+    "category": "Pheromone Glands",
+    "name": "Pheroslaver 3",
+    "tier": "Alpha",
+    "description": "Grants +1 pool bonus to all social checks when trying to manipulate others within range 5.",
+    "cyberImmunityCost": 5,
+    "cost": 1000,
+    "rarity": 4
+  },
+  {
+    "category": "Pheromone Glands",
+    "name": "Pacifier Pixiedust XT",
+    "tier": "Beta",
+    "description": "Grants +1 pool bonus to all social checks when trying to manipulate others within range 5. Once per day you can release a cloud of strong pheromones within range 5. You can attempt a Con Arts or Command check, and victims have to pass a Survival or Empathy check with more successes than you - they gain a pool bonus the more ridiculous your demands are. If they fail, they will temporarily follow your request.",
+    "cyberImmunityCost": 5,
+    "cost": 2500,
+    "rarity": 5
+  },
+  {
+    "category": "Cortexbomb",
+    "name": "Martyrmaker v5",
+    "tier": "Alpha",
+    "description": "Implants a bomb in the target's head that can be detonated by broadcasting a special encrypted signal.\nIt explodes with the profile of a frag grenade with 2 Triggers.",
+    "cyberImmunityCost": 6,
+    "cost": 800,
+    "rarity": 4
+  },
+  {
+    "category": "Cortexbomb",
+    "name": "Flowershower Mk-2",
+    "tier": "Beta",
+    "description": "Implants a bomb in the target's head that can be detonated by broadcasting a special encrypted signal.\nIt explodes with the profile of a rocket launcher and as if 2 Triggers had been rolled for each of the trigger options.",
+    "cyberImmunityCost": 6,
+    "cost": 2000,
+    "rarity": 5
+  },
+  {
+    "category": "Cortexbomb",
+    "name": "Ares Shroomhead",
+    "tier": "Omega",
+    "description": "Implants a bomb in the target's head that can be detonated by broadcasting a special encrypted signal. The implant merely shows as a Neural Link in cursory cyberware scans.\nIt explodes with the profile of a small tactical nuke, dealing 30 damage to everything in a 50 square radius (and half that damage for every 50 squares after that).",
+    "cyberImmunityCost": 8,
+    "cost": 5000,
+    "rarity": 6
+  }
+]

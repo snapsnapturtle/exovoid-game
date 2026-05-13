@@ -23,12 +23,12 @@ interface TalentTreePageProps {
   canEdit: boolean
 }
 
-import type { TalentEffect } from '~/lib/game-logic/talent-effects'
+import type { PassiveEffect } from '~/lib/game-logic/passive-effects'
 
 interface TalentMeta {
   name: string
   description: string
-  effects?: TalentEffect[]
+  effects?: PassiveEffect[]
 }
 const ALL_TALENTS = talentsData as TalentMeta[]
 const ALL_CAREERS = careersData as CareerData[]

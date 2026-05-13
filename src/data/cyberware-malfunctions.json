@@ -1,0 +1,236 @@
+[
+  {
+    "roll": 2,
+    "outcome": "Critical Shutdown",
+    "description": "All cyberware systems shut down completely for 24 hours. The character is incapacitated during this time. Permanent damage to 2 pieces of cyberware, requiring expensive repairs or replacements.",
+    "repair": "Tech d5 check per damaged piece, requiring 4 hours of work. Requires medical access.\nMaterials: Equal to 1/10th of the Cyberware's original price."
+  },
+  {
+    "roll": 3,
+    "outcome": "Critical Shutdown",
+    "description": "All cyberware systems shut down completely for 24 hours. The character is incapacitated during this time. Permanent damage to 2 pieces of cyberware, requiring expensive repairs or replacements.",
+    "repair": "Tech d5 check per damaged piece, requiring 4 hours of work. Requires medical access.\nMaterials: Equal to 1/10th of the Cyberware's original price."
+  },
+  {
+    "roll": 4,
+    "outcome": "Critical Shutdown",
+    "description": "All cyberware systems shut down completely for 24 hours. The character is incapacitated during this time. Permanent damage to 2 pieces of cyberware, requiring expensive repairs or replacements.",
+    "repair": "Tech d5 check per damaged piece, requiring 4 hours of work. Requires medical access.\nMaterials: Equal to 1/10th of the Cyberware's original price."
+  },
+  {
+    "roll": 5,
+    "outcome": "System Overload",
+    "description": "Severe electric feedback damages both the cyberware and the character. The character takes 2d6 damage (ignoring armor), and all cyberware functions at reduced efficiency (-2 penalty to all related rolls) until repaired.",
+    "repair": "Tech d4 check to restore full functionality, requiring a downtime activity. Requires medical access.\nMaterials: 250 Credits."
+  },
+  {
+    "roll": 6,
+    "outcome": "System Overload",
+    "description": "Severe electric feedback damages both the cyberware and the character. The character takes 2d6 damage (ignoring armor), and all cyberware functions at reduced efficiency (-2 penalty to all related rolls) until repaired.",
+    "repair": "Tech d4 check to restore full functionality, requiring a downtime activity. Requires medical access.\nMaterials: 250 Credits."
+  },
+  {
+    "roll": 7,
+    "outcome": "Critical Malfunction",
+    "description": "One piece of cyberware becomes permanently disabled until repaired. The character suffers 1d6 damage, and other systems experience random malfunctions (as per the GM's discretion) until the primary system is repaired.",
+    "repair": "Tech d4 check to restore the disabled piece, requiring 4 hours of work. Requires medical access.\nMaterials: Equal to 1/10th of the Cyberware's original price."
+  },
+  {
+    "roll": 8,
+    "outcome": "Critical Malfunction",
+    "description": "One piece of cyberware becomes permanently disabled until repaired. The character suffers 1d6 damage, and other systems experience random malfunctions (as per the GM's discretion) until the primary system is repaired.",
+    "repair": "Tech d4 check to restore the disabled piece, requiring 4 hours of work. Requires medical access.\nMaterials: Equal to 1/10th of the Cyberware's original price."
+  },
+  {
+    "roll": 9,
+    "outcome": "Critical Malfunction",
+    "description": "One piece of cyberware becomes permanently disabled until repaired. The character suffers 1d6 damage, and other systems experience random malfunctions (as per the GM's discretion) until the primary system is repaired.",
+    "repair": "Tech d4 check to restore the disabled piece, requiring 4 hours of work. Requires medical access.\nMaterials: Equal to 1/10th of the Cyberware's original price."
+  },
+  {
+    "roll": 10,
+    "outcome": "System Glitch",
+    "description": "Multiple cyberware systems experience severe glitches. The character suffers a -2 penalty to all actions involving cyberware for the next 12 hours. One system becomes unstable, requiring attention within one hour to avoid permanent damage.",
+    "repair": "Computers d3 check to stabilize the unstable system, requiring 15 Minutes of work."
+  },
+  {
+    "roll": 11,
+    "outcome": "System Glitch",
+    "description": "Multiple cyberware systems experience severe glitches. The character suffers a -2 penalty to all actions involving cyberware for the next 12 hours. One system becomes unstable, requiring attention within one hour to avoid permanent damage.",
+    "repair": "Computers d3 check to stabilize the unstable system, requiring 15 Minutes of work."
+  },
+  {
+    "roll": 12,
+    "outcome": "System Glitch",
+    "description": "Multiple cyberware systems experience severe glitches. The character suffers a -2 penalty to all actions involving cyberware for the next 12 hours. One system becomes unstable, requiring attention within one hour to avoid permanent damage.",
+    "repair": "Computers d3 check to stabilize the unstable system, requiring 15 Minutes of work."
+  },
+  {
+    "roll": 13,
+    "outcome": "Feedback Loop",
+    "description": "The character experiences intense pain as their nervous system is overwhelmed by cyberware feedback. They suffer 1d6 damage (ignoring armor), and all actions involving cyberware are made with a -2 penalty for the next 6 hours.",
+    "repair": "Tech d2 check to recalibrate the system and end the feedback loop, requiring 10 Minutes of work."
+  },
+  {
+    "roll": 14,
+    "outcome": "Feedback Loop",
+    "description": "The character experiences intense pain as their nervous system is overwhelmed by cyberware feedback. They suffer 1d6 damage (ignoring armor), and all actions involving cyberware are made with a -2 penalty for the next 6 hours.",
+    "repair": "Tech d2 check to recalibrate the system and end the feedback loop, requiring 10 Minutes of work."
+  },
+  {
+    "roll": 15,
+    "outcome": "Temporary Shutdown",
+    "description": "One piece of cyberware shuts down for 1d6 hours, causing inconvenience but no lasting damage.",
+    "repair": "Tech d2 check to restart the system, requiring 5 Minutes of work."
+  },
+  {
+    "roll": 16,
+    "outcome": "Temporary Shutdown",
+    "description": "One piece of cyberware shuts down for 1d6 hours, causing inconvenience but no lasting damage.",
+    "repair": "Tech d2 check to restart the system, requiring 5 Minutes of work."
+  },
+  {
+    "roll": 17,
+    "outcome": "Temporary Shutdown",
+    "description": "One piece of cyberware shuts down for 1d6 hours, causing inconvenience but no lasting damage.",
+    "repair": "Tech d2 check to restart the system, requiring 5 Minutes of work."
+  },
+  {
+    "roll": 18,
+    "outcome": "System Lag",
+    "description": "Cyberware operates at reduced efficiency, causing a -1 penalty to related rolls for the next 4 hours. The character experiences slight discomfort or disorientation.",
+    "repair": "Computers d2 check to fix the lag, requiring 5 Minutes of work."
+  },
+  {
+    "roll": 19,
+    "outcome": "System Lag",
+    "description": "Cyberware operates at reduced efficiency, causing a -1 penalty to related rolls for the next 4 hours. The character experiences slight discomfort or disorientation.",
+    "repair": "Computers d2 check to fix the lag, requiring 5 Minutes of work."
+  },
+  {
+    "roll": 20,
+    "outcome": "System Lag",
+    "description": "Cyberware operates at reduced efficiency, causing a -1 penalty to related rolls for the next 4 hours. The character experiences slight discomfort or disorientation.",
+    "repair": "Computers d2 check to fix the lag, requiring 5 Minutes of work."
+  },
+  {
+    "roll": 21,
+    "outcome": "Minor Glitch",
+    "description": "One piece of cyberware momentarily malfunctions, causing a -2 penalty to related rolls for the next 2 hours. No permanent damage, but the glitch is frustrating.",
+    "repair": "Tech d2 check to correct the glitch, requiring 5 Minutes of work."
+  },
+  {
+    "roll": 22,
+    "outcome": "Minor Glitch",
+    "description": "One piece of cyberware momentarily malfunctions, causing a -2 penalty to related rolls for the next 2 hours. No permanent damage, but the glitch is frustrating.",
+    "repair": "Tech d2 check to correct the glitch, requiring 5 Minutes of work."
+  },
+  {
+    "roll": 23,
+    "outcome": "Minor Glitch",
+    "description": "One piece of cyberware momentarily malfunctions, causing a -2 penalty to related rolls for the next 2 hours. No permanent damage, but the glitch is frustrating.",
+    "repair": "Tech d2 check to correct the glitch, requiring 5 Minutes of work."
+  },
+  {
+    "roll": 24,
+    "outcome": "Sensory Overload",
+    "description": "The character experiences a brief but intense sensory overload, suffering a -1 penalty to all rolls for the next hour. The cyberware returns to normal function afterward.",
+    "repair": "No repair possible or needed."
+  },
+  {
+    "roll": 25,
+    "outcome": "Sensory Overload",
+    "description": "The character experiences a brief but intense sensory overload, suffering a -1 penalty to all rolls for the next hour. The cyberware returns to normal function afterward.",
+    "repair": "No repair possible or needed."
+  },
+  {
+    "roll": 26,
+    "outcome": "Partial Shutdown",
+    "description": "One piece of cyberware shuts down partially, reducing its effectiveness by half for 12 hours.",
+    "repair": "Tech d3 check to restore full functionality, requiring 30 Minutes of work."
+  },
+  {
+    "roll": 27,
+    "outcome": "Partial Shutdown",
+    "description": "One piece of cyberware shuts down partially, reducing its effectiveness by half for 12 hours.",
+    "repair": "Tech d3 check to restore full functionality, requiring 30 Minutes of work."
+  },
+  {
+    "roll": 28,
+    "outcome": "Partial Shutdown",
+    "description": "One piece of cyberware shuts down partially, reducing its effectiveness by half for 12 hours.",
+    "repair": "Tech d3 check to restore full functionality, requiring 30 Minutes of work."
+  },
+  {
+    "roll": 29,
+    "outcome": "Corrupted Data",
+    "description": "One cyberware system's data becomes corrupted, leading to erratic behavior. The character suffers random penalties (-1 to -3 as per the GM's discretion) to related rolls for 6 hours or until the system is recalibrated.",
+    "repair": "Computers d3 check to clean and restore data, requiring 10 Minutes of work."
+  },
+  {
+    "roll": 30,
+    "outcome": "Corrupted Data",
+    "description": "One cyberware system's data becomes corrupted, leading to erratic behavior. The character suffers random penalties (-1 to -3 as per the GM's discretion) to related rolls for 6 hours or until the system is recalibrated.",
+    "repair": "Computers d3 check to clean and restore data, requiring 10 Minutes of work."
+  },
+  {
+    "roll": 31,
+    "outcome": "Nerve Spike",
+    "description": "The character experiences intense nerve pain due to a malfunction. They suffer 2d6 damage and are stunned for 1d4 rounds. One cyberware system becomes unreliable - you immediately have to assign 4 points across this table. You remove these points when that system is repaired.",
+    "repair": "Tech d4 check to fix the unreliable system, requiring 1 hour of work. Medical access needed."
+  },
+  {
+    "roll": 32,
+    "outcome": "Nerve Spike",
+    "description": "The character experiences intense nerve pain due to a malfunction. They suffer 2d6 damage and are stunned for 1d4 rounds. One cyberware system becomes unreliable - you immediately have to assign 4 points across this table. You remove these points when that system is repaired.",
+    "repair": "Tech d4 check to fix the unreliable system, requiring 1 hour of work. Medical access needed."
+  },
+  {
+    "roll": 33,
+    "outcome": "Nerve Spike",
+    "description": "The character experiences intense nerve pain due to a malfunction. They suffer 2d6 damage and are stunned for 1d4 rounds. One cyberware system becomes unreliable - you immediately have to assign 4 points across this table. You remove these points when that system is repaired.",
+    "repair": "Tech d4 check to fix the unreliable system, requiring 1 hour of work. Medical access needed."
+  },
+  {
+    "roll": 34,
+    "outcome": "Cybernetic Seizure",
+    "description": "The character's cyberware causes a violent seizure, incapacitating them for 1d6 rounds and causing 1d6 damage. Two random systems are temporarily disabled until repaired.",
+    "repair": "Tech d4 check for each disabled system to restore them, requiring 30 Minutes of work. Medical access needed."
+  },
+  {
+    "roll": 35,
+    "outcome": "Cybernetic Seizure",
+    "description": "The character's cyberware causes a violent seizure, incapacitating them for 1d6 rounds and causing 1d6 damage. Two random systems are temporarily disabled until repaired.",
+    "repair": "Tech d4 check for each disabled system to restore them, requiring 30 Minutes of work. Medical access needed."
+  },
+  {
+    "roll": 36,
+    "outcome": "Cybernetic Seizure",
+    "description": "The character's cyberware causes a violent seizure, incapacitating them for 1d6 rounds and causing 1d6 damage. Two random systems are temporarily disabled until repaired.",
+    "repair": "Tech d4 check for each disabled system to restore them, requiring 30 Minutes of work. Medical access needed."
+  },
+  {
+    "roll": 37,
+    "outcome": "Implant Rejection",
+    "description": "The character's body begins to reject one piece of cyberware. They suffer 3d6 damage, and the affected cyberware becomes permanently disabled until completely replaced by a new one (can be the same model).",
+    "repair": "Requires complete surgery (as a downtime activity) to remove the old cyberware and install the new one."
+  },
+  {
+    "roll": 38,
+    "outcome": "Implant Rejection",
+    "description": "The character's body begins to reject one piece of cyberware. They suffer 3d6 damage, and the affected cyberware becomes permanently disabled until completely replaced by a new one (can be the same model).",
+    "repair": "Requires complete surgery (as a downtime activity) to remove the old cyberware and install the new one."
+  },
+  {
+    "roll": 39,
+    "outcome": "System Cascade Failure",
+    "description": "A chain reaction causes all cyberware to malfunction simultaneously. The character takes 2d6 + 7 damage and loses all benefits of their cyberware until extensive repairs are made. This may require specialist help and significant downtime.",
+    "repair": "Tech d5 check to address the cascade failure. Full repairs require one downtime activity per piece of cyberware, and medical access is required."
+  },
+  {
+    "roll": 40,
+    "outcome": "System Cascade Failure",
+    "description": "A chain reaction causes all cyberware to malfunction simultaneously. The character takes 2d6 + 7 damage and loses all benefits of their cyberware until extensive repairs are made. This may require specialist help and significant downtime.",
+    "repair": "Tech d5 check to address the cascade failure. Full repairs require one downtime activity per piece of cyberware, and medical access is required."
+  }
+]

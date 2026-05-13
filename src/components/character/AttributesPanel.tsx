@@ -4,7 +4,7 @@ import {
   MAX_ATTRIBUTE_LEVEL,
 } from '~/lib/game-logic/attributes'
 import type { AttributeId } from '~/lib/game-logic/attributes'
-import type { Contribution } from '~/lib/game-logic/talent-effects'
+import type { Contribution } from '~/lib/game-logic/passive-effects'
 
 interface AttributesPanelProps {
   attributes: CharacterAttributes
@@ -17,7 +17,7 @@ interface AttributesPanelProps {
 /**
  * Edit-form attribute panel for a fully-created character. The +/- buttons
  * always edit the stored base value; the displayed number is the base plus
- * any passive talent bonuses (clamped to MAX_ATTRIBUTE_LEVEL).
+ * any passive bonuses from talents or cyberware (clamped to MAX_ATTRIBUTE_LEVEL).
  */
 export function AttributesPanel({
   attributes,

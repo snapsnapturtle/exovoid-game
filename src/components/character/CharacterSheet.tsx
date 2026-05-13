@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import type { Character } from '~/lib/types/database'
 import { useCharacter } from '~/lib/hooks/useCharacter'
-import { applyPassiveTalentEffects } from '~/lib/game-logic/talent-effects'
+import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
 import { deleteCharacter } from '~/lib/server/characters'
 import { CharacterHeader } from './CharacterHeader'
 import { AttributesPanel } from './AttributesPanel'
@@ -31,9 +31,10 @@ export function CharacterSheet({
   const { character, saveStatus, updateField, updateAttribute, updateSkill } =
     useCharacter(initial, canEdit)
 
-  const effects = applyPassiveTalentEffects(
+  const effects = applyPassiveEffects(
     character.attributes,
     character.talents,
+    character.cyberware,
   )
   const derivedStats = effects.derived
   const isEditMode = mode === 'edit'
@@ -118,6 +119,8 @@ export function CharacterSheet({
             canEdit={editScopeCanEdit}
             liveCanEdit={canEdit}
             talents={character.talents}
+            cyberware={character.cyberware}
+            cyberImmunityCapacity={derivedStats.cyberImmunity}
             level={character.level}
             career={character.career}
             gameId={character.game_id}
