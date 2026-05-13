@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { CharacterInfoPanel } from './CharacterInfoPanel'
+import { ActionsTab } from './ActionsTab'
 import { TalentsTab } from '~/components/talents/TalentsTab'
 import { CyberwareTab } from '~/components/cyberware/CyberwareTab'
 import { InventoryTab } from '~/components/inventory/InventoryTab'
@@ -91,7 +92,14 @@ export function EquipmentTabs({
         ))}
       </div>
       <div className="p-4">
-        {tab === 'actions' && <PlaceholderTab name="Actions" />}
+        {tab === 'actions' && (
+          <ActionsTab
+            inventory={inventory}
+            gameId={gameId}
+            characterId={characterId}
+            canEdit={canEdit}
+          />
+        )}
         {tab === 'inventory' && (
           <InventoryTab
             inventory={inventory}

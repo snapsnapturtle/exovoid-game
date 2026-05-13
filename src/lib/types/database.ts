@@ -431,18 +431,27 @@ export type CyberwareEntry = {
 }
 
 /**
- * An entry in a character's or a game's shared inventory. `catalog` items
- * resolve their stats by looking up `name` in `items.json`; `custom` items
- * are free-text and carry their own description.
+ * An entry in a character's or a game's shared inventory.
+ * - `catalog` items resolve stats by looking up `name` in `items.json`.
+ * - `custom` items are free-text and carry their own description.
+ * - `weapon` items reference `weapons.json` via `weaponRef` (the canonical
+ *   `weapon` field, e.g. "Hold Out Pistol"); `name` is the player-editable
+ *   display (defaults to the rulebook's illustrative name, e.g. "6mm Triton
+ *   Vanguard"). Future equipment types (armor, drones) follow the same
+ *   pattern by adding their own `*Ref` fields.
  */
 export type InventoryItem = {
   id: string
-  source: 'catalog' | 'custom'
+  source: 'catalog' | 'custom' | 'weapon'
   name: string
   description?: string
   quantity: number
   /** Free-form grouping ("backpack", "on ship") — players define their own. */
   location?: string
+  /** Catalog reference for source='weapon'. */
+  weaponRef?: string
+  /** Only meaningful for source='weapon' on a character (stripped on transfer to party). */
+  equipped?: boolean
 }
 
 type CharacterRow = Database['public']['Tables']['characters']['Row']

@@ -6,15 +6,20 @@ import type {
   InventoryItem,
 } from '~/lib/types/database'
 import { inventoryByLocation, lookupItem } from '~/lib/game-logic/items'
+import { lookupWeapon } from '~/lib/game-logic/weapons'
 import {
   addInventoryItem,
+  addWeapon,
   removeInventoryItem,
   setCurrency,
+  setEquipped,
   transferInventoryItem,
   updateInventoryItem,
 } from '~/lib/server/inventory'
 import { AddCatalogItemModal } from './AddCatalogItemModal'
 import { AddCustomItemModal } from './AddCustomItemModal'
+import { AddWeaponModal } from './AddWeaponModal'
+import { QualityBadge } from './QualityBadge'
 
 type Owner =
   | { type: 'character'; characterId: string }
@@ -36,6 +41,7 @@ export function InventoryPage({
   const [addModal, setAddModal] = useState<
     | { kind: 'catalog'; owner: Owner }
     | { kind: 'custom'; owner: Owner }
+    | { kind: 'weapon'; owner: Owner }
     | null
   >(null)
   const [busyId, setBusyId] = useState<string | null>(null)
@@ -136,6 +142,9 @@ export function InventoryPage({
           onAddCustom={() =>
             setAddModal({ kind: 'custom', owner: characterOwner })
           }
+          onAddWeapon={() =>
+            setAddModal({ kind: 'weapon', owner: characterOwner })
+          }
           onUpdateQuantity={(item, quantity) =>
             withBusy(`update:${item.id}`, () =>
               updateInventoryItem({
@@ -143,6 +152,17 @@ export function InventoryPage({
                   owner: characterOwner,
                   itemId: item.id,
                   updates: { quantity },
+                },
+              }),
+            )
+          }
+          onRename={(item, name) =>
+            withBusy(`update:${item.id}`, () =>
+              updateInventoryItem({
+                data: {
+                  owner: characterOwner,
+                  itemId: item.id,
+                  updates: { name },
                 },
               }),
             )
@@ -167,6 +187,13 @@ export function InventoryPage({
           }
           transferLabel="→ Party"
           onRemove={(item) => confirmRemove(item, characterOwner)}
+          onToggleEquipped={(item, equipped) =>
+            withBusy(`equip:${item.id}`, () =>
+              setEquipped({
+                data: { characterId: character.id, itemId: item.id, equipped },
+              }),
+            )
+          }
         />
       ) : (
         <InventoryColumn
@@ -176,6 +203,7 @@ export function InventoryPage({
           busyId={busyId}
           onAddCatalog={() => setAddModal({ kind: 'catalog', owner: gameOwner })}
           onAddCustom={() => setAddModal({ kind: 'custom', owner: gameOwner })}
+          onAddWeapon={() => setAddModal({ kind: 'weapon', owner: gameOwner })}
           onUpdateQuantity={(item, quantity) =>
             withBusy(`update:${item.id}`, () =>
               updateInventoryItem({
@@ -184,6 +212,13 @@ export function InventoryPage({
                   itemId: item.id,
                   updates: { quantity },
                 },
+              }),
+            )
+          }
+          onRename={(item, name) =>
+            withBusy(`update:${item.id}`, () =>
+              updateInventoryItem({
+                data: { owner: gameOwner, itemId: item.id, updates: { name } },
               }),
             )
           }
@@ -240,6 +275,18 @@ export function InventoryPage({
                   ...input,
                 },
               })
+              setAddModal(null)
+            })
+          }
+          onClose={() => setAddModal(null)}
+        />
+      )}
+      {addModal?.kind === 'weapon' && (
+        <AddWeaponModal
+          busy={busyId !== null}
+          onAdd={(input) =>
+            withBusy('add', async () => {
+              await addWeapon({ data: { owner: addModal.owner, ...input } })
               setAddModal(null)
             })
           }
@@ -446,11 +493,15 @@ interface InventoryColumnProps {
   busyId: string | null
   onAddCatalog: () => void
   onAddCustom: () => void
+  onAddWeapon: () => void
   onUpdateQuantity: (item: InventoryItem, quantity: number) => void
+  onRename: (item: InventoryItem, name: string) => void
   onUpdateLocation: (item: InventoryItem, location: string) => void
   onTransfer: (item: InventoryItem) => void
   transferLabel: string
   onRemove: (item: InventoryItem) => void
+  /** Only passed for the character column — toggles `equipped` on a weapon entry. */
+  onToggleEquipped?: (item: InventoryItem, equipped: boolean) => void
 }
 
 function InventoryColumn({
@@ -460,11 +511,14 @@ function InventoryColumn({
   busyId,
   onAddCatalog,
   onAddCustom,
+  onAddWeapon,
   onUpdateQuantity,
+  onRename,
   onUpdateLocation,
   onTransfer,
   transferLabel,
   onRemove,
+  onToggleEquipped,
 }: InventoryColumnProps) {
   const groups = useMemo(() => inventoryByLocation(items), [items])
 
@@ -479,6 +533,12 @@ function InventoryColumn({
               className="rounded-lg border border-accent-500/60 bg-accent-500/15 px-2.5 py-1 text-xs font-medium text-accent-200 transition hover:bg-accent-500/25"
             >
               + Catalog
+            </button>
+            <button
+              onClick={onAddWeapon}
+              className="rounded-lg border border-cyber-500/60 bg-cyber-500/15 px-2.5 py-1 text-xs font-medium text-cyber-200 transition hover:bg-cyber-500/25"
+            >
+              + Weapon
             </button>
             <button
               onClick={onAddCustom}
@@ -508,10 +568,16 @@ function InventoryColumn({
                     canEdit={canEdit}
                     busy={busyId !== null}
                     onQuantityChange={(q) => onUpdateQuantity(item, q)}
+                    onRename={(n) => onRename(item, n)}
                     onLocationChange={(loc) => onUpdateLocation(item, loc)}
                     onTransfer={() => onTransfer(item)}
                     transferLabel={transferLabel}
                     onRemove={() => onRemove(item)}
+                    onToggleEquipped={
+                      onToggleEquipped
+                        ? (eq) => onToggleEquipped(item, eq)
+                        : undefined
+                    }
                   />
                 ))}
               </ul>
@@ -528,29 +594,44 @@ function ItemRow({
   canEdit,
   busy,
   onQuantityChange,
+  onRename,
   onLocationChange,
   onTransfer,
   transferLabel,
   onRemove,
+  onToggleEquipped,
 }: {
   item: InventoryItem
   canEdit: boolean
   busy: boolean
   onQuantityChange: (q: number) => void
+  onRename: (name: string) => void
   onLocationChange: (loc: string) => void
   onTransfer: () => void
   transferLabel: string
   onRemove: () => void
+  onToggleEquipped?: (equipped: boolean) => void
 }) {
   const catalog = item.source === 'catalog' ? lookupItem(item.name) : undefined
-  const description = item.description ?? catalog?.description ?? ''
+  const weapon =
+    item.source === 'weapon' && item.weaponRef
+      ? lookupWeapon(item.weaponRef)
+      : undefined
+  const description =
+    item.description ?? catalog?.description ?? weapon?.specialRules ?? ''
+  const renameAllowed = item.source === 'custom' || item.source === 'weapon'
   const [editingLocation, setEditingLocation] = useState(false)
   const [locationDraft, setLocationDraft] = useState(item.location ?? '')
+  const [editingName, setEditingName] = useState(false)
+  const [nameDraft, setNameDraft] = useState(item.name)
   const [expanded, setExpanded] = useState(false)
 
   useEffect(() => {
     if (!editingLocation) setLocationDraft(item.location ?? '')
   }, [item.location, editingLocation])
+  useEffect(() => {
+    if (!editingName) setNameDraft(item.name)
+  }, [item.name, editingName])
 
   function commitLocation() {
     setEditingLocation(false)
@@ -558,15 +639,55 @@ function ItemRow({
       onLocationChange(locationDraft)
     }
   }
+  function commitName() {
+    setEditingName(false)
+    const trimmed = nameDraft.trim()
+    if (trimmed && trimmed !== item.name) {
+      onRename(trimmed)
+    } else {
+      setNameDraft(item.name)
+    }
+  }
 
   return (
     <li className="grid gap-2 px-4 py-2.5 sm:grid-cols-[1fr_auto]">
       <div className="space-y-1">
         <div className="flex flex-wrap items-baseline gap-2">
-          <span className="font-medium text-white">{item.name}</span>
+          {editingName ? (
+            <input
+              autoFocus
+              type="text"
+              value={nameDraft}
+              onChange={(e) => setNameDraft(e.target.value)}
+              onBlur={commitName}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') commitName()
+                else if (e.key === 'Escape') {
+                  setNameDraft(item.name)
+                  setEditingName(false)
+                }
+              }}
+              className="rounded border border-accent-500 bg-void-700 px-1.5 py-0.5 text-sm font-medium text-white focus:outline-none"
+            />
+          ) : (
+            <button
+              type="button"
+              onClick={() => canEdit && renameAllowed && setEditingName(true)}
+              disabled={!canEdit || !renameAllowed}
+              className="font-medium text-white transition disabled:cursor-default"
+              title={renameAllowed ? 'Click to rename' : undefined}
+            >
+              {item.name}
+            </button>
+          )}
           {catalog && (
             <span className="text-[10px] uppercase tracking-wide text-gray-500">
               {catalog.category}
+            </span>
+          )}
+          {weapon && (
+            <span className="rounded border border-cyber-500/40 bg-cyber-500/10 px-1 py-0.5 text-[10px] uppercase tracking-wide text-cyber-300">
+              {weapon.type} · {weapon.weapon}
             </span>
           )}
           {item.source === 'custom' && (
@@ -574,7 +695,15 @@ function ItemRow({
               Custom
             </span>
           )}
+          {item.equipped && (
+            <span className="rounded border border-accent-500/60 bg-accent-500/15 px-1 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-accent-200">
+              Equipped
+            </span>
+          )}
         </div>
+
+        {weapon && <WeaponStats weapon={weapon} />}
+
         {description && (
           <button
             type="button"
@@ -617,12 +746,28 @@ function ItemRow({
           ))}
       </div>
       <div className="flex items-center gap-1.5 sm:flex-col sm:items-end sm:gap-1">
-        <QuantityStepper
-          value={item.quantity}
-          canEdit={canEdit}
-          busy={busy}
-          onCommit={onQuantityChange}
-        />
+        {item.source === 'weapon' ? (
+          canEdit && onToggleEquipped ? (
+            <button
+              onClick={() => onToggleEquipped(!item.equipped)}
+              disabled={busy}
+              className={`rounded border px-2 py-0.5 text-[11px] font-medium transition disabled:opacity-40 ${
+                item.equipped
+                  ? 'border-accent-500 bg-accent-500/20 text-accent-200 hover:bg-accent-500/30'
+                  : 'border-void-600 bg-void-700 text-gray-300 hover:border-accent-500/60 hover:text-white'
+              }`}
+            >
+              {item.equipped ? 'Equipped' : 'Equip'}
+            </button>
+          ) : null
+        ) : (
+          <QuantityStepper
+            value={item.quantity}
+            canEdit={canEdit}
+            busy={busy}
+            onCommit={onQuantityChange}
+          />
+        )}
         {canEdit && (
           <div className="flex gap-1">
             <button
@@ -645,6 +790,59 @@ function ItemRow({
         )}
       </div>
     </li>
+  )
+}
+
+function WeaponStats({
+  weapon,
+}: {
+  weapon: ReturnType<typeof lookupWeapon> & object
+}) {
+  return (
+    <div className="space-y-1">
+      <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-gray-400">
+        <span>
+          <span className="text-gray-500">DMG:</span>{' '}
+          <span className="text-gray-200">
+            {weapon.damage} {weapon.damageType}
+          </span>
+        </span>
+        <span>
+          <span className="text-gray-500">AP:</span>{' '}
+          <span className="text-gray-200">{weapon.attackAP}</span>
+        </span>
+        <span>
+          <span className="text-gray-500">Range:</span>{' '}
+          <span className="text-gray-200">
+            {weapon.optimalRange}
+            {weapon.maxRange != null ? ` / ${weapon.maxRange}` : ''}
+          </span>
+        </span>
+        <span>
+          <span className="text-gray-500">Hands:</span>{' '}
+          <span className="text-gray-200">{weapon.hands}</span>
+        </span>
+        {weapon.magazine != null && (
+          <span>
+            <span className="text-gray-500">Mag:</span>{' '}
+            <span className="text-gray-200">{weapon.magazine}</span>
+            {weapon.reloadAP != null && (
+              <span className="text-gray-500"> · reload {weapon.reloadAP} AP</span>
+            )}
+          </span>
+        )}
+      </div>
+      {(weapon.qualities.length > 0 || weapon.triggerOptions.length > 0) && (
+        <div className="flex flex-wrap gap-1">
+          {weapon.qualities.map((q) => (
+            <QualityBadge key={`q-${q}`} raw={q} variant="quality" />
+          ))}
+          {weapon.triggerOptions.map((t) => (
+            <QualityBadge key={`t-${t}`} raw={t} variant="trigger" />
+          ))}
+        </div>
+      )}
+    </div>
   )
 }
 

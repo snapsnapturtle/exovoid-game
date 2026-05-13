@@ -3,6 +3,7 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import { getSupabaseServerClient } from '~/lib/supabase/server'
 import type { GameState, InventoryItem } from '~/lib/types/database'
 import { lookupItem } from '~/lib/game-logic/items'
+import { lookupWeapon } from '~/lib/game-logic/weapons'
 
 type Owner =
   | { type: 'character'; characterId: string }
@@ -152,7 +153,7 @@ export const updateInventoryItem = createServerFn({ method: 'POST' })
       else delete next.description
     }
     if (data.updates.name !== undefined) {
-      if (existing.source !== 'custom') {
+      if (existing.source === 'catalog') {
         throw new Error('Cannot rename a catalog item')
       }
       const trimmed = data.updates.name.trim()
@@ -214,9 +215,16 @@ export const transferInventoryItem = createServerFn({ method: 'POST' })
         )
       : fromInventory.filter((_, i) => i !== idx)
 
-    const moved: InventoryItem = partial
+    let moved: InventoryItem = partial
       ? { ...source, id: crypto.randomUUID(), quantity: moveQty }
       : source
+    // `equipped` only has meaning on a character; strip it on the way to the
+    // party bag so weapons don't show up "equipped" in the shared inventory.
+    if (data.to.type === 'game' && moved.equipped !== undefined) {
+      const { equipped: _drop, ...rest } = moved
+      void _drop
+      moved = rest
+    }
 
     await writeInventory(supabase, data.from, updatedFrom)
     // If both ends are the same owner this would double-write; the route UI
@@ -225,6 +233,72 @@ export const transferInventoryItem = createServerFn({ method: 'POST' })
     await writeInventory(supabase, data.to, [...toInventory, moved])
 
     return { moved }
+  })
+
+// ---------------------------------------------------------------------------
+// Weapon-specific operations.
+
+export const addWeapon = createServerFn({ method: 'POST' })
+  .inputValidator(
+    (d: {
+      owner: Owner
+      weaponRef: string
+      /** Optional override; defaults to the catalog's illustrative name. */
+      name?: string
+      location?: string
+    }) => d,
+  )
+  .handler(async ({ data }) => {
+    const supabase = getSupabaseServerClient()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (!user) throw new Error('Not authenticated')
+
+    const catalog = lookupWeapon(data.weaponRef)
+    if (!catalog) throw new Error(`Unknown weapon: ${data.weaponRef}`)
+
+    const name = (data.name?.trim() || catalog.illustrativeName).trim()
+    const location = data.location?.trim() || undefined
+
+    const entry: InventoryItem = {
+      id: crypto.randomUUID(),
+      source: 'weapon',
+      name,
+      weaponRef: data.weaponRef,
+      quantity: 1,
+      ...(location ? { location } : {}),
+      ...(data.owner.type === 'character' ? { equipped: false } : {}),
+    }
+
+    const current = await readInventory(supabase, data.owner)
+    await writeInventory(supabase, data.owner, [...current, entry])
+    return entry
+  })
+
+export const setEquipped = createServerFn({ method: 'POST' })
+  .inputValidator(
+    (d: { characterId: string; itemId: string; equipped: boolean }) => d,
+  )
+  .handler(async ({ data }) => {
+    const supabase = getSupabaseServerClient()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (!user) throw new Error('Not authenticated')
+
+    const owner: Owner = { type: 'character', characterId: data.characterId }
+    const current = await readInventory(supabase, owner)
+    const idx = current.findIndex((e) => e.id === data.itemId)
+    if (idx < 0) throw new Error('Item not found')
+    if (current[idx].source !== 'weapon') {
+      throw new Error('Only weapons can be equipped')
+    }
+
+    const arr = current.slice()
+    arr[idx] = { ...arr[idx], equipped: data.equipped }
+    await writeInventory(supabase, owner, arr)
+    return arr[idx]
   })
 
 // ---------------------------------------------------------------------------

@@ -9,6 +9,7 @@
     "start": "node .output/server/index.mjs"
   },
   "dependencies": {
+    "@floating-ui/react": "^0.27.19",
     "@supabase/ssr": "^0.10.3",
     "@supabase/supabase-js": "^2.49.4",
     "@tanstack/react-router": "^1.120.2",

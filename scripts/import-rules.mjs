@@ -237,6 +237,67 @@ const items = itemRows.map((r) => ({
 }))
 writeJson('items.json', items)
 
+// --- Weapons ----------------------------------------------------------------
+// Each CSV row is a complete weapon: `weapon` is the canonical identifier and
+// `weaponName` is just an illustrative/flavor name (used as the default
+// display name when added to a character's inventory). Stats numerical
+// columns can be "-" (melee/throwing have no magazine/reload/maxRange) or
+// "Free!" (Unarmed has no cost) — parsed nullably.
+console.log('Weapons...')
+const weaponRows = readTable('Exovoid Content - Weapons.csv')
+
+function nullableInt(raw) {
+  if (raw === '' || raw === '-' || raw == null) return null
+  const n = parseInt(raw, 10)
+  return Number.isFinite(n) ? n : null
+}
+
+function parseQualityList(raw) {
+  if (!raw || raw.trim() === '') return []
+  return raw
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean)
+}
+
+const weapons = weaponRows.map((r) => ({
+  type: r.weaponType,
+  weapon: r.weapon,
+  illustrativeName: r.weaponName,
+  hands: parseInt(r.hands, 10),
+  magazine: nullableInt(r.magazine),
+  reloadAP: nullableInt(r.reloadAP),
+  attackAP: parseInt(r.attackAP, 10),
+  damage: parseInt(r.damage, 10),
+  damageType: r.damageType,
+  optimalRange: r.optimalRange,
+  maxRange: nullableInt(r.maxRange),
+  qualities: parseQualityList(r.qualities),
+  triggerOptions: parseQualityList(r.triggerOptions),
+  specialRules: r.specialRules,
+  modLimit: parseInt(r.modLimit, 10),
+  cost: nullableInt(r.cost),
+  roundCost: nullableInt(r.roundCost),
+  rarity: nullableInt(r.rarity),
+}))
+writeJson('weapons.json', weapons)
+
+// --- Item Qualities + Trigger Options ---------------------------------------
+// Lookup table for tooltip text on weapon qualities like "Concealed (1)" and
+// trigger options like "Penetrating (2)". The CSV stores the base name (e.g.
+// "Concealed") with the rulebook effect description; the (N) value is just a
+// magnitude annotation parsed off the name at usage time.
+console.log('Item Qualities...')
+const qualityRows = readTable('Exovoid Content - Item Qualities.csv')
+const qualities = qualityRows
+  .filter((r) => r.name && r.name.trim() !== '')
+  .map((r) => ({
+    type: r.type,
+    name: r.name,
+    effect: r.effect,
+  }))
+writeJson('item-qualities.json', qualities)
+
 // --- Cyber Malfunction Table ------------------------------------------------
 // Rulebook §"Exceeding Cyber Immunity": when over capacity, the character
 // must allocate excess points across this table (rolls 2-40). Named rows

@@ -1,0 +1,1362 @@
+[
+  {
+    "type": "Firearms",
+    "weapon": "Hold Out Pistol",
+    "illustrativeName": "6mm Triton Vanguard",
+    "hands": 1,
+    "magazine": 5,
+    "reloadAP": 2,
+    "attackAP": 3,
+    "damage": 6,
+    "damageType": "Physical",
+    "optimalRange": "2-5",
+    "maxRange": 15,
+    "qualities": [
+      "Concealed (1)"
+    ],
+    "triggerOptions": [
+      "Concussing"
+    ],
+    "specialRules": "",
+    "modLimit": 2,
+    "cost": 200,
+    "roundCost": 3,
+    "rarity": 1
+  },
+  {
+    "type": "Firearms",
+    "weapon": "Hold Out Taser",
+    "illustrativeName": "Starfury Tazer",
+    "hands": 1,
+    "magazine": 2,
+    "reloadAP": 3,
+    "attackAP": 3,
+    "damage": 3,
+    "damageType": "Electrical",
+    "optimalRange": "2-4",
+    "maxRange": 6,
+    "qualities": [
+      "Concealed (1)",
+      "Silenced"
+    ],
+    "triggerOptions": [
+      "Incapacitating",
+      "Stunning"
+    ],
+    "specialRules": "",
+    "modLimit": 2,
+    "cost": 200,
+    "roundCost": 10,
+    "rarity": 1
+  },
+  {
+    "type": "Firearms",
+    "weapon": "Small Pistol",
+    "illustrativeName": "10mm Akura Infiltrator Mk. 2",
+    "hands": 1,
+    "magazine": 15,
+    "reloadAP": 2,
+    "attackAP": 3,
+    "damage": 6,
+    "damageType": "Physical",
+    "optimalRange": "2-8",
+    "maxRange": 30,
+    "qualities": [
+      "Burst (5)",
+      "Concealed (2)"
+    ],
+    "triggerOptions": [
+      "Shredding (1)"
+    ],
+    "specialRules": "",
+    "modLimit": 3,
+    "cost": 250,
+    "roundCost": 4,
+    "rarity": 1
+  },
+  {
+    "type": "Firearms",
+    "weapon": "Medium Pistol",
+    "illustrativeName": ".45 ACP Xeno Hunter",
+    "hands": 1,
+    "magazine": 12,
+    "reloadAP": 2,
+    "attackAP": 4,
+    "damage": 7,
+    "damageType": "Physical",
+    "optimalRange": "2-8",
+    "maxRange": 35,
+    "qualities": [
+      "Handling (1)",
+      "Concealed (2)"
+    ],
+    "triggerOptions": [
+      "Penetrating (2)"
+    ],
+    "specialRules": "",
+    "modLimit": 3,
+    "cost": 300,
+    "roundCost": 5,
+    "rarity": 1
+  },
+  {
+    "type": "Firearms",
+    "weapon": "Revolver",
+    "illustrativeName": ".308 Horizons Revolver",
+    "hands": 1,
+    "magazine": 6,
+    "reloadAP": 4,
+    "attackAP": 4,
+    "damage": 9,
+    "damageType": "Physical",
+    "optimalRange": "2-10",
+    "maxRange": 50,
+    "qualities": [
+      "Concealed (2)"
+    ],
+    "triggerOptions": [
+      "Lethal (5)",
+      "Shredding (2)"
+    ],
+    "specialRules": "Once per encounter, you may ignore the first weapon jam or \"Damaged\" quality that would otherwise be applied to the Revolver.",
+    "modLimit": 2,
+    "cost": 250,
+    "roundCost": 7,
+    "rarity": 1
+  },
+  {
+    "type": "Firearms",
+    "weapon": "Heavy Pistol",
+    "illustrativeName": ".50 Callisto Eagle",
+    "hands": 2,
+    "magazine": 7,
+    "reloadAP": 2,
+    "attackAP": 5,
+    "damage": 11,
+    "damageType": "Physical",
+    "optimalRange": "3-12",
+    "maxRange": 80,
+    "qualities": [
+      "Loud",
+      "Concealed (2)"
+    ],
+    "triggerOptions": [
+      "Lethal (5)",
+      "Knocking",
+      "Penetrating (3)"
+    ],
+    "specialRules": "Can be fired in one hand, but then it gains the improvised quality unless the wielder has 6 or more Strength.",
+    "modLimit": 3,
+    "cost": 350,
+    "roundCost": 8,
+    "rarity": 2
+  },
+  {
+    "type": "Firearms",
+    "weapon": "Laser Pistol",
+    "illustrativeName": "2E Nova Sentinel",
+    "hands": 1,
+    "magazine": 20,
+    "reloadAP": 2,
+    "attackAP": 3,
+    "damage": 5,
+    "damageType": "Laser",
+    "optimalRange": "2-25",
+    "maxRange": 120,
+    "qualities": [
+      "Silenced",
+      "Handling (2)",
+      "Burst (6)",
+      "Compensated (1)",
+      "Indiscriminate",
+      "Concealed (2)"
+    ],
+    "triggerOptions": [
+      "Penetrating (5)",
+      "Shredding (2)"
+    ],
+    "specialRules": "",
+    "modLimit": 3,
+    "cost": 800,
+    "roundCost": 1,
+    "rarity": 3
+  },
+  {
+    "type": "Firearms",
+    "weapon": "Small MP",
+    "illustrativeName": ".380 Vega Scorpion",
+    "hands": 1,
+    "magazine": 36,
+    "reloadAP": 2,
+    "attackAP": 4,
+    "damage": 6,
+    "damageType": "Physical",
+    "optimalRange": "2-8",
+    "maxRange": 40,
+    "qualities": [
+      "Burst (6)",
+      "Full Auto (18)",
+      "Concealed (2)"
+    ],
+    "triggerOptions": [
+      "Penetrating (2)"
+    ],
+    "specialRules": "",
+    "modLimit": 3,
+    "cost": 300,
+    "roundCost": 4,
+    "rarity": 1
+  },
+  {
+    "type": "Firearms",
+    "weapon": "Medium MP",
+    "illustrativeName": ".45 ACP Callisto Spitter",
+    "hands": 1,
+    "magazine": 20,
+    "reloadAP": 2,
+    "attackAP": 4,
+    "damage": 7,
+    "damageType": "Physical",
+    "optimalRange": "2-6",
+    "maxRange": 30,
+    "qualities": [
+      "Burst (5)",
+      "Concealed (3)"
+    ],
+    "triggerOptions": [
+      "Lethal (3)"
+    ],
+    "specialRules": "Gains \"Compensated (1)\" when used with two hands.",
+    "modLimit": 4,
+    "cost": 350,
+    "roundCost": 5,
+    "rarity": 1
+  },
+  {
+    "type": "Firearms",
+    "weapon": "Tactical MP",
+    "illustrativeName": "12mm Akura Tactical MP-9",
+    "hands": 2,
+    "magazine": 30,
+    "reloadAP": 2,
+    "attackAP": 4,
+    "damage": 7,
+    "damageType": "Physical",
+    "optimalRange": "2-15",
+    "maxRange": 75,
+    "qualities": [
+      "Handling (2)",
+      "Burst (5)"
+    ],
+    "triggerOptions": [
+      "Concussing"
+    ],
+    "specialRules": "",
+    "modLimit": 4,
+    "cost": 400,
+    "roundCost": 5,
+    "rarity": 2
+  },
+  {
+    "type": "Firearms",
+    "weapon": "Self-Defence MP",
+    "illustrativeName": "8mm Bullpup P95",
+    "hands": 2,
+    "magazine": 50,
+    "reloadAP": 4,
+    "attackAP": 4,
+    "damage": 6,
+    "damageType": "Physical",
+    "optimalRange": "2-12",
+    "maxRange": 50,
+    "qualities": [
+      "Compensated (1)",
+      "Full Auto (15)"
+    ],
+    "triggerOptions": [
+      "Penetrating (3)"
+    ],
+    "specialRules": "",
+    "modLimit": 4,
+    "cost": 450,
+    "roundCost": 4,
+    "rarity": 2
+  },
+  {
+    "type": "Firearms",
+    "weapon": "Common Assault Rifle",
+    "illustrativeName": "5.6mm Orion Striker",
+    "hands": 2,
+    "magazine": 35,
+    "reloadAP": 3,
+    "attackAP": 4,
+    "damage": 8,
+    "damageType": "Physical",
+    "optimalRange": "3-20",
+    "maxRange": 120,
+    "qualities": [
+      "Handling (1)",
+      "Burst (5)",
+      "Full Auto (15)"
+    ],
+    "triggerOptions": [
+      "Lethal (4)"
+    ],
+    "specialRules": "",
+    "modLimit": 5,
+    "cost": 450,
+    "roundCost": 6,
+    "rarity": 2
+  },
+  {
+    "type": "Firearms",
+    "weapon": "Heavy Assault Rifle",
+    "illustrativeName": "7.6mm Azerra Companion",
+    "hands": 2,
+    "magazine": 25,
+    "reloadAP": 3,
+    "attackAP": 4,
+    "damage": 9,
+    "damageType": "Physical",
+    "optimalRange": "3-20",
+    "maxRange": 150,
+    "qualities": [
+      "Loud",
+      "Burst (5)"
+    ],
+    "triggerOptions": [
+      "Lethal (5)",
+      "Penetrating (3)"
+    ],
+    "specialRules": "",
+    "modLimit": 6,
+    "cost": 600,
+    "roundCost": 7,
+    "rarity": 2
+  },
+  {
+    "type": "Firearms",
+    "weapon": "Laser Assault Rifle",
+    "illustrativeName": "3E Pulsar Repeater",
+    "hands": 2,
+    "magazine": 80,
+    "reloadAP": 5,
+    "attackAP": 3,
+    "damage": 7,
+    "damageType": "Laser",
+    "optimalRange": "3-40",
+    "maxRange": 200,
+    "qualities": [
+      "Silenced",
+      "Handling (3)",
+      "Burst (10)",
+      "Full Auto (30)",
+      "Compensated (1)",
+      "Indiscriminate"
+    ],
+    "triggerOptions": [
+      "Penetrating (6)",
+      "Shredding (2)"
+    ],
+    "specialRules": "",
+    "modLimit": 5,
+    "cost": 1400,
+    "roundCost": 1,
+    "rarity": 4
+  },
+  {
+    "type": "Firearms",
+    "weapon": "Double Barrelled Shotgun",
+    "illustrativeName": "12-Gauge Nova Breaker",
+    "hands": 2,
+    "magazine": 2,
+    "reloadAP": 3,
+    "attackAP": 5,
+    "damage": 14,
+    "damageType": "Physical",
+    "optimalRange": "2-6",
+    "maxRange": 15,
+    "qualities": [
+      "Loud",
+      "Burst (2)"
+    ],
+    "triggerOptions": [
+      "Concussing",
+      "Lethal (8)",
+      "Shredding (3)",
+      "Knocking"
+    ],
+    "specialRules": "",
+    "modLimit": 4,
+    "cost": 400,
+    "roundCost": 6,
+    "rarity": 2
+  },
+  {
+    "type": "Firearms",
+    "weapon": "Tactical Shotgun",
+    "illustrativeName": "20-Gauge Orion Tactical",
+    "hands": 2,
+    "magazine": 7,
+    "reloadAP": 7,
+    "attackAP": 4,
+    "damage": 12,
+    "damageType": "Physical",
+    "optimalRange": "2-6",
+    "maxRange": 20,
+    "qualities": [],
+    "triggerOptions": [
+      "Lethal (5)",
+      "Shredding (2)",
+      "Knocking"
+    ],
+    "specialRules": "",
+    "modLimit": 5,
+    "cost": 450,
+    "roundCost": 6,
+    "rarity": 2
+  },
+  {
+    "type": "Firearms",
+    "weapon": "Full-Auto Shotgun",
+    "illustrativeName": "20-Gauge Liberator",
+    "hands": 2,
+    "magazine": 20,
+    "reloadAP": 5,
+    "attackAP": 4,
+    "damage": 10,
+    "damageType": "Physical",
+    "optimalRange": "2-6",
+    "maxRange": 20,
+    "qualities": [
+      "Burst (5)",
+      "Full Auto (15)"
+    ],
+    "triggerOptions": [
+      "Lethal (3)",
+      "Shredding (2)",
+      "Knocking"
+    ],
+    "specialRules": "",
+    "modLimit": 4,
+    "cost": 500,
+    "roundCost": 6,
+    "rarity": 2
+  },
+  {
+    "type": "Firearms",
+    "weapon": "Anti-Riot Shotgun",
+    "illustrativeName": "Azerra Rioter",
+    "hands": 2,
+    "magazine": 6,
+    "reloadAP": 6,
+    "attackAP": 4,
+    "damage": 7,
+    "damageType": "Electrical",
+    "optimalRange": "2-5",
+    "maxRange": 12,
+    "qualities": [
+      "Handling (1)"
+    ],
+    "triggerOptions": [
+      "Incapacitating",
+      "Concussing",
+      "Stunning",
+      "Knocking"
+    ],
+    "specialRules": "",
+    "modLimit": 4,
+    "cost": 450,
+    "roundCost": 10,
+    "rarity": 2
+  },
+  {
+    "type": "Firearms",
+    "weapon": "Marksman Rifle",
+    "illustrativeName": "Viper Precision 20mm",
+    "hands": 2,
+    "magazine": 15,
+    "reloadAP": 3,
+    "attackAP": 4,
+    "damage": 10,
+    "damageType": "Physical",
+    "optimalRange": "8-30",
+    "maxRange": 150,
+    "qualities": [
+      "Handling (1)"
+    ],
+    "triggerOptions": [
+      "Penetrating (3)",
+      "Lethal (3)"
+    ],
+    "specialRules": "",
+    "modLimit": 6,
+    "cost": 800,
+    "roundCost": 7,
+    "rarity": 3
+  },
+  {
+    "type": "Firearms",
+    "weapon": "Sniper Rifle",
+    "illustrativeName": "Widowmaker .408",
+    "hands": 2,
+    "magazine": 5,
+    "reloadAP": 3,
+    "attackAP": 5,
+    "damage": 12,
+    "damageType": "Physical",
+    "optimalRange": "15-80",
+    "maxRange": 300,
+    "qualities": [
+      "Handling (2)"
+    ],
+    "triggerOptions": [
+      "Penetrating (4)",
+      "Lethal (4)"
+    ],
+    "specialRules": "",
+    "modLimit": 5,
+    "cost": 1000,
+    "roundCost": 10,
+    "rarity": 3
+  },
+  {
+    "type": "Firearms",
+    "weapon": "Anti-Materiel Rifle",
+    "illustrativeName": "Titan Slayer 50cal",
+    "hands": 2,
+    "magazine": 1,
+    "reloadAP": 4,
+    "attackAP": 6,
+    "damage": 15,
+    "damageType": "Physical",
+    "optimalRange": "20-120",
+    "maxRange": 1000,
+    "qualities": [
+      "Handling (1)",
+      "Destructive (7)",
+      "Loud"
+    ],
+    "triggerOptions": [
+      "Penetrating (6)",
+      "Shredding (4)",
+      "Lethal (4)"
+    ],
+    "specialRules": "Every trigger spent on the weapon's options is automatically spent on all options at once.",
+    "modLimit": 5,
+    "cost": 1300,
+    "roundCost": 30,
+    "rarity": 4
+  },
+  {
+    "type": "Firearms",
+    "weapon": "Plasma Rifle",
+    "illustrativeName": "Solaris Incinerator",
+    "hands": 2,
+    "magazine": 10,
+    "reloadAP": 4,
+    "attackAP": 4,
+    "damage": 12,
+    "damageType": "Fire",
+    "optimalRange": "3-30",
+    "maxRange": 150,
+    "qualities": [
+      "Burst (4)",
+      "Compensated (1)",
+      "Handling (2)"
+    ],
+    "triggerOptions": [
+      "Shredding (5)",
+      "Burning",
+      "Lethal (5)",
+      "Plasmascorch"
+    ],
+    "specialRules": "Also gain one free Trigger on each attack that can only be spent on the weapon's trigger options.",
+    "modLimit": 5,
+    "cost": 4000,
+    "roundCost": 15,
+    "rarity": 5
+  },
+  {
+    "type": "Firearms",
+    "weapon": "Compound Bow",
+    "illustrativeName": "Carbon Hunter Mk. II",
+    "hands": 2,
+    "magazine": 1,
+    "reloadAP": 4,
+    "attackAP": 3,
+    "damage": 8,
+    "damageType": "Physical",
+    "optimalRange": "3-20",
+    "maxRange": 60,
+    "qualities": [
+      "Silenced"
+    ],
+    "triggerOptions": [
+      "Injuring (3)"
+    ],
+    "specialRules": "The wielder's Heft is added to the damage.",
+    "modLimit": 0,
+    "cost": 250,
+    "roundCost": 3,
+    "rarity": 2
+  },
+  {
+    "type": "Heavy Weapons",
+    "weapon": "Machine Gun",
+    "illustrativeName": "7.62mm Hellfire MG",
+    "hands": 2,
+    "magazine": 100,
+    "reloadAP": 10,
+    "attackAP": 5,
+    "damage": 12,
+    "damageType": "Physical",
+    "optimalRange": "5-20",
+    "maxRange": 150,
+    "qualities": [
+      "Loud",
+      "Burst (8)",
+      "Full Auto (20)",
+      "Compensated (1)",
+      "Improvised"
+    ],
+    "triggerOptions": [
+      "Penetrating (3)",
+      "Shredding (2)",
+      "Lethal (5)",
+      "Concussing"
+    ],
+    "specialRules": "Gains Handling (3) when used braced or prone - bracing the weapon requires 3 AP. In that case, it also loses Improvised.",
+    "modLimit": 6,
+    "cost": 700,
+    "roundCost": 7,
+    "rarity": 3
+  },
+  {
+    "type": "Heavy Weapons",
+    "weapon": "Flame Thrower",
+    "illustrativeName": "Pyroclasm Projector",
+    "hands": 2,
+    "magazine": 10,
+    "reloadAP": 8,
+    "attackAP": 4,
+    "damage": 15,
+    "damageType": "Fire",
+    "optimalRange": "3-8",
+    "maxRange": 15,
+    "qualities": [
+      "Burst (2)",
+      "Full Auto (4)",
+      "Compensated (1)",
+      "Area (1)",
+      "Indiscriminate"
+    ],
+    "triggerOptions": [
+      "Burning",
+      "Penetrating (5)"
+    ],
+    "specialRules": "When using  Full Auto, the attacks have to happen against different targets / squares that must not be further away than 3 squares from each other.",
+    "modLimit": 2,
+    "cost": 600,
+    "roundCost": 3,
+    "rarity": 2
+  },
+  {
+    "type": "Heavy Weapons",
+    "weapon": "Grenade Launcher",
+    "illustrativeName": "Thunderstrike GL-6",
+    "hands": 2,
+    "magazine": 6,
+    "reloadAP": 6,
+    "attackAP": 4,
+    "damage": 12,
+    "damageType": "Explosive",
+    "optimalRange": "5-15",
+    "maxRange": 30,
+    "qualities": [
+      "Loud",
+      "Area (2)",
+      "Indiscriminate",
+      "Destructive (6)"
+    ],
+    "triggerOptions": [
+      "Penetrating (3)",
+      "Shredding (2)",
+      "Lethal (3)",
+      "Concussing",
+      "Stunning"
+    ],
+    "specialRules": "Can be loaded with non-lethal grenades, which reduces the damage to 4, and removes the Penetrating, Shredding and Lethal options, while increasing the Area quality to 3 and adding the Incapacitating trigger option.",
+    "modLimit": 2,
+    "cost": 550,
+    "roundCost": 50,
+    "rarity": 3
+  },
+  {
+    "type": "Heavy Weapons",
+    "weapon": "Mini-Gun",
+    "illustrativeName": "Devastator 7.62mm Minigun",
+    "hands": 2,
+    "magazine": 150,
+    "reloadAP": 12,
+    "attackAP": 5,
+    "damage": 12,
+    "damageType": "Physical",
+    "optimalRange": "5-20",
+    "maxRange": 150,
+    "qualities": [
+      "Loud",
+      "Burst (10)",
+      "Full Auto (30)",
+      "Compensated (1)",
+      "Improvised"
+    ],
+    "triggerOptions": [
+      "Penetrating (3)",
+      "Shredding (4)",
+      "Lethal (5)"
+    ],
+    "specialRules": "Characters with 6 Strength or more ignore Improvised.",
+    "modLimit": 4,
+    "cost": 900,
+    "roundCost": 6,
+    "rarity": 3
+  },
+  {
+    "type": "Heavy Weapons",
+    "weapon": "Plasma Launcher",
+    "illustrativeName": "Vulcan P-12",
+    "hands": 2,
+    "magazine": 4,
+    "reloadAP": 5,
+    "attackAP": 4,
+    "damage": 15,
+    "damageType": "Fire",
+    "optimalRange": "5-20",
+    "maxRange": 50,
+    "qualities": [
+      "Area (4)",
+      "Indiscriminate"
+    ],
+    "triggerOptions": [
+      "Shredding (5)",
+      "Burning",
+      "Lethal (5)",
+      "Plasmascorch"
+    ],
+    "specialRules": "Also gain one free Trigger on each attack that can only be spent on the weapon's trigger options.",
+    "modLimit": 2,
+    "cost": 5000,
+    "roundCost": 120,
+    "rarity": 5
+  },
+  {
+    "type": "Heavy Weapons",
+    "weapon": "Rocket Launcher",
+    "illustrativeName": "Manticore RL-1",
+    "hands": 2,
+    "magazine": 1,
+    "reloadAP": 6,
+    "attackAP": 6,
+    "damage": 15,
+    "damageType": "Explosive",
+    "optimalRange": "10-100",
+    "maxRange": 200,
+    "qualities": [
+      "Loud",
+      "Handling (4)",
+      "Area (3)",
+      "Indiscriminate",
+      "Destructive (8)"
+    ],
+    "triggerOptions": [
+      "Penetrating (3)",
+      "Shredding (4)",
+      "Lethal (5)",
+      "Concussing",
+      "Stunning"
+    ],
+    "specialRules": "",
+    "modLimit": 2,
+    "cost": 900,
+    "roundCost": 150,
+    "rarity": 4
+  },
+  {
+    "type": "Throwing",
+    "weapon": "Flash Grenade",
+    "illustrativeName": "Dazzler Flashbang",
+    "hands": 1,
+    "magazine": null,
+    "reloadAP": null,
+    "attackAP": 5,
+    "damage": 5,
+    "damageType": "Explosive",
+    "optimalRange": "1-8",
+    "maxRange": 12,
+    "qualities": [
+      "Concealed (2)",
+      "Loud",
+      "Handling (2)",
+      "Area (3)",
+      "Indiscriminate"
+    ],
+    "triggerOptions": [
+      "Concussing",
+      "Stunning"
+    ],
+    "specialRules": "",
+    "modLimit": 0,
+    "cost": 40,
+    "roundCost": null,
+    "rarity": 2
+  },
+  {
+    "type": "Throwing",
+    "weapon": "Frag Grenade",
+    "illustrativeName": "Havoc Frag Boy",
+    "hands": 1,
+    "magazine": null,
+    "reloadAP": null,
+    "attackAP": 5,
+    "damage": 12,
+    "damageType": "Explosive",
+    "optimalRange": "1-8",
+    "maxRange": 12,
+    "qualities": [
+      "Concealed (2)",
+      "Loud",
+      "Area (2)",
+      "Indiscriminate"
+    ],
+    "triggerOptions": [
+      "Lethal (4)"
+    ],
+    "specialRules": "",
+    "modLimit": 0,
+    "cost": 80,
+    "roundCost": null,
+    "rarity": 3
+  },
+  {
+    "type": "Throwing",
+    "weapon": "Gas Grenade",
+    "illustrativeName": "Noxon Choker",
+    "hands": 1,
+    "magazine": null,
+    "reloadAP": null,
+    "attackAP": 5,
+    "damage": 5,
+    "damageType": "Physical",
+    "optimalRange": "1-8",
+    "maxRange": 12,
+    "qualities": [
+      "Concealed (2)",
+      "Area (3)",
+      "Indiscriminate"
+    ],
+    "triggerOptions": [
+      "Incapacitating"
+    ],
+    "specialRules": "Ignores armor. Incapacitating option is automatically active. The Area lingers for this and two more rounds. Anyone ending a round within the area needs to resist the Incapacitating trigger option.",
+    "modLimit": 0,
+    "cost": 100,
+    "roundCost": null,
+    "rarity": 4
+  },
+  {
+    "type": "Throwing",
+    "weapon": "Smoke Grenade",
+    "illustrativeName": "Azerra Shroud Maker",
+    "hands": 1,
+    "magazine": null,
+    "reloadAP": null,
+    "attackAP": 4,
+    "damage": 0,
+    "damageType": "Physical",
+    "optimalRange": "1-8",
+    "maxRange": 12,
+    "qualities": [
+      "Concealed (2)",
+      "Area (3)",
+      "Handling (1)"
+    ],
+    "triggerOptions": [],
+    "specialRules": "The Area lingers for this and two more rounds. Anyone trying to attack through or across the smoke suffers +2 difficulty.",
+    "modLimit": 0,
+    "cost": 30,
+    "roundCost": null,
+    "rarity": 2
+  },
+  {
+    "type": "Throwing",
+    "weapon": "EMP Grenade",
+    "illustrativeName": "Ekris Equalizer Orb",
+    "hands": 1,
+    "magazine": null,
+    "reloadAP": null,
+    "attackAP": 5,
+    "damage": 0,
+    "damageType": "Electrical",
+    "optimalRange": "1-8",
+    "maxRange": 12,
+    "qualities": [
+      "Concealed (2)",
+      "Area (2)",
+      "Handling (1)",
+      "Indiscriminate",
+      "Destructive (6)"
+    ],
+    "triggerOptions": [],
+    "specialRules": "Everyone struck by such a grenade needs to roll a d6 for each electronic piece of equipment, including cyberware or individual mods (if applicable). On a 4+, the piece is considered Damaged (incurring a -2 pool modifier when using it until repaired).",
+    "modLimit": 0,
+    "cost": 200,
+    "roundCost": null,
+    "rarity": 4
+  },
+  {
+    "type": "Throwing",
+    "weapon": "Throwing Knife",
+    "illustrativeName": "Phantom Throwing Knife",
+    "hands": 1,
+    "magazine": null,
+    "reloadAP": null,
+    "attackAP": 3,
+    "damage": 5,
+    "damageType": "Physical",
+    "optimalRange": "1-5",
+    "maxRange": 8,
+    "qualities": [
+      "Silenced",
+      "Concealed (1)"
+    ],
+    "triggerOptions": [
+      "Lethal (2)",
+      "Murderous"
+    ],
+    "specialRules": "Adds Heft to the damage like a melee weapon would.",
+    "modLimit": 1,
+    "cost": 40,
+    "roundCost": null,
+    "rarity": 1
+  },
+  {
+    "type": "Melee",
+    "weapon": "Unarmed",
+    "illustrativeName": "Unarmed Combat",
+    "hands": 1,
+    "magazine": null,
+    "reloadAP": null,
+    "attackAP": 3,
+    "damage": 2,
+    "damageType": "Physical",
+    "optimalRange": "1",
+    "maxRange": null,
+    "qualities": [
+      "Silenced",
+      "Handling (1)"
+    ],
+    "triggerOptions": [
+      "Knocking",
+      "Incapacitating",
+      "Penetrating (2)"
+    ],
+    "specialRules": "Cannot perform a Parry against real melee weapons.",
+    "modLimit": 0,
+    "cost": null,
+    "roundCost": null,
+    "rarity": null
+  },
+  {
+    "type": "Melee",
+    "weapon": "Knife",
+    "illustrativeName": "Wraith Combat Knife",
+    "hands": 1,
+    "magazine": null,
+    "reloadAP": null,
+    "attackAP": 3,
+    "damage": 5,
+    "damageType": "Physical",
+    "optimalRange": "1",
+    "maxRange": null,
+    "qualities": [
+      "Silenced",
+      "Concealed (1)"
+    ],
+    "triggerOptions": [
+      "Lethal (2)",
+      "Murderous"
+    ],
+    "specialRules": "",
+    "modLimit": 1,
+    "cost": 50,
+    "roundCost": null,
+    "rarity": 1
+  },
+  {
+    "type": "Melee",
+    "weapon": "Brass Knuckles",
+    "illustrativeName": "Iron Fist Knuckles",
+    "hands": 1,
+    "magazine": null,
+    "reloadAP": null,
+    "attackAP": 3,
+    "damage": 4,
+    "damageType": "Physical",
+    "optimalRange": "1",
+    "maxRange": null,
+    "qualities": [
+      "Silenced",
+      "Concealed (1)"
+    ],
+    "triggerOptions": [
+      "Stunning",
+      "Incapacitating",
+      "Knocking"
+    ],
+    "specialRules": "Cannot do a parry against real melee weapons.",
+    "modLimit": 1,
+    "cost": 50,
+    "roundCost": null,
+    "rarity": 1
+  },
+  {
+    "type": "Melee",
+    "weapon": "Club",
+    "illustrativeName": "Enforcer Club",
+    "hands": 1,
+    "magazine": null,
+    "reloadAP": null,
+    "attackAP": 4,
+    "damage": 5,
+    "damageType": "Physical",
+    "optimalRange": "1",
+    "maxRange": null,
+    "qualities": [
+      "Silenced",
+      "Concealed (2)"
+    ],
+    "triggerOptions": [
+      "Concussing",
+      "Incapacitating"
+    ],
+    "specialRules": "",
+    "modLimit": 2,
+    "cost": 40,
+    "roundCost": null,
+    "rarity": 1
+  },
+  {
+    "type": "Melee",
+    "weapon": "Bat",
+    "illustrativeName": "Titan Sports Bat",
+    "hands": 2,
+    "magazine": null,
+    "reloadAP": null,
+    "attackAP": 4,
+    "damage": 6,
+    "damageType": "Physical",
+    "optimalRange": "1",
+    "maxRange": 2,
+    "qualities": [
+      "Silenced",
+      "Handling (1)"
+    ],
+    "triggerOptions": [
+      "Lethal (2)",
+      "Concussing"
+    ],
+    "specialRules": "",
+    "modLimit": 2,
+    "cost": 40,
+    "roundCost": null,
+    "rarity": 1
+  },
+  {
+    "type": "Melee",
+    "weapon": "Stun Baton",
+    "illustrativeName": "Voltguard Stun Baton",
+    "hands": 1,
+    "magazine": null,
+    "reloadAP": null,
+    "attackAP": 4,
+    "damage": 3,
+    "damageType": "Electrical",
+    "optimalRange": "1",
+    "maxRange": null,
+    "qualities": [
+      "Silenced",
+      "Handling (3)"
+    ],
+    "triggerOptions": [
+      "Incapacitating",
+      "Stunning"
+    ],
+    "specialRules": "",
+    "modLimit": 2,
+    "cost": 80,
+    "roundCost": null,
+    "rarity": 1
+  },
+  {
+    "type": "Melee",
+    "weapon": "Blade",
+    "illustrativeName": "Ekris Warrior Blade",
+    "hands": 1,
+    "magazine": null,
+    "reloadAP": null,
+    "attackAP": 4,
+    "damage": 5,
+    "damageType": "Physical",
+    "optimalRange": "1",
+    "maxRange": null,
+    "qualities": [
+      "Silenced",
+      "Defensive (1",
+      "Melee)"
+    ],
+    "triggerOptions": [
+      "Lethal (4)"
+    ],
+    "specialRules": "",
+    "modLimit": 2,
+    "cost": 150,
+    "roundCost": null,
+    "rarity": 1
+  },
+  {
+    "type": "Melee",
+    "weapon": "Katana",
+    "illustrativeName": "Ekris Ronin Companion",
+    "hands": 2,
+    "magazine": null,
+    "reloadAP": null,
+    "attackAP": 4,
+    "damage": 6,
+    "damageType": "Physical",
+    "optimalRange": "1",
+    "maxRange": 2,
+    "qualities": [
+      "Silenced",
+      "Defensive (1",
+      "Melee)"
+    ],
+    "triggerOptions": [
+      "Lethal (4)"
+    ],
+    "specialRules": "Can be wielded in one hand, but then it gains the Improvised quality.",
+    "modLimit": 2,
+    "cost": 250,
+    "roundCost": null,
+    "rarity": 2
+  },
+  {
+    "type": "Melee",
+    "weapon": "Mono-Wire Whip",
+    "illustrativeName": "Phantom Slicer Cables",
+    "hands": 1,
+    "magazine": null,
+    "reloadAP": null,
+    "attackAP": 3,
+    "damage": 10,
+    "damageType": "Physical",
+    "optimalRange": "2-4",
+    "maxRange": null,
+    "qualities": [
+      "Silenced",
+      "Concealed (1)"
+    ],
+    "triggerOptions": [
+      "Murderous",
+      "Penetrating (4)"
+    ],
+    "specialRules": "Heft is never added to the damage of attacks with this weapon. A rolled Botch means harming yourself or an ally within range for the full damage.",
+    "modLimit": 0,
+    "cost": 2000,
+    "roundCost": null,
+    "rarity": 4
+  },
+  {
+    "type": "Melee",
+    "weapon": "Plasma Blade",
+    "illustrativeName": "Inferno Plasma Pike",
+    "hands": 2,
+    "magazine": null,
+    "reloadAP": null,
+    "attackAP": 4,
+    "damage": 7,
+    "damageType": "Fire",
+    "optimalRange": "1-2",
+    "maxRange": null,
+    "qualities": [
+      "Defensive (1",
+      "Melee)"
+    ],
+    "triggerOptions": [
+      "Penetrating (3)",
+      "Lethal (5)",
+      "Shredding (3)",
+      "Plasmascorch"
+    ],
+    "specialRules": "Requires a Plasma cell that allows the blade to be active for a total of 10 rounds (turning the Blade on and off is near-instantaneous). Replacing the cell costs 40 Credits.",
+    "modLimit": 3,
+    "cost": 4500,
+    "roundCost": null,
+    "rarity": 4
+  },
+  {
+    "type": "Melee",
+    "weapon": "Spear",
+    "illustrativeName": "Guardsteel Battle Spear",
+    "hands": 1,
+    "magazine": null,
+    "reloadAP": null,
+    "attackAP": 4,
+    "damage": 6,
+    "damageType": "Physical",
+    "optimalRange": "1-2",
+    "maxRange": null,
+    "qualities": [
+      "Silenced",
+      "Throwable (2-8 | 15)",
+      "Defensive (1",
+      "Melee)"
+    ],
+    "triggerOptions": [
+      "Penetrating (2)",
+      "Lethal (2)"
+    ],
+    "specialRules": "Can be wielded in two hands, providing Handling (2). Heft remains that of a one-handed weapon.",
+    "modLimit": 3,
+    "cost": 200,
+    "roundCost": null,
+    "rarity": 1
+  },
+  {
+    "type": "Melee",
+    "weapon": "Maul",
+    "illustrativeName": "Thunderstrike Maul",
+    "hands": 2,
+    "magazine": null,
+    "reloadAP": null,
+    "attackAP": 5,
+    "damage": 8,
+    "damageType": "Physical",
+    "optimalRange": "1",
+    "maxRange": null,
+    "qualities": [
+      "Improvised"
+    ],
+    "triggerOptions": [
+      "Penetrating (3)",
+      "Lethal (2)",
+      "Concussing",
+      "Knocking"
+    ],
+    "specialRules": "Characters with 6 Strength or more ignore Improvised.",
+    "modLimit": 3,
+    "cost": 225,
+    "roundCost": null,
+    "rarity": 1
+  },
+  {
+    "type": "Melee",
+    "weapon": "War Axe",
+    "illustrativeName": "Ravager War Axe",
+    "hands": 2,
+    "magazine": null,
+    "reloadAP": null,
+    "attackAP": 5,
+    "damage": 8,
+    "damageType": "Physical",
+    "optimalRange": "1",
+    "maxRange": null,
+    "qualities": [
+      "Silenced"
+    ],
+    "triggerOptions": [
+      "Lethal (5)"
+    ],
+    "specialRules": "",
+    "modLimit": 3,
+    "cost": 250,
+    "roundCost": null,
+    "rarity": 2
+  },
+  {
+    "type": "Melee",
+    "weapon": "Mining Pickaxe",
+    "illustrativeName": "Exocore Rocksplitter",
+    "hands": 2,
+    "magazine": null,
+    "reloadAP": null,
+    "attackAP": 5,
+    "damage": 8,
+    "damageType": "Physical",
+    "optimalRange": "1",
+    "maxRange": null,
+    "qualities": [
+      "Silenced",
+      "Improvised"
+    ],
+    "triggerOptions": [
+      "Penetrating (5)",
+      "Lethal (4)"
+    ],
+    "specialRules": "Characters with 6 Strength or more ignore Improvised.",
+    "modLimit": 1,
+    "cost": 200,
+    "roundCost": null,
+    "rarity": 1
+  },
+  {
+    "type": "Melee",
+    "weapon": "Small Shield",
+    "illustrativeName": "Riot Repellant",
+    "hands": 1,
+    "magazine": null,
+    "reloadAP": null,
+    "attackAP": 4,
+    "damage": 4,
+    "damageType": "Physical",
+    "optimalRange": "1",
+    "maxRange": null,
+    "qualities": [
+      "Defensive (1)"
+    ],
+    "triggerOptions": [
+      "Concussing"
+    ],
+    "specialRules": "",
+    "modLimit": 1,
+    "cost": 120,
+    "roundCost": null,
+    "rarity": 1
+  },
+  {
+    "type": "Melee",
+    "weapon": "Ballistic Shield",
+    "illustrativeName": "Bulwark",
+    "hands": 1,
+    "magazine": null,
+    "reloadAP": null,
+    "attackAP": 5,
+    "damage": 4,
+    "damageType": "Physical",
+    "optimalRange": "1",
+    "maxRange": null,
+    "qualities": [
+      "Defensive (2)",
+      "-2 Speed"
+    ],
+    "triggerOptions": [
+      "Stunning",
+      "Incapacitating"
+    ],
+    "specialRules": "Adds +1 difficulty to all attacks made due to limited vision.",
+    "modLimit": 2,
+    "cost": 250,
+    "roundCost": null,
+    "rarity": 2
+  }
+]
