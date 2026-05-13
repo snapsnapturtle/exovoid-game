@@ -11,7 +11,8 @@ import {
   type AttributeId,
 } from '~/lib/game-logic/attributes'
 import { SKILLS } from '~/lib/game-logic/skills'
-import type { CharacterAttributes } from '~/lib/types/database'
+import { isLegalTalentSet, makeTalentEntry } from '~/lib/game-logic/talents'
+import type { CharacterAttributes, TalentEntry } from '~/lib/types/database'
 import careersData from '~/data/careers.json'
 import backgroundsData from '~/data/backgrounds.json'
 
@@ -281,17 +282,24 @@ export function CreationWizard({ gameId }: CreationWizardProps) {
         ),
       ].join('\n')
 
+      const careerName = state.career ?? ''
+      const careerData = careers.find((c) => c.name === careerName)
+      const talentEntries: TalentEntry[] = state.startingTalents.map((name) => {
+        const ref = careerData?.talents.find((t) => t.talent === name)
+        return makeTalentEntry(name, careerName, ref?.tier ?? 0, 0)
+      })
+
       const character = await createCharacter({
         data: {
           gameId,
           name: state.name.trim(),
-          career: state.career ?? '',
+          career: careerName,
           gender: state.gender.trim(),
           age: state.age.trim() ? parseInt(state.age.trim(), 10) : null,
           background_notes: noteLines,
           attributes: state.baseAttributes,
           skills: finalSkills,
-          talents: state.startingTalents,
+          talents: talentEntries,
           credits: 1000,
         },
       })
@@ -416,18 +424,6 @@ function Stepper({
 }
 
 // ---------- Step 1: Career ----------
-
-// A talent set is legal if every tier-N talent in the set has at least N
-// other talents in the same set at strictly lower tiers (its prerequisites).
-function isLegalTalentSet(
-  picks: { talent: string; tier: number }[],
-): boolean {
-  for (const t of picks) {
-    const lowerCount = picks.filter((o) => o.tier < t.tier).length
-    if (lowerCount < t.tier) return false
-  }
-  return true
-}
 
 const STARTING_TALENT_LIMIT = 2
 // At creation a player picks up to 2 talents — only tier 0 and tier 1 are

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import type { Character, CharacterAttributes } from '~/lib/types/database'
 import { updateCharacter } from '~/lib/server/characters'
+import { levelFromXp } from '~/lib/game-logic/leveling'
 
 const SAVE_DEBOUNCE_MS = 800
 
@@ -35,11 +36,14 @@ export function useCharacter(initial: Character, canEdit: boolean) {
               updates: {
                 name: updated.name,
                 career: updated.career,
+                level: updated.level,
+                experience: updated.experience,
                 gender: updated.gender,
                 age: updated.age,
                 background_notes: updated.background_notes,
                 attributes: updated.attributes,
                 skills: updated.skills,
+                talents: updated.talents,
                 edge_current: updated.edge_current,
                 health_current: updated.health_current,
                 notes: updated.notes,
@@ -60,7 +64,10 @@ export function useCharacter(initial: Character, canEdit: boolean) {
 
   function updateField<K extends keyof Character>(key: K, value: Character[K]) {
     setCharacter((prev) => {
-      const next = { ...prev, [key]: value }
+      let next: Character = { ...prev, [key]: value }
+      if (key === 'experience') {
+        next = { ...next, level: levelFromXp(next.experience) }
+      }
       debouncedSave(next)
       return next
     })

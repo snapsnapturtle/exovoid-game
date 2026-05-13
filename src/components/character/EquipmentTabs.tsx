@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { CharacterInfoPanel } from './CharacterInfoPanel'
+import { TalentsTab } from '~/components/talents/TalentsTab'
+import type { TalentEntry } from '~/lib/types/database'
 
 type Tab = 'actions' | 'inventory' | 'talents' | 'cyberware' | 'background'
 
@@ -18,6 +20,11 @@ interface EquipmentTabsProps {
   notes: string
   canEdit: boolean
   liveCanEdit: boolean
+  talents: TalentEntry[]
+  level: number
+  career: string
+  gameId: string
+  characterId: string
   onGenderChange: (value: string) => void
   onAgeChange: (value: number | null) => void
   onBackgroundNotesChange: (value: string) => void
@@ -38,6 +45,11 @@ export function EquipmentTabs({
   notes,
   canEdit,
   liveCanEdit,
+  talents,
+  level,
+  career,
+  gameId,
+  characterId,
   onGenderChange,
   onAgeChange,
   onBackgroundNotesChange,
@@ -65,7 +77,16 @@ export function EquipmentTabs({
       <div className="p-4">
         {tab === 'actions' && <PlaceholderTab name="Actions" />}
         {tab === 'inventory' && <PlaceholderTab name="Inventory" />}
-        {tab === 'talents' && <PlaceholderTab name="Talents" />}
+        {tab === 'talents' && (
+          <TalentsTab
+            talents={talents}
+            level={level}
+            career={career}
+            gameId={gameId}
+            characterId={characterId}
+            canEdit={canEdit}
+          />
+        )}
         {tab === 'cyberware' && <PlaceholderTab name="Cyberware" />}
         {tab === 'background' && (
           <BackgroundTab

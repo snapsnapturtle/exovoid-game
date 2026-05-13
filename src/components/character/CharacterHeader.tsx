@@ -1,4 +1,4 @@
-const XP_THRESHOLDS = [0, 20, 50, 90, 140, 200, 270, 350, 440, 540, 650, 770, 900, 1040, 1200]
+import { xpProgress } from '~/lib/game-logic/leveling'
 
 interface CharacterHeaderProps {
   name: string
@@ -31,11 +31,7 @@ export function CharacterHeader({
   onModeToggle,
   onDelete,
 }: CharacterHeaderProps) {
-  const currentThreshold = XP_THRESHOLDS[level - 1] ?? 0
-  const nextThreshold = XP_THRESHOLDS[level] ?? currentThreshold
-  const xpInLevel = experience - currentThreshold
-  const xpNeeded = nextThreshold - currentThreshold
-  const xpPercent = xpNeeded > 0 ? Math.min(100, (xpInLevel / xpNeeded) * 100) : 100
+  const { next: nextThreshold, percent: xpPercent } = xpProgress(experience)
 
   return (
     <div className="flex flex-wrap items-start gap-4 rounded-xl border border-void-600 bg-void-800 p-6">

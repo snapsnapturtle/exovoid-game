@@ -108,6 +108,11 @@ export function CharacterSheet({
             notes={character.notes}
             canEdit={editScopeCanEdit}
             liveCanEdit={canEdit}
+            talents={character.talents}
+            level={character.level}
+            career={character.career}
+            gameId={character.game_id}
+            characterId={character.id}
             onGenderChange={(v) => updateField('gender', v)}
             onAgeChange={(v) => updateField('age', v)}
             onBackgroundNotesChange={(v) =>

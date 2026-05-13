@@ -1,0 +1,82 @@
+import type { NodeState } from './TalentNode'
+
+interface TalentDetailRailProps {
+  name: string | null
+  description: string | null
+  tier: number | null
+  career: string | null
+  granted: boolean
+  state: NodeState | null
+  reason?: string
+  canEdit: boolean
+  onUnlock: () => void
+  onRemove: () => void
+  busy: boolean
+}
+
+export function TalentDetailRail({
+  name,
+  description,
+  tier,
+  career,
+  granted,
+  state,
+  reason,
+  canEdit,
+  onUnlock,
+  onRemove,
+  busy,
+}: TalentDetailRailProps) {
+  if (!name) {
+    return (
+      <div className="rounded-xl border border-void-600 bg-void-800 p-6 text-sm text-gray-500">
+        Select a talent to see its details.
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-4 rounded-xl border border-void-600 bg-void-800 p-6">
+      <div>
+        <div className="text-xs uppercase tracking-wide text-gray-500">
+          {granted ? (
+            <span className="text-cyber-400">Granted</span>
+          ) : (
+            <>
+              {career} · Tier {tier}
+            </>
+          )}
+        </div>
+        <h3 className="mt-1 text-xl font-bold text-white">{name}</h3>
+      </div>
+
+      <p className="whitespace-pre-wrap text-sm leading-relaxed text-gray-300">
+        {description}
+      </p>
+
+      {canEdit && state && (
+        <div className="border-t border-void-600 pt-4">
+          {state === 'owned' ? (
+            <button
+              onClick={onRemove}
+              disabled={busy}
+              className="rounded-lg border border-danger-500/60 bg-danger-500/10 px-3 py-1.5 text-sm text-danger-400 transition hover:bg-danger-500/20 disabled:opacity-50"
+            >
+              {busy ? 'Removing…' : 'Remove talent'}
+            </button>
+          ) : state === 'available' ? (
+            <button
+              onClick={onUnlock}
+              disabled={busy}
+              className="rounded-lg bg-accent-500 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-accent-400 disabled:opacity-50"
+            >
+              {busy ? 'Unlocking…' : 'Unlock for 1 point'}
+            </button>
+          ) : (
+            <div className="text-sm text-gray-500">{reason ?? 'Locked.'}</div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}

@@ -377,6 +377,14 @@ export type CharacterAttributes = {
   coo: number
 }
 
+export type TalentEntry = {
+  name: string
+  career: string
+  tier: number
+  acquiredAt: number
+  granted?: boolean
+}
+
 type CharacterRow = Database['public']['Tables']['characters']['Row']
 
 export type Character = Omit<
@@ -385,7 +393,7 @@ export type Character = Omit<
 > & {
   attributes: CharacterAttributes
   skills: Record<string, number>
-  talents: Json[]
+  talents: TalentEntry[]
   cyberware: Json[]
   inventory: Json[]
 }
