@@ -121,6 +121,9 @@ export function CharacterSheet({
             talents={character.talents}
             cyberware={character.cyberware}
             cyberImmunityCapacity={derivedStats.cyberImmunity}
+            inventory={character.inventory}
+            credits={character.credits}
+            assets={character.assets}
             level={character.level}
             career={character.career}
             gameId={character.game_id}

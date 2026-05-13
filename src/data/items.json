@@ -1,0 +1,713 @@
+[
+  {
+    "category": "Gadget",
+    "item": "Holo Projector",
+    "name": "VividCast Holobeam",
+    "description": "A small, portable device that projects 3D holographic images, useful for displaying maps, blueprints, or decoys.",
+    "size": 1,
+    "cost": 250,
+    "rarity": 1
+  },
+  {
+    "category": "Gadget",
+    "item": "Data Pad",
+    "name": "InfoGlide",
+    "description": "A handheld device for accessing, storing, and transferring data. Can be used to access archives, or communicate remotely.\n\nDevice Integrity: 2\nFirewall: 6\nIC Level: 3\nSignal Range: 10",
+    "size": 1,
+    "cost": 70,
+    "rarity": 0
+  },
+  {
+    "category": "Gadget",
+    "item": "Energy Cell",
+    "name": "PowerCore V5",
+    "description": "A compact, rechargeable power source used to fuel various gadgets, tools, and small vehicles.",
+    "size": 2,
+    "cost": 150,
+    "rarity": 1
+  },
+  {
+    "category": "Gadget",
+    "item": "Field Scanner",
+    "name": "Terrascan Pro",
+    "description": "A portable device that scans the environment for life forms, energy signatures, or chemical compositions wihin a 5km radius. Ideal for exploration and investigation.",
+    "size": 2,
+    "cost": 350,
+    "rarity": 3
+  },
+  {
+    "category": "Gadget",
+    "item": "Plasma Torch",
+    "name": "Internatorch",
+    "description": "A high-powered cutting tool that uses plasma to slice through metal and other tough materials. Essential for breaching barriers.",
+    "size": 1,
+    "cost": 100,
+    "rarity": 1
+  },
+  {
+    "category": "Gadget",
+    "item": "Magnetic Grapple",
+    "name": "Ascension Sling",
+    "description": "A handheld grapple gun that fires a magnetized claw. Ideal for quick ascents or for retrieving metal objects from a distance. Comes with a retractable 15m long cable that can support up to 300 kg.",
+    "size": 2,
+    "cost": 250,
+    "rarity": 2
+  },
+  {
+    "category": "Gadget",
+    "item": "Anti-EMP Module",
+    "name": "Orion EMP Zero Pack",
+    "description": "This module can be worn, and will neutralize one strong EMP wave that would otherwise destroy or disturb worn equipment. The module burns out upon absorbing an EMP wave.",
+    "size": 1,
+    "cost": 100,
+    "rarity": 3
+  },
+  {
+    "category": "Survival",
+    "item": "Portable Shelter",
+    "name": "Envirodome Compact",
+    "description": "A collapsible, lightweight shelter that provides protection from the elements and hostile environments. Can be set up quickly in any terrain.",
+    "size": 5,
+    "cost": 400,
+    "rarity": 2
+  },
+  {
+    "category": "Survival",
+    "item": "Atmospheric Filter",
+    "name": "AirPurity XT",
+    "description": "A breathing apparatus that filters and purifies the air, making it safe to breathe in toxic or low-oxygen environments.",
+    "size": 1,
+    "cost": 200,
+    "rarity": 2
+  },
+  {
+    "category": "Survival",
+    "item": "Ration Pack",
+    "name": "Nutripak Sustain",
+    "description": "Compact, nutrient-rich food supplies designed for long-term storage and consumption during expeditions or emergencies. Each pack sustains for one day.",
+    "size": 1,
+    "cost": 10,
+    "rarity": 0
+  },
+  {
+    "category": "Survival",
+    "item": "Hydration Synthesizer",
+    "name": "Hydrasync",
+    "description": "A portable device that extracts and purifies water from the environment, ensuring a clean and safe water supply in any situation.",
+    "size": 2,
+    "cost": 120,
+    "rarity": 2
+  },
+  {
+    "category": "Survival",
+    "item": "Thermal Blanket",
+    "name": "Heatwave Ultra",
+    "description": "A heat-reflective blanket that provides warmth and insulation in extreme cold conditions. Compact and easy to carry.",
+    "size": 1,
+    "cost": 20,
+    "rarity": 0
+  },
+  {
+    "category": "Survival",
+    "item": "Survival Beacon",
+    "name": "Rescuesignal Mk II",
+    "description": "A distress signal device that broadcasts your location to nearby allies or rescue teams. Equipped with a variety of signal modes.",
+    "size": 2,
+    "cost": 200,
+    "rarity": 2
+  },
+  {
+    "category": "Survival",
+    "item": "Grav Boots",
+    "name": "G-Force Boots",
+    "description": "Boots equipped with gravity technology or magnets, allowing the wearer to traverse difficult terrain, including zero-gravity environments.",
+    "size": 2,
+    "cost": 150,
+    "rarity": 3
+  },
+  {
+    "category": "Survival",
+    "item": "Climbing Gear",
+    "name": "AscendTech Climbers",
+    "description": "Ropes, hooks and other devices to help safely climb buildings or rocks.",
+    "size": 2,
+    "cost": 120,
+    "rarity": 2
+  },
+  {
+    "category": "Survival",
+    "item": "Solar Charger",
+    "name": "Sunpower Fold",
+    "description": "A portable solar panel that can charge batteries and devices using sunlight, essential for long-term survival away from civilization.",
+    "size": 2,
+    "cost": 80,
+    "rarity": 2
+  },
+  {
+    "category": "Survival",
+    "item": "Atmospheric Analyzer",
+    "name": "AeroScout Pro",
+    "description": "A handheld device that analyzes the local air quality, detecting toxins, radiation levels, and oxygen content.",
+    "size": 1,
+    "cost": 120,
+    "rarity": 2
+  },
+  {
+    "category": "Medicine",
+    "item": "Biofoam Dispenser",
+    "name": "Medifoam XT",
+    "description": "A medical tool that injects biofoam into wounds to stop bleeding. Requires 4 AP to use.",
+    "size": 1,
+    "cost": 30,
+    "rarity": 1
+  },
+  {
+    "category": "Medicine",
+    "item": "Medigel",
+    "name": "HealGel Alpha",
+    "description": "A healing salve that promotes rapid tissue regeneration, effective for treating wounds, burns, and other injuries. Once applied, it provides +4 pool bonus to the nightly regeneration, and regenerates and extra 20% of the maximum health.",
+    "size": 1,
+    "cost": 20,
+    "rarity": 1
+  },
+  {
+    "category": "Medicine",
+    "item": "Healing Patch",
+    "name": "Somaseal Bio-Repair",
+    "description": "A single-use patch that adheres to wounds, promoting rapid healing through bio-stimulants. Restores 30% of a character's maximum health instantly (round up). Is only useful once per day, as an overflow of the stimulants causes averse effects (e.g. dizzyness or nausea).",
+    "size": 1,
+    "cost": 50,
+    "rarity": 2
+  },
+  {
+    "category": "Medicine",
+    "item": "Stim Pack",
+    "name": "Quickboost Inject",
+    "description": "A quick-injection drug (requires 3 AP to use) that boosts physical performance, increasing strength, speed and constitution by +2 for 10 minutes.\n\nAfter that, the user loses 1d6 health (cannot cause an injury roll).",
+    "size": 1,
+    "cost": 40,
+    "rarity": 1
+  },
+  {
+    "category": "Medicine",
+    "item": "Adrenaline Injector",
+    "name": "Adrena Max",
+    "description": "A quick-injection drug (requires 3 AP to use) that either provides +2 AP for 5 minutes, or that wakes up someone who became unconscious.\n\nAfter the 5 Minutes are over, an Injury roll with 5 dice must be made, but the maximum severity suffered is limited to 1.",
+    "size": 1,
+    "cost": 25,
+    "rarity": 1
+  },
+  {
+    "category": "Medicine",
+    "item": "Neuro-Enhancer",
+    "name": "Cerebraboost",
+    "description": "A cognitive booster in the form of a pill that sharpens mental faculties, improving memory, focus, and problem-solving abilities for a limited time.\nIt takes 5 Minutes for the effects to kick in. The user then gains +1 Intelligence and Education for 6 hours.\n\nWhen the effects wear off, the user suffers the \"Dizzy\" wound.",
+    "size": 0,
+    "cost": 50,
+    "rarity": 3
+  },
+  {
+    "category": "Medicine",
+    "item": "Anti-Viral Serum",
+    "name": "Vira Guard",
+    "description": "A cure for most viruses and infections, providing immunity or relief from symptoms.",
+    "size": 1,
+    "cost": 35,
+    "rarity": 2
+  },
+  {
+    "category": "Medicine",
+    "item": "Pain Nullifier",
+    "name": "Nocicept Block",
+    "description": "A drug that blocks pain receptors, allowing the user to function normally despite injuries or other debilitating conditions.\nIt takes 5 Minutes for the effects of the pill to kick in. The user then ignores the effects (but not injury pool modifiers) of all severity 1 and 2 wounds for 1d6 hours.\n\nWhen the effects wear off, the user suffers the \"Nausea\" wound and has to make a Survival d2 roll. If failed, they become addicted or suffer withdrawal symptoms.",
+    "size": 0,
+    "cost": 10,
+    "rarity": 0
+  },
+  {
+    "category": "Medicine",
+    "item": "Combat Stims",
+    "name": "BattleX Stims",
+    "description": "A quick-injection drug (requires 3 AP to use) that increases combat efficiency, boosting reflexes, accuracy, and aggression.\nThe user gains +1 pool bonus to all physical combat related checks, and reduces the pool of their injury checks by 2 (to a Minimum of 0). Lasts for 10 Minutes.\n\nWhen the effects wear off, the user suffers 2d6 damage (ignoring armor).",
+    "size": 1,
+    "cost": 50,
+    "rarity": 1
+  },
+  {
+    "category": "Medicine",
+    "item": "Sleep Regulator",
+    "name": "Slumbersync",
+    "description": "A drug that can either suppress the need for sleep or induce restful sleep, depending on the dosage and application.",
+    "size": 0,
+    "cost": 20,
+    "rarity": 1
+  },
+  {
+    "category": "Medicine",
+    "item": "Cyberware Immune Suppressor",
+    "name": "Cyberceptin",
+    "description": "Reduces the risks of adverse effects from cyberware temporarily. For 24h, deactivate eight cyberware malfunction results (numbers between 2 and 40) and ignore their effects. When the effects wear off, you suffer a -1 pool penalty to all checks for 1d6 hours unless you take another dose.",
+    "size": 0,
+    "cost": 30,
+    "rarity": 3
+  },
+  {
+    "category": "Medicine",
+    "item": "Hallucinogen",
+    "name": "Dreamwave",
+    "description": "A drug that induces vivid hallucinations, which can be used recreationally or for nefarious purposes, like disorienting an enemy.",
+    "size": 0,
+    "cost": 15,
+    "rarity": 1
+  },
+  {
+    "category": "Medicine",
+    "item": "Medkit",
+    "name": "Ares Lifesaver",
+    "description": "A set of tools and basic supplies to perform first aid or even surgery.",
+    "size": 3,
+    "cost": 150,
+    "rarity": 1
+  },
+  {
+    "category": "Medicine",
+    "item": "Engram Reader",
+    "name": "Mindmirror",
+    "description": "This circular tool can be placed around a person's alive or dead head. Over 5 Minutes it will create a scan to create an engram of their mind, but it will irrevocably destroy the brain in the process. The engram is typically faulty or incomplete, but can be sufficient to be used in a simulation for further questioning.",
+    "size": 4,
+    "cost": 2400,
+    "rarity": 5
+  },
+  {
+    "category": "Espionage",
+    "item": "Infiltration Kit",
+    "name": "Shadow-Ops Gear",
+    "description": "A set of tools specifically designed for bypassing security systems, including lockpicks, signal jammers, and data scramblers.",
+    "size": 2,
+    "cost": 300,
+    "rarity": 3
+  },
+  {
+    "category": "Espionage",
+    "item": "MagLock Breaker",
+    "name": "Ciphercrack",
+    "description": "Once applied to a MagLock, the device requires 1d6 minutes to find the right combination, opening the lock once.",
+    "size": 1,
+    "cost": 225,
+    "rarity": 3
+  },
+  {
+    "category": "Espionage",
+    "item": "Environmental Cloak",
+    "name": "Chameleonwrap",
+    "description": "A wearable cloak that adapts to the surrounding environment, providing camouflage. While being stationary or moving cautiously, gain +3 pool to any attempts to stay hidden.",
+    "size": 1,
+    "cost": 450,
+    "rarity": 4
+  },
+  {
+    "category": "Espionage",
+    "item": "Face Shaping Cream",
+    "name": "Nanoclone",
+    "description": "Allows to apply a paste that will change the facial structure into a specific shape, by programming it once through a Data Pad. The cream can be re-used later by mixing it with a solution that costs half the price of the cream itself.",
+    "size": 1,
+    "cost": 400,
+    "rarity": 4
+  },
+  {
+    "category": "Espionage",
+    "item": "Voice Modulator",
+    "name": "Vox Morph",
+    "description": "A device hidden near the throat that alters the user’s voice to mimic others or create entirely new vocal patterns, useful for impersonation or deception.",
+    "size": 1,
+    "cost": 200,
+    "rarity": 3
+  },
+  {
+    "category": "Espionage",
+    "item": "Bug Detector",
+    "name": "Scansafe",
+    "description": "A handheld scanner that detects and neutralizes hidden surveillance devices within half a meter of the device, including cameras, microphones, and tracking beacons.",
+    "size": 2,
+    "cost": 300,
+    "rarity": 2
+  },
+  {
+    "category": "Espionage",
+    "item": "Sound Bug",
+    "name": "Echoprobe",
+    "description": "A tiny device that sticks to surfaces and will record and broadcast audio in its surroundings to connected devices. Has a broadcasting range of 250m.",
+    "size": 0,
+    "cost": 75,
+    "rarity": 2
+  },
+  {
+    "category": "Espionage",
+    "item": "Camera Bug",
+    "name": "Lensworm",
+    "description": "A small device that can easily be stuck in corners, plants or similar to record video in a fixed angle, broadcasting its signal to connected devices. Has a broadcasting range of 50m.",
+    "size": 1,
+    "cost": 120,
+    "rarity": 2
+  },
+  {
+    "category": "Espionage",
+    "item": "Memory Scrambler",
+    "name": "Mindshift Disruptor",
+    "description": "A neural device that temporarily erases short-term memories, useful for covering tracks or avoiding interrogation.",
+    "size": 2,
+    "cost": 1100,
+    "rarity": 5
+  },
+  {
+    "category": "Espionage",
+    "item": "Key Copier",
+    "name": "Codeclone",
+    "description": "Can copy physical and card-based keys swiftly.",
+    "size": 2,
+    "cost": 300,
+    "rarity": 3
+  },
+  {
+    "category": "Espionage",
+    "item": "Micro-Tracker",
+    "name": "Nanotrack",
+    "description": "A tiny, nearly undetectable transmitter that can be planted on a target to track their movements or relay information. Has a broadcasting range of 10km.",
+    "size": 0,
+    "cost": 50,
+    "rarity": 1
+  },
+  {
+    "category": "Espionage",
+    "item": "White-Noise Generator",
+    "name": "Echoshield",
+    "description": "A portable device that emits white noise to mask conversations, preventing eavesdropping and protecting against audio surveillance.",
+    "size": 1,
+    "cost": 100,
+    "rarity": 2
+  },
+  {
+    "category": "Espionage",
+    "item": "Frequency Jammer",
+    "name": "Nullzone",
+    "description": "This device emits a jamming signal that blocks all communications and wireless signals within a 100-meter radius for 5 minutes. After use it requires recharging.",
+    "size": 2,
+    "cost": 400,
+    "rarity": 4
+  },
+  {
+    "category": "Espionage",
+    "item": "Spytool",
+    "name": "Spectrascope",
+    "description": "A compact device that combines high-definition zoom with directional audio capture, allowing you to spy on distant targets and eavesdrop on conversations with precision.",
+    "size": 2,
+    "cost": 400,
+    "rarity": 2
+  },
+  {
+    "category": "Espionage",
+    "item": "Torture Tools",
+    "name": "Dr. Evil's Toybox",
+    "description": "An assortment of various tools to torture a subject without killing them (unless you overdo their use). Provides a +3 pool bonus to retrieve information from a given subject, though torture will often require a downtime activity.",
+    "size": 3,
+    "cost": 150,
+    "rarity": 4
+  },
+  {
+    "category": "Crafting",
+    "item": "3D Printer",
+    "name": "PrintForce X1",
+    "description": "A portable fabricator that can create physical objects from digital blueprints using various materials. Ideal for crafting custom tools or parts. The material cost is equal to 5% of the aspired item, and the process takes a few minutes. 3D printed mechanical / electrical items (like weapons) break as soon as a botch or two complications were rolled (regardless if these were triggered or not). Assembling an item from the printed parts requires a few minutes and a Tech check - the difficulty is equal to the rarity of the item - 2 (to a Minimum of 1). 3D-printed weapons or armor are always considered \"No-Name\".",
+    "size": 4,
+    "cost": 300,
+    "rarity": 2
+  },
+  {
+    "category": "Crafting",
+    "item": "Component Analyzer",
+    "name": "Partdetect",
+    "description": "A handheld device that scans items to identify their components, making it easier to disassemble or reverse-engineer technology. Requires a Sensors check to use.",
+    "size": 3,
+    "cost": 200,
+    "rarity": 2
+  },
+  {
+    "category": "Crafting",
+    "item": "Cybernetic Toolkit",
+    "name": "Biomech Set",
+    "description": "A specialized set of tools for installing, repairing, or upgrading cybernetic implants and prosthetics.",
+    "size": 4,
+    "cost": 400,
+    "rarity": 3
+  },
+  {
+    "category": "Crafting",
+    "item": "Scrap Converter",
+    "name": "Recycle Pro",
+    "description": "A device that breaks down junk and scrap into usable materials, reducing waste and providing resources for repairs. You gain 1/4th of the item's value in components - convert the value into Spare Tech or Spare Ship parts.",
+    "size": 5,
+    "cost": 500,
+    "rarity": 3
+  },
+  {
+    "category": "Crafting",
+    "item": "Multi-Tool",
+    "name": "Flexitool 21-in-1",
+    "description": "A versatile tool kit that can transform into different configurations such as a wrench, screwdriver, or laser cutter. Essential for repairs and tinkering.",
+    "size": 3,
+    "cost": 300,
+    "rarity": 1
+  },
+  {
+    "category": "Crafting",
+    "item": "Chemistry Kit",
+    "name": "Labpack Synthesis",
+    "description": "A mini lab consisting of various devices to synthesize components using a Science check.",
+    "size": 5,
+    "cost": 450,
+    "rarity": 3
+  },
+  {
+    "category": "Crafting",
+    "item": "Spare Ship Parts",
+    "name": "Ship-Complement 101",
+    "description": "Allows one repair attempt on a critically damaged ship part, it's armor or hull. Is used up with the attempt.",
+    "size": 4,
+    "cost": 500,
+    "rarity": 2
+  },
+  {
+    "category": "Crafting",
+    "item": "Spare Tech Parts",
+    "name": "Azerra Fixermould",
+    "description": "Allows one repair attempt on a damaged firearm, drone or other piece of technology. Is used up with the attempt.",
+    "size": 2,
+    "cost": 50,
+    "rarity": 1
+  },
+  {
+    "category": "Crafting",
+    "item": "Armor Repair Kit",
+    "name": "Triton Sealgel",
+    "description": "Allows for a Tech d0 check, requiring one hour of time. Each success restores 2 points of durability of the damaged armor. Then the Fixgel is used up.",
+    "size": 1,
+    "cost": 25,
+    "rarity": 1
+  },
+  {
+    "category": "Everyday",
+    "item": "License",
+    "name": "A38-License",
+    "description": "Provides a digital, legal permit to possess one specific weapon or cyberware. This is only relevant for items that fall under military regulations and that can be used offensively.",
+    "size": 0,
+    "cost": 50,
+    "rarity": 3
+  },
+  {
+    "category": "Everyday",
+    "item": "Burner Fake ID",
+    "name": "Jane / John Doe Card",
+    "description": "A fake identification that can be used for most services and payments and will pass cursory checks. Seeing through the fake ID requires an Investigation d2 check.",
+    "size": 0,
+    "cost": 200,
+    "rarity": 3
+  },
+  {
+    "category": "Everyday",
+    "item": "Sophisticated Fake ID",
+    "name": "U.N. Registry Key",
+    "description": "A fake identification that can be used for all services and payments and will pass most checks. Seeing through the fake ID requires an Investigation d4 check.",
+    "size": 0,
+    "cost": 500,
+    "rarity": 5
+  },
+  {
+    "category": "Everyday",
+    "item": "Holo-Communicator",
+    "name": "Echolink Holocomm",
+    "description": "A wrist-mounted or handheld device that allows for real-time holographic communication across vast distances.\n\nDevice Integrity: 2\nFirewall: 6\nIC Level: 3\nSignal Range: 5",
+    "size": 1,
+    "cost": 60,
+    "rarity": 0
+  },
+  {
+    "category": "Everyday",
+    "item": "Universal Translator",
+    "name": "Lingua-Master 2200",
+    "description": "A device that instantly translates spoken or written language, allowing communication with any species or dialect. Due to the delay in communication and lack of nuance, you suffer +1 difficulty on all social checks.",
+    "size": 1,
+    "cost": 180,
+    "rarity": 0
+  },
+  {
+    "category": "Everyday",
+    "item": "Credit Chip",
+    "name": "Credivault",
+    "description": "A digital currency storage device that allows the user to make transactions and store funds securely.",
+    "size": 0,
+    "cost": 10,
+    "rarity": 0
+  },
+  {
+    "category": "Everyday",
+    "item": "VR Headset",
+    "name": "Immersi Gear",
+    "description": "A device that immerses the user in a virtual environment, useful for entertainment, training, communication or direct drone control. When controlling a drone directly, the drone rigger uses their own skills in Gunnery (shooting), Pilot (melee, stealth and movement), Sensors (perception and data interpretation) and Tech (instead of Survival rolls).",
+    "size": 2,
+    "cost": 350,
+    "rarity": 1
+  },
+  {
+    "category": "Everyday",
+    "item": "VR Training Holotape",
+    "name": "Brilliant",
+    "description": "Such a holotape contains a VR training program to learn a specific talent, regardless of the career it is attached to. You need to spend a downtime to study it, as well as a talent point. This can only be done once for every five full character levels.",
+    "size": 1,
+    "cost": 500,
+    "rarity": 4
+  },
+  {
+    "category": "Everyday",
+    "item": "AR Glasses",
+    "name": "Overlit",
+    "description": "Can display certain virtual overlays, e.g. to make digital ads in front of stores visible, or to read messages on the fly, keeping the hands free.",
+    "size": 1,
+    "cost": 150,
+    "rarity": 0
+  },
+  {
+    "category": "Hacking",
+    "item": "Repeater",
+    "name": "Callisto Extender",
+    "description": "This device acts as a node with its own Signal Range of 10 squares. It can be slaved a master device as usual. The direct communication range between this device and its master device is 10km.",
+    "size": 1,
+    "cost": 60,
+    "rarity": 0
+  },
+  {
+    "category": "Hacking",
+    "item": "Cyberdeck Tier-1",
+    "name": "PhantomLink",
+    "description": "Device Integrity: 5\nFirewall: 9\nIC Level: 3\nSignal Range: 20\n\nIf others use the \"Locate\" action against you, they need to spend 3 AT instead.",
+    "size": 1,
+    "cost": 200,
+    "rarity": 2
+  },
+  {
+    "category": "Hacking",
+    "item": "Cyberdeck Tier-2",
+    "name": "Quantum Splicer",
+    "description": "Device Integrity: 5\nFirewall: 6\nIC Level: 3\nSignal Range: 50\n\nTreat enemy firewalls as if they are 2 points lower.",
+    "size": 1,
+    "cost": 350,
+    "rarity": 2
+  },
+  {
+    "category": "Hacking",
+    "item": "Cyberdeck Tier-3",
+    "name": "SpecterNode",
+    "description": "Device Integrity: 6\nFirewall: 8\nIC Level: 4\nSignal Range: 25\n\nAT generated with this cyberdeck do not decay over time.",
+    "size": 1,
+    "cost": 700,
+    "rarity": 3
+  },
+  {
+    "category": "Hacking",
+    "item": "Cyberdeck Tier-4",
+    "name": "Overlord Mk-IV",
+    "description": "Device Integrity: 8\nFirewall: 7\nIC Level: 4\nSignal Range: 25\n\nThe \"Hijack\" option only costs 2 instead of 3 AT.",
+    "size": 2,
+    "cost": 1200,
+    "rarity": 4
+  },
+  {
+    "category": "Hacking",
+    "item": "Cyberdeck Tier-5",
+    "name": "Nexus X-9",
+    "description": "Device Integrity: 10\nFirewall: 8\nIC Level: 5\nSignal Range: 15\n\nGain +1 pool bonus when hacking.",
+    "size": 2,
+    "cost": 2500,
+    "rarity": 5
+  },
+  {
+    "category": "Hacking",
+    "item": "Cyberdeck Upgrade: Integrity",
+    "name": "Sentinel Core",
+    "description": "Grants your cyberdeck +2 integrity.\n\nIncrease the cost of this upgrade by +250 Credits for each Upgrade that has already been installed. Each type may only be installed once.",
+    "size": 0,
+    "cost": 150,
+    "rarity": 4
+  },
+  {
+    "category": "Hacking",
+    "item": "Cyberdeck Upgrade: Firewall",
+    "name": "Aegis Defender",
+    "description": "Grants your cyberdeck +2 firewall.\n\nIncrease the cost of this upgrade by +250 Credits for each Upgrade that has already been installed. Each type may only be installed once.",
+    "size": 0,
+    "cost": 150,
+    "rarity": 4
+  },
+  {
+    "category": "Hacking",
+    "item": "Cyberdeck Upgrade: IC",
+    "name": "Nemesis Protocol",
+    "description": "Grants your cyberdeck +1 IC Level.\n\nIncrease the cost of this upgrade by +250 Credits for each Upgrade that has already been installed. Each type may only be installed once.",
+    "size": 0,
+    "cost": 200,
+    "rarity": 5
+  },
+  {
+    "category": "Hacking",
+    "item": "Cyberdeck Upgrade: Signal Range",
+    "name": "BitRepeater",
+    "description": "Doubles the signal range of your cyberdeck.\n\nIncrease the cost of this upgrade by +250 Credits for each Upgrade that has already been installed. Each type may only be installed once.",
+    "size": 0,
+    "cost": 150,
+    "rarity": 4
+  },
+  {
+    "category": "Hacking",
+    "item": "Netrunner Suite: Control",
+    "name": "Hijack Dominus",
+    "description": "Enemy hackers need to spend twice the amount of AT on the Cancel option to remove any Hijack option you have ongoing.\n\nInstalling a Netrunner Suite reduces your device's integrity by 1.",
+    "size": 0,
+    "cost": 200,
+    "rarity": 4
+  },
+  {
+    "category": "Hacking",
+    "item": "Netrunner Suite: BioDeath",
+    "name": "Neural Reaper",
+    "description": "Whenever you use an AT on a target device, you may decide to cause 4 Biofeedback damage (ignoring armor) against any neurally linked user for each AT spent.\n\nInstalling a Netrunner Suite reduces your device's integrity by 1.",
+    "size": 0,
+    "cost": 250,
+    "rarity": 5
+  },
+  {
+    "category": "Hacking",
+    "item": "Netrunner Suite: Closure",
+    "name": "ZeroDay Purge",
+    "description": "When you use the Cancel option to remove AT from a target system, you remove 2 AT per usage of the option instead of just 1.\n\nInstalling a Netrunner Suite reduces your device's integrity by 1.",
+    "size": 0,
+    "cost": 200,
+    "rarity": 4
+  },
+  {
+    "category": "Hacking",
+    "item": "Netrunner Suite: Corrupt",
+    "name": "HexCorruptor",
+    "description": "Whenever you use an AT on a target device, you may decide to cause 1 Data Corruption for each AT spent. You can decide to spend your AT directly on disrupting the device's integrity, in which case you cause 3 Data Corruption per AT spent.\n\nInstalling a Netrunner Suite reduces your device's integrity by 1.",
+    "size": 0,
+    "cost": 200,
+    "rarity": 4
+  },
+  {
+    "category": "Hacking",
+    "item": "Netrunner Suite: Mislead",
+    "name": "Phantomtrail",
+    "description": "You can spend 2 AT on a target device to cause it to get a falsified location when it uses the Locate option against you. The locating hacker can attempt a Computers d4 check to notice the false lead.\n\nInstalling a Netrunner Suite reduces your device's integrity by 1.",
+    "size": 0,
+    "cost": 250,
+    "rarity": 5
+  }
+]

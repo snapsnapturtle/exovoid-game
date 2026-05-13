@@ -220,6 +220,23 @@ const cyberware = preserveEffects(
 )
 writeJson('cyberware.json', cyberware)
 
+// --- Items ------------------------------------------------------------------
+// Fully populated CSV (no forward-fill needed). Each row is a complete entry
+// with category / item subcategory / variant name / description / size / cost
+// / rarity. Used by the Inventory panel to pick from the catalog.
+console.log('Items...')
+const itemRows = readTable('Exovoid Content - Items.csv')
+const items = itemRows.map((r) => ({
+  category: r.category,
+  item: r.item,
+  name: r.name,
+  description: r.description,
+  size: parseInt(r.size, 10),
+  cost: parseInt(r.cost, 10),
+  rarity: parseInt(r.rarity, 10),
+}))
+writeJson('items.json', items)
+
 // --- Cyber Malfunction Table ------------------------------------------------
 // Rulebook §"Exceeding Cyber Immunity": when over capacity, the character
 // must allocate excess points across this table (rolls 2-40). Named rows

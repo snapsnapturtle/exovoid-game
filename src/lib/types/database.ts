@@ -44,6 +44,7 @@ export type Database = {
       characters: {
         Row: {
           age: number | null
+          assets: number
           attributes: Json
           background_notes: string
           career: string
@@ -68,6 +69,7 @@ export type Database = {
         }
         Insert: {
           age?: number | null
+          assets?: number
           attributes?: Json
           background_notes?: string
           career?: string
@@ -92,6 +94,7 @@ export type Database = {
         }
         Update: {
           age?: number | null
+          assets?: number
           attributes?: Json
           background_notes?: string
           career?: string
@@ -221,6 +224,38 @@ export type Database = {
             columns: ['user_id']
             isOneToOne: false
             referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      game_state: {
+        Row: {
+          assets: number
+          credits: number
+          game_id: string
+          inventory: Json
+          updated_at: string
+        }
+        Insert: {
+          assets?: number
+          credits?: number
+          game_id: string
+          inventory?: Json
+          updated_at?: string
+        }
+        Update: {
+          assets?: number
+          credits?: number
+          game_id?: string
+          inventory?: Json
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'game_state_game_id_fkey'
+            columns: ['game_id']
+            isOneToOne: true
+            referencedRelation: 'games'
             referencedColumns: ['id']
           },
         ]
@@ -395,6 +430,21 @@ export type CyberwareEntry = {
   installedAt: number
 }
 
+/**
+ * An entry in a character's or a game's shared inventory. `catalog` items
+ * resolve their stats by looking up `name` in `items.json`; `custom` items
+ * are free-text and carry their own description.
+ */
+export type InventoryItem = {
+  id: string
+  source: 'catalog' | 'custom'
+  name: string
+  description?: string
+  quantity: number
+  /** Free-form grouping ("backpack", "on ship") — players define their own. */
+  location?: string
+}
+
 type CharacterRow = Database['public']['Tables']['characters']['Row']
 
 export type Character = Omit<
@@ -410,9 +460,15 @@ export type Character = Omit<
   skills: Record<string, number>
   talents: TalentEntry[]
   cyberware: CyberwareEntry[]
-  inventory: Json[]
+  inventory: InventoryItem[]
   /** Cyber Malfunction Table slot numbers (2-40) the player has allocated to.
    * Length equals current excess Cyberimmunity. Each slot can be allocated at
    * most once (rulebook example). */
   malfunction_allocations: number[]
+}
+
+type GameStateRow = Database['public']['Tables']['game_state']['Row']
+
+export type GameState = Omit<GameStateRow, 'inventory'> & {
+  inventory: InventoryItem[]
 }
