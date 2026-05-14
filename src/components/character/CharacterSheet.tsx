@@ -35,6 +35,7 @@ export function CharacterSheet({
     character.attributes,
     character.talents,
     character.cyberware,
+    character.inventory,
   )
   const derivedStats = effects.derived
   const isEditMode = mode === 'edit'

@@ -7,7 +7,9 @@ import type {
 } from '~/lib/types/database'
 import { inventoryByLocation, lookupItem } from '~/lib/game-logic/items'
 import { lookupWeapon } from '~/lib/game-logic/weapons'
+import { lookupArmor } from '~/lib/game-logic/armors'
 import {
+  addArmor,
   addInventoryItem,
   addWeapon,
   removeInventoryItem,
@@ -19,6 +21,7 @@ import {
 import { AddCatalogItemModal } from './AddCatalogItemModal'
 import { AddCustomItemModal } from './AddCustomItemModal'
 import { AddWeaponModal } from './AddWeaponModal'
+import { AddArmorModal } from './AddArmorModal'
 import { QualityBadge } from './QualityBadge'
 
 type Owner =
@@ -42,6 +45,7 @@ export function InventoryPage({
     | { kind: 'catalog'; owner: Owner }
     | { kind: 'custom'; owner: Owner }
     | { kind: 'weapon'; owner: Owner }
+    | { kind: 'armor'; owner: Owner }
     | null
   >(null)
   const [busyId, setBusyId] = useState<string | null>(null)
@@ -145,6 +149,9 @@ export function InventoryPage({
           onAddWeapon={() =>
             setAddModal({ kind: 'weapon', owner: characterOwner })
           }
+          onAddArmor={() =>
+            setAddModal({ kind: 'armor', owner: characterOwner })
+          }
           onUpdateQuantity={(item, quantity) =>
             withBusy(`update:${item.id}`, () =>
               updateInventoryItem({
@@ -152,6 +159,17 @@ export function InventoryPage({
                   owner: characterOwner,
                   itemId: item.id,
                   updates: { quantity },
+                },
+              }),
+            )
+          }
+          onUpdateDurability={(item, currentDurability) =>
+            withBusy(`update:${item.id}`, () =>
+              updateInventoryItem({
+                data: {
+                  owner: characterOwner,
+                  itemId: item.id,
+                  updates: { currentDurability },
                 },
               }),
             )
@@ -204,6 +222,7 @@ export function InventoryPage({
           onAddCatalog={() => setAddModal({ kind: 'catalog', owner: gameOwner })}
           onAddCustom={() => setAddModal({ kind: 'custom', owner: gameOwner })}
           onAddWeapon={() => setAddModal({ kind: 'weapon', owner: gameOwner })}
+          onAddArmor={() => setAddModal({ kind: 'armor', owner: gameOwner })}
           onUpdateQuantity={(item, quantity) =>
             withBusy(`update:${item.id}`, () =>
               updateInventoryItem({
@@ -211,6 +230,17 @@ export function InventoryPage({
                   owner: gameOwner,
                   itemId: item.id,
                   updates: { quantity },
+                },
+              }),
+            )
+          }
+          onUpdateDurability={(item, currentDurability) =>
+            withBusy(`update:${item.id}`, () =>
+              updateInventoryItem({
+                data: {
+                  owner: gameOwner,
+                  itemId: item.id,
+                  updates: { currentDurability },
                 },
               }),
             )
@@ -287,6 +317,18 @@ export function InventoryPage({
           onAdd={(input) =>
             withBusy('add', async () => {
               await addWeapon({ data: { owner: addModal.owner, ...input } })
+              setAddModal(null)
+            })
+          }
+          onClose={() => setAddModal(null)}
+        />
+      )}
+      {addModal?.kind === 'armor' && (
+        <AddArmorModal
+          busy={busyId !== null}
+          onAdd={(input) =>
+            withBusy('add', async () => {
+              await addArmor({ data: { owner: addModal.owner, ...input } })
               setAddModal(null)
             })
           }
@@ -494,13 +536,15 @@ interface InventoryColumnProps {
   onAddCatalog: () => void
   onAddCustom: () => void
   onAddWeapon: () => void
+  onAddArmor: () => void
   onUpdateQuantity: (item: InventoryItem, quantity: number) => void
+  onUpdateDurability: (item: InventoryItem, durability: number) => void
   onRename: (item: InventoryItem, name: string) => void
   onUpdateLocation: (item: InventoryItem, location: string) => void
   onTransfer: (item: InventoryItem) => void
   transferLabel: string
   onRemove: (item: InventoryItem) => void
-  /** Only passed for the character column — toggles `equipped` on a weapon entry. */
+  /** Only passed for the character column — toggles `equipped` on a weapon/armor entry. */
   onToggleEquipped?: (item: InventoryItem, equipped: boolean) => void
 }
 
@@ -512,7 +556,9 @@ function InventoryColumn({
   onAddCatalog,
   onAddCustom,
   onAddWeapon,
+  onAddArmor,
   onUpdateQuantity,
+  onUpdateDurability,
   onRename,
   onUpdateLocation,
   onTransfer,
@@ -539,6 +585,12 @@ function InventoryColumn({
               className="rounded-lg border border-cyber-500/60 bg-cyber-500/15 px-2.5 py-1 text-xs font-medium text-cyber-200 transition hover:bg-cyber-500/25"
             >
               + Weapon
+            </button>
+            <button
+              onClick={onAddArmor}
+              className="rounded-lg border border-cyber-500/60 bg-cyber-500/15 px-2.5 py-1 text-xs font-medium text-cyber-200 transition hover:bg-cyber-500/25"
+            >
+              + Armor
             </button>
             <button
               onClick={onAddCustom}
@@ -568,6 +620,7 @@ function InventoryColumn({
                     canEdit={canEdit}
                     busy={busyId !== null}
                     onQuantityChange={(q) => onUpdateQuantity(item, q)}
+                    onDurabilityChange={(d) => onUpdateDurability(item, d)}
                     onRename={(n) => onRename(item, n)}
                     onLocationChange={(loc) => onUpdateLocation(item, loc)}
                     onTransfer={() => onTransfer(item)}
@@ -594,6 +647,7 @@ function ItemRow({
   canEdit,
   busy,
   onQuantityChange,
+  onDurabilityChange,
   onRename,
   onLocationChange,
   onTransfer,
@@ -605,6 +659,7 @@ function ItemRow({
   canEdit: boolean
   busy: boolean
   onQuantityChange: (q: number) => void
+  onDurabilityChange: (durability: number) => void
   onRename: (name: string) => void
   onLocationChange: (loc: string) => void
   onTransfer: () => void
@@ -617,9 +672,20 @@ function ItemRow({
     item.source === 'weapon' && item.weaponRef
       ? lookupWeapon(item.weaponRef)
       : undefined
+  const armor =
+    item.source === 'armor' && item.armorRef
+      ? lookupArmor(item.armorRef)
+      : undefined
   const description =
-    item.description ?? catalog?.description ?? weapon?.specialRules ?? ''
-  const renameAllowed = item.source === 'custom' || item.source === 'weapon'
+    item.description ??
+    catalog?.description ??
+    weapon?.specialRules ??
+    armor?.specialRules ??
+    ''
+  const renameAllowed =
+    item.source === 'custom' ||
+    item.source === 'weapon' ||
+    item.source === 'armor'
   const [editingLocation, setEditingLocation] = useState(false)
   const [locationDraft, setLocationDraft] = useState(item.location ?? '')
   const [editingName, setEditingName] = useState(false)
@@ -690,6 +756,11 @@ function ItemRow({
               {weapon.type} · {weapon.weapon}
             </span>
           )}
+          {armor && (
+            <span className="rounded border border-cyber-500/40 bg-cyber-500/10 px-1 py-0.5 text-[10px] uppercase tracking-wide text-cyber-300">
+              Armor · {armor.type}
+            </span>
+          )}
           {item.source === 'custom' && (
             <span className="rounded border border-void-600 bg-void-700 px-1 py-0.5 text-[10px] uppercase tracking-wide text-gray-400">
               Custom
@@ -703,6 +774,16 @@ function ItemRow({
         </div>
 
         {weapon && <WeaponStats weapon={weapon} />}
+
+        {armor && (
+          <ArmorStats
+            armor={armor}
+            currentDurability={item.currentDurability}
+            canEdit={canEdit}
+            busy={busy}
+            onDurabilityChange={onDurabilityChange}
+          />
+        )}
 
         {description && (
           <button
@@ -746,7 +827,7 @@ function ItemRow({
           ))}
       </div>
       <div className="flex items-center gap-1.5 sm:flex-col sm:items-end sm:gap-1">
-        {item.source === 'weapon' ? (
+        {item.source === 'weapon' || item.source === 'armor' ? (
           canEdit && onToggleEquipped ? (
             <button
               onClick={() => onToggleEquipped(!item.equipped)}
@@ -843,6 +924,107 @@ function WeaponStats({
         </div>
       )}
     </div>
+  )
+}
+
+function ArmorStats({
+  armor,
+  currentDurability,
+  canEdit,
+  busy,
+  onDurabilityChange,
+}: {
+  armor: NonNullable<ReturnType<typeof lookupArmor>>
+  currentDurability: number | undefined
+  canEdit: boolean
+  busy: boolean
+  onDurabilityChange: (durability: number) => void
+}) {
+  const broken =
+    armor.durability != null &&
+    (currentDurability ?? armor.durability) <= 0
+  return (
+    <div className="space-y-1">
+      <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-gray-400">
+        <span>
+          <span className="text-gray-500">Soak:</span>{' '}
+          <span className={broken ? 'text-warning-400' : 'text-gray-200'}>
+            {broken ? armor.secondarySoak : armor.primarySoak}
+          </span>
+          <span className="text-gray-500">
+            {' '}
+            (pri {armor.primarySoak} / sec {armor.secondarySoak})
+          </span>
+        </span>
+        {armor.durability != null && (
+          <span className="inline-flex items-center gap-1">
+            <span className="text-gray-500">Durability:</span>
+            <DurabilityStepper
+              value={currentDurability ?? armor.durability}
+              max={armor.durability}
+              canEdit={canEdit}
+              busy={busy}
+              onCommit={onDurabilityChange}
+            />
+            <span className="text-gray-500">/ {armor.durability}</span>
+          </span>
+        )}
+      </div>
+      {armor.qualities.length > 0 && (
+        <div className="flex flex-wrap gap-1">
+          {armor.qualities.map((q) => (
+            <QualityBadge key={q} raw={q} variant="quality" />
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function DurabilityStepper({
+  value,
+  max,
+  canEdit,
+  busy,
+  onCommit,
+}: {
+  value: number
+  max: number
+  canEdit: boolean
+  busy: boolean
+  onCommit: (v: number) => void
+}) {
+  const broken = value <= 0
+  return (
+    <span className="inline-flex items-center gap-0.5">
+      {canEdit && (
+        <button
+          onClick={() => onCommit(Math.max(0, value - 1))}
+          disabled={busy || value <= 0}
+          className="h-5 w-5 rounded border border-void-600 bg-void-700 text-xs text-gray-300 transition hover:border-accent-500 hover:text-white disabled:opacity-30"
+          aria-label="Decrease durability"
+        >
+          −
+        </button>
+      )}
+      <span
+        className={`min-w-[1.25rem] text-center font-mono text-xs font-semibold ${
+          broken ? 'text-warning-400' : 'text-white'
+        }`}
+      >
+        {value}
+      </span>
+      {canEdit && (
+        <button
+          onClick={() => onCommit(Math.min(max, value + 1))}
+          disabled={busy || value >= max}
+          className="h-5 w-5 rounded border border-void-600 bg-void-700 text-xs text-gray-300 transition hover:border-accent-500 hover:text-white disabled:opacity-30"
+          aria-label="Increase durability"
+        >
+          +
+        </button>
+      )}
+    </span>
   )
 }
 

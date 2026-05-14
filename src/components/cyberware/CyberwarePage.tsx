@@ -59,8 +59,14 @@ export function CyberwarePage({ initial, canEdit }: CyberwarePageProps) {
         character.attributes,
         character.talents,
         character.cyberware,
+        character.inventory,
       ).derived.cyberImmunity,
-    [character.attributes, character.talents, character.cyberware],
+    [
+      character.attributes,
+      character.talents,
+      character.cyberware,
+      character.inventory,
+    ],
   )
   const used = useMemo(() => occupationUsed(character.cyberware), [character.cyberware])
   const installedByName = useMemo(

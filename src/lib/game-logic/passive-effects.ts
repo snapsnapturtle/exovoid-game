@@ -1,6 +1,7 @@
 import type {
   CharacterAttributes,
   CyberwareEntry,
+  InventoryItem,
   TalentEntry,
 } from '~/lib/types/database'
 import type { AttributeId } from '~/lib/game-logic/attributes'
@@ -8,6 +9,7 @@ import {
   computeAllDerivedStats,
   type DerivedStats,
 } from '~/lib/game-logic/derived-stats'
+import { effectiveArmorSoak, equippedArmor } from '~/lib/game-logic/armors'
 import talentsData from '~/data/talents.json'
 import cyberwareData from '~/data/cyberware.json'
 
@@ -73,6 +75,7 @@ export function applyPassiveEffects(
   baseAttributes: CharacterAttributes,
   talents: TalentEntry[],
   cyberware: CyberwareEntry[],
+  inventory: InventoryItem[] = [],
 ): AppliedPassiveEffects {
   const attributes: CharacterAttributes = { ...baseAttributes }
   const attributeContributions: Partial<Record<AttributeId, Contribution[]>> = {}
@@ -102,6 +105,19 @@ export function applyPassiveEffects(
       const list = derivedContributions[eff.stat] ?? []
       list.push({ source: source.name, value: eff.value })
       derivedContributions[eff.stat] = list
+    }
+  }
+
+  // Equipped armor closes the `soak: 0` hardcode in computeAllDerivedStats —
+  // primary while durability > 0, secondary once it's depleted.
+  const worn = equippedArmor(inventory)
+  if (worn) {
+    const value = effectiveArmorSoak(worn.entry, worn.data)
+    if (value > 0) {
+      derived.soak += value
+      const list = derivedContributions.soak ?? []
+      list.push({ source: worn.entry.name, value })
+      derivedContributions.soak = list
     }
   }
 

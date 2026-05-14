@@ -434,15 +434,15 @@ export type CyberwareEntry = {
  * An entry in a character's or a game's shared inventory.
  * - `catalog` items resolve stats by looking up `name` in `items.json`.
  * - `custom` items are free-text and carry their own description.
- * - `weapon` items reference `weapons.json` via `weaponRef` (the canonical
- *   `weapon` field, e.g. "Hold Out Pistol"); `name` is the player-editable
- *   display (defaults to the rulebook's illustrative name, e.g. "6mm Triton
- *   Vanguard"). Future equipment types (armor, drones) follow the same
- *   pattern by adding their own `*Ref` fields.
+ * - `weapon` items reference `weapons.json` via `weaponRef`; `name` is the
+ *   player-editable display (defaults to the rulebook's illustrative name).
+ * - `armor` items reference `armors.json` via `armorRef`; same name pattern,
+ *   plus a `currentDurability` per-instance state that depletes during play.
+ * Future equipment types (drones) follow the same pattern.
  */
 export type InventoryItem = {
   id: string
-  source: 'catalog' | 'custom' | 'weapon'
+  source: 'catalog' | 'custom' | 'weapon' | 'armor'
   name: string
   description?: string
   quantity: number
@@ -450,7 +450,11 @@ export type InventoryItem = {
   location?: string
   /** Catalog reference for source='weapon'. */
   weaponRef?: string
-  /** Only meaningful for source='weapon' on a character (stripped on transfer to party). */
+  /** Catalog reference for source='armor'. */
+  armorRef?: string
+  /** Per-instance armor durability that depletes during play (0..armor.durability). */
+  currentDurability?: number
+  /** Only meaningful for source='weapon' or 'armor' on a character (stripped on transfer to party). */
   equipped?: boolean
 }
 

@@ -1,0 +1,285 @@
+[
+  {
+    "type": "Hardened Cloth / Coat",
+    "illustrativeName": "GalenTek Resilient Weave Coat",
+    "durability": null,
+    "primarySoak": 1,
+    "secondarySoak": 1,
+    "qualities": [
+      "Concealed"
+    ],
+    "modLimit": 0,
+    "moddingOptions": [],
+    "specialRules": "",
+    "cost": 200,
+    "rarity": 0
+  },
+  {
+    "type": "Civilian Combat Suit",
+    "illustrativeName": "CivSec Urban Defender Suit",
+    "durability": 6,
+    "primarySoak": 3,
+    "secondarySoak": 2,
+    "qualities": [],
+    "modLimit": 1,
+    "moddingOptions": [
+      "Advanced Materials",
+      "Audio Suite",
+      "Ballistic Net",
+      "Diamantine Mesh",
+      "Reflective Coating",
+      "Shock Absorber",
+      "Stealth Coating",
+      "State-of-the-Art"
+    ],
+    "specialRules": "",
+    "cost": 400,
+    "rarity": 1
+  },
+  {
+    "type": "Military-Grade Combat Suit",
+    "illustrativeName": "Vanguard Tactical Assault Suit",
+    "durability": 6,
+    "primarySoak": 4,
+    "secondarySoak": 3,
+    "qualities": [],
+    "modLimit": 2,
+    "moddingOptions": [
+      "Advanced Materials",
+      "Audio Suite",
+      "Ballistic Net",
+      "Diamantine Mesh",
+      "Reflective Coating",
+      "Shock Absorber",
+      "Stealth Coating",
+      "State-of-the-Art"
+    ],
+    "specialRules": "",
+    "cost": 800,
+    "rarity": 2
+  },
+  {
+    "type": "Ballistic Vest",
+    "illustrativeName": "ArmaShield Kevlar Vest",
+    "durability": 15,
+    "primarySoak": 4,
+    "secondarySoak": 1,
+    "qualities": [],
+    "modLimit": 1,
+    "moddingOptions": [
+      "Advanced Materials",
+      "Ballistic Net",
+      "Diamantine Mesh",
+      "Reflective Coating"
+    ],
+    "specialRules": "Can never be repaired.",
+    "cost": 150,
+    "rarity": 2
+  },
+  {
+    "type": "Tactical Vest with Modular Plates",
+    "illustrativeName": "TacMod Combat Vest",
+    "durability": 8,
+    "primarySoak": 5,
+    "secondarySoak": 1,
+    "qualities": [],
+    "modLimit": 0,
+    "moddingOptions": [],
+    "specialRules": "Replacement plates can be installed by spending 6 AP, and they cost half the value of the vest - this restores all durability.",
+    "cost": 200,
+    "rarity": 2
+  },
+  {
+    "type": "Space Suit",
+    "illustrativeName": "Starlite Enviro-Suit",
+    "durability": 8,
+    "primarySoak": 1,
+    "secondarySoak": 0,
+    "qualities": [
+      "Vacuum-Sealed",
+      "-3 Speed"
+    ],
+    "modLimit": 1,
+    "moddingOptions": [
+      "Advanced Materials",
+      "Anti-Corrosive",
+      "Audio Suite",
+      "Ballistic Net",
+      "Diamantine Mesh",
+      "Droppack",
+      "Emergency Systems",
+      "Heat Shielding",
+      "Insulation",
+      "Radiation Shielding",
+      "Reflective Coating",
+      "Shock Absorber",
+      "State-of-the-Art",
+      "Stealth Coating",
+      "Visual Enhancer"
+    ],
+    "specialRules": "Loses its qualities when durability breaks.",
+    "cost": 600,
+    "rarity": 2
+  },
+  {
+    "type": "Combat-Ready Space Suit",
+    "illustrativeName": "AstralGuard Tactical Exo-Suit",
+    "durability": 12,
+    "primarySoak": 3,
+    "secondarySoak": 2,
+    "qualities": [
+      "Vacuum-Sealed",
+      "-2 Speed"
+    ],
+    "modLimit": 3,
+    "moddingOptions": [
+      "Advanced Materials",
+      "Anti-Corrosive",
+      "Audio Suite",
+      "Ballistic Net",
+      "Diamantine Mesh",
+      "Droppack",
+      "Emergency Systems",
+      "Heat Shielding",
+      "Insulation",
+      "Radiation Shielding",
+      "Reflective Coating",
+      "Shock Absorber",
+      "State-of-the-Art",
+      "Stealth Coating",
+      "Visual Enhancer"
+    ],
+    "specialRules": "Loses its qualities when durability breaks.",
+    "cost": 1200,
+    "rarity": 3
+  },
+  {
+    "type": "Medi Suit",
+    "illustrativeName": "Medicorp Rescue Armor",
+    "durability": 6,
+    "primarySoak": 3,
+    "secondarySoak": 1,
+    "qualities": [
+      "Auto Medikit"
+    ],
+    "modLimit": 2,
+    "moddingOptions": [
+      "Advanced Materials",
+      "Audio Suite",
+      "Ballistic Net",
+      "Diamantine Mesh",
+      "Reflective Coating",
+      "Sealed",
+      "Shock Absorber",
+      "State-of-the-Art",
+      "Stealth Coating",
+      "Visual Enhancer"
+    ],
+    "specialRules": "Auto Medikit replenishes 5 health automatically once until refilled (max. once per encounter, refill costs 50 Credits). It halves the duration of all bleeding effects (round down).",
+    "cost": 500,
+    "rarity": 3
+  },
+  {
+    "type": "Combat Armor",
+    "illustrativeName": "Cerberus Tactical Shell",
+    "durability": 12,
+    "primarySoak": 5,
+    "secondarySoak": 3,
+    "qualities": [
+      "-2 Speed."
+    ],
+    "modLimit": 4,
+    "moddingOptions": [
+      "Advanced Materials",
+      "Anti-Corrosive",
+      "Audio Suite",
+      "Ballistic Net",
+      "Diamantine Mesh",
+      "Droppack",
+      "Emergency Systems",
+      "Heat Shielding",
+      "Insulation",
+      "Radiation Shielding",
+      "Reflective Coating",
+      "Sealed",
+      "Servos",
+      "Shock Absorber",
+      "State-of-the-Art",
+      "Stealth Coating",
+      "Visual Enhancer"
+    ],
+    "specialRules": "",
+    "cost": 2000,
+    "rarity": 4
+  },
+  {
+    "type": "Power Armor - Miner",
+    "illustrativeName": "TerraCore Excavation Exosuit",
+    "durability": 20,
+    "primarySoak": 6,
+    "secondarySoak": 3,
+    "qualities": [
+      "Battery (12h)",
+      "-2 Speed"
+    ],
+    "modLimit": 3,
+    "moddingOptions": [
+      "Advanced Materials",
+      "Anti-Corrosive",
+      "Audio Suite",
+      "Ballistic Net",
+      "Battery Extension",
+      "Diamantine Mesh",
+      "Emergency Systems",
+      "Heat Shielding",
+      "Insulation",
+      "Radiation Shielding",
+      "Reflective Coating",
+      "Sealed",
+      "Servos",
+      "Shock Absorber",
+      "State-of-the-Art",
+      "Stealth Coating",
+      "Visual Enhancer"
+    ],
+    "specialRules": "Adds +4 Strength to the wielder.\nWhen the armor reaches 0 durability, the user becomes immobile until they exit the armor.",
+    "cost": 4000,
+    "rarity": 5
+  },
+  {
+    "type": "Power Armor - Battle",
+    "illustrativeName": "Havoc Industries Warframe",
+    "durability": 30,
+    "primarySoak": 8,
+    "secondarySoak": 4,
+    "qualities": [
+      "Battery (4h)",
+      "Defensive (1)",
+      "-2 Speed",
+      "Vacuum-Sealed"
+    ],
+    "modLimit": 6,
+    "moddingOptions": [
+      "Advanced Materials",
+      "Anti-Corrosive",
+      "Audio Suite",
+      "Ballistic Net",
+      "Battery Extension",
+      "Diamantine Mesh",
+      "Droppack",
+      "Emergency Systems",
+      "Heat Shielding",
+      "Insulation",
+      "Radiation Shielding",
+      "Reflective Coating",
+      "Servos",
+      "Shock Absorber",
+      "State-of-the-Art",
+      "Stealth Coating",
+      "Visual Enhancer"
+    ],
+    "specialRules": "Adds +4 Strength to the wielder.\nWhen the armor reaches 0 durability, the user becomes immobile until they exit the armor.",
+    "cost": 8000,
+    "rarity": 6
+  }
+]

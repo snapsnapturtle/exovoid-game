@@ -4,6 +4,7 @@ import { getSupabaseServerClient } from '~/lib/supabase/server'
 import type { GameState, InventoryItem } from '~/lib/types/database'
 import { lookupItem } from '~/lib/game-logic/items'
 import { lookupWeapon } from '~/lib/game-logic/weapons'
+import { lookupArmor } from '~/lib/game-logic/armors'
 
 type Owner =
   | { type: 'character'; characterId: string }
@@ -119,6 +120,7 @@ export const updateInventoryItem = createServerFn({ method: 'POST' })
         location?: string
         description?: string
         name?: string
+        currentDurability?: number
       }
     }) => d,
   )
@@ -159,6 +161,19 @@ export const updateInventoryItem = createServerFn({ method: 'POST' })
       const trimmed = data.updates.name.trim()
       if (!trimmed) throw new Error('Name cannot be empty')
       next.name = trimmed
+    }
+    if (data.updates.currentDurability !== undefined) {
+      if (existing.source !== 'armor') {
+        throw new Error('Only armor tracks durability')
+      }
+      if (!existing.armorRef) throw new Error('Missing armorRef')
+      const armor = lookupArmor(existing.armorRef)
+      if (!armor) throw new Error('Unknown armor')
+      if (armor.durability == null) {
+        throw new Error('This armor does not track durability')
+      }
+      const clamped = Math.max(0, Math.min(armor.durability, data.updates.currentDurability))
+      next.currentDurability = clamped
     }
 
     const arr = current.slice()
@@ -291,14 +306,67 @@ export const setEquipped = createServerFn({ method: 'POST' })
     const current = await readInventory(supabase, owner)
     const idx = current.findIndex((e) => e.id === data.itemId)
     if (idx < 0) throw new Error('Item not found')
-    if (current[idx].source !== 'weapon') {
-      throw new Error('Only weapons can be equipped')
+    const target = current[idx]
+    if (target.source !== 'weapon' && target.source !== 'armor') {
+      throw new Error('Only weapons and armor can be equipped')
     }
 
-    const arr = current.slice()
-    arr[idx] = { ...arr[idx], equipped: data.equipped }
+    // Singleton rule: equipping an armor unequips any other armor (only one
+    // worn at a time per rulebook "worn armor"). Weapons stay unconstrained.
+    const arr = current.map((entry, i) => {
+      if (i === idx) return { ...entry, equipped: data.equipped }
+      if (
+        data.equipped &&
+        target.source === 'armor' &&
+        entry.source === 'armor' &&
+        entry.equipped
+      ) {
+        return { ...entry, equipped: false }
+      }
+      return entry
+    })
     await writeInventory(supabase, owner, arr)
     return arr[idx]
+  })
+
+export const addArmor = createServerFn({ method: 'POST' })
+  .inputValidator(
+    (d: {
+      owner: Owner
+      armorRef: string
+      name?: string
+      location?: string
+    }) => d,
+  )
+  .handler(async ({ data }) => {
+    const supabase = getSupabaseServerClient()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (!user) throw new Error('Not authenticated')
+
+    const catalog = lookupArmor(data.armorRef)
+    if (!catalog) throw new Error(`Unknown armor: ${data.armorRef}`)
+
+    const name = (data.name?.trim() || catalog.illustrativeName).trim()
+    const location = data.location?.trim() || undefined
+
+    const entry: InventoryItem = {
+      id: crypto.randomUUID(),
+      source: 'armor',
+      name,
+      armorRef: data.armorRef,
+      quantity: 1,
+      ...(location ? { location } : {}),
+      ...(catalog.durability != null
+        ? { currentDurability: catalog.durability }
+        : {}),
+      ...(data.owner.type === 'character' ? { equipped: false } : {}),
+    }
+
+    const current = await readInventory(supabase, data.owner)
+    await writeInventory(supabase, data.owner, [...current, entry])
+    return entry
   })
 
 // ---------------------------------------------------------------------------

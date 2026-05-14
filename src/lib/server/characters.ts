@@ -290,6 +290,7 @@ export const installCyberware = createServerFn({ method: 'POST' })
       character.attributes,
       character.talents,
       character.cyberware,
+      character.inventory,
     )
     const check = canInstallCyberware(
       character,
@@ -363,6 +364,7 @@ function withAllocationReset(
     character.attributes,
     character.talents,
     nextCyberware,
+    character.inventory,
   )
   const used = occupationUsed(nextCyberware)
   if (used <= derived.cyberImmunity) {
@@ -394,6 +396,7 @@ export const setMalfunctionAllocations = createServerFn({ method: 'POST' })
       character.attributes,
       character.talents,
       character.cyberware,
+      character.inventory,
     )
     const used = occupationUsed(character.cyberware)
     const excess = Math.max(0, used - derived.cyberImmunity)

@@ -282,6 +282,34 @@ const weapons = weaponRows.map((r) => ({
 }))
 writeJson('weapons.json', weapons)
 
+// --- Armors -----------------------------------------------------------------
+// Catalog of wearable armor. `armorType` is the canonical identifier; the
+// `armorName` is a rulebook-illustrative variant used as the default display
+// name when added to inventory. `durability` can be "-" for very light armor
+// that doesn't track durability. `qualities` is a comma-separated list;
+// `moddingOptions` is a multi-line list of mod types this armor can accept
+// (mods land in 3c).
+console.log('Armors...')
+const armorRows = readTable('Exovoid Content - Armors.csv')
+const armors = armorRows.map((r) => ({
+  type: r.armorType,
+  illustrativeName: r.armorName,
+  durability: nullableInt(r.durability),
+  primarySoak: parseInt(r.primarySoak, 10),
+  secondarySoak: parseInt(r.secondarySoak, 10),
+  qualities: parseQualityList(r.qualities),
+  modLimit: parseInt(r.modLimit, 10),
+  moddingOptions: (r.moddingOptions ?? '')
+    .split('\n')
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .filter((s) => s !== '-'),
+  specialRules: r.specialRules,
+  cost: nullableInt(r.cost),
+  rarity: nullableInt(r.rarity),
+}))
+writeJson('armors.json', armors)
+
 // --- Item Qualities + Trigger Options ---------------------------------------
 // Lookup table for tooltip text on weapon qualities like "Concealed (1)" and
 // trigger options like "Penetrating (2)". The CSV stores the base name (e.g.
