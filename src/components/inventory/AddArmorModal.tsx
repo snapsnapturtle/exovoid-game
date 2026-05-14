@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { allArmors, type ArmorData } from '~/lib/game-logic/armors'
 import { QualityBadge } from './QualityBadge'
+import { Button } from '~/components/ui/Button'
 
 interface AddArmorModalProps {
   busy: boolean
@@ -150,20 +151,12 @@ export function AddArmorModal({ busy, onAdd, onClose }: AddArmorModalProps) {
             </label>
           </div>
           <div className="flex gap-2">
-            <button
-              onClick={onClose}
-              disabled={busy}
-              className="rounded-lg border border-void-600 bg-void-700 px-3 py-1.5 text-sm text-gray-300 transition hover:border-void-500 disabled:opacity-50"
-            >
+            <Button variant="ghost" onClick={onClose} disabled={busy}>
               Cancel
-            </button>
-            <button
-              onClick={handleAdd}
-              disabled={!selected || busy}
-              className="rounded-lg border border-accent-500/60 bg-accent-500/15 px-3 py-1.5 text-sm font-medium text-accent-200 transition hover:bg-accent-500/25 disabled:opacity-40"
-            >
+            </Button>
+            <Button onClick={handleAdd} disabled={!selected || busy}>
               {busy ? 'Adding…' : 'Add armor'}
-            </button>
+            </Button>
           </div>
         </footer>
       </div>

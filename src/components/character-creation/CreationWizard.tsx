@@ -23,6 +23,7 @@ import {
 import type { CharacterAttributes, TalentEntry } from '~/lib/types/database'
 import careersData from '~/data/careers.json'
 import backgroundsData from '~/data/backgrounds.json'
+import { Button } from '~/components/ui/Button'
 
 // ---------- Types and rule constants ----------
 
@@ -392,29 +393,27 @@ export function CreationWizard({ gameId }: CreationWizardProps) {
       )}
 
       <div className="flex items-center justify-between">
-        <button
+        <Button
+          variant="ghost"
           onClick={() => setStep(Math.max(0, state.step - 1))}
           disabled={state.step === 0 || state.submitting}
-          className="rounded-lg border border-void-600 px-4 py-2 text-sm text-gray-400 transition hover:text-white disabled:opacity-30"
         >
           ← Back
-        </button>
+        </Button>
         {state.step < STEP_LABELS.length - 1 ? (
-          <button
+          <Button
             onClick={() => setStep(state.step + 1)}
             disabled={!stepValid}
-            className="rounded-lg bg-accent-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-accent-400 disabled:opacity-50"
           >
             Next →
-          </button>
+          </Button>
         ) : (
-          <button
+          <Button
             onClick={submit}
             disabled={state.submitting || !validation.ok}
-            className="rounded-lg bg-accent-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-accent-400 disabled:opacity-50"
           >
             {state.submitting ? 'Creating…' : 'Create Character'}
-          </button>
+          </Button>
         )}
       </div>
     </div>
@@ -764,14 +763,16 @@ function AttributesStep({
                   <button
                     onClick={() => adjust(a.id, -1)}
                     disabled={value <= 0}
-                    className="flex h-6 w-6 items-center justify-center rounded bg-void-600 text-xs text-gray-300 hover:bg-void-500 disabled:opacity-30"
+                    aria-label={`Decrease ${a.name}`}
+                    className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-void-600 text-xs text-gray-300 transition hover:bg-void-500 disabled:opacity-30"
                   >
                     −
                   </button>
                   <button
                     onClick={() => adjust(a.id, +1)}
                     disabled={value >= cap || pointsRemaining <= 0}
-                    className="flex h-6 w-6 items-center justify-center rounded bg-void-600 text-xs text-gray-300 hover:bg-void-500 disabled:opacity-30"
+                    aria-label={`Increase ${a.name}`}
+                    className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-void-600 text-xs text-gray-300 transition hover:bg-void-500 disabled:opacity-30"
                   >
                     +
                   </button>
@@ -1105,7 +1106,8 @@ function SkillsStep({
               <button
                 onClick={() => adjust(skill.id, -1)}
                 disabled={current <= 0}
-                className="flex h-7 w-7 items-center justify-center rounded bg-void-600 text-xs text-gray-300 hover:bg-void-500 disabled:opacity-30"
+                aria-label={`Decrease ${skill.name}`}
+                className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-void-600 text-xs text-gray-300 transition hover:bg-void-500 disabled:opacity-30"
               >
                 −
               </button>
@@ -1115,7 +1117,8 @@ function SkillsStep({
               <button
                 onClick={() => adjust(skill.id, +1)}
                 disabled={base + current >= CREATION_SKILL_MAX}
-                className="flex h-7 w-7 items-center justify-center rounded bg-void-600 text-xs text-gray-300 hover:bg-void-500 disabled:opacity-30"
+                aria-label={`Increase ${skill.name}`}
+                className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-void-600 text-xs text-gray-300 transition hover:bg-void-500 disabled:opacity-30"
               >
                 +
               </button>

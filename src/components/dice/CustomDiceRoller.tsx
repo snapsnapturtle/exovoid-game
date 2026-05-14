@@ -7,6 +7,8 @@ import {
   useDiceFeedRefresh,
 } from '~/lib/hooks/diceFeedContext'
 import { RollResultView } from './RollResultView'
+import { Button } from '~/components/ui/Button'
+import { Modal } from '~/components/ui/Modal'
 
 const DICE: { type: DieType; label: string }[] = [
   { type: 'standard', label: 'Standard' },
@@ -87,20 +89,29 @@ export function CustomDiceRoller({
   }
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
-      onClick={onClose}
-    >
-      <div
-        className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-xl border border-void-600 bg-void-800 p-6 shadow-xl"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h3 className="mb-4 text-lg font-semibold text-white">
+    <Modal
+      onClose={onClose}
+      size="sm"
+      align="center"
+      title={
+        <>
           Custom Roll
           {!showConfig && trimmedName && (
             <span className="text-accent-400">: {trimmedName}</span>
           )}
-        </h3>
+        </>
+      }
+      footer={
+        <>
+          <Button variant="ghost" onClick={onClose} disabled={rolling}>
+            {rolling || result ? 'Close' : 'Cancel'}
+          </Button>
+          <Button onClick={submit} disabled={!canRoll || rolling}>
+            {rolling ? 'Rolling…' : result ? 'Roll Again' : 'Roll'}
+          </Button>
+        </>
+      }
+    >
 
         {showConfig && (
           <>
@@ -159,7 +170,7 @@ export function CustomDiceRoller({
                       onClick={() => adjust(type, -1)}
                       disabled={pool[type] === 0}
                       aria-label={`Decrease ${label}`}
-                      className="flex h-7 w-7 items-center justify-center rounded bg-void-700 text-gray-300 transition hover:bg-void-600 disabled:opacity-30"
+                      className="flex h-7 w-7 items-center justify-center rounded bg-void-600 text-base text-gray-200 transition hover:bg-void-500 disabled:opacity-30"
                     >
                       −
                     </button>
@@ -169,7 +180,7 @@ export function CustomDiceRoller({
                     <button
                       onClick={() => adjust(type, +1)}
                       aria-label={`Increase ${label}`}
-                      className="flex h-7 w-7 items-center justify-center rounded bg-void-700 text-gray-300 transition hover:bg-void-600"
+                      className="flex h-7 w-7 items-center justify-center rounded bg-void-600 text-base text-gray-200 transition hover:bg-void-500"
                     >
                       +
                     </button>
@@ -200,23 +211,6 @@ export function CustomDiceRoller({
           </div>
         )}
 
-        <div className="flex justify-end gap-2">
-          <button
-            onClick={onClose}
-            className="rounded-lg border border-void-600 px-4 py-2 text-sm text-gray-400 transition hover:text-white"
-            disabled={rolling}
-          >
-            {rolling || result ? 'Close' : 'Cancel'}
-          </button>
-          <button
-            onClick={submit}
-            disabled={!canRoll || rolling}
-            className="rounded-lg bg-accent-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-accent-400 disabled:opacity-50"
-          >
-            {rolling ? 'Rolling…' : result ? 'Roll Again' : 'Roll'}
-          </button>
-        </div>
-      </div>
-    </div>
+    </Modal>
   )
 }

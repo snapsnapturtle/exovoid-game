@@ -1,6 +1,7 @@
 import type { NodeState } from './TalentNode'
 import type { PassiveEffect } from '~/lib/game-logic/passive-effects'
 import { ATTRIBUTE_DEFINITIONS } from '~/lib/game-logic/attributes'
+import { Button } from '~/components/ui/Button'
 
 const DERIVED_STAT_LABEL: Record<string, string> = {
   health: 'max Health',
@@ -94,21 +95,13 @@ export function TalentDetailRail({
       {canEdit && state && (
         <div className="border-t border-void-600 pt-4">
           {state === 'owned' ? (
-            <button
-              onClick={onRemove}
-              disabled={busy}
-              className="rounded-lg border border-danger-500/60 bg-danger-500/10 px-3 py-1.5 text-sm text-danger-400 transition hover:bg-danger-500/20 disabled:opacity-50"
-            >
+            <Button variant="danger" onClick={onRemove} disabled={busy}>
               {busy ? 'Removing…' : 'Remove talent'}
-            </button>
+            </Button>
           ) : state === 'available' ? (
-            <button
-              onClick={onUnlock}
-              disabled={busy}
-              className="rounded-lg bg-accent-500 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-accent-400 disabled:opacity-50"
-            >
+            <Button onClick={onUnlock} disabled={busy}>
               {busy ? 'Unlocking…' : 'Unlock for 1 point'}
-            </button>
+            </Button>
           ) : (
             <div className="text-sm text-gray-500">{reason ?? 'Locked.'}</div>
           )}

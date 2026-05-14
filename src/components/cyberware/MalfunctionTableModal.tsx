@@ -5,6 +5,7 @@ import {
   type MalfunctionGroup,
   type SeverityRange,
 } from '~/lib/game-logic/cyberware-malfunctions'
+import { Button } from '~/components/ui/Button'
 
 interface MalfunctionTableModalProps {
   excess: number
@@ -119,20 +120,12 @@ export function MalfunctionTableModal({
         </div>
 
         <footer className="flex items-center justify-end gap-2 border-t border-void-700 px-5 py-3">
-          <button
-            onClick={onClose}
-            disabled={busy}
-            className="rounded-lg border border-void-600 bg-void-700 px-3 py-1.5 text-sm text-gray-300 transition hover:border-void-500 disabled:opacity-50"
-          >
+          <Button variant="ghost" onClick={onClose} disabled={busy}>
             Cancel
-          </button>
-          <button
-            onClick={handleSave}
-            disabled={!canSave}
-            className="rounded-lg border border-accent-500/60 bg-accent-500/15 px-3 py-1.5 text-sm font-medium text-accent-200 transition hover:bg-accent-500/25 disabled:opacity-40"
-          >
+          </Button>
+          <Button onClick={handleSave} disabled={!canSave}>
             {busy ? 'Saving…' : 'Save allocations'}
-          </button>
+          </Button>
         </footer>
       </div>
     </div>

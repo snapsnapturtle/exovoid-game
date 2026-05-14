@@ -50,6 +50,16 @@ Digital companion app for the Exovoid tabletop RPG. Think D&D Beyond for a sci-f
 - Cyber color: cyan (`cyber-*`)
 - All interactive elements need hover/focus states
 
+### UI primitives
+
+- **Buttons** use `<Button>` from `~/components/ui/Button` with one of four variants:
+  - `primary` (default): filled accent — the single main action on a surface (form submit, modal CTA, "Roll", "Save")
+  - `secondary`: outlined-accent — alternate action with similar weight
+  - `ghost`: outlined-void — low-emphasis or supporting action (Cancel, Back, navigation)
+  - `danger`: outlined-danger — destructive actions (Delete, End)
+  - Sizes: `md` (default) and `sm`. For non-button anchors (`<Link>`, `<a>`), import `buttonClasses(variant, size)` from the same module and pass it to `className`.
+- **Modals** use `<Modal>` from `~/components/ui/Modal` (or at minimum render `<ModalCloseButton>` in their header). Every modal must have an "×" close in the top-right. A footer "Cancel" text button is reserved for the *cancel* role next to a confirm action; pure-informational modals get just the X.
+
 ### Data
 
 - Character attributes stored as JSONB: `{"con":4,"str":4,...}`

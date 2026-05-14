@@ -8,6 +8,7 @@ import type {
 import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
 import { edgeCap } from '~/lib/game-logic/derived-stats'
 import { sortByTurnOrder } from '~/lib/game-logic/combat'
+import { Button } from '~/components/ui/Button'
 import { lookupWeapon } from '~/lib/game-logic/weapons'
 import { equippedArmor } from '~/lib/game-logic/armors'
 import {
@@ -83,30 +84,29 @@ export function CombatPage({
         </div>
         <div className="flex flex-wrap gap-2">
           {isGm && !combat && (
-            <button
+            <Button
               onClick={() =>
                 withBusy('start', () => startCombat({ data: { gameId: game.id } }))
               }
               disabled={busy !== null}
-              className="rounded-lg border border-accent-500/60 bg-accent-500/15 px-3 py-1.5 text-sm font-medium text-accent-200 transition hover:bg-accent-500/25 disabled:opacity-40"
             >
               {busy === 'start' ? 'Starting…' : 'Start combat'}
-            </button>
+            </Button>
           )}
           {isGm && combat && (
             <>
-              <button
+              <Button
                 onClick={() =>
                   withBusy('round', () =>
                     nextRound({ data: { gameId: game.id } }),
                   )
                 }
                 disabled={busy !== null}
-                className="rounded-lg border border-accent-500/60 bg-accent-500/15 px-3 py-1.5 text-sm font-medium text-accent-200 transition hover:bg-accent-500/25 disabled:opacity-40"
               >
                 {busy === 'round' ? 'Rolling…' : 'Next round'}
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="danger"
                 onClick={() => {
                   if (!window.confirm('End combat? Clears the tracker.')) return
                   void withBusy('end', () =>
@@ -114,10 +114,9 @@ export function CombatPage({
                   )
                 }}
                 disabled={busy !== null}
-                className="rounded-lg border border-void-600 bg-void-700 px-3 py-1.5 text-sm text-gray-300 transition hover:border-danger-500 hover:text-danger-300 disabled:opacity-40"
               >
                 End
-              </button>
+              </Button>
             </>
           )}
         </div>

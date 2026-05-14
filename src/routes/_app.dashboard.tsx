@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { getUserGames } from '~/lib/server/games'
+import { buttonClasses } from '~/components/ui/Button'
 
 export const Route = createFileRoute('/_app/dashboard')({
   loader: () => getUserGames(),
@@ -14,16 +15,10 @@ function DashboardPage() {
       <div className="mb-8 flex items-center justify-between">
         <h2 className="text-2xl font-bold text-white">Your Games</h2>
         <div className="flex gap-3">
-          <Link
-            to="/games/join"
-            className="rounded-lg border border-void-600 px-4 py-2 text-sm font-medium text-gray-300 transition hover:border-gray-400 hover:text-white"
-          >
+          <Link to="/games/join" className={buttonClasses('ghost')}>
             Join Game
           </Link>
-          <Link
-            to="/games/new"
-            className="rounded-lg bg-accent-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-accent-400"
-          >
+          <Link to="/games/new" className={buttonClasses('primary')}>
             Create Game
           </Link>
         </div>

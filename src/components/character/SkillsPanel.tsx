@@ -90,9 +90,10 @@ export function SkillsPanel({
                         onSkillChange(skill.id, Math.max(0, level - 1))
                       }
                       disabled={level <= 0}
-                      className="flex h-6 w-6 items-center justify-center rounded bg-void-600 text-xs text-gray-300 hover:bg-void-500 disabled:opacity-30"
+                      aria-label={`Decrease ${skill.name}`}
+                      className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-void-600 text-xs text-gray-300 transition hover:bg-void-500 disabled:opacity-30"
                     >
-                      -
+                      −
                     </button>
                     <span
                       className={`min-w-[2ch] text-center text-sm font-medium ${uninvested ? 'text-gray-600' : 'text-white'}`}
@@ -107,7 +108,8 @@ export function SkillsPanel({
                         )
                       }
                       disabled={level >= MAX_SKILL_LEVEL}
-                      className="flex h-6 w-6 items-center justify-center rounded bg-void-600 text-xs text-gray-300 hover:bg-void-500 disabled:opacity-30"
+                      aria-label={`Increase ${skill.name}`}
+                      className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-void-600 text-xs text-gray-300 transition hover:bg-void-500 disabled:opacity-30"
                     >
                       +
                     </button>

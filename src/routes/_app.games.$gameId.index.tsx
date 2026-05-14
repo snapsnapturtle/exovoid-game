@@ -1,5 +1,6 @@
 import { createFileRoute, getRouteApi, Link } from '@tanstack/react-router'
 import { useState } from 'react'
+import { buttonClasses } from '~/components/ui/Button'
 
 const gameRoute = getRouteApi('/_app/games/$gameId')
 
@@ -74,7 +75,7 @@ function GameLobbyPage() {
               <Link
                 to="/games/$gameId/characters/new"
                 params={{ gameId: game.id }}
-                className="rounded-lg bg-accent-500 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-accent-400"
+                className={buttonClasses('primary')}
               >
                 New Character
               </Link>

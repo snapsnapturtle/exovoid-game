@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { CustomDiceRoller } from './CustomDiceRoller'
 import { RollResultView } from './RollResultView'
+import { Modal } from '~/components/ui/Modal'
 import type { DiceRollEntry } from '~/lib/server/dice'
 
 const TIME_TICK_MS = 15_000
@@ -281,27 +282,17 @@ function RollDetails({
   const skill = roll.skill_name ?? 'Custom roll'
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
-      onClick={onClose}
+    <Modal
+      onClose={onClose}
+      size="sm"
+      align="center"
+      title={
+        <>
+          {label} <span className="text-gray-400">· {skill}</span>
+        </>
+      }
     >
-      <div
-        className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-xl border border-void-600 bg-void-800 p-6 shadow-xl"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="mb-4 flex items-baseline justify-between gap-3">
-          <h3 className="text-lg font-semibold text-white">
-            {label} <span className="text-gray-400">· {skill}</span>
-          </h3>
-          <button
-            onClick={onClose}
-            className="text-sm text-gray-400 hover:text-white"
-          >
-            Close
-          </button>
-        </div>
-        <RollResultView data={roll.data} animate={false} />
-      </div>
-    </div>
+      <RollResultView data={roll.data} animate={false} />
+    </Modal>
   )
 }

@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { getSupabaseBrowserClient } from '~/lib/supabase/client'
+import { Button } from '~/components/ui/Button'
 
 export const Route = createFileRoute('/_auth/login')({
   component: LoginPage,
@@ -71,13 +72,9 @@ function LoginPage() {
         {error && (
           <p className="text-sm text-danger-400">{error}</p>
         )}
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full rounded-lg bg-accent-500 py-2 font-medium text-white transition hover:bg-accent-400 disabled:opacity-50"
-        >
+        <Button type="submit" disabled={loading} className="w-full">
           {loading ? 'Logging in...' : 'Log In'}
-        </button>
+        </Button>
       </form>
       <p className="mt-4 text-center text-sm text-gray-400">
         Don't have an account?{' '}
