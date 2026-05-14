@@ -75,7 +75,7 @@ function Tracker({
 }: TrackerProps) {
   const aboveMax = current > max
   return (
-    <div className="rounded-xl border border-void-600 bg-void-800 px-3 py-2">
+    <div className="flex flex-col justify-center rounded-xl border border-void-600 bg-void-800 px-3 py-2">
       <div className="text-[10px] uppercase tracking-wide text-gray-400">
         {label}
       </div>

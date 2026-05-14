@@ -67,6 +67,7 @@ export function SkillsPanel({
           const level = skills[skill.id] ?? 0
           const attrAvg = computeAttributeAverage(attributes, skill.attributes)
           const pool = computeDicePool(attrAvg, level)
+          const uninvested = level === 0
 
           return (
             <div
@@ -93,7 +94,9 @@ export function SkillsPanel({
                     >
                       -
                     </button>
-                    <span className="min-w-[2ch] text-center text-sm font-medium text-white">
+                    <span
+                      className={`min-w-[2ch] text-center text-sm font-medium ${uninvested ? 'text-gray-600' : 'text-white'}`}
+                    >
                       {level}
                     </span>
                     <button
@@ -110,7 +113,9 @@ export function SkillsPanel({
                     </button>
                   </>
                 ) : (
-                  <span className="text-sm font-medium text-white">
+                  <span
+                    className={`text-sm font-medium ${uninvested ? 'text-gray-600' : 'text-white'}`}
+                  >
                     {level}
                   </span>
                 )}
@@ -120,16 +125,16 @@ export function SkillsPanel({
                 title={`Roll ${skill.name}`}
                 className="flex w-32 items-center justify-center gap-1.5 rounded-lg border border-transparent px-2 py-1 text-xs transition hover:border-accent-500 hover:bg-void-700"
               >
-                <span className="rounded bg-gray-600/40 px-1.5 py-0.5 text-gray-300">
+                <span className="rounded bg-blue-600/40 px-1.5 py-0.5 text-blue-200">
                   {pool.standard}S
                 </span>
                 {pool.aptitude > 0 && (
-                  <span className="rounded bg-cyan-600/30 px-1.5 py-0.5 text-cyber-400">
+                  <span className="rounded bg-emerald-600/40 px-1.5 py-0.5 text-emerald-200">
                     {pool.aptitude}A
                   </span>
                 )}
                 {pool.expertise > 0 && (
-                  <span className="rounded bg-accent-600/30 px-1.5 py-0.5 text-accent-400">
+                  <span className="rounded bg-amber-600/40 px-1.5 py-0.5 text-amber-200">
                     {pool.expertise}E
                   </span>
                 )}
