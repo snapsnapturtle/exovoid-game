@@ -1,6 +1,12 @@
 import { useEffect, useId, useRef } from 'react'
-import type { RealtimePostgresChangesPayload } from '@supabase/supabase-js'
-import { getSupabaseBrowserClient } from '~/lib/supabase/client'
+import type {
+  RealtimeChannel,
+  RealtimePostgresChangesPayload,
+} from '@supabase/supabase-js'
+import {
+  ensureRealtimeAuth,
+  getSupabaseBrowserClient,
+} from '~/lib/supabase/client'
 
 type DbEvent = 'INSERT' | 'UPDATE' | 'DELETE' | '*'
 
@@ -34,21 +40,34 @@ export function useRealtimeSubscription<
 
   useEffect(() => {
     if (!channelKey || !table) return
+    let cancelled = false
+    let channel: RealtimeChannel | null = null
 
-    const supabase = getSupabaseBrowserClient()
-    const channel = supabase
-      .channel(`${channelKey}#${instanceId}`)
-      .on<T>(
-        'postgres_changes' as never,
-        { event, schema: 'public', table, filter },
-        (payload: RealtimePostgresChangesPayload<T>) => {
-          onChangeRef.current?.(payload)
-        },
-      )
-      .subscribe()
+    void (async () => {
+      // Block on auth being applied to the realtime client. Without this,
+      // the subscription's claims_role is `anon` (see realtime.subscription
+      // in the DB after a join), which makes RLS filter out every event for
+      // authenticated-only policies.
+      await ensureRealtimeAuth()
+      if (cancelled) return
+      const supabase = getSupabaseBrowserClient()
+      channel = supabase
+        .channel(`${channelKey}#${instanceId}`)
+        .on<T>(
+          'postgres_changes' as never,
+          { event, schema: 'public', table, filter },
+          (payload: RealtimePostgresChangesPayload<T>) => {
+            onChangeRef.current?.(payload)
+          },
+        )
+        .subscribe()
+    })()
 
     return () => {
-      supabase.removeChannel(channel)
+      cancelled = true
+      if (channel) {
+        getSupabaseBrowserClient().removeChannel(channel)
+      }
     }
   }, [channelKey, instanceId, table, event, filter])
 }
