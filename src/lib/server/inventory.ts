@@ -121,6 +121,7 @@ export const updateInventoryItem = createServerFn({ method: 'POST' })
         description?: string
         name?: string
         currentDurability?: number
+        currentAmmo?: number
       }
     }) => d,
   )
@@ -174,6 +175,19 @@ export const updateInventoryItem = createServerFn({ method: 'POST' })
       }
       const clamped = Math.max(0, Math.min(armor.durability, data.updates.currentDurability))
       next.currentDurability = clamped
+    }
+    if (data.updates.currentAmmo !== undefined) {
+      if (existing.source !== 'weapon') {
+        throw new Error('Only weapons track ammo')
+      }
+      if (!existing.weaponRef) throw new Error('Missing weaponRef')
+      const weapon = lookupWeapon(existing.weaponRef)
+      if (!weapon) throw new Error('Unknown weapon')
+      if (weapon.magazine == null) {
+        throw new Error('This weapon does not track ammo')
+      }
+      const clamped = Math.max(0, Math.min(weapon.magazine, data.updates.currentAmmo))
+      next.currentAmmo = clamped
     }
 
     const arr = current.slice()
@@ -283,6 +297,7 @@ export const addWeapon = createServerFn({ method: 'POST' })
       weaponRef: data.weaponRef,
       quantity: 1,
       ...(location ? { location } : {}),
+      ...(catalog.magazine != null ? { currentAmmo: catalog.magazine } : {}),
       ...(data.owner.type === 'character' ? { equipped: false } : {}),
     }
 

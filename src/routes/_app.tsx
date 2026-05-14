@@ -26,6 +26,7 @@ function AppLayout() {
   })
   const game = gameMatch?.loaderData?.game
   const isGm = gameMatch?.loaderData?.isGm
+  const combat = gameMatch?.loaderData?.gameState?.combat
 
   return (
     <div className="flex h-screen flex-col overflow-hidden">
@@ -54,6 +55,19 @@ function AppLayout() {
                   GM
                 </span>
               )}
+              <span className="text-gray-600">·</span>
+              <Link
+                to="/games/$gameId/combat"
+                params={{ gameId: game.id }}
+                activeProps={{ className: 'text-accent-300' }}
+                className={`shrink-0 rounded-md px-2 py-0.5 text-xs font-medium transition ${
+                  combat
+                    ? 'border border-warning-500/60 bg-warning-500/15 text-warning-300 hover:bg-warning-500/25'
+                    : 'border border-void-600 text-gray-400 hover:border-accent-500 hover:text-white'
+                }`}
+              >
+                {combat ? `⚔ Round ${combat.round}` : 'Combat'}
+              </Link>
             </>
           )}
         </div>

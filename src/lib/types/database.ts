@@ -231,6 +231,7 @@ export type Database = {
       game_state: {
         Row: {
           assets: number
+          combat: Json | null
           credits: number
           game_id: string
           inventory: Json
@@ -238,6 +239,7 @@ export type Database = {
         }
         Insert: {
           assets?: number
+          combat?: Json | null
           credits?: number
           game_id: string
           inventory?: Json
@@ -245,6 +247,7 @@ export type Database = {
         }
         Update: {
           assets?: number
+          combat?: Json | null
           credits?: number
           game_id?: string
           inventory?: Json
@@ -452,6 +455,8 @@ export type InventoryItem = {
   weaponRef?: string
   /** Catalog reference for source='armor'. */
   armorRef?: string
+  /** Per-instance weapon magazine ammo (0..weapon.magazine). */
+  currentAmmo?: number
   /** Per-instance armor durability that depletes during play (0..armor.durability). */
   currentDurability?: number
   /** Only meaningful for source='weapon' or 'armor' on a character (stripped on transfer to party). */
@@ -480,8 +485,34 @@ export type Character = Omit<
   malfunction_allocations: number[]
 }
 
+/**
+ * One participant in the current combat encounter. AP can go negative when
+ * an action overspends — the excess subtracts from the next round (§200).
+ */
+export type CombatParticipant = {
+  characterId: string
+  /** Snapshot at round-start so renaming a character mid-round doesn't shuffle the bar. */
+  name: string
+  /** Coolness at round-start — used for tiebreaks (§202). */
+  coolness: number
+  /** Derived `actionPoints` at round-start. */
+  baseAp: number
+  /** 1d6 initiative roll for this round. */
+  rolled: number
+  /** Remaining AP this round. May go negative. */
+  ap: number
+}
+
+export type CombatState = {
+  round: number
+  /** ISO timestamp of when this combat started (for audit/log purposes). */
+  startedAt: string
+  participants: CombatParticipant[]
+}
+
 type GameStateRow = Database['public']['Tables']['game_state']['Row']
 
-export type GameState = Omit<GameStateRow, 'inventory'> & {
+export type GameState = Omit<GameStateRow, 'inventory' | 'combat'> & {
   inventory: InventoryItem[]
+  combat: CombatState | null
 }
