@@ -12,14 +12,20 @@ import {
 } from '~/lib/game-logic/attributes'
 import { SKILLS } from '~/lib/game-logic/skills'
 import { isLegalTalentSet, makeTalentEntry } from '~/lib/game-logic/talents'
+import {
+  CREATION_SKILL_MAX,
+  CREATION_SKILL_POINTS,
+  CREATION_TALENT_LIMIT,
+  CREATION_TALENT_MAX_TIER,
+  pointsForSkillLevel,
+  validateCreation,
+} from '~/lib/game-logic/character-creation'
 import type { CharacterAttributes, TalentEntry } from '~/lib/types/database'
 import careersData from '~/data/careers.json'
 import backgroundsData from '~/data/backgrounds.json'
 
 // ---------- Types and rule constants ----------
 
-const SKILL_POINTS = 30
-const MAX_SKILL_AT_CREATION = 6
 const CAREER_SKILL_NAME_TO_ID = new Map<string, string>()
 SKILLS.forEach((s) => CAREER_SKILL_NAME_TO_ID.set(s.name.toLowerCase(), s.id))
 
@@ -122,11 +128,6 @@ const STEP_LABELS = [
 
 // ---------- Derivations ----------
 
-function pointsForLevel(level: number): number {
-  if (level <= 4) return level
-  return 4 + (level - 4) * 2
-}
-
 function uniqueRolls(count: number, max: number, exclude: number[] = []): number[] {
   const out = [...exclude]
   while (out.length < count + exclude.length) {
@@ -177,7 +178,7 @@ function totalSkillPointsSpent(state: State, baseline: Record<string, number>): 
     const base = baseline[skill.id] ?? 0
     const spent = state.skillsSpent[skill.id] ?? 0
     const final = base + spent
-    total += pointsForLevel(final) - pointsForLevel(base)
+    total += pointsForSkillLevel(final) - pointsForSkillLevel(base)
   }
   return total
 }
@@ -233,7 +234,39 @@ export function CreationWizard({ gameId }: CreationWizardProps) {
     () => totalSkillPointsSpent(state, skillBaseline),
     [state.skillsSpent, skillBaseline],
   )
-  const skillsRemaining = SKILL_POINTS - skillsUsed
+  const skillsRemaining = CREATION_SKILL_POINTS - skillsUsed
+
+  // Authoritative pre-submit check — same logic the server runs. The
+  // step-level checks should keep this passing throughout the wizard;
+  // it acts as a final guard plus a place to render rule violations.
+  const validation = useMemo(() => {
+    if (!state.career) return { ok: true, errors: [] }
+    const careerData = careers.find((c) => c.name === state.career)
+    if (!careerData) return { ok: true, errors: [] }
+    const finalSkills: Record<string, number> = { ...skillBaseline }
+    for (const [id, spent] of Object.entries(state.skillsSpent)) {
+      finalSkills[id] = (finalSkills[id] ?? 0) + spent
+    }
+    const talentEntries: TalentEntry[] = state.startingTalents.map((name) => {
+      const ref = careerData.talents.find((t) => t.talent === name)
+      return makeTalentEntry(name, state.career!, ref?.tier ?? 0, 0)
+    })
+    return validateCreation(
+      {
+        careerName: state.career,
+        attributes: state.baseAttributes,
+        finalSkills,
+        talents: talentEntries,
+      },
+      careers,
+    )
+  }, [
+    state.career,
+    state.baseAttributes,
+    state.skillsSpent,
+    state.startingTalents,
+    skillBaseline,
+  ])
 
   // Step validation
   const stepValid = useMemo(() => {
@@ -347,6 +380,7 @@ export function CreationWizard({ gameId }: CreationWizardProps) {
             state={state}
             baseline={skillBaseline}
             bgChosen={bgChosen}
+            validationErrors={validation.errors}
           />
         )}
       </div>
@@ -376,7 +410,7 @@ export function CreationWizard({ gameId }: CreationWizardProps) {
         ) : (
           <button
             onClick={submit}
-            disabled={state.submitting}
+            disabled={state.submitting || !validation.ok}
             className="rounded-lg bg-accent-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-accent-400 disabled:opacity-50"
           >
             {state.submitting ? 'Creating…' : 'Create Character'}
@@ -425,11 +459,6 @@ function Stepper({
 
 // ---------- Step 1: Career ----------
 
-const STARTING_TALENT_LIMIT = 2
-// At creation a player picks up to 2 talents — only tier 0 and tier 1 are
-// reachable (a tier-1 needs one tier-0 prereq, eating both slots).
-const STARTING_TALENT_MAX_TIER = 1
-
 function CareerStep({
   state,
   setState,
@@ -439,7 +468,7 @@ function CareerStep({
 }) {
   const career = careers.find((c) => c.name === state.career)
   const availableTalents =
-    career?.talents.filter((t) => t.tier <= STARTING_TALENT_MAX_TIER) ?? []
+    career?.talents.filter((t) => t.tier <= CREATION_TALENT_MAX_TIER) ?? []
   const talentByName = new Map(career?.talents.map((t) => [t.talent, t]) ?? [])
 
   function pickCareer(name: string) {
@@ -457,7 +486,7 @@ function CareerStep({
       const next = has
         ? s.startingTalents.filter((t) => t !== name)
         : [...s.startingTalents, name]
-      if (!has && next.length > STARTING_TALENT_LIMIT) return s
+      if (!has && next.length > CREATION_TALENT_LIMIT) return s
       const picks = next
         .map((n) => talentByName.get(n))
         .filter((t): t is { talent: string; tier: number } => Boolean(t))
@@ -483,7 +512,7 @@ function CareerStep({
       }
       return null
     }
-    if (state.startingTalents.length >= STARTING_TALENT_LIMIT) {
+    if (state.startingTalents.length >= CREATION_TALENT_LIMIT) {
       return 'Already at the 2-talent limit.'
     }
     const tentative = [...state.startingTalents, name]
@@ -604,7 +633,7 @@ function CareerStep({
               )
             })}
             <p className="mt-2 text-xs text-gray-500">
-              {state.startingTalents.length} / {STARTING_TALENT_LIMIT} selected
+              {state.startingTalents.length} / {CREATION_TALENT_LIMIT} selected
             </p>
           </div>
         </div>
@@ -1017,7 +1046,7 @@ function SkillsStep({
       const final = base + current
       const newFinal = final + delta
       if (newFinal < base) return s
-      if (newFinal > MAX_SKILL_AT_CREATION) return s
+      if (newFinal > CREATION_SKILL_MAX) return s
       // Verify points budget
       const newSpent = current + delta
       const tentative = { ...s.skillsSpent, [id]: newSpent }
@@ -1025,9 +1054,9 @@ function SkillsStep({
       for (const sk of SKILLS) {
         const b = baseline[sk.id] ?? 0
         const c = tentative[sk.id] ?? 0
-        total += pointsForLevel(b + c) - pointsForLevel(b)
+        total += pointsForSkillLevel(b + c) - pointsForSkillLevel(b)
       }
-      if (total > SKILL_POINTS) return s
+      if (total > CREATION_SKILL_POINTS) return s
       return { ...s, skillsSpent: tentative }
     })
   }
@@ -1037,9 +1066,9 @@ function SkillsStep({
       <header>
         <h2 className="text-2xl font-bold text-white">Further training</h2>
         <p className="mt-1 text-sm text-gray-400">
-          You have {SKILL_POINTS} skill points to spend on top of your career's
+          You have {CREATION_SKILL_POINTS} skill points to spend on top of your career's
           starting skills. Levels 1–4 cost 1 point each; level 5 and 6 cost 2
-          points each. No skill can exceed {MAX_SKILL_AT_CREATION} during
+          points each. No skill can exceed {CREATION_SKILL_MAX} during
           creation. Background skill bonuses are tracked separately and listed
           on the review step for you to apply by hand.
         </p>
@@ -1047,14 +1076,14 @@ function SkillsStep({
 
       <div
         className={`rounded-lg border px-3 py-2 text-sm ${
-          spent === SKILL_POINTS
+          spent === CREATION_SKILL_POINTS
             ? 'border-success-500/40 bg-success-500/10 text-success-400'
-            : spent > SKILL_POINTS
+            : spent > CREATION_SKILL_POINTS
               ? 'border-danger-500/40 bg-danger-500/10 text-danger-400'
               : 'border-warning-500/40 bg-warning-500/10 text-warning-400'
         }`}
       >
-        {SKILL_POINTS - spent} of {SKILL_POINTS} skill points remaining
+        {CREATION_SKILL_POINTS - spent} of {CREATION_SKILL_POINTS} skill points remaining
       </div>
 
       <div className="grid gap-2 sm:grid-cols-2">
@@ -1085,7 +1114,7 @@ function SkillsStep({
               </span>
               <button
                 onClick={() => adjust(skill.id, +1)}
-                disabled={base + current >= MAX_SKILL_AT_CREATION}
+                disabled={base + current >= CREATION_SKILL_MAX}
                 className="flex h-7 w-7 items-center justify-center rounded bg-void-600 text-xs text-gray-300 hover:bg-void-500 disabled:opacity-30"
               >
                 +
@@ -1166,10 +1195,12 @@ function ReviewStep({
   state,
   baseline,
   bgChosen,
+  validationErrors,
 }: {
   state: State
   baseline: Record<string, number>
   bgChosen: ChosenBonus[]
+  validationErrors: string[]
 }) {
   const finalSkills: Record<string, number> = { ...baseline }
   for (const [id, spent] of Object.entries(state.skillsSpent)) {
@@ -1187,6 +1218,23 @@ function ReviewStep({
           Click "Create Character" below to submit.
         </p>
       </header>
+
+      {validationErrors.length > 0 && (
+        <div className="rounded-lg border border-danger-500/60 bg-danger-500/10 p-4">
+          <h3 className="mb-2 text-sm font-semibold text-danger-300">
+            Cannot submit — rule violations:
+          </h3>
+          <ul className="space-y-1 text-sm text-danger-300">
+            {validationErrors.map((msg, i) => (
+              <li key={i}>• {msg}</li>
+            ))}
+          </ul>
+          <p className="mt-2 text-xs text-danger-400/80">
+            Step back to fix these, or use the stepper above to jump to the
+            relevant step.
+          </p>
+        </div>
+      )}
 
       <Section title="Identity">
         <p className="text-sm text-gray-300">

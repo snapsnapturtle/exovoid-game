@@ -11,6 +11,7 @@ import {
   makeTalentEntry,
   type CareerData,
 } from '~/lib/game-logic/talents'
+import { validateCreation } from '~/lib/game-logic/character-creation'
 import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
 import {
   canInstall as canInstallCyberware,
@@ -46,6 +47,21 @@ export const createCharacter = createServerFn({ method: 'POST' })
       data: { user },
     } = await supabase.auth.getUser()
     if (!user) throw new Error('Not authenticated')
+
+    if (!data.name.trim()) throw new Error('Name is required')
+
+    const check = validateCreation(
+      {
+        careerName: data.career,
+        attributes: data.attributes,
+        finalSkills: data.skills,
+        talents: data.talents ?? [],
+      },
+      careers,
+    )
+    if (!check.ok) {
+      throw new Error(`Invalid character: ${check.errors.join(' ')}`)
+    }
 
     const { data: character, error } = await supabase
       .from('characters')

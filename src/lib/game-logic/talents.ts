@@ -7,6 +7,9 @@ export interface CareerTalentRef {
 
 export interface CareerData {
   name: string
+  description?: string
+  startingSkills?: { name: string; level: number }[]
+  startingEquipment?: string[]
   talents: CareerTalentRef[]
 }
 
