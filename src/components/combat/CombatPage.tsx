@@ -6,6 +6,7 @@ import type {
   GameState,
 } from '~/lib/types/database'
 import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
+import { edgeCap } from '~/lib/game-logic/derived-stats'
 import { sortByTurnOrder } from '~/lib/game-logic/combat'
 import { lookupWeapon } from '~/lib/game-logic/weapons'
 import { equippedArmor } from '~/lib/game-logic/armors'
@@ -294,11 +295,15 @@ function ParticipantCard({
           label="Edge"
           value={character.edge_current}
           max={derived.edge}
+          hardMax={edgeCap(derived.edge)}
           onAdjust={(delta) =>
             onUpdateField({
               edge_current: Math.max(
                 0,
-                Math.min(derived.edge, character.edge_current + delta),
+                Math.min(
+                  edgeCap(derived.edge),
+                  character.edge_current + delta,
+                ),
               ),
             })
           }
@@ -396,6 +401,7 @@ function Stepper({
   label,
   value,
   max,
+  hardMax,
   onAdjust,
   canEdit,
   busy,
@@ -404,11 +410,13 @@ function Stepper({
   label: string
   value: number
   max?: number
+  hardMax?: number
   onAdjust: (delta: number) => void
   canEdit: boolean
   busy: boolean
   valueTone?: 'default' | 'accent' | 'danger'
 }) {
+  const ceiling = hardMax ?? max
   const tone =
     valueTone === 'accent'
       ? 'text-accent-200'
@@ -436,7 +444,9 @@ function Stepper({
         </span>
         <button
           onClick={() => onAdjust(1)}
-          disabled={!canEdit || busy || (max !== undefined && value >= max)}
+          disabled={
+            !canEdit || busy || (ceiling !== undefined && value >= ceiling)
+          }
           className="h-7 w-7 rounded border border-void-600 bg-void-700 text-sm text-gray-300 transition hover:border-accent-500 hover:text-white disabled:opacity-30"
         >
           +

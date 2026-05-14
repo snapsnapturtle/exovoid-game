@@ -1,3 +1,5 @@
+import { edgeCap } from '~/lib/game-logic/derived-stats'
+
 interface LivePlayPanelProps {
   healthMax: number
   healthCurrent: number | null
@@ -23,6 +25,7 @@ export function LivePlayPanel({
   onEdgeChange,
 }: LivePlayPanelProps) {
   const currentHealth = healthCurrent ?? healthMax
+  const edgeHardMax = edgeCap(edgeMax)
 
   function adjustHealth(delta: number) {
     const next = currentHealth + delta
@@ -30,9 +33,9 @@ export function LivePlayPanel({
   }
 
   function adjustEdge(delta: number) {
-    // Edge can legally exceed the normal max via downtime "Seek Inspiration",
-    // combat "Assess Opportunities", and the ship action "Make Battle Plan".
-    onEdgeChange(Math.max(0, edgeCurrent + delta))
+    // Edge can legally exceed the normal max via Seek Inspiration,
+    // Assess Opportunities, and Make Battle Plan — capped at +50%.
+    onEdgeChange(Math.max(0, Math.min(edgeHardMax, edgeCurrent + delta)))
   }
 
   return (
@@ -48,9 +51,9 @@ export function LivePlayPanel({
         label="Edge"
         current={edgeCurrent}
         max={edgeMax}
+        hardMax={edgeHardMax}
         canEdit={canEdit}
         onAdjust={adjustEdge}
-        allowAboveMax
       />
     </div>
   )
@@ -60,20 +63,20 @@ interface TrackerProps {
   label: string
   current: number
   max: number
+  hardMax?: number
   canEdit: boolean
   onAdjust: (delta: number) => void
-  allowAboveMax?: boolean
 }
 
 function Tracker({
   label,
   current,
   max,
+  hardMax,
   canEdit,
   onAdjust,
-  allowAboveMax = false,
 }: TrackerProps) {
-  const aboveMax = current > max
+  const ceiling = hardMax ?? max
   return (
     <div className="flex flex-col justify-center rounded-xl border border-void-600 bg-void-800 px-3 py-2">
       <div className="text-[10px] uppercase tracking-wide text-gray-400">
@@ -91,9 +94,7 @@ function Tracker({
           </button>
         )}
         <div className="flex flex-1 items-baseline justify-center gap-1">
-          <span
-            className={`text-2xl font-bold leading-none ${aboveMax ? 'text-success-400' : 'text-white'}`}
-          >
+          <span className="text-2xl font-bold leading-none text-white">
             {current}
           </span>
           <span className="text-xs text-gray-500">/ {max}</span>
@@ -101,7 +102,7 @@ function Tracker({
         {canEdit && (
           <button
             onClick={() => onAdjust(+1)}
-            disabled={!allowAboveMax && current >= max}
+            disabled={current >= ceiling}
             aria-label={`Increase ${label}`}
             className="flex h-7 w-7 items-center justify-center rounded bg-void-600 text-base text-gray-200 transition hover:bg-void-500 disabled:opacity-30"
           >

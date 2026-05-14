@@ -18,6 +18,17 @@ export function computeEdge(attrs: CharacterAttributes): number {
   return 3 + Math.ceil(attrs.coo / 4) + Math.ceil(attrs.edu / 2)
 }
 
+/**
+ * Hard ceiling on Edge — used by the +/- trackers to bound how far the
+ * value can be pushed past the normal max. Per the Seek Inspiration
+ * downtime entry: "a character cannot exceed their edge limit by more
+ * than 50% in this way." Rounded up to match the rest of the derived
+ * stats.
+ */
+export function edgeCap(edgeMax: number): number {
+  return Math.ceil(edgeMax * 1.5)
+}
+
 export function computeActionPoints(attrs: CharacterAttributes): number {
   return 3 + Math.ceil(attrs.agi / 2)
 }
