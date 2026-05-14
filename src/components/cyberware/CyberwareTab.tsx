@@ -10,7 +10,6 @@ interface CyberwareTabProps {
   capacity: number
   gameId: string
   characterId: string
-  canEdit: boolean
 }
 
 export function CyberwareTab({
@@ -18,7 +17,6 @@ export function CyberwareTab({
   capacity,
   gameId,
   characterId,
-  canEdit,
 }: CyberwareTabProps) {
   const used = occupationUsed(cyberware)
   const available = capacity - used
@@ -34,15 +32,13 @@ export function CyberwareTab({
             ({available} free)
           </span>
         </div>
-        {canEdit && (
-          <Link
-            to="/games/$gameId/characters/$characterId/cyberware"
-            params={{ gameId, characterId }}
-            className="rounded-lg border border-accent-500 bg-accent-500/10 px-3 py-1.5 text-sm text-accent-300 transition hover:bg-accent-500/20"
-          >
-            Manage cyberware →
-          </Link>
-        )}
+        <Link
+          to="/games/$gameId/characters/$characterId/cyberware"
+          params={{ gameId, characterId }}
+          className="text-xs text-accent-400 transition hover:text-accent-300 hover:underline"
+        >
+          Manage cyberware →
+        </Link>
       </div>
 
       {cyberware.length === 0 ? (

@@ -8,7 +8,6 @@ interface InventoryTabProps {
   assets: number
   gameId: string
   characterId: string
-  canEdit: boolean
 }
 
 export function InventoryTab({
@@ -17,7 +16,6 @@ export function InventoryTab({
   assets,
   gameId,
   characterId,
-  canEdit,
 }: InventoryTabProps) {
   const groups = inventoryByLocation(inventory)
   const totalQty = inventory.reduce((s, i) => s + i.quantity, 0)
@@ -37,15 +35,13 @@ export function InventoryTab({
             · {totalQty} item{totalQty === 1 ? '' : 's'}
           </span>
         </div>
-        {canEdit && (
-          <Link
-            to="/games/$gameId/characters/$characterId/inventory"
-            params={{ gameId, characterId }}
-            className="rounded-lg border border-accent-500 bg-accent-500/10 px-3 py-1.5 text-sm text-accent-300 transition hover:bg-accent-500/20"
-          >
-            Manage inventory →
-          </Link>
-        )}
+        <Link
+          to="/games/$gameId/characters/$characterId/inventory"
+          params={{ gameId, characterId }}
+          className="text-xs text-accent-400 transition hover:text-accent-300 hover:underline"
+        >
+          Manage inventory →
+        </Link>
       </div>
 
       {inventory.length === 0 ? (

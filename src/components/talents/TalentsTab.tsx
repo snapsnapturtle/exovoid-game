@@ -16,7 +16,6 @@ interface TalentsTabProps {
   career: string
   gameId: string
   characterId: string
-  canEdit: boolean
 }
 
 export function TalentsTab({
@@ -25,7 +24,6 @@ export function TalentsTab({
   career,
   gameId,
   characterId,
-  canEdit,
 }: TalentsTabProps) {
   const total = pointsTotal(level)
   const spent = pointsSpent(talents)
@@ -47,15 +45,13 @@ export function TalentsTab({
             ({available} available)
           </span>
         </div>
-        {canEdit && (
-          <Link
-            to="/games/$gameId/characters/$characterId/talents"
-            params={{ gameId, characterId }}
-            className="rounded-lg border border-accent-500 bg-accent-500/10 px-3 py-1.5 text-sm text-accent-300 transition hover:bg-accent-500/20"
-          >
-            Manage talents →
-          </Link>
-        )}
+        <Link
+          to="/games/$gameId/characters/$characterId/talents"
+          params={{ gameId, characterId }}
+          className="text-xs text-accent-400 transition hover:text-accent-300 hover:underline"
+        >
+          Manage talents →
+        </Link>
       </div>
 
       {talents.length === 0 ? (

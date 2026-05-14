@@ -107,7 +107,6 @@ export function EquipmentTabs({
             assets={assets}
             gameId={gameId}
             characterId={characterId}
-            canEdit={canEdit}
           />
         )}
         {tab === 'talents' && (
@@ -117,7 +116,6 @@ export function EquipmentTabs({
             career={career}
             gameId={gameId}
             characterId={characterId}
-            canEdit={canEdit}
           />
         )}
         {tab === 'cyberware' && (
@@ -126,7 +124,6 @@ export function EquipmentTabs({
             capacity={cyberImmunityCapacity}
             gameId={gameId}
             characterId={characterId}
-            canEdit={canEdit}
           />
         )}
         {tab === 'background' && (

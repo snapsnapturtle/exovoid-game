@@ -82,7 +82,7 @@ export function SkillsPanel({
                   {skill.attributes.map(attrAbbr).join(' / ')}
                 </span>
               </div>
-              <div className="flex w-16 items-center justify-center gap-1">
+              <div className="flex h-6 w-16 items-center justify-center gap-1">
                 {canEdit ? (
                   <>
                     <button
