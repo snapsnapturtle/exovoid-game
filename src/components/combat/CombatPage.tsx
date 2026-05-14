@@ -9,6 +9,8 @@ import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
 import { edgeCap } from '~/lib/game-logic/derived-stats'
 import { sortByTurnOrder } from '~/lib/game-logic/combat'
 import { Button } from '~/components/ui/Button'
+import { Alert } from '~/components/ui/Alert'
+import { Stepper } from '~/components/ui/Stepper'
 import { lookupWeapon } from '~/lib/game-logic/weapons'
 import { equippedArmor } from '~/lib/game-logic/armors'
 import {
@@ -122,11 +124,7 @@ export function CombatPage({
         </div>
       </header>
 
-      {error && (
-        <div className="rounded-lg border border-danger-500/60 bg-danger-500/10 px-3 py-2 text-sm text-danger-400">
-          {error}
-        </div>
-      )}
+      {error && <Alert>{error}</Alert>}
 
       {!combat ? (
         <div className="rounded-xl border border-void-600 bg-void-800 p-8 text-center text-sm text-gray-500">
@@ -396,64 +394,6 @@ function ParticipantCard({
   )
 }
 
-function Stepper({
-  label,
-  value,
-  max,
-  hardMax,
-  onAdjust,
-  canEdit,
-  busy,
-  valueTone = 'default',
-}: {
-  label: string
-  value: number
-  max?: number
-  hardMax?: number
-  onAdjust: (delta: number) => void
-  canEdit: boolean
-  busy: boolean
-  valueTone?: 'default' | 'accent' | 'danger'
-}) {
-  const ceiling = hardMax ?? max
-  const tone =
-    valueTone === 'accent'
-      ? 'text-accent-200'
-      : valueTone === 'danger'
-        ? 'text-danger-400'
-        : 'text-white'
-  return (
-    <div className="rounded-lg border border-void-700 bg-void-900/40 p-2">
-      <div className="mb-1 text-[10px] font-medium uppercase tracking-wide text-gray-500">
-        {label}
-      </div>
-      <div className="flex items-center justify-between gap-2">
-        <button
-          onClick={() => onAdjust(-1)}
-          disabled={!canEdit || busy}
-          className="h-7 w-7 rounded border border-void-600 bg-void-700 text-sm text-gray-300 transition hover:border-accent-500 hover:text-white disabled:opacity-30"
-        >
-          −
-        </button>
-        <span className={`font-mono text-lg font-semibold ${tone}`}>
-          {value}
-          {max !== undefined && (
-            <span className="ml-1 text-xs text-gray-500">/ {max}</span>
-          )}
-        </span>
-        <button
-          onClick={() => onAdjust(1)}
-          disabled={
-            !canEdit || busy || (ceiling !== undefined && value >= ceiling)
-          }
-          className="h-7 w-7 rounded border border-void-600 bg-void-700 text-sm text-gray-300 transition hover:border-accent-500 hover:text-white disabled:opacity-30"
-        >
-          +
-        </button>
-      </div>
-    </div>
-  )
-}
 
 function MiniStepper({
   value,

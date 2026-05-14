@@ -24,6 +24,7 @@ import type { CharacterAttributes, TalentEntry } from '~/lib/types/database'
 import careersData from '~/data/careers.json'
 import backgroundsData from '~/data/backgrounds.json'
 import { Button } from '~/components/ui/Button'
+import { Alert } from '~/components/ui/Alert'
 
 // ---------- Types and rule constants ----------
 
@@ -386,11 +387,7 @@ export function CreationWizard({ gameId }: CreationWizardProps) {
         )}
       </div>
 
-      {state.error && (
-        <p className="rounded-lg border border-danger-500/60 bg-danger-500/10 px-4 py-3 text-sm text-danger-400">
-          {state.error}
-        </p>
-      )}
+      {state.error && <Alert className="px-4 py-3">{state.error}</Alert>}
 
       <div className="flex items-center justify-between">
         <Button
@@ -1223,7 +1220,7 @@ function ReviewStep({
       </header>
 
       {validationErrors.length > 0 && (
-        <div className="rounded-lg border border-danger-500/60 bg-danger-500/10 p-4">
+        <Alert className="p-4">
           <h3 className="mb-2 text-sm font-semibold text-danger-300">
             Cannot submit — rule violations:
           </h3>
@@ -1236,7 +1233,7 @@ function ReviewStep({
             Step back to fix these, or use the stepper above to jump to the
             relevant step.
           </p>
-        </div>
+        </Alert>
       )}
 
       <Section title="Identity">

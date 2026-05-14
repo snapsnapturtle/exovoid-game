@@ -17,6 +17,7 @@ import { TalentTreeCareer } from './TalentTreeCareer'
 import { TalentDetailRail } from './TalentDetailRail'
 import type { NodeState } from './TalentNode'
 import { ManualAddTalent } from './ManualAddTalent'
+import { Alert } from '~/components/ui/Alert'
 
 interface TalentTreePageProps {
   initial: Character
@@ -184,11 +185,7 @@ export function TalentTreePage({ initial, canEdit }: TalentTreePageProps) {
         </div>
       </header>
 
-      {error && (
-        <div className="rounded-lg border border-danger-500/60 bg-danger-500/10 px-3 py-2 text-sm text-danger-400">
-          {error}
-        </div>
-      )}
+      {error && <Alert>{error}</Alert>}
 
       <div className="grid gap-4 lg:grid-cols-[1fr_320px]">
         <div className="space-y-4">

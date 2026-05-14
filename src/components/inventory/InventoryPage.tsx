@@ -22,6 +22,7 @@ import { AddCatalogItemModal } from './AddCatalogItemModal'
 import { AddCustomItemModal } from './AddCustomItemModal'
 import { AddWeaponModal } from './AddWeaponModal'
 import { AddArmorModal } from './AddArmorModal'
+import { Alert } from '~/components/ui/Alert'
 import { QualityBadge } from './QualityBadge'
 
 type Owner =
@@ -94,11 +95,7 @@ export function InventoryPage({
         <h1 className="mt-1 text-2xl font-bold text-white">Inventory</h1>
       </header>
 
-      {error && (
-        <div className="rounded-lg border border-danger-500/60 bg-danger-500/10 px-3 py-2 text-sm text-danger-400">
-          {error}
-        </div>
-      )}
+      {error && <Alert>{error}</Alert>}
 
       <CurrencyBar
         characterCredits={character.credits}

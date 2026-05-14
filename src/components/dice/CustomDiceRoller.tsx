@@ -170,7 +170,7 @@ export function CustomDiceRoller({
                       onClick={() => adjust(type, -1)}
                       disabled={pool[type] === 0}
                       aria-label={`Decrease ${label}`}
-                      className="flex h-7 w-7 items-center justify-center rounded bg-void-600 text-base text-gray-200 transition hover:bg-void-500 disabled:opacity-30"
+                      className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-void-600 text-xs text-gray-300 transition hover:bg-void-500 disabled:opacity-30"
                     >
                       −
                     </button>
@@ -180,7 +180,7 @@ export function CustomDiceRoller({
                     <button
                       onClick={() => adjust(type, +1)}
                       aria-label={`Increase ${label}`}
-                      className="flex h-7 w-7 items-center justify-center rounded bg-void-600 text-base text-gray-200 transition hover:bg-void-500"
+                      className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-void-600 text-xs text-gray-300 transition hover:bg-void-500"
                     >
                       +
                     </button>

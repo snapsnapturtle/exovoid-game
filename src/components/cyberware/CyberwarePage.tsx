@@ -14,6 +14,7 @@ import {
   uninstallCyberware,
 } from '~/lib/server/characters'
 import { MalfunctionTableModal } from './MalfunctionTableModal'
+import { Alert } from '~/components/ui/Alert'
 
 interface CyberwarePageProps {
   initial: Character
@@ -184,11 +185,7 @@ export function CyberwarePage({ initial, canEdit }: CyberwarePageProps) {
         </div>
       </header>
 
-      {error && (
-        <div className="rounded-lg border border-danger-500/60 bg-danger-500/10 px-3 py-2 text-sm text-danger-400">
-          {error}
-        </div>
-      )}
+      {error && <Alert>{error}</Alert>}
 
       <SearchBox value={query} onChange={setQuery} />
 
