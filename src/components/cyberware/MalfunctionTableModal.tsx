@@ -56,14 +56,14 @@ export function MalfunctionTableModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center bg-black/60 p-4 sm:p-8"
+      className="modal-backdrop-in fixed backdrop-blur-sm inset-0 z-50 flex items-start justify-center bg-black/60 p-4 sm:p-8"
       onClick={onClose}
     >
       <div
-        className="flex max-h-[90vh] w-full max-w-2xl flex-col rounded-xl border border-void-600 bg-void-800 shadow-xl"
+        className="flex max-h-[90vh] w-full max-w-2xl flex-col modal-card-in rounded-xl border border-void-600 bg-void-800"
         onClick={(e) => e.stopPropagation()}
       >
-        <header className="flex items-start justify-between gap-3 border-b border-void-700 px-5 py-4">
+        <header className="flex items-start justify-between gap-3 border-b border-void-600 px-5 py-4">
           <div>
             <h3 className="text-lg font-semibold text-white">
               Cyber Malfunction Table
@@ -84,7 +84,7 @@ export function MalfunctionTableModal({
           </button>
         </header>
 
-        <div className="flex items-center justify-between border-b border-void-700 bg-void-900/50 px-5 py-3 text-sm">
+        <div className="flex items-center justify-between border-b border-void-600 bg-void-900/50 px-5 py-3 text-sm">
           <span className="text-gray-400">
             Selected{' '}
             <span
@@ -119,7 +119,7 @@ export function MalfunctionTableModal({
           </ul>
         </div>
 
-        <footer className="flex items-center justify-end gap-2 border-t border-void-700 px-5 py-3">
+        <footer className="flex items-center justify-end gap-2 border-t border-void-600 px-5 py-3">
           <Button variant="ghost" onClick={onClose} disabled={busy}>
             Cancel
           </Button>
@@ -150,7 +150,7 @@ function OutcomeGroup({
 }) {
   const sevClass = SEVERITY_STYLES[group.severity]
   return (
-    <li className="rounded-lg border border-void-700 bg-void-900/40 p-3">
+    <li className="rounded-lg border border-void-600 bg-void-900/40 p-3">
       <div className="mb-2 flex flex-wrap items-center gap-2">
         <span className="font-medium text-white">{group.outcome}</span>
         <span
@@ -177,7 +177,7 @@ function OutcomeGroup({
                 isSelected
                   ? 'border-accent-500 bg-accent-500/25 text-white shadow-sm shadow-accent-500/20'
                   : disabled
-                    ? 'border-void-700 bg-void-800/60 text-gray-600'
+                    ? 'border-void-600 bg-void-800/60 text-gray-600'
                     : 'border-void-600 bg-void-700/60 text-gray-300 hover:border-accent-500/60 hover:bg-accent-500/10 hover:text-white'
               }`}
             >

@@ -56,16 +56,16 @@ export function Modal({
   const alignClass = align === 'center' ? 'items-center' : 'items-start'
   return (
     <div
-      className={`fixed inset-0 z-50 flex ${alignClass} justify-center bg-black/60 p-4 sm:p-8`}
+      className={`modal-backdrop-in fixed backdrop-blur-sm inset-0 z-50 flex ${alignClass} justify-center bg-black/60 p-4 sm:p-8`}
       onClick={onClose}
     >
       <div
         role="dialog"
         aria-modal="true"
-        className={`flex max-h-[90vh] w-full ${SIZE[size]} flex-col rounded-xl border border-void-600 bg-void-800 shadow-xl`}
+        className={`modal-card-in flex max-h-[90vh] w-full ${SIZE[size]} flex-col rounded-xl border border-void-600 bg-void-800`}
         onClick={(e) => e.stopPropagation()}
       >
-        <header className="flex items-start justify-between gap-3 border-b border-void-700 px-5 py-4">
+        <header className="flex items-start justify-between gap-3 border-b border-void-600 px-5 py-4">
           <div className="min-w-0">
             {title && (
               <h3 className="text-lg font-semibold text-white">{title}</h3>
@@ -78,7 +78,7 @@ export function Modal({
         </header>
         <div className="flex-1 overflow-y-auto px-5 py-4">{children}</div>
         {footer && (
-          <div className="flex items-center justify-end gap-2 border-t border-void-700 px-5 py-3">
+          <div className="flex items-center justify-end gap-2 border-t border-void-600 px-5 py-3">
             {footer}
           </div>
         )}

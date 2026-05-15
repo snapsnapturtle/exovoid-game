@@ -52,7 +52,7 @@ export function Stepper({
   const buttonClass =
     'flex h-7 w-7 shrink-0 items-center justify-center rounded border border-void-600 bg-void-700 text-sm text-gray-300 transition hover:border-accent-500 hover:text-white disabled:opacity-30'
   return (
-    <div className="flex flex-col rounded-lg border border-void-700 bg-void-900/40 p-2">
+    <div className="flex flex-col rounded-lg border border-void-600 bg-void-900/40 p-2">
       {label !== undefined && (
         <div className="mb-1 text-[10px] font-medium uppercase tracking-wide text-gray-500">
           {label}

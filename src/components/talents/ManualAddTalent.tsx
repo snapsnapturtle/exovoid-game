@@ -36,11 +36,11 @@ export function ManualAddTalent({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center bg-black/60 p-4 sm:p-8"
+      className="modal-backdrop-in fixed backdrop-blur-sm inset-0 z-50 flex items-start justify-center bg-black/60 p-4 sm:p-8"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-lg rounded-xl border border-void-600 bg-void-800 p-4 shadow-xl"
+        className="w-full max-w-lg modal-card-in rounded-xl border border-void-600 bg-void-800 p-4"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-3 flex items-center justify-between">

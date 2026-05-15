@@ -36,14 +36,14 @@ export function AddCustomItemModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center bg-black/60 p-4 sm:p-8"
+      className="modal-backdrop-in fixed backdrop-blur-sm inset-0 z-50 flex items-start justify-center bg-black/60 p-4 sm:p-8"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md rounded-xl border border-void-600 bg-void-800 shadow-xl"
+        className="w-full max-w-md modal-card-in rounded-xl border border-void-600 bg-void-800"
         onClick={(e) => e.stopPropagation()}
       >
-        <header className="flex items-start justify-between gap-3 border-b border-void-700 px-5 py-4">
+        <header className="flex items-start justify-between gap-3 border-b border-void-600 px-5 py-4">
           <div>
             <h3 className="text-lg font-semibold text-white">
               Add custom item
@@ -109,7 +109,7 @@ export function AddCustomItemModal({
           </div>
         </div>
 
-        <footer className="flex items-center justify-end gap-2 border-t border-void-700 px-5 py-3">
+        <footer className="flex items-center justify-end gap-2 border-t border-void-600 px-5 py-3">
           <Button variant="ghost" onClick={onClose} disabled={busy}>
             Cancel
           </Button>

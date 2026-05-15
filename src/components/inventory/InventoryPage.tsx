@@ -425,7 +425,7 @@ function CurrencyGroup({
   onSet: (updates: { credits?: number; assets?: number }) => void
 }) {
   return (
-    <div className="rounded-lg border border-void-700 bg-void-900/40 p-3">
+    <div className="rounded-lg border border-void-600 bg-void-900/40 p-3">
       <div className="mb-2 text-xs font-medium uppercase tracking-wide text-gray-400">
         {label}
       </div>
@@ -567,7 +567,7 @@ function InventoryColumn({
 
   return (
     <section className="rounded-xl border border-void-600 bg-void-800">
-      <header className="flex flex-wrap items-center justify-between gap-2 border-b border-void-700 px-4 py-3">
+      <header className="flex flex-wrap items-center justify-between gap-2 border-b border-void-600 px-4 py-3">
         <h2 className="text-base font-semibold text-white">{title}</h2>
         {canEdit && (
           <div className="flex gap-2">

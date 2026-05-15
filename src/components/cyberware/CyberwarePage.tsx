@@ -315,7 +315,7 @@ function CategoryCard({
 }) {
   return (
     <section className="rounded-xl border border-void-600 bg-void-800">
-      <header className="flex items-baseline justify-between border-b border-void-700 px-4 py-3">
+      <header className="flex items-baseline justify-between border-b border-void-600 px-4 py-3">
         <h2 className="text-lg font-semibold text-white">{category}</h2>
         {installedName && (
           <span className="text-xs text-cyber-300">

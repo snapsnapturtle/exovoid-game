@@ -42,14 +42,14 @@ export function AddArmorModal({ busy, onAdd, onClose }: AddArmorModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center bg-black/60 p-4 sm:p-8"
+      className="modal-backdrop-in fixed backdrop-blur-sm inset-0 z-50 flex items-start justify-center bg-black/60 p-4 sm:p-8"
       onClick={onClose}
     >
       <div
-        className="flex max-h-[90vh] w-full max-w-2xl flex-col rounded-xl border border-void-600 bg-void-800 shadow-xl"
+        className="flex max-h-[90vh] w-full max-w-2xl flex-col modal-card-in rounded-xl border border-void-600 bg-void-800"
         onClick={(e) => e.stopPropagation()}
       >
-        <header className="flex items-start justify-between gap-3 border-b border-void-700 px-5 py-4">
+        <header className="flex items-start justify-between gap-3 border-b border-void-600 px-5 py-4">
           <div>
             <h3 className="text-lg font-semibold text-white">Add armor</h3>
             <p className="mt-1 text-xs text-gray-400">
@@ -66,7 +66,7 @@ export function AddArmorModal({ busy, onAdd, onClose }: AddArmorModalProps) {
           </button>
         </header>
 
-        <div className="border-b border-void-700 px-5 py-3">
+        <div className="border-b border-void-600 px-5 py-3">
           <input
             autoFocus
             type="search"
@@ -91,7 +91,7 @@ export function AddArmorModal({ busy, onAdd, onClose }: AddArmorModalProps) {
                     className={`w-full rounded-lg border p-2 text-left transition ${
                       selected?.type === a.type
                         ? 'border-accent-500 bg-accent-500/15'
-                        : 'border-void-700 bg-void-900/40 hover:border-accent-500/50 hover:bg-accent-500/5'
+                        : 'border-void-600 bg-void-900/40 hover:border-accent-500/50 hover:bg-accent-500/5'
                     }`}
                   >
                     <div className="flex flex-wrap items-baseline gap-2">
@@ -126,7 +126,7 @@ export function AddArmorModal({ busy, onAdd, onClose }: AddArmorModalProps) {
           )}
         </div>
 
-        <footer className="flex flex-wrap items-end justify-between gap-3 border-t border-void-700 px-5 py-3">
+        <footer className="flex flex-wrap items-end justify-between gap-3 border-t border-void-600 px-5 py-3">
           <div className="flex gap-3">
             <label className="block text-xs text-gray-400">
               <span className="block">Name</span>

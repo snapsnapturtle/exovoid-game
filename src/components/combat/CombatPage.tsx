@@ -310,7 +310,7 @@ function ParticipantCard({
       </div>
 
       {(equippedWeapons.length > 0 || worn) && (
-        <div className="mt-3 space-y-2 border-t border-void-700 pt-3">
+        <div className="mt-3 space-y-2 border-t border-void-600 pt-3">
           {equippedWeapons.map((entry) => {
             const w = lookupWeapon(entry.weaponRef!)
             if (!w) return null
