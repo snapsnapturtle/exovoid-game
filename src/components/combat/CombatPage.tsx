@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Link, useRouter } from '@tanstack/react-router'
 import type {
   Character,
   CombatParticipant,
   GameState,
+  InventoryItem,
 } from '~/lib/types/database'
 import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
 import { edgeCap } from '~/lib/game-logic/derived-stats'
@@ -11,8 +12,8 @@ import { sortByTurnOrder } from '~/lib/game-logic/combat'
 import { Button } from '~/components/ui/Button'
 import { Alert } from '~/components/ui/Alert'
 import { Stepper } from '~/components/ui/Stepper'
-import { lookupWeapon } from '~/lib/game-logic/weapons'
-import { equippedArmor } from '~/lib/game-logic/armors'
+import { lookupWeapon, type WeaponData } from '~/lib/game-logic/weapons'
+import { equippedArmor, type ArmorData } from '~/lib/game-logic/armors'
 import {
   adjustAp,
   endCombat,
@@ -21,6 +22,7 @@ import {
 } from '~/lib/server/combat'
 import { updateInventoryItem } from '~/lib/server/inventory'
 import { updateCharacter } from '~/lib/server/characters'
+import { useDebouncedNumber } from '~/lib/hooks/useDebouncedNumber'
 import { ApTimeline } from './ApTimeline'
 
 interface CombatPageProps {
@@ -39,14 +41,15 @@ export function CombatPage({
   isGm,
 }: CombatPageProps) {
   const router = useRouter()
-  const [busy, setBusy] = useState<string | null>(null)
+  const [gmBusy, setGmBusy] = useState<string | null>(null)
+  const [apBusyChars, setApBusyChars] = useState<Set<string>>(() => new Set())
   const [error, setError] = useState<string | null>(null)
   const combat = gameState.combat
   const characterById = new Map(characters.map((c) => [c.id, c]))
 
-  async function withBusy<T>(key: string, fn: () => Promise<T>) {
-    if (busy) return
-    setBusy(key)
+  async function withGmBusy<T>(key: string, fn: () => Promise<T>) {
+    if (gmBusy) return
+    setGmBusy(key)
     setError(null)
     try {
       await fn()
@@ -54,9 +57,48 @@ export function CombatPage({
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed')
     } finally {
-      setBusy(null)
+      setGmBusy(null)
     }
   }
+
+  /**
+   * AP stays a synchronous server call because `game_state.combat` is a
+   * shared JSONB blob — concurrent `adjustAp` calls do a read-modify-
+   * write that can clobber each other. Per-character busy guards
+   * against firing a second AP write for the same character while the
+   * first is in flight, but lets other characters be adjusted in
+   * parallel.
+   */
+  const adjustParticipantAp = useCallback(
+    async (characterId: string, delta: number) => {
+      if (apBusyChars.has(characterId)) return
+      setApBusyChars((prev) => {
+        const next = new Set(prev)
+        next.add(characterId)
+        return next
+      })
+      setError(null)
+      try {
+        await adjustAp({
+          data: { gameId: game.id, characterId, delta },
+        })
+        void router.invalidate()
+      } catch (e) {
+        setError(e instanceof Error ? e.message : 'Failed')
+      } finally {
+        setApBusyChars((prev) => {
+          const next = new Set(prev)
+          next.delete(characterId)
+          return next
+        })
+      }
+    },
+    [apBusyChars, game.id, router],
+  )
+
+  const handleSaveError = useCallback((e: unknown) => {
+    setError(e instanceof Error ? e.message : 'Failed')
+  }, [])
 
   function canAdjust(participant: CombatParticipant): boolean {
     if (isGm) return true
@@ -88,34 +130,36 @@ export function CombatPage({
           {isGm && !combat && (
             <Button
               onClick={() =>
-                withBusy('start', () => startCombat({ data: { gameId: game.id } }))
+                withGmBusy('start', () =>
+                  startCombat({ data: { gameId: game.id } }),
+                )
               }
-              disabled={busy !== null}
+              disabled={gmBusy !== null}
             >
-              {busy === 'start' ? 'Starting…' : 'Start combat'}
+              {gmBusy === 'start' ? 'Starting…' : 'Start combat'}
             </Button>
           )}
           {isGm && combat && (
             <>
               <Button
                 onClick={() =>
-                  withBusy('round', () =>
+                  withGmBusy('round', () =>
                     nextRound({ data: { gameId: game.id } }),
                   )
                 }
-                disabled={busy !== null}
+                disabled={gmBusy !== null}
               >
-                {busy === 'round' ? 'Rolling…' : 'Next round'}
+                {gmBusy === 'round' ? 'Rolling…' : 'Next round'}
               </Button>
               <Button
                 variant="danger"
                 onClick={() => {
                   if (!window.confirm('End combat? Clears the tracker.')) return
-                  void withBusy('end', () =>
+                  void withGmBusy('end', () =>
                     endCombat({ data: { gameId: game.id } }),
                   )
                 }}
-                disabled={busy !== null}
+                disabled={gmBusy !== null}
               >
                 End
               </Button>
@@ -150,54 +194,12 @@ export function CombatPage({
                   participant={participant}
                   character={character}
                   canAdjust={canAdjust(participant)}
-                  busy={busy !== null}
+                  apBusy={apBusyChars.has(participant.characterId)}
                   gameId={game.id}
                   onAdjustAp={(delta) =>
-                    withBusy(`ap:${participant.characterId}`, () =>
-                      adjustAp({
-                        data: {
-                          gameId: game.id,
-                          characterId: participant.characterId,
-                          delta,
-                        },
-                      }),
-                    )
+                    adjustParticipantAp(participant.characterId, delta)
                   }
-                  onUpdateField={(updates) =>
-                    withBusy(`field:${participant.characterId}`, () =>
-                      updateCharacter({
-                        data: { characterId: participant.characterId, updates },
-                      }),
-                    )
-                  }
-                  onAdjustAmmo={(itemId, ammo) =>
-                    withBusy(`ammo:${itemId}`, () =>
-                      updateInventoryItem({
-                        data: {
-                          owner: {
-                            type: 'character',
-                            characterId: participant.characterId,
-                          },
-                          itemId,
-                          updates: { currentAmmo: ammo },
-                        },
-                      }),
-                    )
-                  }
-                  onAdjustDurability={(itemId, durability) =>
-                    withBusy(`dura:${itemId}`, () =>
-                      updateInventoryItem({
-                        data: {
-                          owner: {
-                            type: 'character',
-                            characterId: participant.characterId,
-                          },
-                          itemId,
-                          updates: { currentDurability: durability },
-                        },
-                      }),
-                    )
-                  }
+                  onSaveError={handleSaveError}
                 />
               )
             })}
@@ -212,25 +214,18 @@ function ParticipantCard({
   participant,
   character,
   canAdjust,
-  busy,
+  apBusy,
   gameId,
   onAdjustAp,
-  onUpdateField,
-  onAdjustAmmo,
-  onAdjustDurability,
+  onSaveError,
 }: {
   participant: CombatParticipant
   character: Character
   canAdjust: boolean
-  busy: boolean
+  apBusy: boolean
   gameId: string
   onAdjustAp: (delta: number) => void
-  onUpdateField: (updates: {
-    health_current?: number | null
-    edge_current?: number
-  }) => void
-  onAdjustAmmo: (itemId: string, ammo: number) => void
-  onAdjustDurability: (itemId: string, durability: number) => void
+  onSaveError: (error: unknown) => void
 }) {
   const { derived } = applyPassiveEffects(
     character.attributes,
@@ -242,7 +237,32 @@ function ParticipantCard({
     (i) => i.source === 'weapon' && i.equipped && i.weaponRef,
   )
   const worn = equippedArmor(character.inventory)
-  const healthCurrent = character.health_current ?? derived.health
+  const edgeHardMax = edgeCap(derived.edge)
+
+  const [healthCurrent, setHealthCurrent] = useDebouncedNumber({
+    initial: character.health_current ?? derived.health,
+    canEdit: canAdjust,
+    onError: onSaveError,
+    save: (value) =>
+      updateCharacter({
+        data: {
+          characterId: character.id,
+          // Match the sheet's convention: when health is at max, the
+          // stored value is null so the column tracks the derived max.
+          updates: { health_current: value >= derived.health ? null : value },
+        },
+      }),
+  })
+
+  const [edgeCurrent, setEdgeCurrent] = useDebouncedNumber({
+    initial: character.edge_current,
+    canEdit: canAdjust,
+    onError: onSaveError,
+    save: (value) =>
+      updateCharacter({
+        data: { characterId: character.id, updates: { edge_current: value } },
+      }),
+  })
 
   return (
     <article className="rounded-xl border border-void-600 bg-void-800 p-4">
@@ -270,42 +290,33 @@ function ParticipantCard({
           value={participant.ap}
           onAdjust={(delta) => onAdjustAp(delta)}
           canEdit={canAdjust}
-          busy={busy}
+          busy={apBusy}
           valueTone={participant.ap < 0 ? 'danger' : 'accent'}
         />
         <Stepper
           label="Health"
           value={healthCurrent}
           max={derived.health}
+          min={0}
           onAdjust={(delta) =>
-            onUpdateField({
-              health_current: Math.max(
-                0,
-                Math.min(derived.health, healthCurrent + delta),
-              ),
-            })
+            setHealthCurrent(
+              Math.max(0, Math.min(derived.health, healthCurrent + delta)),
+            )
           }
           canEdit={canAdjust}
-          busy={busy}
         />
         <Stepper
           label="Edge"
-          value={character.edge_current}
+          value={edgeCurrent}
           max={derived.edge}
-          hardMax={edgeCap(derived.edge)}
+          hardMax={edgeHardMax}
+          min={0}
           onAdjust={(delta) =>
-            onUpdateField({
-              edge_current: Math.max(
-                0,
-                Math.min(
-                  edgeCap(derived.edge),
-                  character.edge_current + delta,
-                ),
-              ),
-            })
+            setEdgeCurrent(
+              Math.max(0, Math.min(edgeHardMax, edgeCurrent + delta)),
+            )
           }
           canEdit={canAdjust}
-          busy={busy}
         />
       </div>
 
@@ -314,83 +325,143 @@ function ParticipantCard({
           {equippedWeapons.map((entry) => {
             const w = lookupWeapon(entry.weaponRef!)
             if (!w) return null
-            const hasAmmo = w.magazine != null
-            const current = entry.currentAmmo ?? w.magazine ?? 0
             return (
-              <div
+              <WeaponRow
                 key={entry.id}
-                className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs"
-              >
-                <span className="font-medium text-white">{entry.name}</span>
-                <span className="text-gray-500">
-                  DMG {w.damage} · AP {w.attackAP}
-                  {w.optimalRange ? ` · rng ${w.optimalRange}` : ''}
-                </span>
-                {hasAmmo && (
-                  <span className="ml-auto inline-flex items-center gap-1.5">
-                    <span className="text-gray-500">Ammo</span>
-                    <MiniStepper
-                      value={current}
-                      max={w.magazine!}
-                      canEdit={canAdjust}
-                      busy={busy}
-                      onAdjust={(delta) =>
-                        onAdjustAmmo(entry.id, current + delta)
-                      }
-                    />
-                    <span className="text-gray-500">/ {w.magazine}</span>
-                    {canAdjust && (
-                      <button
-                        onClick={() => onAdjustAmmo(entry.id, w.magazine!)}
-                        disabled={busy || current >= w.magazine!}
-                        className="rounded border border-void-600 bg-void-700 px-1.5 py-0.5 text-[10px] text-gray-300 transition hover:border-accent-500 hover:text-white disabled:opacity-30"
-                      >
-                        Reload
-                      </button>
-                    )}
-                  </span>
-                )}
-              </div>
+                entry={entry}
+                weapon={w}
+                characterId={character.id}
+                canEdit={canAdjust}
+                onSaveError={onSaveError}
+              />
             )
           })}
           {worn && (
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
-              <span className="font-medium text-white">{worn.entry.name}</span>
-              <span className="text-gray-500">
-                Soak{' '}
-                {(() => {
-                  const cur =
-                    worn.entry.currentDurability ?? worn.data.durability ?? 0
-                  const broken = worn.data.durability != null && cur <= 0
-                  return broken ? worn.data.secondarySoak : worn.data.primarySoak
-                })()}
-              </span>
-              {worn.data.durability != null && (
-                <span className="ml-auto inline-flex items-center gap-1.5">
-                  <span className="text-gray-500">Durability</span>
-                  <MiniStepper
-                    value={
-                      worn.entry.currentDurability ?? worn.data.durability
-                    }
-                    max={worn.data.durability}
-                    canEdit={canAdjust}
-                    busy={busy}
-                    onAdjust={(delta) =>
-                      onAdjustDurability(
-                        worn.entry.id,
-                        (worn.entry.currentDurability ??
-                          worn.data.durability!) + delta,
-                      )
-                    }
-                  />
-                  <span className="text-gray-500">/ {worn.data.durability}</span>
-                </span>
-              )}
-            </div>
+            <ArmorRow
+              entry={worn.entry}
+              armor={worn.data}
+              characterId={character.id}
+              canEdit={canAdjust}
+              onSaveError={onSaveError}
+            />
           )}
         </div>
       )}
     </article>
+  )
+}
+
+function WeaponRow({
+  entry,
+  weapon,
+  characterId,
+  canEdit,
+  onSaveError,
+}: {
+  entry: InventoryItem
+  weapon: WeaponData
+  characterId: string
+  canEdit: boolean
+  onSaveError: (error: unknown) => void
+}) {
+  const hasAmmo = weapon.magazine != null
+  const [ammo, setAmmo] = useDebouncedNumber({
+    initial: entry.currentAmmo ?? weapon.magazine ?? 0,
+    canEdit,
+    onError: onSaveError,
+    save: (value) =>
+      updateInventoryItem({
+        data: {
+          owner: { type: 'character', characterId },
+          itemId: entry.id,
+          updates: { currentAmmo: value },
+        },
+      }),
+  })
+  return (
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
+      <span className="font-medium text-white">{entry.name}</span>
+      <span className="text-gray-500">
+        DMG {weapon.damage} · AP {weapon.attackAP}
+        {weapon.optimalRange ? ` · rng ${weapon.optimalRange}` : ''}
+      </span>
+      {hasAmmo && (
+        <span className="ml-auto inline-flex items-center gap-1.5">
+          <span className="text-gray-500">Ammo</span>
+          <MiniStepper
+            value={ammo}
+            max={weapon.magazine!}
+            canEdit={canEdit}
+            onAdjust={(delta) =>
+              setAmmo(Math.max(0, Math.min(weapon.magazine!, ammo + delta)))
+            }
+          />
+          <span className="text-gray-500">/ {weapon.magazine}</span>
+          {canEdit && (
+            <button
+              onClick={() => setAmmo(weapon.magazine!)}
+              disabled={ammo >= weapon.magazine!}
+              className="rounded border border-void-600 bg-void-700 px-1.5 py-0.5 text-[10px] text-gray-300 transition hover:border-accent-500 hover:text-white disabled:opacity-30"
+            >
+              Reload
+            </button>
+          )}
+        </span>
+      )}
+    </div>
+  )
+}
+
+function ArmorRow({
+  entry,
+  armor,
+  characterId,
+  canEdit,
+  onSaveError,
+}: {
+  entry: InventoryItem
+  armor: ArmorData
+  characterId: string
+  canEdit: boolean
+  onSaveError: (error: unknown) => void
+}) {
+  const hasDurability = armor.durability != null
+  const [durability, setDurability] = useDebouncedNumber({
+    initial: entry.currentDurability ?? armor.durability ?? 0,
+    canEdit,
+    onError: onSaveError,
+    save: (value) =>
+      updateInventoryItem({
+        data: {
+          owner: { type: 'character', characterId },
+          itemId: entry.id,
+          updates: { currentDurability: value },
+        },
+      }),
+  })
+  const broken = hasDurability && durability <= 0
+  const soak = broken ? armor.secondarySoak : armor.primarySoak
+  return (
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
+      <span className="font-medium text-white">{entry.name}</span>
+      <span className="text-gray-500">Soak {soak}</span>
+      {hasDurability && (
+        <span className="ml-auto inline-flex items-center gap-1.5">
+          <span className="text-gray-500">Durability</span>
+          <MiniStepper
+            value={durability}
+            max={armor.durability!}
+            canEdit={canEdit}
+            onAdjust={(delta) =>
+              setDurability(
+                Math.max(0, Math.min(armor.durability!, durability + delta)),
+              )
+            }
+          />
+          <span className="text-gray-500">/ {armor.durability}</span>
+        </span>
+      )}
+    </div>
   )
 }
 
@@ -399,13 +470,11 @@ function MiniStepper({
   value,
   max,
   canEdit,
-  busy,
   onAdjust,
 }: {
   value: number
   max: number
   canEdit: boolean
-  busy: boolean
   onAdjust: (delta: number) => void
 }) {
   return (
@@ -413,7 +482,7 @@ function MiniStepper({
       {canEdit && (
         <button
           onClick={() => onAdjust(-1)}
-          disabled={busy || value <= 0}
+          disabled={value <= 0}
           className="h-5 w-5 rounded border border-void-600 bg-void-700 text-xs text-gray-300 transition hover:border-accent-500 hover:text-white disabled:opacity-30"
           aria-label="Decrease"
         >
@@ -426,7 +495,7 @@ function MiniStepper({
       {canEdit && (
         <button
           onClick={() => onAdjust(1)}
-          disabled={busy || value >= max}
+          disabled={value >= max}
           className="h-5 w-5 rounded border border-void-600 bg-void-700 text-xs text-gray-300 transition hover:border-accent-500 hover:text-white disabled:opacity-30"
           aria-label="Increase"
         >

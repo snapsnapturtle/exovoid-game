@@ -68,7 +68,9 @@ Heavily inspired by Vercel's [Geist design system](https://github.com/geist-org)
 - **`<Alert>`** (`~/components/ui/Alert`) — inline status banner with `danger | warning | info` variants. Use for standalone messages in a page or modal, not for buttons (destructive button actions are `<Button variant="danger">`).
 - **`<Stepper>`** (`~/components/ui/Stepper`) — shared label + +/- value control used both on the character sheet's Health/Edge band and inside each combat-tracker participant card. Bordered hover-accent buttons, `text-lg` (sm) or `text-2xl` (md) value display. Pass `min={0}` to bound at zero; omit `min` for fields that can legally go negative (AP under penalty).
 - **In-row micro-buttons (+/-)** for attribute/skill/XP steppers use `h-5 w-5 shrink-0 bg-void-600 hover:bg-void-500 text-xs text-gray-300 transition disabled:opacity-30`. There's no shared component yet — match these classes when adding new ones.
-- **Auto-save pattern**: any per-character field that takes rapid clicks should pipe through the optimistic-state + 800ms-debounced-save pattern in `useCharacter` (`src/lib/hooks/useCharacter.ts`), not a busy-flag-disables-buttons pattern. The combat page is the historical exception.
+- **Auto-save pattern**: any per-character field that takes rapid clicks should pipe through the optimistic-state + 800ms-debounced-save pattern. Two hooks cover this:
+  - `useCharacter` (`src/lib/hooks/useCharacter.ts`) — owns the *entire* character snapshot on the sheet; one debounce, one batched save.
+  - `useDebouncedNumber` (`src/lib/hooks/useDebouncedNumber.ts`) — field-level granularity for places where multiple participants and inventory items each need their own pending state (the combat page uses this for Health/Edge/Ammo/Durability). AP is the one sync exception because `game_state.combat` is a shared JSONB blob and the per-character `apBusy` guard prevents read-modify-write races.
 
 ### Data
 
