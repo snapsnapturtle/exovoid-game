@@ -1,0 +1,32 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    groups:
+      tanstack:
+        patterns:
+          - "@tanstack/*"
+      supabase:
+        patterns:
+          - "@supabase/*"
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      vite:
+        patterns:
+          - "vite"
+          - "@vitejs/plugin-react"
+      tailwind:
+        patterns:
+          - "tailwindcss"
+          - "@tailwindcss/vite"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
