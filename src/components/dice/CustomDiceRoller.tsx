@@ -97,7 +97,7 @@ export function CustomDiceRoller({
         <>
           Custom Roll
           {!showConfig && trimmedName && (
-            <span className="text-accent-400">: {trimmedName}</span>
+            <span className="text-accent-900">: {trimmedName}</span>
           )}
         </>
       }
@@ -118,7 +118,7 @@ export function CustomDiceRoller({
             <div className="mb-4">
               <label
                 htmlFor="custom-roll-name"
-                className="mb-1 block text-xs uppercase tracking-wide text-gray-500"
+                className="mb-1 block text-xs uppercase tracking-wide text-gray-700"
               >
                 Name
               </label>
@@ -128,7 +128,7 @@ export function CustomDiceRoller({
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="e.g. Notice check"
-                className="w-full rounded-lg border border-void-600 bg-void-700 px-3 py-1.5 text-sm text-white placeholder-gray-500 focus:border-accent-400 focus:outline-none"
+                className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-1.5 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
               />
             </div>
 
@@ -136,7 +136,7 @@ export function CustomDiceRoller({
               <div className="mb-4">
                 <label
                   htmlFor="custom-roll-character"
-                  className="mb-1 block text-xs uppercase tracking-wide text-gray-500"
+                  className="mb-1 block text-xs uppercase tracking-wide text-gray-700"
                 >
                   Rolling as
                 </label>
@@ -144,7 +144,7 @@ export function CustomDiceRoller({
                   id="custom-roll-character"
                   value={characterId ?? ''}
                   onChange={(e) => setCharacterId(e.target.value || null)}
-                  className="w-full rounded-lg border border-void-600 bg-void-700 px-3 py-1.5 text-sm text-white focus:border-accent-400 focus:outline-none"
+                  className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-1.5 text-sm text-white focus:border-accent-900 focus:outline-none"
                 >
                   {characters.map((c) => (
                     <option key={c.id} value={c.id}>
@@ -156,21 +156,21 @@ export function CustomDiceRoller({
             )}
 
             <div className="mb-4">
-              <p className="mb-2 text-xs uppercase tracking-wide text-gray-500">
+              <p className="mb-2 text-xs uppercase tracking-wide text-gray-700">
                 Dice
               </p>
               <div className="space-y-2">
                 {DICE.map(({ type, label }) => (
                   <div key={type} className="flex items-center gap-3">
                     <DieCounter type={type} count={pool[type]} size="sm" />
-                    <span className="flex-1 text-sm capitalize text-gray-300">
+                    <span className="flex-1 text-sm capitalize text-gray-1000">
                       {label}
                     </span>
                     <button
                       onClick={() => adjust(type, -1)}
                       disabled={pool[type] === 0}
                       aria-label={`Decrease ${label}`}
-                      className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-void-600 text-xs text-gray-300 transition hover:bg-void-500 disabled:opacity-30"
+                      className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition not-disabled:hover:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-30"
                     >
                       −
                     </button>
@@ -180,7 +180,7 @@ export function CustomDiceRoller({
                     <button
                       onClick={() => adjust(type, +1)}
                       aria-label={`Increase ${label}`}
-                      className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-void-600 text-xs text-gray-300 transition hover:bg-void-500"
+                      className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition hover:bg-gray-500"
                     >
                       +
                     </button>
@@ -190,7 +190,7 @@ export function CustomDiceRoller({
             </div>
 
             {isGm && (
-              <label className="mb-4 flex items-center gap-2 text-sm text-gray-300">
+              <label className="mb-4 flex items-center gap-2 text-sm text-gray-1000">
                 <input
                   type="checkbox"
                   checked={hidden}
@@ -203,7 +203,7 @@ export function CustomDiceRoller({
           </>
         )}
 
-        {error && <p className="mb-3 text-sm text-danger-400">{error}</p>}
+        {error && <p className="mb-3 text-sm text-danger-900">{error}</p>}
 
         {result && (
           <div key={rollKey} className="mb-4">

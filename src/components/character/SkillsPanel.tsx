@@ -46,7 +46,7 @@ export function SkillsPanel({
     : SKILLS
 
   return (
-    <div className="rounded-xl border border-void-600 bg-void-800 p-6">
+    <div className="rounded-xl border border-gray-400 bg-background-200 p-6">
       <div className="mb-4 flex items-center justify-between gap-4">
         <h3 className="text-lg font-semibold text-white">Skills</h3>
         <input
@@ -54,11 +54,11 @@ export function SkillsPanel({
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
           placeholder="Filter skills..."
-          className="w-48 rounded-lg border border-void-600 bg-void-700 px-3 py-1.5 text-sm text-white placeholder-gray-500 focus:border-accent-400 focus:outline-none"
+          className="w-48 rounded-lg border border-gray-400 bg-gray-100 px-3 py-1.5 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
         />
       </div>
       <div className="space-y-1">
-        <div className="grid grid-cols-[1fr_auto_auto] gap-2 px-2 text-xs text-gray-500">
+        <div className="grid grid-cols-[1fr_auto_auto] gap-2 px-2 text-xs text-gray-700">
           <span>Skill</span>
           <span className="w-16 text-center">Level</span>
           <span className="w-32 text-center">Roll</span>
@@ -72,13 +72,13 @@ export function SkillsPanel({
           return (
             <div
               key={skill.id}
-              className="grid grid-cols-[1fr_auto_auto] items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-void-700"
+              className="grid grid-cols-[1fr_auto_auto] items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-gray-100"
             >
               <div>
-                <span className="text-sm font-medium text-gray-200">
+                <span className="text-sm font-medium text-gray-1000">
                   {skill.name}
                 </span>
-                <span className="ml-2 text-xs text-gray-500">
+                <span className="ml-2 text-xs text-gray-700">
                   {skill.attributes.map(attrAbbr).join(' / ')}
                 </span>
               </div>
@@ -91,12 +91,12 @@ export function SkillsPanel({
                       }
                       disabled={level <= 0}
                       aria-label={`Decrease ${skill.name}`}
-                      className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-void-600 text-xs text-gray-300 transition hover:bg-void-500 disabled:opacity-30"
+                      className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition not-disabled:hover:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-30"
                     >
                       −
                     </button>
                     <span
-                      className={`min-w-[2ch] text-center text-sm font-medium ${uninvested ? 'text-gray-600' : 'text-white'}`}
+                      className={`min-w-[2ch] text-center text-sm font-medium ${uninvested ? 'text-gray-700' : 'text-white'}`}
                     >
                       {level}
                     </span>
@@ -109,14 +109,14 @@ export function SkillsPanel({
                       }
                       disabled={level >= MAX_SKILL_LEVEL}
                       aria-label={`Increase ${skill.name}`}
-                      className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-void-600 text-xs text-gray-300 transition hover:bg-void-500 disabled:opacity-30"
+                      className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition not-disabled:hover:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-30"
                     >
                       +
                     </button>
                   </>
                 ) : (
                   <span
-                    className={`text-sm font-medium ${uninvested ? 'text-gray-600' : 'text-white'}`}
+                    className={`text-sm font-medium ${uninvested ? 'text-gray-700' : 'text-white'}`}
                   >
                     {level}
                   </span>
@@ -125,7 +125,7 @@ export function SkillsPanel({
               <button
                 onClick={() => setRolling({ skillName: skill.name, pool })}
                 title={`Roll ${skill.name}`}
-                className="flex w-32 items-center justify-center gap-1.5 rounded-lg border border-transparent px-2 py-1 text-xs transition hover:border-accent-500 hover:bg-void-700"
+                className="flex w-32 items-center justify-center gap-1.5 rounded-lg border border-transparent px-2 py-1 text-xs transition hover:border-accent-700 hover:bg-gray-100"
               >
                 <span className="rounded bg-blue-600/40 px-1.5 py-0.5 text-blue-200">
                   {pool.standard}S

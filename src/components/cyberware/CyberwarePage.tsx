@@ -150,7 +150,7 @@ export function CyberwarePage({ initial, canEdit }: CyberwarePageProps) {
           <Link
             to="/games/$gameId/characters/$characterId"
             params={{ gameId: character.game_id, characterId: character.id }}
-            className="text-sm text-gray-400 transition hover:text-white"
+            className="text-sm text-gray-900 transition hover:text-white"
           >
             ← {character.name || 'Character'}
           </Link>
@@ -164,8 +164,8 @@ export function CyberwarePage({ initial, canEdit }: CyberwarePageProps) {
                 onClick={() => setShowMalfunctionModal(true)}
                 className={`text-xs font-medium transition ${
                   allocationStatus === 'partial'
-                    ? 'text-warning-400 hover:text-warning-400/80'
-                    : 'text-cyber-300 hover:text-cyber-200'
+                    ? 'text-warning-900 hover:text-warning-900/80'
+                    : 'text-accent-900 hover:text-accent-900'
                 }`}
               >
                 {allocationStatus === 'partial'
@@ -176,7 +176,7 @@ export function CyberwarePage({ initial, canEdit }: CyberwarePageProps) {
           {allocationStatus === 'stale' && canEdit && (
             <button
               onClick={() => setShowMalfunctionModal(true)}
-              className="text-xs font-medium text-warning-400 transition hover:text-warning-400/80"
+              className="text-xs font-medium text-warning-900 transition hover:text-warning-900/80"
             >
               {allocated} stale malfunction {allocated === 1 ? 'point' : 'points'} —
               clear →
@@ -190,7 +190,7 @@ export function CyberwarePage({ initial, canEdit }: CyberwarePageProps) {
       <SearchBox value={query} onChange={setQuery} />
 
       {filteredGroups.length === 0 ? (
-        <div className="rounded-xl border border-void-600 bg-void-800 p-6 text-center text-sm text-gray-500">
+        <div className="rounded-xl border border-gray-400 bg-background-200 p-6 text-center text-sm text-gray-700">
           No cyberware matches "{query}".
         </div>
       ) : (
@@ -240,11 +240,11 @@ function SearchBox({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="Search cyberware — by category, name, tier, or description"
-        className="w-full rounded-lg border border-void-600 bg-void-800 px-3 py-2 pl-9 text-sm text-white placeholder-gray-500 focus:border-accent-400 focus:outline-none"
+        className="w-full rounded-lg border border-gray-400 bg-background-200 px-3 py-2 pl-9 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
       />
       <span
         aria-hidden
-        className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
+        className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-700"
       >
         ⌕
       </span>
@@ -266,22 +266,22 @@ function OccupationBar({
   return (
     <div className="flex min-w-[220px] flex-col gap-1">
       <div className="flex items-baseline justify-between gap-3 text-xs">
-        <span className="whitespace-nowrap font-medium uppercase tracking-wide text-gray-400">
+        <span className="whitespace-nowrap font-medium uppercase tracking-wide text-gray-900">
           Cyberimmunity
         </span>
         <span
-          className={`whitespace-nowrap ${over ? 'text-warning-400' : 'text-gray-300'}`}
+          className={`whitespace-nowrap ${over ? 'text-warning-900' : 'text-gray-1000'}`}
         >
           {used} / {capacity}
           {excess > 0 && (
-            <span className="ml-1 text-warning-400">(+{excess} overload)</span>
+            <span className="ml-1 text-warning-900">(+{excess} overload)</span>
           )}
         </span>
       </div>
-      <div className="h-1.5 overflow-hidden rounded-full bg-void-700">
+      <div className="h-1.5 overflow-hidden rounded-full bg-gray-100">
         <div
           className={`h-full transition-all ${
-            over ? 'bg-warning-500' : 'bg-accent-500'
+            over ? 'bg-warning-700' : 'bg-accent-700'
           }`}
           style={{ width: `${pct}%` }}
         />
@@ -314,16 +314,16 @@ function CategoryCard({
   onUninstall: (name: string) => void
 }) {
   return (
-    <section className="rounded-xl border border-void-600 bg-void-800">
-      <header className="flex items-baseline justify-between border-b border-void-600 px-4 py-3">
+    <section className="rounded-xl border border-gray-400 bg-background-200">
+      <header className="flex items-baseline justify-between border-b border-gray-400 px-4 py-3">
         <h2 className="text-lg font-semibold text-white">{category}</h2>
         {installedName && (
-          <span className="text-xs text-cyber-300">
+          <span className="text-xs text-accent-900">
             Installed: <span className="font-medium">{installedName}</span>
           </span>
         )}
       </header>
-      <div className="divide-y divide-void-700">
+      <div className="divide-y divide-gray-100">
         {variants.map((v) => {
           const isInstalled = installedByName.has(v.name)
           const check = canInstall(character, v.name, capacity)
@@ -348,9 +348,9 @@ function CategoryCard({
 }
 
 const TIER_STYLES: Record<string, string> = {
-  Alpha: 'border-void-500 bg-void-700 text-gray-300',
-  Beta: 'border-accent-500/60 bg-accent-500/15 text-accent-200',
-  Omega: 'border-cyber-500/60 bg-cyber-500/15 text-cyber-200',
+  Alpha: 'border-gray-500 bg-gray-100 text-gray-1000',
+  Beta: 'border-accent-700/60 bg-accent-700/15 text-accent-900',
+  Omega: 'border-accent-700/60 bg-accent-700/15 text-accent-900',
 }
 
 function VariantRow({
@@ -386,25 +386,25 @@ function VariantRow({
           </span>
           <span className="font-medium text-white">{variant.name}</span>
           {installed && (
-            <span className="inline-flex items-center gap-1 rounded-md border border-cyber-500/60 bg-cyber-500/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-cyber-200">
+            <span className="inline-flex items-center gap-1 rounded-md border border-accent-700/60 bg-accent-700/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-accent-900">
               ✓ Installed
             </span>
           )}
         </div>
-        <p className="whitespace-pre-line text-sm text-gray-300">
+        <p className="whitespace-pre-line text-sm text-gray-1000">
           {variant.description}
         </p>
-        <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
+        <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-700">
           <span>
-            <span className="font-medium text-gray-400">Occupation:</span>{' '}
+            <span className="font-medium text-gray-900">Occupation:</span>{' '}
             {variant.cyberImmunityCost}
           </span>
           <span>
-            <span className="font-medium text-gray-400">Cost:</span>{' '}
+            <span className="font-medium text-gray-900">Cost:</span>{' '}
             {variant.cost.toLocaleString()} ¢
           </span>
           <span>
-            <span className="font-medium text-gray-400">Rarity:</span> {variant.rarity}
+            <span className="font-medium text-gray-900">Rarity:</span> {variant.rarity}
           </span>
         </div>
       </div>
@@ -414,7 +414,7 @@ function VariantRow({
             <button
               onClick={onUninstall}
               disabled={busy}
-              className="rounded-lg border border-void-600 bg-void-700 px-3 py-1.5 text-xs text-gray-300 transition hover:border-danger-500 hover:text-danger-300 disabled:opacity-50"
+              className="rounded-lg border border-gray-400 bg-gray-100 px-3 py-1.5 text-xs text-gray-1000 transition not-disabled:hover:border-danger-700 not-disabled:hover:text-danger-900 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {busy ? 'Removing…' : 'Uninstall'}
             </button>
@@ -425,26 +425,26 @@ function VariantRow({
               <button
                 onClick={onInstall}
                 disabled={busy || !!disabledReason}
-                className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition disabled:opacity-40 ${
+                className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition disabled:cursor-not-allowed disabled:opacity-40 ${
                   warning
-                    ? 'border-warning-500/60 bg-warning-500/15 text-warning-400 hover:bg-warning-500/25'
-                    : 'border-accent-500/60 bg-accent-500/15 text-accent-200 hover:bg-accent-500/25'
+                    ? 'border-warning-700/60 bg-warning-700/15 text-warning-900 not-disabled:hover:bg-warning-700/25'
+                    : 'border-accent-700/60 bg-accent-700/15 text-accent-900 not-disabled:hover:bg-accent-700/25'
                 }`}
               >
                 {busy ? 'Installing…' : replaces ? 'Replace' : 'Install'}
               </button>
               {replaces && !disabledReason && !warning && (
-                <span className="max-w-[180px] text-right text-[10px] text-gray-500">
+                <span className="max-w-[180px] text-right text-[10px] text-gray-700">
                   Replaces {replaces}
                 </span>
               )}
               {warning && !disabledReason && replaces && (
-                <span className="max-w-[200px] text-right text-[10px] text-gray-500">
+                <span className="max-w-[200px] text-right text-[10px] text-gray-700">
                   Replaces {replaces}
                 </span>
               )}
               {disabledReason && (
-                <span className="max-w-[180px] text-right text-[10px] text-danger-400">
+                <span className="max-w-[180px] text-right text-[10px] text-danger-900">
                   {disabledReason}
                 </span>
               )}

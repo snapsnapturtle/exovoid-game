@@ -27,7 +27,7 @@ export function AttributesPanel({
   onAttributeChange,
 }: AttributesPanelProps) {
   return (
-    <div className="rounded-xl border border-void-600 bg-void-800 p-3">
+    <div className="rounded-xl border border-gray-400 bg-background-200 p-3">
       <div className="grid grid-cols-7 gap-2">
         {ATTRIBUTE_DEFINITIONS.map((attr) => {
           const base = attributes[attr.id]
@@ -40,17 +40,17 @@ export function AttributesPanel({
           return (
             <div
               key={attr.id}
-              className="flex flex-col items-center rounded-lg border border-void-600 bg-void-700 px-1 py-2"
+              className="flex flex-col items-center rounded-lg border border-gray-400 bg-gray-100 px-1 py-2"
               title={tooltip}
             >
-              <span className="text-[10px] font-medium uppercase tracking-wide text-gray-400">
+              <span className="text-[10px] font-medium uppercase tracking-wide text-gray-900">
                 {attr.abbr}
               </span>
               <span className="my-1 text-2xl font-bold leading-none text-white">
                 {effective}
               </span>
               {bonuses.length > 0 && canEdit && (
-                <span className="text-[10px] leading-none text-accent-400">
+                <span className="text-[10px] leading-none text-accent-900">
                   base {base}
                 </span>
               )}
@@ -60,7 +60,7 @@ export function AttributesPanel({
                     onClick={() => onAttributeChange(attr.id, base - 1)}
                     disabled={base <= 0}
                     aria-label={`Decrease ${attr.name}`}
-                    className="flex h-5 w-5 items-center justify-center rounded bg-void-600 text-xs text-gray-300 transition hover:bg-void-500 disabled:opacity-30"
+                    className="flex h-5 w-5 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition not-disabled:hover:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-30"
                   >
                     −
                   </button>
@@ -68,7 +68,7 @@ export function AttributesPanel({
                     onClick={() => onAttributeChange(attr.id, base + 1)}
                     disabled={base >= MAX_ATTRIBUTE_LEVEL}
                     aria-label={`Increase ${attr.name}`}
-                    className="flex h-5 w-5 items-center justify-center rounded bg-void-600 text-xs text-gray-300 transition hover:bg-void-500 disabled:opacity-30"
+                    className="flex h-5 w-5 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition not-disabled:hover:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-30"
                   >
                     +
                   </button>

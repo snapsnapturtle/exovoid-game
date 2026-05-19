@@ -34,7 +34,7 @@ export function CharacterHeader({
   const { next: nextThreshold, percent: xpPercent } = xpProgress(experience)
 
   return (
-    <div className="flex flex-wrap items-start gap-4 rounded-xl border border-void-600 bg-void-800 p-6">
+    <div className="flex flex-wrap items-start gap-4 rounded-xl border border-gray-400 bg-background-200 p-6">
       <div className="min-w-0 flex-1 space-y-3">
         <div className="flex flex-wrap items-center gap-3">
           {canEdit ? (
@@ -42,31 +42,33 @@ export function CharacterHeader({
               type="text"
               value={name}
               onChange={(e) => onNameChange(e.target.value)}
-              className="rounded border border-transparent bg-transparent text-2xl font-bold text-white hover:border-void-600 focus:border-accent-400 focus:outline-none"
+              size={Math.max(name.length || 0, 8)}
+              className="min-w-[8ch] rounded border border-transparent bg-transparent text-2xl font-bold text-white field-sizing-content hover:border-gray-400 focus:border-accent-900 focus:outline-none"
             />
           ) : (
             <h2 className="text-2xl font-bold text-white">{name}</h2>
           )}
-          <span className="rounded-full bg-accent-500/20 px-3 py-1 text-sm font-medium text-accent-400">
+          <span className="rounded-full bg-accent-700/20 px-3 py-1 text-sm font-medium text-accent-900">
             Level {level}
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-400">Career:</span>
+          <span className="text-sm text-gray-900">Career:</span>
           {canEdit ? (
             <input
               type="text"
               value={career}
               onChange={(e) => onCareerChange(e.target.value)}
-              className="rounded border border-transparent bg-transparent text-sm text-gray-300 hover:border-void-600 focus:border-accent-400 focus:outline-none"
+              size={Math.max(career.length || 0, 14)}
+              className="min-w-[14ch] rounded border border-transparent bg-transparent text-sm text-gray-1000 field-sizing-content hover:border-gray-400 focus:border-accent-900 focus:outline-none"
               placeholder="Choose a career"
             />
           ) : (
-            <span className="text-sm text-gray-300">{career || 'None'}</span>
+            <span className="text-sm text-gray-1000">{career || 'None'}</span>
           )}
         </div>
         <div>
-          <div className="mb-1 flex items-center justify-between text-xs text-gray-400">
+          <div className="mb-1 flex items-center justify-between text-xs text-gray-900">
             <span>XP</span>
             <div className="flex items-center gap-2">
               <span>
@@ -76,33 +78,37 @@ export function CharacterHeader({
                 onClick={() => onExperienceChange(Math.max(0, experience - 1))}
                 disabled={experience <= 0}
                 aria-label="Decrease XP"
-                className="flex h-5 w-5 items-center justify-center rounded bg-void-700 text-xs text-gray-300 transition hover:bg-void-600 disabled:opacity-30"
+                className="flex h-5 w-5 items-center justify-center rounded bg-gray-100 text-xs text-gray-1000 transition not-disabled:hover:bg-gray-400 disabled:cursor-not-allowed disabled:opacity-30"
               >
                 −
               </button>
               <button
                 onClick={() => onExperienceChange(experience + 1)}
                 aria-label="Add 1 XP"
-                className="flex h-5 w-5 items-center justify-center rounded bg-void-700 text-xs text-gray-300 transition hover:bg-void-600"
+                className="flex h-5 w-5 items-center justify-center rounded bg-gray-100 text-xs text-gray-1000 transition hover:bg-gray-400"
               >
                 +
               </button>
             </div>
           </div>
-          <div className="h-2 overflow-hidden rounded-full bg-void-700">
+          <div className="h-2 overflow-hidden rounded-full bg-gray-100">
             <div
-              className="h-full rounded-full bg-accent-500 transition-all"
+              className="h-full rounded-full bg-accent-700 transition-all"
               style={{ width: `${xpPercent}%` }}
             />
           </div>
         </div>
       </div>
       <div className="flex items-center gap-3 text-sm">
-        {showModeToggle && isEditMode && (
+        {showModeToggle && (
           <button
             onClick={onDelete}
-            disabled={deleting}
-            className="rounded-lg border border-danger-500/60 bg-danger-500/10 px-3 py-1.5 text-sm text-danger-400 transition hover:bg-danger-500/20 disabled:opacity-50"
+            disabled={deleting || !isEditMode}
+            aria-hidden={!isEditMode}
+            tabIndex={isEditMode ? 0 : -1}
+            className={`rounded-lg border border-danger-700/60 bg-danger-700/10 px-3 py-1.5 text-sm text-danger-900 transition not-disabled:hover:bg-danger-700/20 disabled:cursor-not-allowed disabled:opacity-50 ${
+              !isEditMode ? 'pointer-events-none invisible' : ''
+            }`}
           >
             {deleting ? 'Deleting…' : 'Delete'}
           </button>
@@ -110,10 +116,10 @@ export function CharacterHeader({
         {showModeToggle && (
           <button
             onClick={onModeToggle}
-            className={`rounded-lg border px-3 py-1.5 text-sm transition ${
+            className={`min-w-[7.5rem] rounded-lg border px-3 py-1.5 text-sm transition ${
               isEditMode
-                ? 'border-accent-500 bg-accent-500/20 text-accent-300 hover:bg-accent-500/30'
-                : 'border-void-600 bg-void-700 text-gray-300 hover:border-accent-500 hover:text-white'
+                ? 'border-accent-700 bg-accent-700/20 text-accent-900 hover:bg-accent-700/30'
+                : 'border-gray-400 bg-gray-100 text-gray-1000 hover:border-accent-700 hover:text-white'
             }`}
           >
             {isEditMode ? 'Done editing' : 'Edit'}
@@ -122,7 +128,7 @@ export function CharacterHeader({
         <button
           disabled
           title="Coming soon"
-          className="rounded-lg border border-void-600 bg-void-700/50 px-3 py-1.5 text-sm text-gray-500"
+          className="rounded-lg border border-gray-400 bg-gray-100/50 px-3 py-1.5 text-sm text-gray-700"
         >
           Downtime
         </button>

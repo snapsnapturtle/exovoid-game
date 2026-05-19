@@ -16,7 +16,7 @@ export function ModalCloseButton({
       type="button"
       onClick={onClose}
       aria-label="Close"
-      className="flex h-7 w-7 shrink-0 items-center justify-center rounded text-gray-400 transition hover:bg-void-700 hover:text-white"
+      className="flex h-7 w-7 shrink-0 items-center justify-center rounded text-gray-900 transition hover:bg-gray-100 hover:text-white"
     >
       ✕
     </button>
@@ -62,23 +62,23 @@ export function Modal({
       <div
         role="dialog"
         aria-modal="true"
-        className={`modal-card-in flex max-h-[90vh] w-full ${SIZE[size]} flex-col rounded-xl border border-void-600 bg-void-800`}
+        className={`modal-card-in flex max-h-[90vh] w-full ${SIZE[size]} flex-col rounded-xl border border-gray-400 bg-background-200`}
         onClick={(e) => e.stopPropagation()}
       >
-        <header className="flex items-start justify-between gap-3 border-b border-void-600 px-5 py-4">
+        <header className="flex items-start justify-between gap-3 border-b border-gray-400 px-5 py-4">
           <div className="min-w-0">
             {title && (
               <h3 className="text-lg font-semibold text-white">{title}</h3>
             )}
             {subtitle && (
-              <p className="mt-1 text-xs text-gray-400">{subtitle}</p>
+              <p className="mt-1 text-xs text-gray-900">{subtitle}</p>
             )}
           </div>
           <ModalCloseButton onClose={onClose} />
         </header>
         <div className="flex-1 overflow-y-auto px-5 py-4">{children}</div>
         {footer && (
-          <div className="flex items-center justify-end gap-2 border-t border-void-600 px-5 py-3">
+          <div className="flex items-center justify-end gap-2 border-t border-gray-400 px-5 py-3">
             {footer}
           </div>
         )}

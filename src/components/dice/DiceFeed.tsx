@@ -126,19 +126,19 @@ export function DiceFeed({
 
   return (
     <>
-      <aside className="relative flex h-full w-80 shrink-0 flex-col border-l border-void-600 bg-void-900">
-        <div className="flex shrink-0 items-center justify-between border-b border-void-600 px-4 py-3">
+      <aside className="relative flex h-full w-80 shrink-0 flex-col border-l border-gray-400 bg-background-100">
+        <div className="flex shrink-0 items-center justify-between border-b border-gray-400 px-4 py-3">
           <h3 className="text-sm font-semibold text-white">Dice Feed</h3>
           <button
             onClick={() => setCustomOpen(true)}
             title="Custom roll"
-            className="rounded bg-accent-500/20 px-2 py-1 text-xs font-medium text-accent-400 transition hover:bg-accent-500/30"
+            className="rounded bg-accent-700/20 px-2 py-1 text-xs font-medium text-accent-900 transition hover:bg-accent-700/30"
           >
             + Custom
           </button>
         </div>
         {rolls.length === 0 ? (
-          <p className="flex-1 px-2 py-6 text-center text-sm text-gray-500">
+          <p className="flex-1 px-2 py-6 text-center text-sm text-gray-700">
             No rolls yet.
           </p>
         ) : (
@@ -161,7 +161,7 @@ export function DiceFeed({
         <button
           onClick={scrollToTop}
           aria-label="Scroll to newest"
-          className={`absolute bottom-3 left-1/2 z-20 flex h-9 w-9 -translate-x-1/2 items-center justify-center rounded-full bg-accent-500 text-white shadow-xl shadow-black/50 transition-all duration-200 hover:bg-accent-400 ${
+          className={`absolute bottom-3 left-1/2 z-20 flex h-9 w-9 -translate-x-1/2 items-center justify-center rounded-full bg-accent-700 text-white shadow-xl shadow-black/50 transition-all duration-200 hover:bg-accent-900 ${
             showScrollTop
               ? 'translate-y-0 opacity-100'
               : 'pointer-events-none translate-y-14 opacity-0'
@@ -220,12 +220,12 @@ function RollCard({
   return (
     <button
       onClick={onClick}
-      className={`w-full rounded-lg border border-void-600 bg-void-800 p-3 text-left transition hover:border-accent-500 ${isOwn ? 'border-l-4 border-l-accent-500' : ''} ${highlighted ? 'roll-flash' : ''}`}
+      className={`w-full rounded-lg border border-gray-400 bg-background-200 p-3 text-left transition hover:border-accent-700 ${isOwn ? 'border-l-4 border-l-accent-700' : ''} ${highlighted ? 'roll-flash' : ''}`}
     >
-      <div className="flex items-baseline justify-between gap-2 text-xs text-gray-400">
+      <div className="flex items-baseline justify-between gap-2 text-xs text-gray-900">
         <span className="min-w-0 flex-1 truncate">{label}</span>
         <span
-          className="shrink-0 text-gray-500"
+          className="shrink-0 text-gray-700"
           title={new Date(roll.created_at).toLocaleString()}
         >
           {relativeTime(roll.created_at, now)}
@@ -234,13 +234,13 @@ function RollCard({
       <div className="mt-0.5">
         <span className="font-medium text-white">{skill}</span>
         {modifier !== 0 && (
-          <span className="ml-1.5 text-xs text-gray-500">
+          <span className="ml-1.5 text-xs text-gray-700">
             ({modifier > 0 ? '+' : ''}
             {modifier})
           </span>
         )}
         {roll.is_hidden && (
-          <span className="ml-1.5 rounded bg-warning-500/20 px-1.5 py-0.5 text-[10px] text-warning-400">
+          <span className="ml-1.5 rounded bg-warning-700/20 px-1.5 py-0.5 text-[10px] text-warning-900">
             HIDDEN
           </span>
         )}
@@ -248,12 +248,12 @@ function RollCard({
 
       <div className="mt-2 flex flex-wrap items-center gap-2">
         {ordered.length === 0 ? (
-          <span className="text-xs text-gray-500">No symbols</span>
+          <span className="text-xs text-gray-700">No symbols</span>
         ) : (
           ordered.map((s) => (
             <span
               key={s}
-              className="inline-flex items-center gap-1 text-xs text-gray-300"
+              className="inline-flex items-center gap-1 text-xs text-gray-1000"
             >
               <img
                 src={`/img/symbols/${s}.png`}
@@ -262,7 +262,7 @@ function RollCard({
                 height={16}
               />
               <span className="capitalize">{s}</span>
-              <span className="text-gray-400">×{summary[s]}</span>
+              <span className="text-gray-900">×{summary[s]}</span>
             </span>
           ))
         )}
@@ -288,7 +288,7 @@ function RollDetails({
       align="center"
       title={
         <>
-          {label} <span className="text-gray-400">· {skill}</span>
+          {label} <span className="text-gray-900">· {skill}</span>
         </>
       }
     >

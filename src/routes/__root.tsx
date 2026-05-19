@@ -34,7 +34,7 @@ function RootDocument({ children }: { children: ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body className="bg-void-900 text-gray-100 min-h-screen antialiased">
+      <body className="bg-background-100 text-gray-1000 min-h-screen antialiased">
         {children}
         <TanStackRouterDevtools />
         <Scripts />

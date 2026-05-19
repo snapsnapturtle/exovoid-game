@@ -45,7 +45,7 @@ function SignupPage() {
         <div>
           <label
             htmlFor="displayName"
-            className="mb-1 block text-sm text-gray-400"
+            className="mb-1 block text-sm text-gray-900"
           >
             Display Name
           </label>
@@ -55,12 +55,12 @@ function SignupPage() {
             required
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
-            className="w-full rounded-lg border border-void-600 bg-void-700 px-4 py-2 text-white placeholder-gray-500 focus:border-accent-400 focus:outline-none"
+            className="w-full rounded-lg border border-gray-400 bg-gray-100 px-4 py-2 text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
             placeholder="Your name"
           />
         </div>
         <div>
-          <label htmlFor="email" className="mb-1 block text-sm text-gray-400">
+          <label htmlFor="email" className="mb-1 block text-sm text-gray-900">
             Email
           </label>
           <input
@@ -69,14 +69,14 @@ function SignupPage() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-lg border border-void-600 bg-void-700 px-4 py-2 text-white placeholder-gray-500 focus:border-accent-400 focus:outline-none"
+            className="w-full rounded-lg border border-gray-400 bg-gray-100 px-4 py-2 text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
             placeholder="you@example.com"
           />
         </div>
         <div>
           <label
             htmlFor="password"
-            className="mb-1 block text-sm text-gray-400"
+            className="mb-1 block text-sm text-gray-900"
           >
             Password
           </label>
@@ -87,20 +87,20 @@ function SignupPage() {
             minLength={6}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-lg border border-void-600 bg-void-700 px-4 py-2 text-white placeholder-gray-500 focus:border-accent-400 focus:outline-none"
+            className="w-full rounded-lg border border-gray-400 bg-gray-100 px-4 py-2 text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
             placeholder="At least 6 characters"
           />
         </div>
         {error && (
-          <p className="text-sm text-danger-400">{error}</p>
+          <p className="text-sm text-danger-900">{error}</p>
         )}
         <Button type="submit" disabled={loading} className="w-full">
           {loading ? 'Creating account...' : 'Sign Up'}
         </Button>
       </form>
-      <p className="mt-4 text-center text-sm text-gray-400">
+      <p className="mt-4 text-center text-sm text-gray-900">
         Already have an account?{' '}
-        <a href="/login" className="text-accent-400 hover:underline">
+        <a href="/login" className="text-accent-900 hover:underline">
           Log in
         </a>
       </p>

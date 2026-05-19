@@ -50,42 +50,42 @@ export function AddCatalogItemModal({
       onClick={onClose}
     >
       <div
-        className="flex max-h-[90vh] w-full max-w-2xl flex-col modal-card-in rounded-xl border border-void-600 bg-void-800"
+        className="flex max-h-[90vh] w-full max-w-2xl flex-col modal-card-in rounded-xl border border-gray-400 bg-background-200"
         onClick={(e) => e.stopPropagation()}
       >
-        <header className="flex items-start justify-between gap-3 border-b border-void-600 px-5 py-4">
+        <header className="flex items-start justify-between gap-3 border-b border-gray-400 px-5 py-4">
           <div>
             <h3 className="text-lg font-semibold text-white">
               Add catalog item
             </h3>
-            <p className="mt-1 text-xs text-gray-400">
+            <p className="mt-1 text-xs text-gray-900">
               Pick an item from the rulebook catalog. Custom items have their
               own form.
             </p>
           </div>
           <button
             onClick={onClose}
-            className="text-gray-400 transition hover:text-white"
+            className="text-gray-900 transition hover:text-white"
             aria-label="Close"
           >
             ✕
           </button>
         </header>
 
-        <div className="border-b border-void-600 px-5 py-3">
+        <div className="border-b border-gray-400 px-5 py-3">
           <input
             autoFocus
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search by name, category, description…"
-            className="w-full rounded-lg border border-void-600 bg-void-700 px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-accent-400 focus:outline-none"
+            className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
           />
         </div>
 
         <div className="flex-1 overflow-y-auto px-5 py-3">
           {matches.length === 0 ? (
-            <p className="py-6 text-center text-sm text-gray-500">
+            <p className="py-6 text-center text-sm text-gray-700">
               No items match.
             </p>
           ) : (
@@ -98,21 +98,21 @@ export function AddCatalogItemModal({
                       onClick={() => setSelected(it)}
                       className={`w-full rounded-lg border p-2 text-left transition ${
                         isSelected
-                          ? 'border-accent-500 bg-accent-500/15'
-                          : 'border-void-600 bg-void-900/40 hover:border-accent-500/50 hover:bg-accent-500/5'
+                          ? 'border-accent-700 bg-accent-700/15'
+                          : 'border-gray-400 bg-background-100/40 hover:border-accent-700/50 hover:bg-accent-700/5'
                       }`}
                     >
                       <div className="flex flex-wrap items-baseline gap-2">
-                        <span className="text-[10px] uppercase tracking-wide text-gray-500">
+                        <span className="text-[10px] uppercase tracking-wide text-gray-700">
                           {it.category}
                         </span>
                         <span className="font-medium text-white">{it.name}</span>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-gray-700">
                           {it.cost.toLocaleString()} ¢ · r{it.rarity}
                           {it.size > 0 && ` · size ${it.size}`}
                         </span>
                       </div>
-                      <p className="mt-0.5 line-clamp-2 text-xs text-gray-400">
+                      <p className="mt-0.5 line-clamp-2 text-xs text-gray-900">
                         {it.description}
                       </p>
                     </button>
@@ -123,9 +123,9 @@ export function AddCatalogItemModal({
           )}
         </div>
 
-        <footer className="flex flex-wrap items-end justify-between gap-3 border-t border-void-600 px-5 py-3">
+        <footer className="flex flex-wrap items-end justify-between gap-3 border-t border-gray-400 px-5 py-3">
           <div className="flex gap-3">
-            <label className="text-xs text-gray-400">
+            <label className="text-xs text-gray-900">
               <span className="block">Quantity</span>
               <input
                 type="number"
@@ -134,17 +134,17 @@ export function AddCatalogItemModal({
                 onChange={(e) =>
                   setQuantity(Math.max(1, parseInt(e.target.value, 10) || 1))
                 }
-                className="mt-1 w-20 rounded border border-void-600 bg-void-700 px-2 py-1 text-sm text-white focus:border-accent-400 focus:outline-none"
+                className="mt-1 w-20 rounded border border-gray-400 bg-gray-100 px-2 py-1 text-sm text-white focus:border-accent-900 focus:outline-none"
               />
             </label>
-            <label className="text-xs text-gray-400">
+            <label className="text-xs text-gray-900">
               <span className="block">Location (optional)</span>
               <input
                 type="text"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 placeholder="e.g. backpack"
-                className="mt-1 w-44 rounded border border-void-600 bg-void-700 px-2 py-1 text-sm text-white placeholder-gray-500 focus:border-accent-400 focus:outline-none"
+                className="mt-1 w-44 rounded border border-gray-400 bg-gray-100 px-2 py-1 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
               />
             </label>
           </div>

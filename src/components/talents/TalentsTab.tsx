@@ -37,25 +37,25 @@ export function TalentsTab({
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <div className="text-sm text-gray-300">
+        <div className="text-sm text-gray-1000">
           <span className="font-medium text-white">{spent}</span>
-          <span className="text-gray-500"> / </span>
-          <span className="text-gray-400">{total}</span>
-          <span className="ml-2 text-xs text-gray-500">
+          <span className="text-gray-700"> / </span>
+          <span className="text-gray-900">{total}</span>
+          <span className="ml-2 text-xs text-gray-700">
             ({available} available)
           </span>
         </div>
         <Link
           to="/games/$gameId/characters/$characterId/talents"
           params={{ gameId, characterId }}
-          className="text-xs text-accent-400 transition hover:text-accent-300 hover:underline"
+          className="text-xs text-accent-900 transition hover:text-accent-900 hover:underline"
         >
           Manage talents →
         </Link>
       </div>
 
       {talents.length === 0 ? (
-        <p className="py-6 text-center text-sm text-gray-500">
+        <p className="py-6 text-center text-sm text-gray-700">
           No talents unlocked yet.
           {career ? ` Pick from the ${career} tree to grow your character.` : ''}
         </p>
@@ -63,17 +63,17 @@ export function TalentsTab({
         <div className="space-y-3">
           {tiers.map((tier) => (
             <div key={tier}>
-              <div className="mb-1 text-xs uppercase tracking-wide text-gray-500">
+              <div className="mb-1 text-xs uppercase tracking-wide text-gray-700">
                 Tier {tier}
               </div>
               <ul className="space-y-1">
                 {grouped.get(tier)!.map((t) => (
                   <li
                     key={t.name}
-                    className="rounded border border-void-600 bg-void-700/40 p-2 text-sm"
+                    className="rounded border border-gray-400 bg-gray-100/40 p-2 text-sm"
                   >
                     <div className="font-medium text-white">{t.name}</div>
-                    <div className="mt-0.5 text-xs text-gray-400">
+                    <div className="mt-0.5 text-xs text-gray-900">
                       {DESCRIPTION_BY_NAME.get(t.name) ?? '—'}
                     </div>
                   </li>
@@ -83,17 +83,17 @@ export function TalentsTab({
           ))}
           {granted.length > 0 && (
             <div>
-              <div className="mb-1 text-xs uppercase tracking-wide text-cyber-400">
+              <div className="mb-1 text-xs uppercase tracking-wide text-accent-900">
                 Granted
               </div>
               <ul className="space-y-1">
                 {granted.map((t) => (
                   <li
                     key={t.name}
-                    className="rounded border border-cyber-500/40 bg-void-700/40 p-2 text-sm"
+                    className="rounded border border-accent-700/40 bg-gray-100/40 p-2 text-sm"
                   >
                     <div className="font-medium text-white">{t.name}</div>
-                    <div className="mt-0.5 text-xs text-gray-400">
+                    <div className="mt-0.5 text-xs text-gray-900">
                       {DESCRIPTION_BY_NAME.get(t.name) ?? '—'}
                     </div>
                   </li>

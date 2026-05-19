@@ -36,10 +36,10 @@ export function TalentTreeCareer({
   const tiers = [...byTier.keys()].sort((a, b) => a - b)
 
   return (
-    <section className="rounded-xl border border-void-600 bg-void-800 p-4">
+    <section className="rounded-xl border border-gray-400 bg-background-200 p-4">
       <header className="mb-3 flex items-baseline justify-between">
         <h3 className="text-lg font-semibold text-white">{career.name}</h3>
-        <span className="text-xs text-gray-500">
+        <span className="text-xs text-gray-700">
           {unlockedCount} unlocked in this career
         </span>
       </header>
@@ -47,7 +47,7 @@ export function TalentTreeCareer({
       <div className="space-y-3">
         {tiers.map((tier) => (
           <div key={tier} className="flex items-start gap-3">
-            <div className="w-14 shrink-0 pt-2 text-xs uppercase tracking-wide text-gray-500">
+            <div className="w-14 shrink-0 pt-2 text-xs uppercase tracking-wide text-gray-700">
               Tier {tier}
             </div>
             <div className="flex flex-1 flex-wrap gap-2">

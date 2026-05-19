@@ -88,7 +88,7 @@ export function InventoryPage({
         <Link
           to="/games/$gameId/characters/$characterId"
           params={{ gameId: character.game_id, characterId: character.id }}
-          className="text-sm text-gray-400 transition hover:text-white"
+          className="text-sm text-gray-900 transition hover:text-white"
         >
           ← {character.name || 'Character'}
         </Link>
@@ -116,7 +116,7 @@ export function InventoryPage({
         }
       />
 
-      <div className="flex gap-1 rounded-xl border border-void-600 bg-void-800 p-1">
+      <div className="flex gap-1 rounded-xl border border-gray-400 bg-background-200 p-1">
         <TabButton
           active={tab === 'mine'}
           onClick={() => setTab('mine')}
@@ -352,13 +352,13 @@ function TabButton({
       onClick={onClick}
       className={`flex-1 rounded-lg px-3 py-2 text-sm font-medium transition ${
         active
-          ? 'bg-accent-500/20 text-accent-200'
-          : 'text-gray-400 hover:bg-void-700 hover:text-white'
+          ? 'bg-accent-700/20 text-accent-900'
+          : 'text-gray-900 hover:bg-gray-100 hover:text-white'
       }`}
     >
       {label}
       <span
-        className={`ml-2 text-xs ${active ? 'text-accent-300/80' : 'text-gray-500'}`}
+        className={`ml-2 text-xs ${active ? 'text-accent-900/80' : 'text-gray-700'}`}
       >
         {count}
       </span>
@@ -388,7 +388,7 @@ function CurrencyBar({
   onSetParty,
 }: CurrencyBarProps) {
   return (
-    <section className="grid gap-3 rounded-xl border border-void-600 bg-void-800 p-4 sm:grid-cols-2">
+    <section className="grid gap-3 rounded-xl border border-gray-400 bg-background-200 p-4 sm:grid-cols-2">
       <CurrencyGroup
         label="Mine"
         credits={characterCredits}
@@ -425,8 +425,8 @@ function CurrencyGroup({
   onSet: (updates: { credits?: number; assets?: number }) => void
 }) {
   return (
-    <div className="rounded-lg border border-void-600 bg-void-900/40 p-3">
-      <div className="mb-2 text-xs font-medium uppercase tracking-wide text-gray-400">
+    <div className="rounded-lg border border-gray-400 bg-background-100/40 p-3">
+      <div className="mb-2 text-xs font-medium uppercase tracking-wide text-gray-900">
         {label}
       </div>
       <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
@@ -485,7 +485,7 @@ function NumberField({
 
   if (editing) {
     return (
-      <label className="flex items-baseline gap-1 text-xs text-gray-400">
+      <label className="flex items-baseline gap-1 text-xs text-gray-900">
         <span>{label}</span>
         <input
           autoFocus
@@ -502,9 +502,9 @@ function NumberField({
               setEditing(false)
             }
           }}
-          className="w-20 rounded border border-accent-500 bg-void-700 px-1.5 py-0.5 text-sm text-white focus:outline-none"
+          className="w-20 rounded border border-accent-700 bg-gray-100 px-1.5 py-0.5 text-sm text-white focus:outline-none"
         />
-        <span className="text-gray-500">{suffix}</span>
+        <span className="text-gray-700">{suffix}</span>
       </label>
     )
   }
@@ -516,11 +516,11 @@ function NumberField({
       disabled={!canEdit}
       className="flex items-baseline gap-1 text-left disabled:cursor-default"
     >
-      <span className="text-xs text-gray-400">{label}</span>
-      <span className="font-mono text-base font-semibold text-white">
+      <span className="text-xs text-gray-900">{label}</span>
+      <span className="text-base font-semibold text-white">
         {value.toLocaleString()}
       </span>
-      <span className="text-xs text-gray-500">{suffix}</span>
+      <span className="text-xs text-gray-700">{suffix}</span>
     </button>
   )
 }
@@ -566,32 +566,32 @@ function InventoryColumn({
   const groups = useMemo(() => inventoryByLocation(items), [items])
 
   return (
-    <section className="rounded-xl border border-void-600 bg-void-800">
-      <header className="flex flex-wrap items-center justify-between gap-2 border-b border-void-600 px-4 py-3">
+    <section className="rounded-xl border border-gray-400 bg-background-200">
+      <header className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-400 px-4 py-3">
         <h2 className="text-base font-semibold text-white">{title}</h2>
         {canEdit && (
           <div className="flex gap-2">
             <button
               onClick={onAddCatalog}
-              className="rounded-lg border border-accent-500/60 bg-accent-500/15 px-2.5 py-1 text-xs font-medium text-accent-200 transition hover:bg-accent-500/25"
+              className="rounded-lg border border-accent-700/60 bg-accent-700/15 px-2.5 py-1 text-xs font-medium text-accent-900 transition hover:bg-accent-700/25"
             >
               + Catalog
             </button>
             <button
               onClick={onAddWeapon}
-              className="rounded-lg border border-cyber-500/60 bg-cyber-500/15 px-2.5 py-1 text-xs font-medium text-cyber-200 transition hover:bg-cyber-500/25"
+              className="rounded-lg border border-accent-700/60 bg-accent-700/15 px-2.5 py-1 text-xs font-medium text-accent-900 transition hover:bg-accent-700/25"
             >
               + Weapon
             </button>
             <button
               onClick={onAddArmor}
-              className="rounded-lg border border-cyber-500/60 bg-cyber-500/15 px-2.5 py-1 text-xs font-medium text-cyber-200 transition hover:bg-cyber-500/25"
+              className="rounded-lg border border-accent-700/60 bg-accent-700/15 px-2.5 py-1 text-xs font-medium text-accent-900 transition hover:bg-accent-700/25"
             >
               + Armor
             </button>
             <button
               onClick={onAddCustom}
-              className="rounded-lg border border-void-600 bg-void-700 px-2.5 py-1 text-xs text-gray-300 transition hover:border-accent-500 hover:text-white"
+              className="rounded-lg border border-gray-400 bg-gray-100 px-2.5 py-1 text-xs text-gray-1000 transition hover:border-accent-700 hover:text-white"
             >
               + Custom
             </button>
@@ -599,17 +599,17 @@ function InventoryColumn({
         )}
       </header>
       {items.length === 0 ? (
-        <p className="py-8 text-center text-sm text-gray-500">
+        <p className="py-8 text-center text-sm text-gray-700">
           No items yet.
         </p>
       ) : (
-        <div className="divide-y divide-void-700">
+        <div className="divide-y divide-gray-100">
           {groups.map((g) => (
             <div key={g.location}>
-              <div className="bg-void-900/40 px-4 py-1.5 text-[11px] font-medium uppercase tracking-wide text-gray-500">
+              <div className="bg-background-100/40 px-4 py-1.5 text-[11px] font-medium uppercase tracking-wide text-gray-700">
                 {g.location}
               </div>
-              <ul className="divide-y divide-void-700/60">
+              <ul className="divide-y divide-gray-100/60">
                 {g.items.map((item) => (
                   <ItemRow
                     key={item.id}
@@ -730,7 +730,7 @@ function ItemRow({
                   setEditingName(false)
                 }
               }}
-              className="rounded border border-accent-500 bg-void-700 px-1.5 py-0.5 text-sm font-medium text-white focus:outline-none"
+              className="rounded border border-accent-700 bg-gray-100 px-1.5 py-0.5 text-sm font-medium text-white focus:outline-none"
             />
           ) : (
             <button
@@ -744,27 +744,27 @@ function ItemRow({
             </button>
           )}
           {catalog && (
-            <span className="text-[10px] uppercase tracking-wide text-gray-500">
+            <span className="text-[10px] uppercase tracking-wide text-gray-700">
               {catalog.category}
             </span>
           )}
           {weapon && (
-            <span className="rounded border border-cyber-500/40 bg-cyber-500/10 px-1 py-0.5 text-[10px] uppercase tracking-wide text-cyber-300">
+            <span className="rounded border border-accent-700/40 bg-accent-700/10 px-1 py-0.5 text-[10px] uppercase tracking-wide text-accent-900">
               {weapon.type} · {weapon.weapon}
             </span>
           )}
           {armor && (
-            <span className="rounded border border-cyber-500/40 bg-cyber-500/10 px-1 py-0.5 text-[10px] uppercase tracking-wide text-cyber-300">
+            <span className="rounded border border-accent-700/40 bg-accent-700/10 px-1 py-0.5 text-[10px] uppercase tracking-wide text-accent-900">
               Armor · {armor.type}
             </span>
           )}
           {item.source === 'custom' && (
-            <span className="rounded border border-void-600 bg-void-700 px-1 py-0.5 text-[10px] uppercase tracking-wide text-gray-400">
+            <span className="rounded border border-gray-400 bg-gray-100 px-1 py-0.5 text-[10px] uppercase tracking-wide text-gray-900">
               Custom
             </span>
           )}
           {item.equipped && (
-            <span className="rounded border border-accent-500/60 bg-accent-500/15 px-1 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-accent-200">
+            <span className="rounded border border-accent-700/60 bg-accent-700/15 px-1 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-accent-900">
               Equipped
             </span>
           )}
@@ -790,7 +790,7 @@ function ItemRow({
             title={expanded ? 'Click to collapse' : 'Click to expand'}
           >
             <span
-              className={`text-xs text-gray-400 transition hover:text-gray-300 ${
+              className={`text-xs text-gray-900 transition hover:text-gray-1000 ${
                 expanded ? 'block whitespace-pre-line' : 'line-clamp-2'
               }`}
             >
@@ -811,13 +811,13 @@ function ItemRow({
                 else if (e.key === 'Escape') setEditingLocation(false)
               }}
               placeholder="Location (e.g. backpack)"
-              className="rounded border border-accent-500 bg-void-700 px-1.5 py-0.5 text-xs text-white focus:outline-none"
+              className="rounded border border-accent-700 bg-gray-100 px-1.5 py-0.5 text-xs text-white focus:outline-none"
             />
           ) : (
             <button
               type="button"
               onClick={() => setEditingLocation(true)}
-              className="text-[11px] text-gray-500 transition hover:text-accent-300"
+              className="text-[11px] text-gray-700 transition hover:text-accent-900"
             >
               {item.location ? `In ${item.location} · change` : '+ Set location'}
             </button>
@@ -829,10 +829,10 @@ function ItemRow({
             <button
               onClick={() => onToggleEquipped(!item.equipped)}
               disabled={busy}
-              className={`rounded border px-2 py-0.5 text-[11px] font-medium transition disabled:opacity-40 ${
+              className={`rounded border px-2 py-0.5 text-[11px] font-medium transition disabled:cursor-not-allowed disabled:opacity-40 ${
                 item.equipped
-                  ? 'border-accent-500 bg-accent-500/20 text-accent-200 hover:bg-accent-500/30'
-                  : 'border-void-600 bg-void-700 text-gray-300 hover:border-accent-500/60 hover:text-white'
+                  ? 'border-accent-700 bg-accent-700/20 text-accent-900 not-disabled:hover:bg-accent-700/30'
+                  : 'border-gray-400 bg-gray-100 text-gray-1000 not-disabled:hover:border-accent-700/60 not-disabled:hover:text-white'
               }`}
             >
               {item.equipped ? 'Equipped' : 'Equip'}
@@ -851,7 +851,7 @@ function ItemRow({
             <button
               onClick={onTransfer}
               disabled={busy}
-              className="rounded border border-void-600 bg-void-700 px-1.5 py-0.5 text-[11px] text-gray-300 transition hover:border-accent-500 hover:text-white disabled:opacity-40"
+              className="rounded border border-gray-400 bg-gray-100 px-1.5 py-0.5 text-[11px] text-gray-1000 transition not-disabled:hover:border-accent-700 not-disabled:hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
               title="Transfer the whole stack"
             >
               {transferLabel}
@@ -859,7 +859,7 @@ function ItemRow({
             <button
               onClick={onRemove}
               disabled={busy}
-              className="rounded border border-void-600 bg-void-700 px-1.5 py-0.5 text-[11px] text-gray-400 transition hover:border-danger-500 hover:text-danger-300 disabled:opacity-40"
+              className="rounded border border-gray-400 bg-gray-100 px-1.5 py-0.5 text-[11px] text-gray-900 transition not-disabled:hover:border-danger-700 not-disabled:hover:text-danger-900 disabled:cursor-not-allowed disabled:opacity-40"
               title="Remove"
             >
               ×
@@ -878,34 +878,34 @@ function WeaponStats({
 }) {
   return (
     <div className="space-y-1">
-      <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-gray-400">
+      <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-gray-900">
         <span>
-          <span className="text-gray-500">DMG:</span>{' '}
-          <span className="text-gray-200">
+          <span className="text-gray-700">DMG:</span>{' '}
+          <span className="text-gray-1000">
             {weapon.damage} {weapon.damageType}
           </span>
         </span>
         <span>
-          <span className="text-gray-500">AP:</span>{' '}
-          <span className="text-gray-200">{weapon.attackAP}</span>
+          <span className="text-gray-700">AP:</span>{' '}
+          <span className="text-gray-1000">{weapon.attackAP}</span>
         </span>
         <span>
-          <span className="text-gray-500">Range:</span>{' '}
-          <span className="text-gray-200">
+          <span className="text-gray-700">Range:</span>{' '}
+          <span className="text-gray-1000">
             {weapon.optimalRange}
             {weapon.maxRange != null ? ` / ${weapon.maxRange}` : ''}
           </span>
         </span>
         <span>
-          <span className="text-gray-500">Hands:</span>{' '}
-          <span className="text-gray-200">{weapon.hands}</span>
+          <span className="text-gray-700">Hands:</span>{' '}
+          <span className="text-gray-1000">{weapon.hands}</span>
         </span>
         {weapon.magazine != null && (
           <span>
-            <span className="text-gray-500">Mag:</span>{' '}
-            <span className="text-gray-200">{weapon.magazine}</span>
+            <span className="text-gray-700">Mag:</span>{' '}
+            <span className="text-gray-1000">{weapon.magazine}</span>
             {weapon.reloadAP != null && (
-              <span className="text-gray-500"> · reload {weapon.reloadAP} AP</span>
+              <span className="text-gray-700"> · reload {weapon.reloadAP} AP</span>
             )}
           </span>
         )}
@@ -942,20 +942,20 @@ function ArmorStats({
     (currentDurability ?? armor.durability) <= 0
   return (
     <div className="space-y-1">
-      <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-gray-400">
+      <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-gray-900">
         <span>
-          <span className="text-gray-500">Soak:</span>{' '}
-          <span className={broken ? 'text-warning-400' : 'text-gray-200'}>
+          <span className="text-gray-700">Soak:</span>{' '}
+          <span className={broken ? 'text-warning-900' : 'text-gray-1000'}>
             {broken ? armor.secondarySoak : armor.primarySoak}
           </span>
-          <span className="text-gray-500">
+          <span className="text-gray-700">
             {' '}
             (pri {armor.primarySoak} / sec {armor.secondarySoak})
           </span>
         </span>
         {armor.durability != null && (
           <span className="inline-flex items-center gap-1">
-            <span className="text-gray-500">Durability:</span>
+            <span className="text-gray-700">Durability:</span>
             <DurabilityStepper
               value={currentDurability ?? armor.durability}
               max={armor.durability}
@@ -963,7 +963,7 @@ function ArmorStats({
               busy={busy}
               onCommit={onDurabilityChange}
             />
-            <span className="text-gray-500">/ {armor.durability}</span>
+            <span className="text-gray-700">/ {armor.durability}</span>
           </span>
         )}
       </div>
@@ -998,15 +998,15 @@ function DurabilityStepper({
         <button
           onClick={() => onCommit(Math.max(0, value - 1))}
           disabled={busy || value <= 0}
-          className="h-5 w-5 rounded border border-void-600 bg-void-700 text-xs text-gray-300 transition hover:border-accent-500 hover:text-white disabled:opacity-30"
+          className="h-5 w-5 rounded border border-gray-400 bg-gray-100 text-xs text-gray-1000 transition not-disabled:hover:border-accent-700 not-disabled:hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
           aria-label="Decrease durability"
         >
           −
         </button>
       )}
       <span
-        className={`min-w-[1.25rem] text-center font-mono text-xs font-semibold ${
-          broken ? 'text-warning-400' : 'text-white'
+        className={`min-w-[1.25rem] text-center text-xs font-semibold ${
+          broken ? 'text-warning-900' : 'text-white'
         }`}
       >
         {value}
@@ -1015,7 +1015,7 @@ function DurabilityStepper({
         <button
           onClick={() => onCommit(Math.min(max, value + 1))}
           disabled={busy || value >= max}
-          className="h-5 w-5 rounded border border-void-600 bg-void-700 text-xs text-gray-300 transition hover:border-accent-500 hover:text-white disabled:opacity-30"
+          className="h-5 w-5 rounded border border-gray-400 bg-gray-100 text-xs text-gray-1000 transition not-disabled:hover:border-accent-700 not-disabled:hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
           aria-label="Increase durability"
         >
           +
@@ -1042,20 +1042,20 @@ function QuantityStepper({
         <button
           onClick={() => value > 1 && onCommit(value - 1)}
           disabled={busy || value <= 1}
-          className="h-6 w-6 rounded border border-void-600 bg-void-700 text-xs text-gray-300 transition hover:border-accent-500 hover:text-white disabled:opacity-30"
+          className="h-6 w-6 rounded border border-gray-400 bg-gray-100 text-xs text-gray-1000 transition not-disabled:hover:border-accent-700 not-disabled:hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
           aria-label="Decrease quantity"
         >
           −
         </button>
       )}
-      <span className="min-w-[2.25rem] text-center font-mono text-sm font-semibold text-white">
+      <span className="min-w-[2.25rem] text-center text-sm font-semibold text-white">
         ×{value}
       </span>
       {canEdit && (
         <button
           onClick={() => onCommit(value + 1)}
           disabled={busy}
-          className="h-6 w-6 rounded border border-void-600 bg-void-700 text-xs text-gray-300 transition hover:border-accent-500 hover:text-white disabled:opacity-30"
+          className="h-6 w-6 rounded border border-gray-400 bg-gray-100 text-xs text-gray-1000 transition not-disabled:hover:border-accent-700 not-disabled:hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
           aria-label="Increase quantity"
         >
           +

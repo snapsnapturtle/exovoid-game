@@ -50,17 +50,17 @@ export function RollResultView({
   return (
     <div>
       <div className="mb-5">
-        <p className="mb-2 text-xs uppercase tracking-wide text-gray-500">
+        <p className="mb-2 text-xs uppercase tracking-wide text-gray-700">
           Result
         </p>
         {ordered.length === 0 ? (
-          <p className="text-sm text-gray-500">No symbols</p>
+          <p className="text-sm text-gray-700">No symbols</p>
         ) : (
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
             {ordered.map((s) => (
               <span
                 key={s}
-                className="inline-flex items-center gap-1 text-sm text-gray-200"
+                className="inline-flex items-center gap-1 text-sm text-gray-1000"
               >
                 <img
                   src={`/img/symbols/${s}.png`}
@@ -69,7 +69,7 @@ export function RollResultView({
                   height={20}
                 />
                 <span className="capitalize">{s}</span>
-                <span className="text-gray-400">×{summary[s]}</span>
+                <span className="text-gray-900">×{summary[s]}</span>
               </span>
             ))}
           </div>
@@ -77,7 +77,7 @@ export function RollResultView({
       </div>
       {dice.length > 0 && (
         <div>
-          <p className="mb-2 text-xs uppercase tracking-wide text-gray-500">
+          <p className="mb-2 text-xs uppercase tracking-wide text-gray-700">
             Rolled Dice
           </p>
           <div className="flex flex-wrap gap-2">

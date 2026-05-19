@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Button } from '~/components/ui/Button'
 
 export type StepperSize = 'sm' | 'md'
 export type StepperValueTone = 'default' | 'accent' | 'danger'
@@ -10,8 +11,8 @@ const VALUE_SIZE: Record<StepperSize, string> = {
 
 const TONE: Record<StepperValueTone, string> = {
   default: 'text-white',
-  accent: 'text-accent-200',
-  danger: 'text-danger-400',
+  accent: 'text-accent-900',
+  danger: 'text-danger-900',
 }
 
 interface StepperProps {
@@ -49,44 +50,45 @@ export function Stepper({
   valueTone = 'default',
 }: StepperProps) {
   const ceiling = hardMax ?? max
-  const buttonClass =
-    'flex h-7 w-7 shrink-0 items-center justify-center rounded border border-void-600 bg-void-700 text-sm text-gray-300 transition hover:border-accent-500 hover:text-white disabled:opacity-30'
+  const stepBtnClass = 'h-7 w-7 shrink-0 px-0 py-0 text-base'
   return (
-    <div className="flex flex-col rounded-lg border border-void-600 bg-void-900/40 p-2">
+    <div className="flex flex-col rounded-lg border border-gray-400 bg-background-100/40 p-2">
       {label !== undefined && (
-        <div className="mb-1 text-[10px] font-medium uppercase tracking-wide text-gray-500">
+        <div className="mb-1 text-[10px] font-medium uppercase tracking-wide text-gray-700">
           {label}
         </div>
       )}
       <div className="flex items-center justify-between gap-2">
-        <button
-          type="button"
+        <Button
+          variant="subtle"
+          size="sm"
           onClick={() => onAdjust(-1)}
           disabled={!canEdit || busy || (min !== undefined && value <= min)}
           aria-label="Decrease"
-          className={buttonClass}
+          className={stepBtnClass}
         >
           −
-        </button>
+        </Button>
         <span
           className={`font-semibold leading-none ${VALUE_SIZE[size]} ${TONE[valueTone]}`}
         >
           {value}
           {max !== undefined && (
-            <span className="ml-1 text-xs text-gray-500">/ {max}</span>
+            <span className="ml-1 text-xs text-gray-700">/ {max}</span>
           )}
         </span>
-        <button
-          type="button"
+        <Button
+          variant="subtle"
+          size="sm"
           onClick={() => onAdjust(1)}
           disabled={
             !canEdit || busy || (ceiling !== undefined && value >= ceiling)
           }
           aria-label="Increase"
-          className={buttonClass}
+          className={stepBtnClass}
         >
           +
-        </button>
+        </Button>
       </div>
     </div>
   )

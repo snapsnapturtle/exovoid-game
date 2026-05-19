@@ -1,36 +1,184 @@
-@import 'tailwindcss' source('../');
+@import "tailwindcss" source("../");
 
-@theme {
-  /* Void scale follows Geist's pure-black + hairline-border philosophy:
-     page bg is true black, surfaces only step up by one (#111) and depth
-     comes from the universal #333 border, not from filled contrast. */
-  --color-void-900: #000000;
-  --color-void-800: #111111;
-  --color-void-700: #1a1a1a;
-  --color-void-600: #333333;
-  --color-void-500: #444444;
-  --color-accent-400: #3291ff;
-  --color-accent-500: #0070f3;
-  --color-accent-600: #0761d1;
-  --color-cyber-400: #22d3ee;
-  --color-cyber-500: #06b6d4;
-  --color-danger-400: #f87171;
-  --color-danger-500: #ef4444;
-  --color-success-400: #4ade80;
-  --color-success-500: #22c55e;
-  --color-warning-400: #fbbf24;
-  --color-warning-500: #f59e0b;
+/* Inter v4.1 — the official variable WOFF2 from rsms.me, self-hosted.
+   fontsource's variable Inter ships a heavily-subsetted file (only 10 of
+   Inter's ~42 OpenType features), so `zero`, all `cv*`, and all `ss*` are
+   stripped and unreachable via CSS no matter how features are configured.
+   This file is the unsubsetted v4.1 release direct from the font author. */
+@font-face {
+  font-family: 'InterVariable';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('./fonts/InterVariable.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'InterVariable';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('./fonts/InterVariable-Italic.woff2') format('woff2');
+}
+
+/* Inter feature defaults are set via `--default-font-feature-settings` in
+   the `@theme` block below. Tailwind v4's preflight reads that token on its
+   `html` rule (`font-feature-settings: --theme(--default-font-feature-settings, normal)`),
+   so the value cascades to every element and form controls (which explicitly
+   `font-feature-settings: inherit`) pick it up too. Code / pre / kbd / samp
+   reset to mono defaults — that's expected. Avoid setting font-feature-settings
+   and font-variant-numeric together on the same element; some browsers reset
+   one when the other is set. */
+
+/* Subtle press feedback on every enabled <button>. Tailwind v4's `transition`
+   utility includes `scale` in its property list, which would lerp the press
+   over 150ms and feel laggy — override the property list on buttons to drop
+   the transform-family properties so the press registers instantly. Hover
+   color transitions keep their default 150ms ease. */
+button:not(:disabled) {
+  transition-property:
+    color, background-color, border-color, outline-color, text-decoration-color,
+    fill, stroke, opacity, box-shadow, filter, backdrop-filter;
+}
+button:not(:disabled):active {
+  scale: 0.98;
+}
+
+@theme static {
+  /* Typography — Inter Variable (single woff2 covers all weights).
+     Feature defaults: tabular figures, slashed zero, plus Inter v4's
+     per-digit alternates for 3 / 4 / 6 / 9. These are picked up by
+     Tailwind preflight's `--theme(--default-font-feature-settings, normal)`
+     and inherited globally. Avoid `ss01` — it substitutes every digit
+     (including 0) and would override the slashed zero. */
+  --font-sans:
+    "InterVariable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --default-font-feature-settings: "tnum", "zero", "cv09", "cv02", "cv03", "cv04";
+
+  /* Background — page and elevated surfaces. Geist's convention is to use
+     `background-100` as the *default* page/element background and reach for
+     `background-200` only when a surface needs a subtle differentiation from
+     the rest of the page (200 sits one step lighter for soft elevation). */
+  --color-background-100: hsla(0, 0%, 0%, 1);
+  --color-background-200: hsla(0, 0%, 4%, 1);
+
+  /* Geist semantic ramps (100–1000). Going from dark surface tints (100–300)
+     through borders (400–500) and subtle interactive fills (600) up to the
+     primary interactive shade (700), pressed (800), emphasis text (900),
+     and the brightest text/icon (1000). */
+
+  /* Accent — teal (primary brand color). */
+  --color-accent-100: oklch(22.1% 0.0544 178.74);
+  --color-accent-200: oklch(25.06% 0.062 178.76);
+  --color-accent-300: oklch(31.5% 0.0767 180.99);
+  --color-accent-400: oklch(32.43% 0.0763 180.13);
+  --color-accent-500: oklch(43.35% 0.1055 180.97);
+  --color-accent-600: oklch(60.71% 0.1485 180.24);
+  --color-accent-700: oklch(64.92% 0.1403 181.95);
+  --color-accent-800: oklch(57.53% 0.1392 181.66);
+  --color-accent-900: oklch(74.56% 0.1765 182.8);
+  --color-accent-1000: oklch(96.46% 0.056 180.29);
+
+  /* Danger — red. */
+  --color-danger-100: oklch(22.1% 0.0657 15.11);
+  --color-danger-200: oklch(25.93% 0.0834 19.02);
+  --color-danger-300: oklch(31.47% 0.1105 20.96);
+  --color-danger-400: oklch(35.27% 0.1273 21.23);
+  --color-danger-500: oklch(40.68% 0.1479 23.16);
+  --color-danger-600: oklch(62.56% 0.2277 23.03);
+  --color-danger-700: oklch(62.56% 0.2234 23.03);
+  --color-danger-800: oklch(58.01% 0.227 25.12);
+  --color-danger-900: oklch(69.96% 0.2136 22.03);
+  --color-danger-1000: oklch(95.6% 0.0293 6.61);
+
+  /* Warning — amber. */
+  --color-warning-100: oklch(22.46% 0.0538 76.04);
+  --color-warning-200: oklch(24.95% 0.0642 64.78);
+  --color-warning-300: oklch(32.34% 0.0837 63.83);
+  --color-warning-400: oklch(35.53% 0.0903 66.2971);
+  --color-warning-500: oklch(41.55% 0.1044 67.98);
+  --color-warning-600: oklch(75.04% 0.1737 74.49);
+  --color-warning-700: oklch(81.87% 0.1969 76.46);
+  --color-warning-800: oklch(77.21% 0.1991 64.28);
+  --color-warning-900: oklch(77.21% 0.1991 64.28);
+  --color-warning-1000: oklch(96.7% 0.0418 84.59);
+
+  /* Success — green. */
+  --color-success-100: oklch(23.09% 0.0716 149.68);
+  --color-success-200: oklch(27.12% 0.0895 150.09);
+  --color-success-300: oklch(29.84% 0.096 149.25);
+  --color-success-400: oklch(34.39% 0.1039 147.78);
+  --color-success-500: oklch(44.19% 0.1484 147.2);
+  --color-success-600: oklch(58.11% 0.1815 146.55);
+  --color-success-700: oklch(64.58% 0.199 147.27);
+  --color-success-800: oklch(57.81% 0.1776 147.5);
+  --color-success-900: oklch(73.1% 0.2158 148.29);
+  --color-success-1000: oklch(96.76% 0.056 154.18);
+
+  /* Extended Geist palette — available, not used by default. */
+
+  /* Blue. */
+  --color-blue-100: oklch(22.17% 0.069 259.89);
+  --color-blue-200: oklch(25.45% 0.0811 255.8);
+  --color-blue-300: oklch(30.86% 0.1022 255.21);
+  --color-blue-400: oklch(34.1% 0.121 254.74);
+  --color-blue-500: oklch(38.5% 0.1403 254.4);
+  --color-blue-600: oklch(64.94% 0.1982 251.813);
+  --color-blue-700: oklch(57.61% 0.2321 258.23);
+  --color-blue-800: oklch(51.51% 0.2307 257.85);
+  --color-blue-900: oklch(71.7% 0.1648 250.794);
+  --color-blue-1000: oklch(96.75% 0.0179 242.423);
+
+  /* Purple. */
+  --color-purple-100: oklch(22.34% 0.0779 316.87);
+  --color-purple-200: oklch(25.91% 0.0921 314.41);
+  --color-purple-300: oklch(31.98% 0.1219 312.41);
+  --color-purple-400: oklch(35.93% 0.1504 309.78);
+  --color-purple-500: oklch(40.99% 0.1721 307.92);
+  --color-purple-600: oklch(55.5% 0.2191 306.12);
+  --color-purple-700: oklch(55.5% 0.2186 306.12);
+  --color-purple-800: oklch(48.58% 0.2102 305.73);
+  --color-purple-900: oklch(69.87% 0.2037 309.51);
+  --color-purple-1000: oklch(96.1% 0.0304 316.46);
+
+  /* Pink. */
+  --color-pink-100: oklch(22.67% 0.0628 354.73);
+  --color-pink-200: oklch(26.2% 0.0859 356.68);
+  --color-pink-300: oklch(31.15% 0.1067 355.93);
+  --color-pink-400: oklch(32.13% 0.1174 356.71);
+  --color-pink-500: oklch(37.01% 0.1453 358.39);
+  --color-pink-600: oklch(50.33% 0.2089 4.33);
+  --color-pink-700: oklch(63.52% 0.2346 1.01);
+  --color-pink-800: oklch(59.51% 0.2429 4.21);
+  --color-pink-900: oklch(69.36% 0.2223 3.91);
+  --color-pink-1000: oklch(95.74% 0.0326 350.08);
+
+  /* Gray — Geist's neutral ramp (overrides Tailwind's default gray scale).
+     Same 100–1000 semantic positions as the coloured ramps, so the
+     "background / border / high-contrast bg / text" guidance applies
+     identically. Note 1000 is added explicitly (Tailwind's default doesn't
+     ship a 1000 step). */
+  --color-gray-100: hsla(0, 0%, 10%, 1);
+  --color-gray-200: hsla(0, 0%, 12%, 1);
+  --color-gray-300: hsla(0, 0%, 16%, 1);
+  --color-gray-400: hsla(0, 0%, 18%, 1);
+  --color-gray-500: hsla(0, 0%, 27%, 1);
+  --color-gray-600: hsla(0, 0%, 53%, 1);
+  --color-gray-700: hsla(0, 0%, 56%, 1);
+  --color-gray-800: hsla(0, 0%, 49%, 1);
+  --color-gray-900: hsla(0, 0%, 63%, 1);
+  --color-gray-1000: hsla(0, 0%, 93%, 1);
 }
 
 @keyframes roll-flash {
   0% {
-    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+    box-shadow: 0 0 0 0 rgba(6, 182, 212, 0);
   }
   20% {
-    box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.35);
+    box-shadow: 0 0 0 6px rgba(6, 182, 212, 0.35);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+    box-shadow: 0 0 0 0 rgba(6, 182, 212, 0);
   }
 }
 
@@ -60,8 +208,12 @@
 /* Modal entrance: backdrop fades, card fades and pops up subtly.
    Geist-style — quick (140ms) and gentle, not bouncy. */
 @keyframes modal-backdrop-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes modal-card-in {

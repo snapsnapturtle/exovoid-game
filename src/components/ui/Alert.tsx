@@ -3,9 +3,9 @@ import type { ReactNode } from 'react'
 export type AlertVariant = 'danger' | 'warning' | 'info'
 
 const VARIANT: Record<AlertVariant, string> = {
-  danger: 'border-danger-500/60 bg-danger-500/10 text-danger-400',
-  warning: 'border-warning-500/60 bg-warning-500/15 text-warning-400',
-  info: 'border-accent-500/60 bg-accent-500/10 text-accent-300',
+  danger: 'border-danger-700/60 bg-danger-700/10 text-danger-900',
+  warning: 'border-warning-700/60 bg-warning-700/15 text-warning-900',
+  info: 'border-accent-700/60 bg-accent-700/10 text-accent-900',
 }
 
 interface AlertProps {

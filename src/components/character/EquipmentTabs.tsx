@@ -67,16 +67,16 @@ export function EquipmentTabs({
   const [tab, setTab] = useState<Tab>('actions')
 
   return (
-    <div className="rounded-xl border border-void-600 bg-void-800">
-      <div className="flex flex-wrap gap-1 border-b border-void-600 px-3 py-2">
+    <div className="rounded-xl border border-gray-400 bg-background-200">
+      <div className="flex flex-wrap gap-1 border-b border-gray-400 px-3 py-2">
         {TABS.map((t) => (
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
             className={`rounded px-3 py-1.5 text-sm font-medium transition ${
               tab === t.id
-                ? 'bg-accent-500/20 text-accent-300'
-                : 'text-gray-400 hover:bg-void-700 hover:text-white'
+                ? 'bg-accent-700/20 text-accent-900'
+                : 'text-gray-900 hover:bg-gray-100 hover:text-white'
             }`}
           >
             {t.label}
@@ -136,7 +136,7 @@ export function EquipmentTabs({
 
 function PlaceholderTab({ name }: { name: string }) {
   return (
-    <div className="py-8 text-center text-sm text-gray-500">
+    <div className="py-8 text-center text-sm text-gray-700">
       {name} not yet implemented.
     </div>
   )

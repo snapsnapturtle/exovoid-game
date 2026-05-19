@@ -166,7 +166,7 @@ export function TalentTreePage({ initial, canEdit }: TalentTreePageProps) {
           <Link
             to="/games/$gameId/characters/$characterId"
             params={{ gameId: character.game_id, characterId: character.id }}
-            className="text-sm text-gray-400 transition hover:text-white"
+            className="text-sm text-gray-900 transition hover:text-white"
           >
             ← {character.name || 'Character'}
           </Link>
@@ -176,7 +176,7 @@ export function TalentTreePage({ initial, canEdit }: TalentTreePageProps) {
           {canEdit && (
             <button
               onClick={() => setShowManualAdd(true)}
-              className="rounded-lg border border-void-600 bg-void-700 px-3 py-1.5 text-sm text-gray-300 transition hover:border-accent-500 hover:text-white"
+              className="rounded-lg border border-gray-400 bg-gray-100 px-3 py-1.5 text-sm text-gray-1000 transition hover:border-accent-700 hover:text-white"
             >
               + Add manual talent
             </button>
@@ -190,7 +190,7 @@ export function TalentTreePage({ initial, canEdit }: TalentTreePageProps) {
       <div className="grid gap-4 lg:grid-cols-[1fr_320px]">
         <div className="space-y-4">
           {careers.length === 0 ? (
-            <div className="rounded-xl border border-void-600 bg-void-800 p-6 text-sm text-gray-400">
+            <div className="rounded-xl border border-gray-400 bg-background-200 p-6 text-sm text-gray-900">
               No career set for this character. Set a career on the sheet to
               see its talent tree.
             </div>
@@ -211,10 +211,10 @@ export function TalentTreePage({ initial, canEdit }: TalentTreePageProps) {
           )}
 
           {grantedTalents.length > 0 && (
-            <section className="rounded-xl border border-cyber-500/40 bg-void-800 p-4">
+            <section className="rounded-xl border border-accent-700/40 bg-background-200 p-4">
               <header className="mb-3 flex items-baseline justify-between">
                 <h3 className="text-lg font-semibold text-white">Granted</h3>
-                <span className="text-xs text-gray-500">
+                <span className="text-xs text-gray-700">
                   Bonus talents outside the normal career tree
                 </span>
               </header>
@@ -225,17 +225,17 @@ export function TalentTreePage({ initial, canEdit }: TalentTreePageProps) {
                     onClick={() =>
                       setSelected({ name: t.name, career: '', tier: t.tier })
                     }
-                    className={`flex w-44 shrink-0 flex-col items-stretch rounded-lg border bg-accent-500/20 p-2 text-left text-xs text-white transition hover:bg-accent-500/30 ${
+                    className={`flex w-44 shrink-0 flex-col items-stretch rounded-lg border bg-accent-700/20 p-2 text-left text-xs text-white transition hover:bg-accent-700/30 ${
                       selected?.name === t.name
-                        ? 'border-cyber-400 ring-2 ring-cyber-400'
-                        : 'border-cyber-500/40'
+                        ? 'border-accent-900 ring-2 ring-accent-900'
+                        : 'border-accent-700/40'
                     }`}
                   >
                     <div className="mb-1 flex items-center gap-1.5">
-                      <span className="text-sm leading-none text-cyber-300">✓</span>
+                      <span className="text-sm leading-none text-accent-900">✓</span>
                       <span className="flex-1 truncate font-medium">{t.name}</span>
                     </div>
-                    <div className="line-clamp-2 text-[11px] text-gray-400">
+                    <div className="line-clamp-2 text-[11px] text-gray-900">
                       {descriptionByName.get(t.name) ?? ''}
                     </div>
                   </button>
@@ -263,7 +263,7 @@ export function TalentTreePage({ initial, canEdit }: TalentTreePageProps) {
         </aside>
       </div>
 
-      <div className="flex flex-wrap gap-3 pt-2 text-xs text-gray-500">
+      <div className="flex flex-wrap gap-3 pt-2 text-xs text-gray-700">
         <Legend glyph="✓" label="Unlocked" />
         <Legend glyph="◯" label="Available" />
         <Legend glyph="◌" label="No points" />
@@ -285,7 +285,7 @@ export function TalentTreePage({ initial, canEdit }: TalentTreePageProps) {
 function Legend({ glyph, label }: { glyph: string; label: string }) {
   return (
     <span className="flex items-center gap-1">
-      <span className="inline-flex h-4 w-4 items-center justify-center rounded border border-void-600 bg-void-700 text-[10px]">
+      <span className="inline-flex h-4 w-4 items-center justify-center rounded border border-gray-400 bg-gray-100 text-[10px]">
         {glyph}
       </span>
       {label}

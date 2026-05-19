@@ -16,9 +16,9 @@ interface MalfunctionTableModalProps {
 }
 
 const SEVERITY_STYLES: Record<SeverityRange, string> = {
-  central: 'border-cyber-500/40 bg-cyber-500/10 text-cyber-300',
-  outer: 'border-warning-500/40 bg-warning-500/10 text-warning-400',
-  extreme: 'border-danger-500/50 bg-danger-500/10 text-danger-400',
+  central: 'border-accent-700/40 bg-accent-700/10 text-accent-900',
+  outer: 'border-warning-700/40 bg-warning-700/10 text-warning-900',
+  extreme: 'border-danger-700/50 bg-danger-700/10 text-danger-900',
 }
 
 export function MalfunctionTableModal({
@@ -60,15 +60,15 @@ export function MalfunctionTableModal({
       onClick={onClose}
     >
       <div
-        className="flex max-h-[90vh] w-full max-w-2xl flex-col modal-card-in rounded-xl border border-void-600 bg-void-800"
+        className="flex max-h-[90vh] w-full max-w-2xl flex-col modal-card-in rounded-xl border border-gray-400 bg-background-200"
         onClick={(e) => e.stopPropagation()}
       >
-        <header className="flex items-start justify-between gap-3 border-b border-void-600 px-5 py-4">
+        <header className="flex items-start justify-between gap-3 border-b border-gray-400 px-5 py-4">
           <div>
             <h3 className="text-lg font-semibold text-white">
               Cyber Malfunction Table
             </h3>
-            <p className="mt-1 text-xs text-gray-400">
+            <p className="mt-1 text-xs text-gray-900">
               Pick {excess} {excess === 1 ? 'slot' : 'slots'} across the table.
               Slots near the center (15–25) trigger mild malfunctions but are
               more likely to be rolled; slots at the extremes (2–9, 31–40) are
@@ -77,28 +77,28 @@ export function MalfunctionTableModal({
           </div>
           <button
             onClick={onClose}
-            className="text-gray-400 transition hover:text-white"
+            className="text-gray-900 transition hover:text-white"
             aria-label="Close"
           >
             ✕
           </button>
         </header>
 
-        <div className="flex items-center justify-between border-b border-void-600 bg-void-900/50 px-5 py-3 text-sm">
-          <span className="text-gray-400">
+        <div className="flex items-center justify-between border-b border-gray-400 bg-background-100/50 px-5 py-3 text-sm">
+          <span className="text-gray-900">
             Selected{' '}
             <span
               className={
                 total === excess
-                  ? 'font-medium text-cyber-300'
-                  : 'font-medium text-warning-400'
+                  ? 'font-medium text-accent-900'
+                  : 'font-medium text-warning-900'
               }
             >
               {total}
             </span>{' '}
             / {excess}
             {remaining > 0 && (
-              <span className="ml-2 text-xs text-warning-400">
+              <span className="ml-2 text-xs text-warning-900">
                 {remaining} remaining
               </span>
             )}
@@ -119,7 +119,7 @@ export function MalfunctionTableModal({
           </ul>
         </div>
 
-        <footer className="flex items-center justify-end gap-2 border-t border-void-600 px-5 py-3">
+        <footer className="flex items-center justify-end gap-2 border-t border-gray-400 px-5 py-3">
           <Button variant="ghost" onClick={onClose} disabled={busy}>
             Cancel
           </Button>
@@ -150,7 +150,7 @@ function OutcomeGroup({
 }) {
   const sevClass = SEVERITY_STYLES[group.severity]
   return (
-    <li className="rounded-lg border border-void-600 bg-void-900/40 p-3">
+    <li className="rounded-lg border border-gray-400 bg-background-100/40 p-3">
       <div className="mb-2 flex flex-wrap items-center gap-2">
         <span className="font-medium text-white">{group.outcome}</span>
         <span
@@ -158,11 +158,11 @@ function OutcomeGroup({
         >
           {SEVERITY_LABEL[group.severity]}
         </span>
-        <span className="rounded-md border border-void-600 bg-void-700 px-1.5 py-0.5 font-mono text-[10px] text-gray-400">
+        <span className="rounded-md border border-gray-400 bg-gray-100 px-1.5 py-0.5 font-mono text-[10px] text-gray-900">
           {formatRange(group.rolls)}
         </span>
       </div>
-      <p className="text-xs text-gray-400">{group.description}</p>
+      <p className="text-xs text-gray-900">{group.description}</p>
       <div className="mt-3 flex flex-wrap gap-1.5">
         {group.rolls.map((roll) => {
           const isSelected = selected.has(roll)
@@ -175,10 +175,10 @@ function OutcomeGroup({
               aria-pressed={isSelected}
               className={`h-9 min-w-[2.5rem] rounded-md border px-2 text-sm font-semibold transition ${
                 isSelected
-                  ? 'border-accent-500 bg-accent-500/25 text-white shadow-sm shadow-accent-500/20'
+                  ? 'border-accent-700 bg-accent-700/25 text-white shadow-sm shadow-accent-700/20'
                   : disabled
-                    ? 'border-void-600 bg-void-800/60 text-gray-600'
-                    : 'border-void-600 bg-void-700/60 text-gray-300 hover:border-accent-500/60 hover:bg-accent-500/10 hover:text-white'
+                    ? 'border-gray-400 bg-background-200/60 text-gray-700'
+                    : 'border-gray-400 bg-gray-100/60 text-gray-1000 hover:border-accent-700/60 hover:bg-accent-700/10 hover:text-white'
               }`}
             >
               {roll}

@@ -54,6 +54,7 @@ Informed by what the first playtest actually breaks. Best guesses today:
 - [ ] **Shared notes UI** — table and RLS are ready, needs a route + component.
 - [ ] **Play notes drawer** — promote the per-character play notes out of the Background tab where they're effectively buried. A small floating button at the top of the character sheet opens the notes as a side drawer so the player can jot during play without leaving the sheet view. Same content as today's textarea, just always one click away.
 - [ ] **Rules reference / glossary tooltips** — hover-defs for game terms (Trigger, Complication, etc.) and skills.
+- [ ] **Per-route page titles** — every route should set a `head: () => ({ meta: [{ title: '… — Exovoid' }] })` so the browser tab reflects the page (currently only the root title is set, and `/styleguide`). Cheap to do but needs a sweep of every route in `src/routes/` to pick a sensible title for each (Dashboard, Game lobby, Character sheet incl. character name, Combat, Inventory, Cyberware, Talents, Login/Signup, etc.).
 - [ ] **Character portrait upload** — Supabase Storage.
 
 ## Tier 3 — System completeness

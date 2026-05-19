@@ -10,10 +10,10 @@ function AuthLayout() {
       <div className="w-full max-w-md">
         <a href="/" className="mb-8 block text-center">
           <h1 className="text-3xl font-bold tracking-tight text-white">
-            Exo<span className="text-accent-400">void</span>
+            Exo<span className="text-accent-900">void</span>
           </h1>
         </a>
-        <div className="rounded-xl border border-void-600 bg-void-800 p-8">
+        <div className="rounded-xl border border-gray-400 bg-background-200 p-8">
           <Outlet />
         </div>
       </div>

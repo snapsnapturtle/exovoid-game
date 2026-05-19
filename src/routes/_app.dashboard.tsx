@@ -25,9 +25,9 @@ function DashboardPage() {
       </div>
 
       {games.length === 0 ? (
-        <div className="rounded-xl border border-void-600 bg-void-800 p-12 text-center">
-          <p className="mb-2 text-lg text-gray-300">No games yet</p>
-          <p className="text-sm text-gray-500">
+        <div className="rounded-xl border border-gray-400 bg-background-200 p-12 text-center">
+          <p className="mb-2 text-lg text-gray-1000">No games yet</p>
+          <p className="text-sm text-gray-700">
             Create a new game as a Game Master or join an existing one with an
             invite code.
           </p>
@@ -39,16 +39,16 @@ function DashboardPage() {
               key={game.id}
               to="/games/$gameId"
               params={{ gameId: game.id }}
-              className="group rounded-xl border border-void-600 bg-void-800 p-6 transition hover:border-accent-500"
+              className="group rounded-xl border border-gray-400 bg-background-200 p-6 transition hover:border-accent-700"
             >
-              <h3 className="mb-2 text-lg font-semibold text-white group-hover:text-accent-400">
+              <h3 className="mb-2 text-lg font-semibold text-white group-hover:text-accent-900">
                 {game.name}
               </h3>
               <span
                 className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${
                   game.role === 'gm'
-                    ? 'bg-warning-500/20 text-warning-400'
-                    : 'bg-accent-500/20 text-accent-400'
+                    ? 'bg-warning-700/20 text-warning-900'
+                    : 'bg-accent-700/20 text-accent-900'
                 }`}
               >
                 {game.role === 'gm' ? 'Game Master' : 'Player'}

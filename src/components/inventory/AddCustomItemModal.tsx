@@ -40,21 +40,21 @@ export function AddCustomItemModal({
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md modal-card-in rounded-xl border border-void-600 bg-void-800"
+        className="w-full max-w-md modal-card-in rounded-xl border border-gray-400 bg-background-200"
         onClick={(e) => e.stopPropagation()}
       >
-        <header className="flex items-start justify-between gap-3 border-b border-void-600 px-5 py-4">
+        <header className="flex items-start justify-between gap-3 border-b border-gray-400 px-5 py-4">
           <div>
             <h3 className="text-lg font-semibold text-white">
               Add custom item
             </h3>
-            <p className="mt-1 text-xs text-gray-400">
+            <p className="mt-1 text-xs text-gray-900">
               Free-text item, e.g. a mission-specific object or trinket.
             </p>
           </div>
           <button
             onClick={onClose}
-            className="text-gray-400 transition hover:text-white"
+            className="text-gray-900 transition hover:text-white"
             aria-label="Close"
           >
             ✕
@@ -62,7 +62,7 @@ export function AddCustomItemModal({
         </header>
 
         <div className="space-y-3 px-5 py-4">
-          <label className="block text-xs text-gray-400">
+          <label className="block text-xs text-gray-900">
             Name
             <input
               autoFocus
@@ -70,21 +70,21 @@ export function AddCustomItemModal({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. cursed amulet"
-              className="mt-1 w-full rounded border border-void-600 bg-void-700 px-2 py-1.5 text-sm text-white placeholder-gray-500 focus:border-accent-400 focus:outline-none"
+              className="mt-1 w-full rounded border border-gray-400 bg-gray-100 px-2 py-1.5 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
             />
           </label>
-          <label className="block text-xs text-gray-400">
+          <label className="block text-xs text-gray-900">
             Description (optional)
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
               placeholder="What is it, where did it come from…"
-              className="mt-1 w-full rounded border border-void-600 bg-void-700 px-2 py-1.5 text-sm text-white placeholder-gray-500 focus:border-accent-400 focus:outline-none"
+              className="mt-1 w-full rounded border border-gray-400 bg-gray-100 px-2 py-1.5 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
             />
           </label>
           <div className="flex gap-3">
-            <label className="block text-xs text-gray-400">
+            <label className="block text-xs text-gray-900">
               <span className="block">Quantity</span>
               <input
                 type="number"
@@ -93,23 +93,23 @@ export function AddCustomItemModal({
                 onChange={(e) =>
                   setQuantity(Math.max(1, parseInt(e.target.value, 10) || 1))
                 }
-                className="mt-1 w-20 rounded border border-void-600 bg-void-700 px-2 py-1.5 text-sm text-white focus:border-accent-400 focus:outline-none"
+                className="mt-1 w-20 rounded border border-gray-400 bg-gray-100 px-2 py-1.5 text-sm text-white focus:border-accent-900 focus:outline-none"
               />
             </label>
-            <label className="block flex-1 text-xs text-gray-400">
+            <label className="block flex-1 text-xs text-gray-900">
               <span className="block">Location (optional)</span>
               <input
                 type="text"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 placeholder="e.g. backpack"
-                className="mt-1 w-full rounded border border-void-600 bg-void-700 px-2 py-1.5 text-sm text-white placeholder-gray-500 focus:border-accent-400 focus:outline-none"
+                className="mt-1 w-full rounded border border-gray-400 bg-gray-100 px-2 py-1.5 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
               />
             </label>
           </div>
         </div>
 
-        <footer className="flex items-center justify-end gap-2 border-t border-void-600 px-5 py-3">
+        <footer className="flex items-center justify-end gap-2 border-t border-gray-400 px-5 py-3">
           <Button variant="ghost" onClick={onClose} disabled={busy}>
             Cancel
           </Button>

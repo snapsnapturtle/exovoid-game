@@ -40,7 +40,7 @@ export function ManualAddTalent({
       onClick={onClose}
     >
       <div
-        className="w-full max-w-lg modal-card-in rounded-xl border border-void-600 bg-void-800 p-4"
+        className="w-full max-w-lg modal-card-in rounded-xl border border-gray-400 bg-background-200 p-4"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-3 flex items-center justify-between">
@@ -48,14 +48,14 @@ export function ManualAddTalent({
             <h3 className="text-lg font-semibold text-white">
               Add talent manually
             </h3>
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-gray-900">
               Adds any talent outside the normal career tree (e.g. background
               grants). Does not consume a talent point.
             </p>
           </div>
           <button
             onClick={onClose}
-            className="text-gray-400 transition hover:text-white"
+            className="text-gray-900 transition hover:text-white"
             aria-label="Close"
           >
             ✕
@@ -68,12 +68,12 @@ export function ManualAddTalent({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search talents..."
-          className="w-full rounded-lg border border-void-600 bg-void-700 px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-accent-400 focus:outline-none"
+          className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
         />
 
         <div className="mt-3 max-h-[60vh] space-y-1 overflow-y-auto pr-1">
           {matches.length === 0 ? (
-            <p className="py-6 text-center text-sm text-gray-500">
+            <p className="py-6 text-center text-sm text-gray-700">
               No talents match.
             </p>
           ) : (
@@ -82,10 +82,10 @@ export function ManualAddTalent({
                 key={t.name}
                 disabled={busy}
                 onClick={() => onAdd(t.name)}
-                className="w-full rounded border border-void-600 bg-void-700/40 p-2 text-left transition hover:border-accent-500 hover:bg-accent-500/10 disabled:opacity-50"
+                className="w-full rounded border border-gray-400 bg-gray-100/40 p-2 text-left transition not-disabled:hover:border-accent-700 not-disabled:hover:bg-accent-700/10 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <div className="text-sm font-medium text-white">{t.name}</div>
-                <div className="line-clamp-2 text-xs text-gray-400">
+                <div className="line-clamp-2 text-xs text-gray-900">
                   {t.description}
                 </div>
               </button>

@@ -356,7 +356,7 @@ export function CreationWizard({ gameId }: CreationWizardProps) {
     <div className="mx-auto max-w-4xl space-y-6 p-6">
       <Stepper step={state.step} onJump={(i) => i < state.step && setStep(i)} />
 
-      <div className="rounded-xl border border-void-600 bg-void-800 p-6">
+      <div className="rounded-xl border border-gray-400 bg-background-200 p-6">
         {state.step === 0 && <CareerStep state={state} setState={setState} />}
         {state.step === 1 && (
           <AttributesStep
@@ -438,10 +438,10 @@ function Stepper({
               disabled={!done}
               className={`rounded-full px-3 py-1 transition ${
                 active
-                  ? 'bg-accent-500 text-white'
+                  ? 'bg-accent-700 text-white'
                   : done
-                    ? 'bg-void-700 text-gray-300 hover:bg-void-600'
-                    : 'bg-void-800 text-gray-500'
+                    ? 'bg-gray-100 text-gray-1000 hover:bg-gray-400'
+                    : 'bg-background-200 text-gray-700'
               }`}
             >
               {i + 1}. {label}
@@ -527,7 +527,7 @@ function CareerStep({
     <div className="space-y-6">
       <header>
         <h2 className="text-2xl font-bold text-white">Career</h2>
-        <p className="mt-1 text-sm text-gray-400">
+        <p className="mt-1 text-sm text-gray-900">
           Choose your character's primary career. You'll get its starting
           skills, equipment, and access to its talent tree. You may pick up to
           two starting talents from that tree, subject to tier prerequisites.
@@ -541,12 +541,12 @@ function CareerStep({
             onClick={() => pickCareer(c.name)}
             className={`rounded-lg border p-3 text-left transition ${
               state.career === c.name
-                ? 'border-accent-500 bg-accent-500/10'
-                : 'border-void-600 bg-void-700 hover:border-accent-500'
+                ? 'border-accent-700 bg-accent-700/10'
+                : 'border-gray-400 bg-gray-100 hover:border-accent-700'
             }`}
           >
             <div className="font-medium text-white">{c.name}</div>
-            <div className="mt-1 line-clamp-2 text-xs text-gray-400">
+            <div className="mt-1 line-clamp-2 text-xs text-gray-900">
               {c.description}
             </div>
           </button>
@@ -554,19 +554,19 @@ function CareerStep({
       </div>
 
       {career && (
-        <div className="space-y-4 rounded-lg border border-void-600 bg-void-700 p-4">
+        <div className="space-y-4 rounded-lg border border-gray-400 bg-gray-100 p-4">
           <div>
             <h3 className="text-sm font-semibold text-white">
               {career.name}
             </h3>
-            <p className="mt-1 text-sm text-gray-300">{career.description}</p>
+            <p className="mt-1 text-sm text-gray-1000">{career.description}</p>
           </div>
 
           <div>
-            <h4 className="mb-1 text-xs uppercase tracking-wide text-gray-500">
+            <h4 className="mb-1 text-xs uppercase tracking-wide text-gray-700">
               Starting skills
             </h4>
-            <ul className="text-sm text-gray-300">
+            <ul className="text-sm text-gray-1000">
               {career.startingSkills.map((s) => (
                 <li key={s.name}>
                   {s.name}: {s.level}
@@ -576,10 +576,10 @@ function CareerStep({
           </div>
 
           <div>
-            <h4 className="mb-1 text-xs uppercase tracking-wide text-gray-500">
+            <h4 className="mb-1 text-xs uppercase tracking-wide text-gray-700">
               Starting equipment
             </h4>
-            <ul className="text-sm text-gray-300">
+            <ul className="text-sm text-gray-1000">
               {career.startingEquipment.map((e, i) => (
                 <li key={i}>{e}</li>
               ))}
@@ -587,10 +587,10 @@ function CareerStep({
           </div>
 
           <div>
-            <h4 className="mb-2 text-xs uppercase tracking-wide text-gray-500">
+            <h4 className="mb-2 text-xs uppercase tracking-wide text-gray-700">
               Choose up to 2 starting talents
             </h4>
-            <p className="mb-2 text-xs text-gray-500">
+            <p className="mb-2 text-xs text-gray-700">
               Tier 1 talents are unlocked by also picking a tier-0 prerequisite
               from the same career. With two picks you may take two tier-0
               talents, or one tier-0 plus one tier-1.
@@ -600,7 +600,7 @@ function CareerStep({
               if (list.length === 0) return null
               return (
                 <div key={tier} className="mb-3">
-                  <p className="mb-1 text-[11px] uppercase tracking-wide text-gray-500">
+                  <p className="mb-1 text-[11px] uppercase tracking-wide text-gray-700">
                     Tier {tier}
                   </p>
                   <div className="grid gap-2 sm:grid-cols-2">
@@ -614,10 +614,10 @@ function CareerStep({
                           onClick={() => attemptToggle(t.talent, t.tier)}
                           disabled={disabled}
                           title={blockedReason ?? t.talent}
-                          className={`rounded-lg border p-2 text-left text-sm transition disabled:opacity-40 ${
+                          className={`rounded-lg border p-2 text-left text-sm transition disabled:cursor-not-allowed disabled:opacity-40 ${
                             selected
-                              ? 'border-accent-500 bg-accent-500/10 text-white'
-                              : 'border-void-600 bg-void-800 text-gray-300 hover:border-accent-500'
+                              ? 'border-accent-700 bg-accent-700/10 text-white'
+                              : 'border-gray-400 bg-background-200 text-gray-1000 not-disabled:hover:border-accent-700'
                           }`}
                         >
                           {t.talent}
@@ -628,7 +628,7 @@ function CareerStep({
                 </div>
               )
             })}
-            <p className="mt-2 text-xs text-gray-500">
+            <p className="mt-2 text-xs text-gray-700">
               {state.startingTalents.length} / {CREATION_TALENT_LIMIT} selected
             </p>
           </div>
@@ -689,15 +689,15 @@ function AttributesStep({
     <div className="space-y-6">
       <header>
         <h2 className="text-2xl font-bold text-white">Attributes</h2>
-        <p className="mt-1 text-sm text-gray-400">
+        <p className="mt-1 text-sm text-gray-900">
           Distribute {TOTAL_ATTRIBUTE_POINTS} points across the seven
           attributes. Pick {CREATION_HIGH_COUNT} attributes that may go up to{' '}
           {CREATION_HIGH_CAP}; the rest are capped at {CREATION_LOW_CAP}.
         </p>
       </header>
 
-      <div className="rounded-lg border border-void-600 bg-void-700 p-4">
-        <p className="mb-2 text-xs uppercase tracking-wide text-gray-500">
+      <div className="rounded-lg border border-gray-400 bg-gray-100 p-4">
+        <p className="mb-2 text-xs uppercase tracking-wide text-gray-700">
           High-cap attributes ({state.highCapAttrs.length} /{' '}
           {CREATION_HIGH_COUNT})
         </p>
@@ -712,10 +712,10 @@ function AttributesStep({
                 onClick={() => setHighCap(a.id)}
                 disabled={atLimit}
                 title={a.name}
-                className={`rounded-lg border px-3 py-1 text-sm transition disabled:opacity-40 ${
+                className={`rounded-lg border px-3 py-1 text-sm transition disabled:cursor-not-allowed disabled:opacity-40 ${
                   selected
-                    ? 'border-accent-500 bg-accent-500/20 text-white'
-                    : 'border-void-600 bg-void-800 text-gray-300 hover:border-accent-500'
+                    ? 'border-accent-700 bg-accent-700/20 text-white'
+                    : 'border-gray-400 bg-background-200 text-gray-1000 not-disabled:hover:border-accent-700'
                 }`}
               >
                 {a.abbr}
@@ -729,10 +729,10 @@ function AttributesStep({
         <p
           className={`mb-3 text-sm ${
             pointsRemaining === 0
-              ? 'text-success-400'
+              ? 'text-success-900'
               : pointsRemaining < 0
-                ? 'text-danger-400'
-                : 'text-warning-400'
+                ? 'text-danger-900'
+                : 'text-warning-900'
           }`}
         >
           {pointsRemaining} of {TOTAL_ATTRIBUTE_POINTS} points remaining
@@ -746,22 +746,22 @@ function AttributesStep({
             return (
               <div
                 key={a.id}
-                className="flex flex-col items-center rounded-lg border border-void-600 bg-void-700 p-3"
+                className="flex flex-col items-center rounded-lg border border-gray-400 bg-gray-100 p-3"
                 title={a.name}
               >
-                <span className="text-[10px] uppercase tracking-wide text-gray-400">
+                <span className="text-[10px] uppercase tracking-wide text-gray-900">
                   {a.abbr}
                 </span>
                 <span className="my-1 text-2xl font-bold text-white">
                   {value}
                 </span>
-                <span className="text-[10px] text-gray-500">cap {cap}</span>
+                <span className="text-[10px] text-gray-700">cap {cap}</span>
                 <div className="mt-2 flex gap-1">
                   <button
                     onClick={() => adjust(a.id, -1)}
                     disabled={value <= 0}
                     aria-label={`Decrease ${a.name}`}
-                    className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-void-600 text-xs text-gray-300 transition hover:bg-void-500 disabled:opacity-30"
+                    className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition not-disabled:hover:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-30"
                   >
                     −
                   </button>
@@ -769,7 +769,7 @@ function AttributesStep({
                     onClick={() => adjust(a.id, +1)}
                     disabled={value >= cap || pointsRemaining <= 0}
                     aria-label={`Increase ${a.name}`}
-                    className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-void-600 text-xs text-gray-300 transition hover:bg-void-500 disabled:opacity-30"
+                    className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition not-disabled:hover:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-30"
                   >
                     +
                   </button>
@@ -846,7 +846,7 @@ function BackgroundStep({
     <div className="space-y-6">
       <header>
         <h2 className="text-2xl font-bold text-white">Background</h2>
-        <p className="mt-1 text-sm text-gray-400">
+        <p className="mt-1 text-sm text-gray-900">
           Roll twice on each table and choose one. Once across this step, you
           may roll two extra dice on a single table for more options. Bonuses
           we can mechanize (attribute / skill / talent grants) auto-apply on
@@ -901,16 +901,16 @@ function BackgroundTablePicker({
     : null
 
   return (
-    <section className="rounded-lg border border-void-600 bg-void-700 p-4">
+    <section className="rounded-lg border border-gray-400 bg-gray-100 p-4">
       <header className="mb-3 flex items-center justify-between gap-2">
         <h3 className="text-sm font-semibold text-white">
-          {BG_LABEL[bgKey]} <span className="text-gray-500">({die})</span>
+          {BG_LABEL[bgKey]} <span className="text-gray-700">({die})</span>
         </h3>
         <div className="flex flex-wrap gap-2">
           {!isManual && pick.rolls.length === 0 && (
             <button
               onClick={onRoll}
-              className="rounded bg-accent-500/20 px-3 py-1 text-sm text-accent-400 transition hover:bg-accent-500/30"
+              className="rounded bg-accent-700/20 px-3 py-1 text-sm text-accent-900 transition hover:bg-accent-700/30"
             >
               Roll
             </button>
@@ -918,7 +918,7 @@ function BackgroundTablePicker({
           {!isManual && pick.rolls.length > 0 && (
             <button
               onClick={onRoll}
-              className="rounded border border-void-600 px-3 py-1 text-xs text-gray-400 transition hover:text-white"
+              className="rounded border border-gray-400 px-3 py-1 text-xs text-gray-900 transition hover:text-white"
             >
               Re-roll
             </button>
@@ -926,20 +926,20 @@ function BackgroundTablePicker({
           {canExtraHere && (
             <button
               onClick={onRollExtra}
-              className="rounded bg-warning-500/20 px-3 py-1 text-xs text-warning-400 transition hover:bg-warning-500/30"
+              className="rounded bg-warning-700/20 px-3 py-1 text-xs text-warning-900 transition hover:bg-warning-700/30"
               title="Use your once-per-step extra dice on this table"
             >
               +2 extra dice
             </button>
           )}
           {!isManual && state.extraRollsAppliedTo === bgKey && (
-            <span className="rounded bg-warning-500/20 px-3 py-1 text-xs text-warning-400">
+            <span className="rounded bg-warning-700/20 px-3 py-1 text-xs text-warning-900">
               +2 used
             </span>
           )}
           {!isManual && extraUsed && pick.rolls.length === 2 && (
             <span
-              className="rounded border border-void-600 px-3 py-1 text-xs text-gray-500"
+              className="rounded border border-gray-400 px-3 py-1 text-xs text-gray-700"
               title="Extra dice already applied to another table"
             >
               extra unavailable
@@ -949,8 +949,8 @@ function BackgroundTablePicker({
             onClick={onSetManual}
             className={`rounded px-3 py-1 text-xs transition ${
               isManual
-                ? 'bg-accent-500/20 text-accent-300'
-                : 'border border-void-600 text-gray-400 hover:text-white'
+                ? 'bg-accent-700/20 text-accent-900'
+                : 'border border-gray-400 text-gray-900 hover:text-white'
             }`}
             title="Skip the dice and pick directly from the table"
           >
@@ -966,7 +966,7 @@ function BackgroundTablePicker({
             onChange={(e) =>
               onChoose(parseInt(e.target.value, 10))
             }
-            className="w-full rounded-lg border border-void-600 bg-void-800 px-3 py-2 text-sm text-white focus:border-accent-400 focus:outline-none"
+            className="w-full rounded-lg border border-gray-400 bg-background-200 px-3 py-2 text-sm text-white focus:border-accent-900 focus:outline-none"
           >
             <option value="">— pick an entry —</option>
             {table.map((entry) => (
@@ -976,19 +976,19 @@ function BackgroundTablePicker({
             ))}
           </select>
           {chosenEntry && (
-            <div className="rounded-lg border border-accent-500/40 bg-accent-500/5 p-3">
+            <div className="rounded-lg border border-accent-700/40 bg-accent-700/5 p-3">
               <div className="font-medium text-white">{chosenEntry.name}</div>
-              <div className="mt-1 text-xs text-gray-300">
+              <div className="mt-1 text-xs text-gray-1000">
                 {chosenEntry.description}
               </div>
-              <div className="mt-2 text-xs text-accent-300">
+              <div className="mt-2 text-xs text-accent-900">
                 Bonus: {chosenEntry.bonus}
               </div>
             </div>
           )}
         </div>
       ) : pick.rolls.length === 0 ? (
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-700">
           Roll to see your options, or choose manually.
         </p>
       ) : (
@@ -1003,16 +1003,16 @@ function BackgroundTablePicker({
                 onClick={() => onChoose(id)}
                 className={`rounded-lg border p-3 text-left transition ${
                   selected
-                    ? 'border-accent-500 bg-accent-500/10'
-                    : 'border-void-600 bg-void-800 hover:border-accent-500'
+                    ? 'border-accent-700 bg-accent-700/10'
+                    : 'border-gray-400 bg-background-200 hover:border-accent-700'
                 }`}
               >
-                <div className="text-xs text-gray-500">Rolled {entry.id}</div>
+                <div className="text-xs text-gray-700">Rolled {entry.id}</div>
                 <div className="font-medium text-white">{entry.name}</div>
-                <div className="mt-1 line-clamp-3 text-xs text-gray-300">
+                <div className="mt-1 line-clamp-3 text-xs text-gray-1000">
                   {entry.description}
                 </div>
-                <div className="mt-2 text-xs text-accent-300">
+                <div className="mt-2 text-xs text-accent-900">
                   Bonus: {entry.bonus}
                 </div>
               </button>
@@ -1063,7 +1063,7 @@ function SkillsStep({
     <div className="space-y-6">
       <header>
         <h2 className="text-2xl font-bold text-white">Further training</h2>
-        <p className="mt-1 text-sm text-gray-400">
+        <p className="mt-1 text-sm text-gray-900">
           You have {CREATION_SKILL_POINTS} skill points to spend on top of your career's
           starting skills. Levels 1–4 cost 1 point each; level 5 and 6 cost 2
           points each. No skill can exceed {CREATION_SKILL_MAX} during
@@ -1075,10 +1075,10 @@ function SkillsStep({
       <div
         className={`rounded-lg border px-3 py-2 text-sm ${
           spent === CREATION_SKILL_POINTS
-            ? 'border-success-500/40 bg-success-500/10 text-success-400'
+            ? 'border-success-700/40 bg-success-700/10 text-success-900'
             : spent > CREATION_SKILL_POINTS
-              ? 'border-danger-500/40 bg-danger-500/10 text-danger-400'
-              : 'border-warning-500/40 bg-warning-500/10 text-warning-400'
+              ? 'border-danger-700/40 bg-danger-700/10 text-danger-900'
+              : 'border-warning-700/40 bg-warning-700/10 text-warning-900'
         }`}
       >
         {CREATION_SKILL_POINTS - spent} of {CREATION_SKILL_POINTS} skill points remaining
@@ -1092,19 +1092,19 @@ function SkillsStep({
           return (
             <div
               key={skill.id}
-              className="flex items-center gap-3 rounded-lg border border-void-600 bg-void-700 px-3 py-2"
+              className="flex items-center gap-3 rounded-lg border border-gray-400 bg-gray-100 px-3 py-2"
             >
               <div className="flex-1">
-                <div className="text-sm font-medium text-gray-200">
+                <div className="text-sm font-medium text-gray-1000">
                   {skill.name}
                 </div>
-                <div className="text-[11px] text-gray-500">base {base}</div>
+                <div className="text-[11px] text-gray-700">base {base}</div>
               </div>
               <button
                 onClick={() => adjust(skill.id, -1)}
                 disabled={current <= 0}
                 aria-label={`Decrease ${skill.name}`}
-                className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-void-600 text-xs text-gray-300 transition hover:bg-void-500 disabled:opacity-30"
+                className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition not-disabled:hover:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-30"
               >
                 −
               </button>
@@ -1115,7 +1115,7 @@ function SkillsStep({
                 onClick={() => adjust(skill.id, +1)}
                 disabled={base + current >= CREATION_SKILL_MAX}
                 aria-label={`Increase ${skill.name}`}
-                className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-void-600 text-xs text-gray-300 transition hover:bg-void-500 disabled:opacity-30"
+                className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition not-disabled:hover:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-30"
               >
                 +
               </button>
@@ -1140,7 +1140,7 @@ function FinalStep({
     <div className="space-y-6">
       <header>
         <h2 className="text-2xl font-bold text-white">Final touches</h2>
-        <p className="mt-1 text-sm text-gray-400">
+        <p className="mt-1 text-sm text-gray-900">
           Give your character a name, age and gender. Your starting equipment
           (your career's gear list plus 1000 free credits) will be ready in the
           inventory once that panel ships — for now you'll have 1000 credits in
@@ -1150,7 +1150,7 @@ function FinalStep({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="mb-1 block text-sm text-gray-400">Name</label>
+          <label className="mb-1 block text-sm text-gray-900">Name</label>
           <input
             type="text"
             value={state.name}
@@ -1158,22 +1158,22 @@ function FinalStep({
               setState((s) => ({ ...s, name: e.target.value }))
             }
             placeholder="Kira Voss"
-            className="w-full rounded-lg border border-void-600 bg-void-700 px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-accent-400 focus:outline-none"
+            className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
           />
         </div>
         <div>
-          <label className="mb-1 block text-sm text-gray-400">Gender</label>
+          <label className="mb-1 block text-sm text-gray-900">Gender</label>
           <input
             type="text"
             value={state.gender}
             onChange={(e) =>
               setState((s) => ({ ...s, gender: e.target.value }))
             }
-            className="w-full rounded-lg border border-void-600 bg-void-700 px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-accent-400 focus:outline-none"
+            className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
           />
         </div>
         <div>
-          <label className="mb-1 block text-sm text-gray-400">Age</label>
+          <label className="mb-1 block text-sm text-gray-900">Age</label>
           <input
             type="number"
             value={state.age}
@@ -1181,7 +1181,7 @@ function FinalStep({
               setState((s) => ({ ...s, age: e.target.value }))
             }
             min={0}
-            className="w-full rounded-lg border border-void-600 bg-void-700 px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-accent-400 focus:outline-none"
+            className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
           />
         </div>
       </div>
@@ -1212,7 +1212,7 @@ function ReviewStep({
     <div className="space-y-6">
       <header>
         <h2 className="text-2xl font-bold text-white">Review</h2>
-        <p className="mt-1 text-sm text-gray-400">
+        <p className="mt-1 text-sm text-gray-900">
           Final shape of your character. Background bonuses are listed at the
           bottom — apply them by hand on the character sheet after creation.
           Click "Create Character" below to submit.
@@ -1221,15 +1221,15 @@ function ReviewStep({
 
       {validationErrors.length > 0 && (
         <Alert className="p-4">
-          <h3 className="mb-2 text-sm font-semibold text-danger-300">
+          <h3 className="mb-2 text-sm font-semibold text-danger-900">
             Cannot submit — rule violations:
           </h3>
-          <ul className="space-y-1 text-sm text-danger-300">
+          <ul className="space-y-1 text-sm text-danger-900">
             {validationErrors.map((msg, i) => (
               <li key={i}>• {msg}</li>
             ))}
           </ul>
-          <p className="mt-2 text-xs text-danger-400/80">
+          <p className="mt-2 text-xs text-danger-900/80">
             Step back to fix these, or use the stepper above to jump to the
             relevant step.
           </p>
@@ -1237,11 +1237,11 @@ function ReviewStep({
       )}
 
       <Section title="Identity">
-        <p className="text-sm text-gray-300">
+        <p className="text-sm text-gray-1000">
           <span className="font-semibold text-white">{state.name}</span> ·{' '}
           {state.career}
         </p>
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-gray-700">
           {state.gender || '—'} · age {state.age || '—'}
         </p>
       </Section>
@@ -1251,9 +1251,9 @@ function ReviewStep({
           {ATTRIBUTE_DEFINITIONS.map((a) => (
             <div
               key={a.id}
-              className="rounded border border-void-600 bg-void-700 p-2 text-center"
+              className="rounded border border-gray-400 bg-gray-100 p-2 text-center"
             >
-              <div className="text-[10px] uppercase text-gray-500">
+              <div className="text-[10px] uppercase text-gray-700">
                 {a.abbr}
               </div>
               <div className="text-lg font-bold text-white">
@@ -1277,9 +1277,9 @@ function ReviewStep({
           ].map(([label, value]) => (
             <div
               key={label as string}
-              className="rounded border border-void-600 bg-void-700 px-2 py-1"
+              className="rounded border border-gray-400 bg-gray-100 px-2 py-1"
             >
-              <span className="text-xs text-gray-400">{label}</span>:{' '}
+              <span className="text-xs text-gray-900">{label}</span>:{' '}
               <span className="font-medium text-white">{value}</span>
             </div>
           ))}
@@ -1293,7 +1293,7 @@ function ReviewStep({
             if (final === 0) return null
             return (
               <div key={s.id} className="flex justify-between">
-                <span className="text-gray-300">{s.name}</span>
+                <span className="text-gray-1000">{s.name}</span>
                 <span className="font-medium text-white">{final}</span>
               </div>
             )
@@ -1303,9 +1303,9 @@ function ReviewStep({
 
       <Section title="Talents">
         {state.startingTalents.length === 0 ? (
-          <p className="text-sm text-gray-500">None yet.</p>
+          <p className="text-sm text-gray-700">None yet.</p>
         ) : (
-          <ul className="space-y-1 text-sm text-gray-300">
+          <ul className="space-y-1 text-sm text-gray-1000">
             {state.startingTalents.map((t) => (
               <li key={t}>• {t}</li>
             ))}
@@ -1315,16 +1315,16 @@ function ReviewStep({
 
       <Section title="Background bonuses (apply manually)">
         {bgChosen.length === 0 ? (
-          <p className="text-sm text-gray-500">None yet.</p>
+          <p className="text-sm text-gray-700">None yet.</p>
         ) : (
-          <ul className="space-y-2 text-sm text-gray-300">
+          <ul className="space-y-2 text-sm text-gray-1000">
             {bgChosen.map(({ table, entry }) => (
               <li key={table}>
-                <span className="text-xs uppercase tracking-wide text-gray-500">
+                <span className="text-xs uppercase tracking-wide text-gray-700">
                   {BG_LABEL[table]}
                 </span>{' '}
                 — <span className="font-medium text-white">{entry.name}</span>
-                <div className="mt-0.5 text-gray-400">{entry.bonus}</div>
+                <div className="mt-0.5 text-gray-900">{entry.bonus}</div>
               </li>
             ))}
           </ul>
@@ -1343,7 +1343,7 @@ function Section({
 }) {
   return (
     <section>
-      <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
+      <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-900">
         {title}
       </h3>
       {children}

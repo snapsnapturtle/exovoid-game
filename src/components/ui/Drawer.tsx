@@ -67,11 +67,11 @@ export function Drawer({
       )}
       <aside
         aria-hidden={!open}
-        className={`fixed ${s.position} z-40 flex ${WIDTH[width]} flex-col ${s.border} border-void-600 bg-void-800 transition-transform duration-200 ${
+        className={`fixed ${s.position} z-40 flex ${WIDTH[width]} flex-col ${s.border} border-gray-400 bg-background-200 transition-transform duration-200 ${
           open ? 'translate-x-0' : `pointer-events-none ${s.closed}`
         }`}
       >
-        <header className="flex shrink-0 items-center justify-between gap-2 border-b border-void-600 px-4 py-3">
+        <header className="flex shrink-0 items-center justify-between gap-2 border-b border-gray-400 px-4 py-3">
           <div className="min-w-0 text-sm font-semibold text-white">
             {title}
           </div>
@@ -79,7 +79,7 @@ export function Drawer({
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded text-gray-400 transition hover:bg-void-700 hover:text-white"
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded text-gray-900 transition hover:bg-gray-100 hover:text-white"
           >
             ✕
           </button>

@@ -31,16 +31,16 @@ export function ActionsTab({
   if (weapons.length === 0 && !worn) {
     return (
       <div className="space-y-3">
-        <p className="py-6 text-center text-sm text-gray-500">
+        <p className="py-6 text-center text-sm text-gray-700">
           Nothing equipped.
         </p>
         {canEdit && (
-          <p className="text-center text-xs text-gray-500">
+          <p className="text-center text-xs text-gray-700">
             Pick up gear in your{' '}
             <Link
               to="/games/$gameId/characters/$characterId/inventory"
               params={{ gameId, characterId }}
-              className="text-accent-300 transition hover:text-accent-200"
+              className="text-accent-900 transition hover:text-accent-900"
             >
               inventory
             </Link>
@@ -62,15 +62,15 @@ export function ActionsTab({
             return (
               <li
                 key={entry.id}
-                className="rounded-lg border border-cyber-500/40 bg-void-700/40 p-3"
+                className="rounded-lg border border-accent-700/40 bg-gray-100/40 p-3"
               >
                 <div className="flex flex-wrap items-baseline gap-2">
                   <span className="font-semibold text-white">{entry.name}</span>
-                  <span className="rounded border border-cyber-500/40 bg-cyber-500/10 px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-cyber-300">
+                  <span className="rounded border border-accent-700/40 bg-accent-700/10 px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-accent-900">
                     {w.type} · {w.weapon}
                   </span>
                 </div>
-                <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-gray-400">
+                <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-gray-900">
                   <Stat label="DMG">
                     {w.damage} {w.damageType}
                   </Stat>
@@ -98,7 +98,7 @@ export function ActionsTab({
                   </div>
                 )}
                 {w.specialRules && (
-                  <p className="mt-2 whitespace-pre-line text-xs text-gray-400">
+                  <p className="mt-2 whitespace-pre-line text-xs text-gray-900">
                     {w.specialRules}
                   </p>
                 )}
@@ -124,34 +124,34 @@ function EquippedArmorCard({
   const activeSoak = broken ? armor.secondarySoak : armor.primarySoak
 
   return (
-    <div className="rounded-lg border border-accent-500/40 bg-void-700/40 p-3">
+    <div className="rounded-lg border border-accent-700/40 bg-gray-100/40 p-3">
       <div className="flex flex-wrap items-baseline gap-2">
         <span className="font-semibold text-white">{entry.name}</span>
-        <span className="rounded border border-accent-500/40 bg-accent-500/10 px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-accent-200">
+        <span className="rounded border border-accent-700/40 bg-accent-700/10 px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-accent-900">
           Armor · {armor.type}
         </span>
         {broken && (
-          <span className="rounded border border-warning-500/60 bg-warning-500/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-warning-400">
+          <span className="rounded border border-warning-700/60 bg-warning-700/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-warning-900">
             Broken
           </span>
         )}
       </div>
-      <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-gray-400">
+      <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-gray-900">
         <Stat label="Soak">
-          <span className={broken ? 'text-warning-400' : 'text-gray-200'}>
+          <span className={broken ? 'text-warning-900' : 'text-gray-1000'}>
             {activeSoak}
           </span>
-          <span className="text-gray-500">
+          <span className="text-gray-700">
             {' '}
             (pri {armor.primarySoak} / sec {armor.secondarySoak})
           </span>
         </Stat>
         {tracksDurability && (
           <Stat label="Durability">
-            <span className={broken ? 'text-warning-400' : 'text-gray-200'}>
+            <span className={broken ? 'text-warning-900' : 'text-gray-1000'}>
               {current}
             </span>
-            <span className="text-gray-500"> / {armor.durability}</span>
+            <span className="text-gray-700"> / {armor.durability}</span>
           </Stat>
         )}
       </div>
@@ -163,7 +163,7 @@ function EquippedArmorCard({
         </div>
       )}
       {armor.specialRules && (
-        <p className="mt-2 whitespace-pre-line text-xs text-gray-400">
+        <p className="mt-2 whitespace-pre-line text-xs text-gray-900">
           {armor.specialRules}
         </p>
       )}
@@ -174,8 +174,8 @@ function EquippedArmorCard({
 function Stat({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <span>
-      <span className="text-gray-500">{label}:</span>{' '}
-      <span className="text-gray-200">{children}</span>
+      <span className="text-gray-700">{label}:</span>{' '}
+      <span className="text-gray-1000">{children}</span>
     </span>
   )
 }

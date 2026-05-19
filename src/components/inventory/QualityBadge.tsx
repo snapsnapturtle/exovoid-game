@@ -33,8 +33,8 @@ export function QualityBadge({ raw, variant = 'quality' }: QualityBadgeProps) {
   const display = level !== null ? `${name} (${level})` : name
   const tone =
     variant === 'trigger'
-      ? 'border-cyber-500/40 bg-cyber-500/10 text-cyber-300'
-      : 'border-void-500 bg-void-700 text-gray-300'
+      ? 'border-accent-700/40 bg-accent-700/10 text-accent-900'
+      : 'border-gray-500 bg-gray-100 text-gray-1000'
 
   const [open, setOpen] = useState(false)
   const { refs, floatingStyles, context } = useFloating({
@@ -64,7 +64,7 @@ export function QualityBadge({ raw, variant = 'quality' }: QualityBadgeProps) {
       <span
         ref={refs.setReference}
         tabIndex={quality ? 0 : undefined}
-        className={`inline-flex items-center rounded border px-1.5 py-0.5 text-[10px] font-medium focus:outline-none focus:ring-1 focus:ring-accent-400 ${
+        className={`inline-flex items-center rounded border px-1.5 py-0.5 text-[10px] font-medium focus:outline-none focus:ring-1 focus:ring-accent-900 ${
           quality ? 'cursor-help' : ''
         } ${tone}`}
         {...getReferenceProps()}
@@ -76,10 +76,10 @@ export function QualityBadge({ raw, variant = 'quality' }: QualityBadgeProps) {
           <div
             ref={refs.setFloating}
             style={floatingStyles}
-            className="z-50 w-64 rounded-lg border border-void-600 bg-void-900 px-3 py-2 text-xs text-gray-200 shadow-xl"
+            className="z-50 w-64 rounded-lg border border-gray-400 bg-background-100 px-3 py-2 text-xs text-gray-1000 shadow-xl"
             {...getFloatingProps()}
           >
-            <div className="mb-0.5 text-[10px] font-semibold uppercase tracking-wide text-gray-500">
+            <div className="mb-0.5 text-[10px] font-semibold uppercase tracking-wide text-gray-700">
               {quality.type} · {quality.name}
             </div>
             <div className="whitespace-pre-line">{quality.effect}</div>

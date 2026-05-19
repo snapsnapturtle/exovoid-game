@@ -22,8 +22,8 @@ export function DerivedStatsPanel({
   contributions,
 }: DerivedStatsPanelProps) {
   return (
-    <div className="rounded-xl border border-void-600 bg-void-800 p-4">
-      <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
+    <div className="rounded-xl border border-gray-400 bg-background-200 p-4">
+      <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-900">
         Derived Stats
       </h3>
       <div className="grid grid-cols-2 gap-2">
@@ -39,10 +39,10 @@ export function DerivedStatsPanel({
           return (
             <div
               key={key}
-              className="flex items-center justify-between rounded-lg border border-void-600 bg-void-700 px-3 py-2"
+              className="flex items-center justify-between rounded-lg border border-gray-400 bg-gray-100 px-3 py-2"
               title={tooltip}
             >
-              <span className="text-xs text-gray-400">{label}</span>
+              <span className="text-xs text-gray-900">{label}</span>
               <span className="text-lg font-bold text-white">{total}</span>
             </div>
           )

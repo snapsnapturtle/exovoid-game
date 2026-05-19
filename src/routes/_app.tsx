@@ -30,40 +30,40 @@ function AppLayout() {
 
   return (
     <div className="flex h-screen flex-col overflow-hidden">
-      <header className="flex shrink-0 items-center justify-between gap-4 border-b border-void-600 bg-void-800 px-6 py-3">
+      <header className="flex shrink-0 items-center justify-between gap-4 border-b border-gray-400 bg-background-200 px-6 py-3">
         <div className="flex min-w-0 items-center gap-3">
           <Link to="/dashboard" className="flex items-center gap-2 shrink-0">
             <h1 className="text-lg font-bold tracking-tight text-white">
-              Exo<span className="text-accent-400">void</span>
+              Exo<span className="text-accent-900">void</span>
             </h1>
           </Link>
           {game && (
             <>
-              <span className="text-gray-600">/</span>
+              <span className="text-gray-700">/</span>
               <Link
                 to="/dashboard"
-                className="text-sm text-gray-400 transition hover:text-white"
+                className="text-sm text-gray-900 transition hover:text-white"
               >
                 Games
               </Link>
-              <span className="text-gray-600">/</span>
+              <span className="text-gray-700">/</span>
               <h2 className="truncate text-sm font-semibold text-white">
                 {game.name}
               </h2>
               {isGm && (
-                <span className="shrink-0 rounded-full bg-warning-500/20 px-2 py-0.5 text-xs font-medium text-warning-400">
+                <span className="shrink-0 rounded-full bg-warning-700/20 px-2 py-0.5 text-xs font-medium text-warning-900">
                   GM
                 </span>
               )}
-              <span className="text-gray-600">·</span>
+              <span className="text-gray-700">·</span>
               <Link
                 to="/games/$gameId/combat"
                 params={{ gameId: game.id }}
-                activeProps={{ className: 'text-accent-300' }}
+                activeProps={{ className: 'text-accent-900' }}
                 className={`shrink-0 rounded-md px-2 py-0.5 text-xs font-medium transition ${
                   combat
-                    ? 'border border-warning-500/60 bg-warning-500/15 text-warning-300 hover:bg-warning-500/25'
-                    : 'border border-void-600 text-gray-400 hover:border-accent-500 hover:text-white'
+                    ? 'border border-warning-700/60 bg-warning-700/15 text-warning-900 hover:bg-warning-700/25'
+                    : 'border border-gray-400 text-gray-900 hover:border-accent-700 hover:text-white'
                 }`}
               >
                 {combat ? `⚔ Round ${combat.round}` : 'Combat'}
@@ -76,9 +76,9 @@ function AppLayout() {
             <p className="text-sm font-medium text-white">
               {profile?.display_name || 'Player'}
             </p>
-            <p className="text-xs text-gray-400">{user.email}</p>
+            <p className="text-xs text-gray-900">{user.email}</p>
           </div>
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-500 text-sm font-medium text-white">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-700 text-sm font-medium text-white">
             {(profile?.display_name || user.email || '?')[0].toUpperCase()}
           </div>
         </div>

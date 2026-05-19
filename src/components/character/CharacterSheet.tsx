@@ -144,8 +144,8 @@ export function CharacterSheet({
         aria-expanded={notesOpen}
         className={`fixed right-[21rem] top-4 z-40 inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-medium transition ${
           notesOpen
-            ? 'border-accent-500 bg-accent-500/15 text-accent-200'
-            : 'border-void-600 bg-void-800 text-gray-300 hover:border-accent-500 hover:text-white'
+            ? 'border-accent-700 bg-accent-700/15 text-accent-900'
+            : 'border-gray-400 bg-background-200 text-gray-1000 hover:border-accent-700 hover:text-white'
         }`}
       >
         <svg
@@ -171,14 +171,14 @@ export function CharacterSheet({
         aria-hidden={!notesOpen}
         role="dialog"
         aria-label="Play notes"
-        className={`fixed right-[21rem] top-12 z-30 flex w-[24rem] origin-top-right flex-col rounded-xl border border-void-600 bg-void-800 transition-all duration-150 ${
+        className={`fixed right-[21rem] top-12 z-30 flex w-[24rem] origin-top-right flex-col rounded-xl border border-gray-400 bg-background-200 transition-all duration-150 ${
           notesOpen
             ? 'translate-y-0 opacity-100'
             : 'pointer-events-none -translate-y-2 opacity-0'
         }`}
       >
-        <header className="flex shrink-0 items-center justify-between gap-2 border-b border-void-600 px-3 py-2">
-          <span className="text-xs font-semibold uppercase tracking-wide text-gray-400">
+        <header className="flex shrink-0 items-center justify-between gap-2 border-b border-gray-400 px-3 py-2">
+          <span className="text-xs font-semibold uppercase tracking-wide text-gray-900">
             Play notes
           </span>
         </header>
@@ -189,12 +189,12 @@ export function CharacterSheet({
               onChange={(e) => updateField('notes', e.target.value)}
               placeholder="Quick notes during play…"
               rows={10}
-              className="w-full resize-none rounded-lg border border-void-600 bg-void-700 px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-accent-400 focus:outline-none"
+              className="w-full resize-none rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
             />
           ) : (
-            <p className="whitespace-pre-wrap text-sm text-gray-300">
+            <p className="whitespace-pre-wrap text-sm text-gray-1000">
               {character.notes || (
-                <span className="text-gray-500">No notes yet.</span>
+                <span className="text-gray-700">No notes yet.</span>
               )}
             </p>
           )}

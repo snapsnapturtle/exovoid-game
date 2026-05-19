@@ -75,7 +75,7 @@ export function DiceRoller({
       align="center"
       title={
         <>
-          Roll: <span className="text-accent-400">{skillName}</span>
+          Roll: <span className="text-accent-900">{skillName}</span>
         </>
       }
       footer={
@@ -95,7 +95,7 @@ export function DiceRoller({
       {showConfig && (
         <>
           <div className="mb-4">
-            <p className="mb-2 text-xs uppercase tracking-wide text-gray-500">
+            <p className="mb-2 text-xs uppercase tracking-wide text-gray-700">
               Pool
             </p>
             <div className="flex items-center gap-3">
@@ -118,14 +118,14 @@ export function DiceRoller({
                   size="sm"
                 />
               )}
-              <span className="ml-2 text-sm text-gray-400">
+              <span className="ml-2 text-sm text-gray-900">
                 {adjusted.total} dice
               </span>
             </div>
           </div>
 
           <div className="mb-4">
-            <p className="mb-2 text-xs uppercase tracking-wide text-gray-500">
+            <p className="mb-2 text-xs uppercase tracking-wide text-gray-700">
               Modifier
             </p>
             <div className="flex items-center gap-1.5">
@@ -133,7 +133,7 @@ export function DiceRoller({
                 type="button"
                 onClick={() => setModifier((m) => m - 1)}
                 aria-label="Decrease modifier"
-                className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-void-600 text-xs text-gray-300 transition hover:bg-void-500"
+                className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition hover:bg-gray-500"
               >
                 −
               </button>
@@ -144,7 +144,7 @@ export function DiceRoller({
                 type="button"
                 onClick={() => setModifier((m) => m + 1)}
                 aria-label="Increase modifier"
-                className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-void-600 text-xs text-gray-300 transition hover:bg-void-500"
+                className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition hover:bg-gray-500"
               >
                 +
               </button>
@@ -152,20 +152,20 @@ export function DiceRoller({
                 <button
                   type="button"
                   onClick={() => setModifier(0)}
-                  className="ml-1 text-xs text-gray-500 hover:text-gray-300"
+                  className="ml-1 text-xs text-gray-700 hover:text-gray-1000"
                 >
                   reset
                 </button>
               )}
             </div>
-            <p className="mt-1.5 text-xs text-gray-500">
+            <p className="mt-1.5 text-xs text-gray-700">
               Negative reduces aptitude first, then expertise. Standard die is
               never modified.
             </p>
           </div>
 
           {isGm && (
-            <label className="mb-4 flex items-center gap-2 text-sm text-gray-300">
+            <label className="mb-4 flex items-center gap-2 text-sm text-gray-1000">
               <input
                 type="checkbox"
                 checked={hidden}
@@ -178,7 +178,7 @@ export function DiceRoller({
         </>
       )}
 
-      {error && <p className="mb-3 text-sm text-danger-400">{error}</p>}
+      {error && <p className="mb-3 text-sm text-danger-900">{error}</p>}
 
       {result && (
         <div key={rollKey} className="mb-4">

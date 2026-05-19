@@ -20,7 +20,7 @@ function CallbackPage() {
   }, [navigate])
 
   return (
-    <div className="text-center text-gray-400">
+    <div className="text-center text-gray-900">
       <p>Confirming your account...</p>
     </div>
   )

@@ -21,8 +21,8 @@ export function SaveStatusToast({ status }: SaveStatusToastProps) {
 
   const tone =
     status === 'error'
-      ? 'bg-danger-500 text-white'
-      : 'bg-success-500 text-white'
+      ? 'bg-danger-700 text-white'
+      : 'bg-success-700 text-white'
 
   return (
     <div

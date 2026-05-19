@@ -22,12 +22,12 @@ export function ApTimeline({ participants }: ApTimelineProps) {
   if (participants.length === 0 || cells.length === 0) return null
 
   return (
-    <section className="rounded-xl border border-void-600 bg-void-800 p-4">
+    <section className="rounded-xl border border-gray-400 bg-background-200 p-4">
       <div className="mb-3 flex items-baseline justify-between">
-        <h2 className="text-xs font-medium uppercase tracking-wide text-gray-400">
+        <h2 className="text-xs font-medium uppercase tracking-wide text-gray-900">
           Initiative
         </h2>
-        <span className="text-[10px] text-gray-500">
+        <span className="text-[10px] text-gray-700">
           leftmost = up next · stacked = same AP
         </span>
       </div>
@@ -40,10 +40,10 @@ export function ApTimeline({ participants }: ApTimelineProps) {
               key={idx}
               className={`flex min-w-[5.5rem] flex-1 flex-col border-t-2 px-1.5 py-2 ${
                 isNow
-                  ? 'border-accent-500'
+                  ? 'border-accent-700'
                   : isNegative
-                    ? 'border-danger-500/40'
-                    : 'border-void-600'
+                    ? 'border-danger-700/40'
+                    : 'border-gray-400'
               }`}
             >
               <div className="flex flex-1 flex-col items-stretch gap-1">
@@ -52,23 +52,23 @@ export function ApTimeline({ participants }: ApTimelineProps) {
                     key={p.characterId}
                     className={`rounded-md border px-1.5 py-1 text-center text-[11px] font-medium ${
                       isNow
-                        ? 'border-accent-500 bg-accent-500/25 text-white'
+                        ? 'border-accent-700 bg-accent-700/25 text-white'
                         : isNegative
-                          ? 'border-danger-500/40 bg-danger-500/10 text-danger-300'
-                          : 'border-cyber-500/40 bg-cyber-500/10 text-cyber-200'
+                          ? 'border-danger-700/40 bg-danger-700/10 text-danger-900'
+                          : 'border-accent-700/40 bg-accent-700/10 text-accent-900'
                     }`}
                     title={`${p.name} · ${p.ap} AP (started ${p.baseAp + p.rolled})`}
                   >
                     <div className="truncate">{p.name}</div>
-                    <div className="font-mono text-[10px] opacity-80">
+                    <div className="text-[10px] opacity-80">
                       {p.ap} AP
                     </div>
                   </div>
                 ))}
               </div>
               <div
-                className={`mt-2 text-center text-[10px] font-mono ${
-                  isNow ? 'text-accent-300' : 'text-gray-500'
+                className={`mt-2 text-center text-[10px] ${
+                  isNow ? 'text-accent-900' : 'text-gray-700'
                 }`}
               >
                 {isNow ? 'NOW' : cell.label}

@@ -54,18 +54,18 @@ export function TalentDetailRail({
 }: TalentDetailRailProps) {
   if (!name) {
     return (
-      <div className="rounded-xl border border-void-600 bg-void-800 p-6 text-sm text-gray-500">
+      <div className="rounded-xl border border-gray-400 bg-background-200 p-6 text-sm text-gray-700">
         Select a talent to see its details.
       </div>
     )
   }
 
   return (
-    <div className="space-y-4 rounded-xl border border-void-600 bg-void-800 p-6">
+    <div className="space-y-4 rounded-xl border border-gray-400 bg-background-200 p-6">
       <div>
-        <div className="text-xs uppercase tracking-wide text-gray-500">
+        <div className="text-xs uppercase tracking-wide text-gray-700">
           {granted ? (
-            <span className="text-cyber-400">Granted</span>
+            <span className="text-accent-900">Granted</span>
           ) : (
             <>
               {career} · Tier {tier}
@@ -75,13 +75,13 @@ export function TalentDetailRail({
         <h3 className="mt-1 text-xl font-bold text-white">{name}</h3>
       </div>
 
-      <p className="whitespace-pre-wrap text-sm leading-relaxed text-gray-300">
+      <p className="whitespace-pre-wrap text-sm leading-relaxed text-gray-1000">
         {description}
       </p>
 
       {effects && effects.length > 0 && (
-        <div className="rounded-lg border border-accent-500/40 bg-accent-500/5 p-3">
-          <div className="mb-1 text-xs uppercase tracking-wide text-accent-400">
+        <div className="rounded-lg border border-accent-700/40 bg-accent-700/5 p-3">
+          <div className="mb-1 text-xs uppercase tracking-wide text-accent-900">
             Auto-applied
           </div>
           <ul className="space-y-0.5 text-sm text-white">
@@ -93,7 +93,7 @@ export function TalentDetailRail({
       )}
 
       {canEdit && state && (
-        <div className="border-t border-void-600 pt-4">
+        <div className="border-t border-gray-400 pt-4">
           {state === 'owned' ? (
             <Button variant="danger" onClick={onRemove} disabled={busy}>
               {busy ? 'Removing…' : 'Remove talent'}
@@ -103,7 +103,7 @@ export function TalentDetailRail({
               {busy ? 'Unlocking…' : 'Unlock for 1 point'}
             </Button>
           ) : (
-            <div className="text-sm text-gray-500">{reason ?? 'Locked.'}</div>
+            <div className="text-sm text-gray-700">{reason ?? 'Locked.'}</div>
           )}
         </div>
       )}

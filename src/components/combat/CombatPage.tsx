@@ -113,14 +113,14 @@ export function CombatPage({
           <Link
             to="/games/$gameId"
             params={{ gameId: game.id }}
-            className="text-sm text-gray-400 transition hover:text-white"
+            className="text-sm text-gray-900 transition hover:text-white"
           >
             ← {game.name}
           </Link>
           <h1 className="mt-1 text-2xl font-bold text-white">
             Combat
             {combat && (
-              <span className="ml-2 rounded-md border border-warning-500/60 bg-warning-500/15 px-2 py-0.5 align-middle text-xs font-semibold uppercase tracking-wide text-warning-400">
+              <span className="ml-2 rounded-md border border-warning-700/60 bg-warning-700/15 px-2 py-0.5 align-middle text-xs font-semibold uppercase tracking-wide text-warning-900">
                 Round {combat.round}
               </span>
             )}
@@ -171,7 +171,7 @@ export function CombatPage({
       {error && <Alert>{error}</Alert>}
 
       {!combat ? (
-        <div className="rounded-xl border border-void-600 bg-void-800 p-8 text-center text-sm text-gray-500">
+        <div className="rounded-xl border border-gray-400 bg-background-200 p-8 text-center text-sm text-gray-700">
           No combat is currently active.
           {!isGm && ' Wait for the GM to start an encounter.'}
         </div>
@@ -265,19 +265,19 @@ function ParticipantCard({
   })
 
   return (
-    <article className="rounded-xl border border-void-600 bg-void-800 p-4">
+    <article className="rounded-xl border border-gray-400 bg-background-200 p-4">
       <header className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
           <Link
             to="/games/$gameId/characters/$characterId"
             params={{ gameId, characterId: character.id }}
-            className="text-base font-semibold text-white transition hover:text-accent-200"
+            className="text-base font-semibold text-white transition hover:text-accent-900"
           >
             {participant.name}
           </Link>
-          <span className="font-mono text-[11px] text-gray-500">
+          <span className="text-[11px] text-gray-700">
             base {participant.baseAp} + d6:{participant.rolled} ={' '}
-            <span className="text-gray-300">
+            <span className="text-gray-1000">
               {participant.baseAp + participant.rolled}
             </span>
           </span>
@@ -321,7 +321,7 @@ function ParticipantCard({
       </div>
 
       {(equippedWeapons.length > 0 || worn) && (
-        <div className="mt-3 space-y-2 border-t border-void-600 pt-3">
+        <div className="mt-3 space-y-2 border-t border-gray-400 pt-3">
           {equippedWeapons.map((entry) => {
             const w = lookupWeapon(entry.weaponRef!)
             if (!w) return null
@@ -381,13 +381,13 @@ function WeaponRow({
   return (
     <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
       <span className="font-medium text-white">{entry.name}</span>
-      <span className="text-gray-500">
+      <span className="text-gray-700">
         DMG {weapon.damage} · AP {weapon.attackAP}
         {weapon.optimalRange ? ` · rng ${weapon.optimalRange}` : ''}
       </span>
       {hasAmmo && (
         <span className="ml-auto inline-flex items-center gap-1.5">
-          <span className="text-gray-500">Ammo</span>
+          <span className="text-gray-700">Ammo</span>
           <MiniStepper
             value={ammo}
             max={weapon.magazine!}
@@ -396,12 +396,12 @@ function WeaponRow({
               setAmmo(Math.max(0, Math.min(weapon.magazine!, ammo + delta)))
             }
           />
-          <span className="text-gray-500">/ {weapon.magazine}</span>
+          <span className="text-gray-700">/ {weapon.magazine}</span>
           {canEdit && (
             <button
               onClick={() => setAmmo(weapon.magazine!)}
               disabled={ammo >= weapon.magazine!}
-              className="rounded border border-void-600 bg-void-700 px-1.5 py-0.5 text-[10px] text-gray-300 transition hover:border-accent-500 hover:text-white disabled:opacity-30"
+              className="rounded border border-gray-400 bg-gray-100 px-1.5 py-0.5 text-[10px] text-gray-1000 transition not-disabled:hover:border-accent-700 not-disabled:hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
             >
               Reload
             </button>
@@ -444,10 +444,10 @@ function ArmorRow({
   return (
     <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
       <span className="font-medium text-white">{entry.name}</span>
-      <span className="text-gray-500">Soak {soak}</span>
+      <span className="text-gray-700">Soak {soak}</span>
       {hasDurability && (
         <span className="ml-auto inline-flex items-center gap-1.5">
-          <span className="text-gray-500">Durability</span>
+          <span className="text-gray-700">Durability</span>
           <MiniStepper
             value={durability}
             max={armor.durability!}
@@ -458,7 +458,7 @@ function ArmorRow({
               )
             }
           />
-          <span className="text-gray-500">/ {armor.durability}</span>
+          <span className="text-gray-700">/ {armor.durability}</span>
         </span>
       )}
     </div>
@@ -483,20 +483,20 @@ function MiniStepper({
         <button
           onClick={() => onAdjust(-1)}
           disabled={value <= 0}
-          className="h-5 w-5 rounded border border-void-600 bg-void-700 text-xs text-gray-300 transition hover:border-accent-500 hover:text-white disabled:opacity-30"
+          className="h-5 w-5 rounded border border-gray-400 bg-gray-100 text-xs text-gray-1000 transition not-disabled:hover:border-accent-700 not-disabled:hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
           aria-label="Decrease"
         >
           −
         </button>
       )}
-      <span className="min-w-[1.25rem] text-center font-mono text-xs font-semibold text-white">
+      <span className="min-w-[1.25rem] text-center text-xs font-semibold text-white">
         {value}
       </span>
       {canEdit && (
         <button
           onClick={() => onAdjust(1)}
           disabled={value >= max}
-          className="h-5 w-5 rounded border border-void-600 bg-void-700 text-xs text-gray-300 transition hover:border-accent-500 hover:text-white disabled:opacity-30"
+          className="h-5 w-5 rounded border border-gray-400 bg-gray-100 text-xs text-gray-1000 transition not-disabled:hover:border-accent-700 not-disabled:hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
           aria-label="Increase"
         >
           +

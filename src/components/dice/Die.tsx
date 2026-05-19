@@ -52,7 +52,7 @@ export function Die({ type, symbols, exploded, size = 'md' }: DieProps) {
 
   return (
     <div
-      className={`relative inline-flex items-center justify-center ${exploded ? 'rounded ring-2 ring-warning-400/70' : ''}`}
+      className={`relative inline-flex items-center justify-center ${exploded ? 'rounded ring-2 ring-warning-900/70' : ''}`}
       style={{ width: px, height: px }}
       title={`${type}${exploded ? ' (explosive re-roll)' : ''}`}
     >
