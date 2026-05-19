@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router'
 import type { InventoryItem } from '~/lib/types/database'
 import { inventoryByLocation, lookupItem } from '~/lib/game-logic/items'
+import { buttonClasses } from '~/components/ui/Button'
 
 interface InventoryTabProps {
   inventory: InventoryItem[]
@@ -18,10 +19,9 @@ export function InventoryTab({
   characterId,
 }: InventoryTabProps) {
   const groups = inventoryByLocation(inventory)
-  const totalQty = inventory.reduce((s, i) => s + i.quantity, 0)
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-baseline justify-between gap-2">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-baseline gap-3 text-sm">
           <span className="font-semibold text-white">
             {credits.toLocaleString()}
@@ -31,16 +31,13 @@ export function InventoryTab({
             {assets.toLocaleString()}
             <span className="ml-0.5 text-xs text-gray-700">⬡</span>
           </span>
-          <span className="text-xs text-gray-700">
-            · {totalQty} item{totalQty === 1 ? '' : 's'}
-          </span>
         </div>
         <Link
           to="/games/$gameId/characters/$characterId/inventory"
           params={{ gameId, characterId }}
-          className="text-xs text-accent-900 transition hover:text-accent-900 hover:underline"
+          className={buttonClasses('secondary', 'sm')}
         >
-          Manage inventory →
+          Manage inventory
         </Link>
       </div>
 
