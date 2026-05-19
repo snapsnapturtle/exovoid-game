@@ -1,4 +1,17 @@
 import { useEffect, useMemo, useState } from 'react'
+import {
+  autoUpdate,
+  flip,
+  FloatingPortal,
+  offset,
+  shift,
+  useDismiss,
+  useFloating,
+  useFocus,
+  useHover,
+  useInteractions,
+  useRole,
+} from '@floating-ui/react'
 import { Link, useRouter } from '@tanstack/react-router'
 import type {
   Character,
@@ -6,8 +19,24 @@ import type {
   InventoryItem,
 } from '~/lib/types/database'
 import { inventoryByLocation, lookupItem } from '~/lib/game-logic/items'
-import { lookupWeapon } from '~/lib/game-logic/weapons'
-import { lookupArmor } from '~/lib/game-logic/armors'
+import {
+  effectiveWeaponModLimit,
+  lookupWeapon,
+  type WeaponData,
+} from '~/lib/game-logic/weapons'
+import {
+  effectiveArmorModLimit,
+  lookupArmor,
+  type ArmorData,
+} from '~/lib/game-logic/armors'
+import { lookupManufacturer } from '~/lib/game-logic/manufacturers'
+import { lookupArmorMod } from '~/lib/game-logic/armor-mods'
+import {
+  firearmModsConsumed,
+  isFirearmLike,
+  lookupFirearmMod,
+} from '~/lib/game-logic/firearm-mods'
+import { lookupMeleeMod } from '~/lib/game-logic/melee-mods'
 import {
   addArmor,
   addInventoryItem,
@@ -22,6 +51,8 @@ import { AddCatalogItemModal } from './AddCatalogItemModal'
 import { AddCustomItemModal } from './AddCustomItemModal'
 import { AddWeaponModal } from './AddWeaponModal'
 import { AddArmorModal } from './AddArmorModal'
+import { ManageArmorModsModal } from './ManageArmorModsModal'
+import { ManageWeaponModsModal } from './ManageWeaponModsModal'
 import { Alert } from '~/components/ui/Alert'
 import { Button } from '~/components/ui/Button'
 import { QualityBadge } from './QualityBadge'
@@ -52,6 +83,11 @@ export function InventoryPage({
   >(null)
   const [busyId, setBusyId] = useState<string | null>(null)
   const [tab, setTab] = useState<'mine' | 'party'>('mine')
+  const [modsModal, setModsModal] = useState<
+    | { kind: 'armor'; item: InventoryItem; armor: ArmorData; owner: Owner }
+    | { kind: 'weapon'; item: InventoryItem; weapon: WeaponData; owner: Owner }
+    | null
+  >(null)
 
   const characterOwner: Owner = {
     type: 'character',
@@ -70,6 +106,21 @@ export function InventoryPage({
       setError(e instanceof Error ? e.message : 'Failed')
     } finally {
       setBusyId(null)
+    }
+  }
+
+  function openModsModal(item: InventoryItem, owner: Owner) {
+    if (item.source === 'armor' && item.armorRef) {
+      const armor = lookupArmor(item.armorRef)
+      if (armor) setModsModal({ kind: 'armor', item, armor, owner })
+      return
+    }
+    if (item.source === 'weapon' && item.weaponRef) {
+      const weapon = lookupWeapon(item.weaponRef)
+      // Throwing weapons (modLimit 0) skip the mod modal entirely.
+      if (weapon && weapon.type !== 'Throwing') {
+        setModsModal({ kind: 'weapon', item, weapon, owner })
+      }
     }
   }
 
@@ -203,6 +254,7 @@ export function InventoryPage({
           }
           transferLabel="→ Party"
           onRemove={(item) => confirmRemove(item, characterOwner)}
+          onManageMods={(item) => openModsModal(item, characterOwner)}
           onToggleEquipped={(item, equipped) =>
             withBusy(`equip:${item.id}`, () =>
               setEquipped({
@@ -270,6 +322,7 @@ export function InventoryPage({
           }
           transferLabel="← Me"
           onRemove={(item) => confirmRemove(item, gameOwner)}
+          onManageMods={(item) => openModsModal(item, gameOwner)}
         />
       )}
 
@@ -331,6 +384,46 @@ export function InventoryPage({
             })
           }
           onClose={() => setAddModal(null)}
+        />
+      )}
+      {modsModal?.kind === 'armor' && (
+        <ManageArmorModsModal
+          item={modsModal.item}
+          armor={modsModal.armor}
+          busy={busyId !== null}
+          onSave={(mods) =>
+            withBusy(`mods:${modsModal.item.id}`, async () => {
+              await updateInventoryItem({
+                data: {
+                  owner: modsModal.owner,
+                  itemId: modsModal.item.id,
+                  updates: { mods },
+                },
+              })
+              setModsModal(null)
+            })
+          }
+          onClose={() => setModsModal(null)}
+        />
+      )}
+      {modsModal?.kind === 'weapon' && (
+        <ManageWeaponModsModal
+          item={modsModal.item}
+          weapon={modsModal.weapon}
+          busy={busyId !== null}
+          onSave={(mods) =>
+            withBusy(`mods:${modsModal.item.id}`, async () => {
+              await updateInventoryItem({
+                data: {
+                  owner: modsModal.owner,
+                  itemId: modsModal.item.id,
+                  updates: { mods },
+                },
+              })
+              setModsModal(null)
+            })
+          }
+          onClose={() => setModsModal(null)}
         />
       )}
     </div>
@@ -544,6 +637,7 @@ interface InventoryColumnProps {
   onRemove: (item: InventoryItem) => void
   /** Only passed for the character column — toggles `equipped` on a weapon/armor entry. */
   onToggleEquipped?: (item: InventoryItem, equipped: boolean) => void
+  onManageMods?: (item: InventoryItem) => void
 }
 
 function InventoryColumn({
@@ -563,6 +657,7 @@ function InventoryColumn({
   transferLabel,
   onRemove,
   onToggleEquipped,
+  onManageMods,
 }: InventoryColumnProps) {
   const groups = useMemo(() => inventoryByLocation(items), [items])
 
@@ -617,6 +712,9 @@ function InventoryColumn({
                         ? (eq) => onToggleEquipped(item, eq)
                         : undefined
                     }
+                    onManageMods={
+                      onManageMods ? () => onManageMods(item) : undefined
+                    }
                   />
                 ))}
               </ul>
@@ -640,6 +738,7 @@ function ItemRow({
   transferLabel,
   onRemove,
   onToggleEquipped,
+  onManageMods,
 }: {
   item: InventoryItem
   canEdit: boolean
@@ -652,6 +751,7 @@ function ItemRow({
   transferLabel: string
   onRemove: () => void
   onToggleEquipped?: (equipped: boolean) => void
+  onManageMods?: () => void
 }) {
   const catalog = item.source === 'catalog' ? lookupItem(item.name) : undefined
   const weapon =
@@ -744,6 +844,12 @@ function ItemRow({
               Equipped
             </span>
           )}
+          {(item.source === 'armor' || item.source === 'weapon') &&
+            (item.mods?.length ?? 0) > 0 && (
+              <span className="rounded border border-gray-400 bg-gray-100 px-1 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-gray-1000">
+                {item.mods!.length} mod{item.mods!.length === 1 ? '' : 's'}
+              </span>
+            )}
         </div>
         {!isEquipment && (
           <span className="text-sm font-semibold text-white">
@@ -755,7 +861,7 @@ function ItemRow({
       {expanded && (
         <div
           onClick={(e) => e.stopPropagation()}
-          className="space-y-3 border-t border-gray-400 bg-background-200/40 px-4 py-3"
+          className="space-y-3 border-t border-gray-100/60 bg-background-200/40 px-4 py-3"
         >
           {canEdit && (renameAllowed || (isEquipment && onToggleEquipped)) && (
             <div className="flex flex-wrap items-center gap-2">
@@ -789,14 +895,24 @@ function ItemRow({
               )}
             </div>
           )}
-          {weapon && <WeaponStats weapon={weapon} />}
+          {weapon && (
+            <WeaponStats
+              item={item}
+              weapon={weapon}
+              canEdit={canEdit}
+              busy={busy}
+              onManageMods={onManageMods}
+            />
+          )}
           {armor && (
             <ArmorStats
+              item={item}
               armor={armor}
               currentDurability={item.currentDurability}
               canEdit={canEdit}
               busy={busy}
               onDurabilityChange={onDurabilityChange}
+              onManageMods={onManageMods}
             />
           )}
           {description && (
@@ -855,12 +971,35 @@ function ItemRow({
 }
 
 function WeaponStats({
+  item,
   weapon,
+  canEdit,
+  busy,
+  onManageMods,
 }: {
-  weapon: ReturnType<typeof lookupWeapon> & object
+  item: InventoryItem
+  weapon: WeaponData
+  canEdit: boolean
+  busy: boolean
+  onManageMods?: () => void
 }) {
+  const manufacturer = item.manufacturerRef
+    ? lookupManufacturer(item.manufacturerRef)
+    : undefined
+  const manufacturerKey = isFirearmLike(weapon) ? 'firearms' : 'melee'
+  const manufacturerEffect = manufacturer?.effectsByType[manufacturerKey]
+  const isFirearm = isFirearmLike(weapon)
+  const modLimit = effectiveWeaponModLimit(
+    weapon,
+    item.manufacturerRef,
+    item.mods ?? [],
+  )
+  const mods = item.mods ?? []
+  const consumed = isFirearm ? firearmModsConsumed(mods) : mods.length
+  const canShowManage =
+    weapon.type !== 'Throwing' && canEdit && onManageMods && modLimit > 0
   return (
-    <div className="space-y-1">
+    <div className="space-y-1.5">
       <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-gray-900">
         <span>
           <span className="text-gray-700">DMG:</span>{' '}
@@ -903,28 +1042,87 @@ function WeaponStats({
           ))}
         </div>
       )}
+      {manufacturer && manufacturerEffect && (
+        <div className="text-[11px]">
+          <span className="text-gray-700">Manufacturer:</span>{' '}
+          <EffectTooltip text={manufacturerEffect.text}>
+            <span className="cursor-help text-gray-1000 underline decoration-dotted underline-offset-2">
+              {manufacturer.name}
+            </span>
+          </EffectTooltip>
+          {manufacturer.hegemony && (
+            <span className="ml-2 rounded border border-warning-400 bg-warning-100 px-1 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-warning-900">
+              Hegemony
+            </span>
+          )}
+        </div>
+      )}
+      {weapon.type !== 'Throwing' && (
+        <div className="flex flex-wrap items-center gap-2 text-[11px]">
+          <span className="text-gray-700">
+            Mods ({consumed}/{modLimit}):
+          </span>
+          {mods.length === 0 && (
+            <span className="text-gray-700 italic">none</span>
+          )}
+          {mods.map((name) => {
+            const data = isFirearm
+              ? lookupFirearmMod(name)
+              : lookupMeleeMod(name)
+            const text = data?.effects ?? 'Unknown mod.'
+            return (
+              <EffectTooltip key={name} text={text}>
+                <span className="cursor-help text-gray-1000 underline decoration-dotted underline-offset-2">
+                  {name}
+                </span>
+              </EffectTooltip>
+            )
+          })}
+          {canShowManage && (
+            <Button
+              variant="subtle"
+              size="sm"
+              onClick={onManageMods}
+              disabled={busy}
+              className="h-5 px-2 py-0 text-[10px]"
+            >
+              Manage mods
+            </Button>
+          )}
+        </div>
+      )}
     </div>
   )
 }
 
 function ArmorStats({
+  item,
   armor,
   currentDurability,
   canEdit,
   busy,
   onDurabilityChange,
+  onManageMods,
 }: {
-  armor: NonNullable<ReturnType<typeof lookupArmor>>
+  item: InventoryItem
+  armor: ArmorData
   currentDurability: number | undefined
   canEdit: boolean
   busy: boolean
   onDurabilityChange: (durability: number) => void
+  onManageMods?: () => void
 }) {
   const broken =
     armor.durability != null &&
     (currentDurability ?? armor.durability) <= 0
+  const manufacturer = item.manufacturerRef
+    ? lookupManufacturer(item.manufacturerRef)
+    : undefined
+  const manufacturerEffect = manufacturer?.effectsByType.armor
+  const modLimit = effectiveArmorModLimit(armor, item.manufacturerRef)
+  const mods = item.mods ?? []
   return (
-    <div className="space-y-1">
+    <div className="space-y-1.5">
       <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-gray-900">
         <span>
           <span className="text-gray-700">Soak:</span>{' '}
@@ -957,7 +1155,106 @@ function ArmorStats({
           ))}
         </div>
       )}
+      {manufacturer && manufacturerEffect && (
+        <div className="text-[11px]">
+          <span className="text-gray-700">Manufacturer:</span>{' '}
+          <EffectTooltip text={manufacturerEffect.text}>
+            <span className="cursor-help text-gray-1000 underline decoration-dotted underline-offset-2">
+              {manufacturer.name}
+            </span>
+          </EffectTooltip>
+          {manufacturer.hegemony && (
+            <span className="ml-2 rounded border border-warning-400 bg-warning-100 px-1 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-warning-900">
+              Hegemony
+            </span>
+          )}
+        </div>
+      )}
+      <div className="space-y-1">
+        <div className="flex flex-wrap items-center gap-2 text-[11px]">
+          <span className="text-gray-700">
+            Mods ({mods.length}/{modLimit}):
+          </span>
+          {mods.length === 0 && (
+            <span className="text-gray-700 italic">none</span>
+          )}
+          {mods.map((name) => {
+            const mod = lookupArmorMod(name)
+            const text = mod?.effects ?? 'Unknown mod.'
+            return (
+              <EffectTooltip key={name} text={text}>
+                <span className="cursor-help text-gray-1000 underline decoration-dotted underline-offset-2">
+                  {name}
+                </span>
+              </EffectTooltip>
+            )
+          })}
+          {canEdit && onManageMods && modLimit > 0 && (
+            <Button
+              variant="subtle"
+              size="sm"
+              onClick={onManageMods}
+              disabled={busy}
+              className="h-5 px-2 py-0 text-[10px]"
+            >
+              Manage mods
+            </Button>
+          )}
+        </div>
+      </div>
     </div>
+  )
+}
+
+/**
+ * Hover/focus tooltip that surfaces an arbitrary effect string. Same
+ * floating-ui plumbing as QualityBadge — extracted locally since both the
+ * manufacturer line and mod chips need it. Move to a shared primitive when
+ * weapon mods land and a third consumer makes the abstraction worthwhile.
+ */
+function EffectTooltip({
+  text,
+  children,
+}: {
+  text: string
+  children: React.ReactNode
+}) {
+  const [open, setOpen] = useState(false)
+  const { refs, floatingStyles, context } = useFloating({
+    open,
+    onOpenChange: setOpen,
+    placement: 'top',
+    middleware: [offset(6), flip({ padding: 8 }), shift({ padding: 8 })],
+    whileElementsMounted: autoUpdate,
+  })
+  const hover = useHover(context, { delay: { open: 100, close: 0 }, move: false })
+  const focus = useFocus(context)
+  const dismiss = useDismiss(context)
+  const role = useRole(context, { role: 'tooltip' })
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    hover,
+    focus,
+    dismiss,
+    role,
+  ])
+  return (
+    <>
+      <span ref={refs.setReference} tabIndex={0} {...getReferenceProps()}>
+        {children}
+      </span>
+      {open && (
+        <FloatingPortal>
+          <div
+            ref={refs.setFloating}
+            style={floatingStyles}
+            className="elevation-float z-50 w-72 rounded-lg border border-gray-400 bg-background-200 px-3 py-2 text-xs text-gray-1000 whitespace-pre-line"
+            {...getFloatingProps()}
+          >
+            {text}
+          </div>
+        </FloatingPortal>
+      )}
+    </>
   )
 }
 

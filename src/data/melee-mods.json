@@ -1,0 +1,146 @@
+[
+  {
+    "name": "Bouncy",
+    "slot": "Material",
+    "effects": "When deflecting bullets (using the Omega variant of Move-By-Wire cyberware), the ricochets deal full damage instead of just half.",
+    "restrictions": null,
+    "cost": 200,
+    "costFormula": null,
+    "rarity": 4
+  },
+  {
+    "name": "Hardened",
+    "slot": "Material",
+    "effects": "The first time during each scene the weapon would suffer the Damaged state, it ignores it instead.",
+    "restrictions": null,
+    "cost": 150,
+    "costFormula": null,
+    "rarity": 3
+  },
+  {
+    "name": "Masterfully Crafted",
+    "slot": "Material",
+    "effects": "Adds +1 base damage, or +2 damage for a 2-handed weapon.",
+    "restrictions": null,
+    "cost": null,
+    "costFormula": "weapon*2",
+    "rarity": 5
+  },
+  {
+    "name": "Light",
+    "slot": "Material",
+    "effects": "The first parry attempt with the weapon only costs 1 instead of 2 AP each round.",
+    "restrictions": null,
+    "cost": 150,
+    "costFormula": null,
+    "rarity": 2
+  },
+  {
+    "name": "Throwable",
+    "slot": "Body",
+    "effects": "The weapon gains the quality \"Throwable (2-5 | 10)\".",
+    "restrictions": null,
+    "cost": 120,
+    "costFormula": null,
+    "rarity": 2
+  },
+  {
+    "name": "Transformable",
+    "slot": "Body",
+    "effects": "The weapon can switch between its usual form and another melee or ranged weapon chosen upon acquiring this mod. Switching the forms requires 2 AP. The other form of the weapon can be modded separately, but both weapons lose a mod slot for \"Transformable\", and the costs need to be spent on both.\nThe two chosen forms needs to be sensible - the GM is the final arbiter.\nSuch weapons tend to look bizarre and complicated, and any attempts to repair or modify them suffer a -2 pool penalty.",
+    "restrictions": null,
+    "cost": 300,
+    "costFormula": null,
+    "rarity": 4
+  },
+  {
+    "name": "Binding",
+    "slot": "Body",
+    "effects": "If you use the \"Suppress / Distract\" spending option against the target you just hit, it is twice as effective.",
+    "restrictions": null,
+    "cost": 120,
+    "costFormula": null,
+    "rarity": 3
+  },
+  {
+    "name": "Self-Repairing",
+    "slot": "Body",
+    "effects": "After one hour, remove the \"Damaged\" quality from the weapon.",
+    "restrictions": null,
+    "cost": 250,
+    "costFormula": null,
+    "rarity": 4
+  },
+  {
+    "name": "Balanced",
+    "slot": "Handle",
+    "effects": "The weapon gains Handling (1). If it already has it, increase its Handling by +1 instead.",
+    "restrictions": null,
+    "cost": 150,
+    "costFormula": null,
+    "rarity": 2
+  },
+  {
+    "name": "Protective Handle",
+    "slot": "Handle",
+    "effects": "The weapon gains Defensive (1, Melee). If it already has it, this mod has no effect.",
+    "restrictions": null,
+    "cost": 200,
+    "costFormula": null,
+    "rarity": 3
+  },
+  {
+    "name": "Magnetized Grip",
+    "slot": "Handle",
+    "effects": "Drawing or picking up the weapon only costs 1 instead of 3 AP.",
+    "restrictions": null,
+    "cost": 80,
+    "costFormula": null,
+    "rarity": 2
+  },
+  {
+    "name": "Serrated",
+    "slot": "Head / Blade",
+    "effects": "The weapon gains the Injuring (3) quality.",
+    "restrictions": "Not applicable to blunt weapons.",
+    "cost": 50,
+    "costFormula": null,
+    "rarity": 2
+  },
+  {
+    "name": "Retractable",
+    "slot": "Head / Blade",
+    "effects": "The weapon gains Concealed (2) if it is one-handed, or Concealed (3) if it is two-handed. If the weapon already has the quality, reduce it by 1 (to Minimum of 1).\nIn its folded form, the weapon appears like a regular item, suitcase or similar. Unfolding the weapon into its weapon-ready form requires spending 2 AP (this is in addition to drawing it).",
+    "restrictions": null,
+    "cost": 300,
+    "costFormula": null,
+    "rarity": 4
+  },
+  {
+    "name": "Molecular Edge",
+    "slot": "Head / Blade",
+    "effects": "The weapon gains \"Penetrating (3)\" (if it already has it, increase it by +2 instead).",
+    "restrictions": "Not applicable to blunt weapons.",
+    "cost": 200,
+    "costFormula": null,
+    "rarity": 4
+  },
+  {
+    "name": "System Shock Module",
+    "slot": "Head / Blade",
+    "effects": "Upon causing an injury roll, automatically cause a cyberware malfunction roll.",
+    "restrictions": null,
+    "cost": 300,
+    "costFormula": null,
+    "rarity": 4
+  },
+  {
+    "name": "Bludgeoning",
+    "slot": "Head / Blade",
+    "effects": "Gain the \"Knocking\" trigger option. If it already has it, the target has +1 difficulty to resist it.",
+    "restrictions": null,
+    "cost": 60,
+    "costFormula": null,
+    "rarity": 2
+  }
+]

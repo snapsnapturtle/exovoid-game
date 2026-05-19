@@ -1,4 +1,6 @@
 import weaponsData from '~/data/weapons.json'
+import { lookupManufacturer } from '~/lib/game-logic/manufacturers'
+import { firearmModSlotBonus, isFirearmLike } from '~/lib/game-logic/firearm-mods'
 
 export type WeaponType = 'Firearms' | 'Heavy Weapons' | 'Melee' | 'Throwing'
 
@@ -50,6 +52,31 @@ export function weaponsByType(): { type: WeaponType; weapons: WeaponData[] }[] {
     groups[idx].weapons.push(w)
   }
   return groups
+}
+
+/**
+ * The effective mod limit for a weapon instance: base modLimit plus the
+ * manufacturer's `modSlotAdjust` plus any bonus from installed meta-mods
+ * (Extended Frame). Floored at 0. The relevant manufacturer entry depends
+ * on the weapon's class (firearm-like weapons read the `firearms` bucket,
+ * melee weapons read `melee`).
+ */
+export function effectiveWeaponModLimit(
+  weapon: WeaponData,
+  manufacturerRef: string | undefined,
+  installedMods: string[] = [],
+): number {
+  const base = weapon.modLimit
+  let adjust = 0
+  if (manufacturerRef) {
+    const m = lookupManufacturer(manufacturerRef)
+    const key = isFirearmLike(weapon) ? 'firearms' : 'melee'
+    adjust = m?.effectsByType[key]?.modSlotAdjust ?? 0
+  }
+  const metaBonus = isFirearmLike(weapon)
+    ? firearmModSlotBonus(installedMods)
+    : 0
+  return Math.max(0, base + adjust + metaBonus)
 }
 
 /**

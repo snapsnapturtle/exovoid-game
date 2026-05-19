@@ -3,8 +3,25 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import { getSupabaseServerClient } from '~/lib/supabase/server'
 import type { GameState, InventoryItem } from '~/lib/types/database'
 import { lookupItem } from '~/lib/game-logic/items'
-import { lookupWeapon } from '~/lib/game-logic/weapons'
-import { lookupArmor } from '~/lib/game-logic/armors'
+import {
+  effectiveWeaponModLimit,
+  lookupWeapon,
+  type WeaponData,
+} from '~/lib/game-logic/weapons'
+import { effectiveArmorModLimit, lookupArmor } from '~/lib/game-logic/armors'
+import { lookupManufacturer } from '~/lib/game-logic/manufacturers'
+import { lookupArmorMod } from '~/lib/game-logic/armor-mods'
+import {
+  classifyFirearm,
+  firearmModsConsumed,
+  isFirearmLike,
+  lookupFirearmMod,
+  validateFirearmModSelection,
+} from '~/lib/game-logic/firearm-mods'
+import {
+  lookupMeleeMod,
+  validateMeleeModSelection,
+} from '~/lib/game-logic/melee-mods'
 
 type Owner =
   | { type: 'character'; characterId: string }
@@ -122,6 +139,10 @@ export const updateInventoryItem = createServerFn({ method: 'POST' })
         name?: string
         currentDurability?: number
         currentAmmo?: number
+        /** `null` clears the manufacturer; only allowed on weapon/armor entries. */
+        manufacturerRef?: string | null
+        /** Replace the attached mod list. Validated against the item's allow-list. */
+        mods?: string[]
       }
     }) => d,
   )
@@ -188,6 +209,127 @@ export const updateInventoryItem = createServerFn({ method: 'POST' })
       }
       const clamped = Math.max(0, Math.min(weapon.magazine, data.updates.currentAmmo))
       next.currentAmmo = clamped
+    }
+    if (data.updates.manufacturerRef !== undefined) {
+      if (existing.source !== 'weapon' && existing.source !== 'armor') {
+        throw new Error('Only weapons and armor have manufacturers')
+      }
+      if (data.updates.manufacturerRef === null) {
+        delete next.manufacturerRef
+      } else {
+        const manufacturer = lookupManufacturer(data.updates.manufacturerRef)
+        if (!manufacturer) {
+          throw new Error(
+            `Unknown manufacturer: ${data.updates.manufacturerRef}`,
+          )
+        }
+        if (existing.source === 'armor') {
+          if (!manufacturer.applicableTo.includes('armor')) {
+            throw new Error(
+              `Manufacturer ${manufacturer.name} does not produce armor`,
+            )
+          }
+        } else {
+          if (!existing.weaponRef) throw new Error('Missing weaponRef')
+          const weapon = lookupWeapon(existing.weaponRef)
+          if (!weapon) throw new Error('Unknown weapon')
+          const expected = weaponManufacturerType(weapon)
+          if (!manufacturer.applicableTo.includes(expected)) {
+            throw new Error(
+              `Manufacturer ${manufacturer.name} does not produce ${expected} weapons`,
+            )
+          }
+        }
+        next.manufacturerRef = manufacturer.name
+      }
+    }
+    if (data.updates.mods !== undefined) {
+      const mods = data.updates.mods
+      if (new Set(mods).size !== mods.length) {
+        throw new Error('Mod list contains duplicates')
+      }
+      if (existing.source === 'armor') {
+        if (!existing.armorRef) throw new Error('Missing armorRef')
+        const armor = lookupArmor(existing.armorRef)
+        if (!armor) throw new Error('Unknown armor')
+        const allowed = new Set(armor.moddingOptions)
+        for (const name of mods) {
+          if (!allowed.has(name)) {
+            throw new Error(`Mod "${name}" is not compatible with this armor`)
+          }
+          if (!lookupArmorMod(name)) {
+            throw new Error(`Unknown armor mod: ${name}`)
+          }
+        }
+        // Use the about-to-be-saved manufacturer when computing the cap, so
+        // a paired "change manufacturer + change mods" update validates
+        // against the final state rather than the pre-update one.
+        const limit = effectiveArmorModLimit(armor, next.manufacturerRef)
+        if (mods.length > limit) {
+          throw new Error(
+            `Too many mods (${mods.length}); effective limit is ${limit}`,
+          )
+        }
+        if (mods.length === 0) {
+          delete next.mods
+        } else {
+          next.mods = mods
+        }
+      } else if (existing.source === 'weapon') {
+        if (!existing.weaponRef) throw new Error('Missing weaponRef')
+        const weapon = lookupWeapon(existing.weaponRef)
+        if (!weapon) throw new Error('Unknown weapon')
+        if (weapon.type === 'Throwing') {
+          if (mods.length > 0) {
+            throw new Error('Throwing weapons cannot be modded')
+          }
+        } else if (isFirearmLike(weapon)) {
+          const category = classifyFirearm(weapon)
+          for (const name of mods) {
+            const mod = lookupFirearmMod(name)
+            if (!mod) throw new Error(`Unknown firearm mod: ${name}`)
+            if (
+              mod.compatibleWith !== 'Any' &&
+              mod.compatibleWith !== category
+            ) {
+              throw new Error(
+                `Mod "${name}" is not compatible with this weapon's class (${category})`,
+              )
+            }
+          }
+          const slotCheck = validateFirearmModSelection(mods)
+          if (!slotCheck.ok) throw new Error(slotCheck.reason)
+          const consumed = firearmModsConsumed(mods)
+          const limit = effectiveWeaponModLimit(weapon, next.manufacturerRef, mods)
+          if (consumed > limit) {
+            throw new Error(
+              `Too many mods (${consumed}); effective limit is ${limit}`,
+            )
+          }
+        } else {
+          // Melee.
+          for (const name of mods) {
+            if (!lookupMeleeMod(name)) {
+              throw new Error(`Unknown melee mod: ${name}`)
+            }
+          }
+          const slotCheck = validateMeleeModSelection(mods)
+          if (!slotCheck.ok) throw new Error(slotCheck.reason)
+          const limit = effectiveWeaponModLimit(weapon, next.manufacturerRef, mods)
+          if (mods.length > limit) {
+            throw new Error(
+              `Too many mods (${mods.length}); effective limit is ${limit}`,
+            )
+          }
+        }
+        if (mods.length === 0) {
+          delete next.mods
+        } else {
+          next.mods = mods
+        }
+      } else {
+        throw new Error('Only weapons and armor can carry mods')
+      }
     }
 
     const arr = current.slice()
@@ -272,6 +414,8 @@ export const addWeapon = createServerFn({ method: 'POST' })
     (d: {
       owner: Owner
       weaponRef: string
+      /** Throwing weapons (modLimit 0) skip the manufacturer step entirely. */
+      manufacturerRef?: string
       /** Optional override; defaults to the catalog's illustrative name. */
       name?: string
       location?: string
@@ -287,6 +431,23 @@ export const addWeapon = createServerFn({ method: 'POST' })
     const catalog = lookupWeapon(data.weaponRef)
     if (!catalog) throw new Error(`Unknown weapon: ${data.weaponRef}`)
 
+    let manufacturerName: string | undefined
+    if (data.manufacturerRef) {
+      const manufacturer = lookupManufacturer(data.manufacturerRef)
+      if (!manufacturer) {
+        throw new Error(`Unknown manufacturer: ${data.manufacturerRef}`)
+      }
+      const expectedType = weaponManufacturerType(catalog)
+      if (!manufacturer.applicableTo.includes(expectedType)) {
+        throw new Error(
+          `Manufacturer ${manufacturer.name} does not produce ${expectedType} weapons`,
+        )
+      }
+      manufacturerName = manufacturer.name
+    } else if (catalog.type !== 'Throwing') {
+      throw new Error('A manufacturer is required for this weapon')
+    }
+
     const name = (data.name?.trim() || catalog.illustrativeName).trim()
     const location = data.location?.trim() || undefined
 
@@ -295,6 +456,7 @@ export const addWeapon = createServerFn({ method: 'POST' })
       source: 'weapon',
       name,
       weaponRef: data.weaponRef,
+      ...(manufacturerName ? { manufacturerRef: manufacturerName } : {}),
       quantity: 1,
       ...(location ? { location } : {}),
       ...(catalog.magazine != null ? { currentAmmo: catalog.magazine } : {}),
@@ -305,6 +467,13 @@ export const addWeapon = createServerFn({ method: 'POST' })
     await writeInventory(supabase, data.owner, [...current, entry])
     return entry
   })
+
+/** Map a weapon to the manufacturer applicableTo bucket. */
+function weaponManufacturerType(
+  weapon: WeaponData,
+): 'firearms' | 'melee' {
+  return isFirearmLike(weapon) ? 'firearms' : 'melee'
+}
 
 export const setEquipped = createServerFn({ method: 'POST' })
   .inputValidator(
@@ -349,6 +518,7 @@ export const addArmor = createServerFn({ method: 'POST' })
     (d: {
       owner: Owner
       armorRef: string
+      manufacturerRef: string
       name?: string
       location?: string
     }) => d,
@@ -363,6 +533,16 @@ export const addArmor = createServerFn({ method: 'POST' })
     const catalog = lookupArmor(data.armorRef)
     if (!catalog) throw new Error(`Unknown armor: ${data.armorRef}`)
 
+    const manufacturer = lookupManufacturer(data.manufacturerRef)
+    if (!manufacturer) {
+      throw new Error(`Unknown manufacturer: ${data.manufacturerRef}`)
+    }
+    if (!manufacturer.applicableTo.includes('armor')) {
+      throw new Error(
+        `Manufacturer ${manufacturer.name} does not produce armor`,
+      )
+    }
+
     const name = (data.name?.trim() || catalog.illustrativeName).trim()
     const location = data.location?.trim() || undefined
 
@@ -371,6 +551,7 @@ export const addArmor = createServerFn({ method: 'POST' })
       source: 'armor',
       name,
       armorRef: data.armorRef,
+      manufacturerRef: manufacturer.name,
       quantity: 1,
       ...(location ? { location } : {}),
       ...(catalog.durability != null

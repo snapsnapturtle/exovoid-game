@@ -1,5 +1,6 @@
 import armorsData from '~/data/armors.json'
 import type { InventoryItem } from '~/lib/types/database'
+import { lookupManufacturer } from '~/lib/game-logic/manufacturers'
 
 export interface ArmorData {
   type: string
@@ -40,6 +41,22 @@ export function effectiveArmorSoak(
   if (armor.durability == null) return armor.primarySoak
   const current = entry.currentDurability ?? armor.durability
   return current > 0 ? armor.primarySoak : armor.secondarySoak
+}
+
+/**
+ * The effective mod limit for an armor instance, factoring in the
+ * manufacturer's `modSlotAdjust`. Floored at 0 (a -1 manufacturer on a
+ * 0-slot armor still caps at 0, not negative).
+ */
+export function effectiveArmorModLimit(
+  armor: ArmorData,
+  manufacturerRef: string | undefined,
+): number {
+  const base = armor.modLimit
+  if (!manufacturerRef) return base
+  const m = lookupManufacturer(manufacturerRef)
+  const adjust = m?.effectsByType.armor?.modSlotAdjust ?? 0
+  return Math.max(0, base + adjust)
 }
 
 export function equippedArmor(

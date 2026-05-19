@@ -1,0 +1,128 @@
+[
+  {
+    "name": "Advanced Materials",
+    "effects": "Increase the durability of the armor by +25% (round up).",
+    "cost": null,
+    "costFormula": "armor/2",
+    "rarity": 2
+  },
+  {
+    "name": "Anti-Corrosive",
+    "effects": "Protects against corrosive atmospheres.",
+    "cost": 100,
+    "costFormula": null,
+    "rarity": 1
+  },
+  {
+    "name": "Audio Suite",
+    "effects": "Gain +3 Skill Levels on Vigilance checks when it's about hearing. The suite also allows you to filter sounds and set up an encrypted network of communication with others within 10km.\n\nDeactivates when the armor reaches 0 durability.",
+    "cost": 200,
+    "costFormula": null,
+    "rarity": 1
+  },
+  {
+    "name": "Ballistic Net",
+    "effects": "Adds +2 Soak against ballistic projectiles.",
+    "cost": 450,
+    "costFormula": null,
+    "rarity": 1
+  },
+  {
+    "name": "Battery Expansion",
+    "effects": "Triples the duration of the power armor's battery.",
+    "cost": 600,
+    "costFormula": null,
+    "rarity": 1
+  },
+  {
+    "name": "Diamantine Mesh",
+    "effects": "Adds +2 Soak against melee attacks and plasma projectiles.",
+    "cost": 300,
+    "costFormula": null,
+    "rarity": 1
+  },
+  {
+    "name": "Droppack",
+    "effects": "Can be activated once to reduce the distance class of a fall by 10. After use, it requires at least 5 Minutes to recharge.",
+    "cost": 400,
+    "costFormula": null,
+    "rarity": 3
+  },
+  {
+    "name": "Emergency Systems",
+    "effects": "The armor and its mods remain operable even when durability is 0.",
+    "cost": 600,
+    "costFormula": null,
+    "rarity": 3
+  },
+  {
+    "name": "Heat Shielding",
+    "effects": "Protects against extreme heat.",
+    "cost": 100,
+    "costFormula": null,
+    "rarity": 1
+  },
+  {
+    "name": "Insulation",
+    "effects": "Protects against extreme cold.",
+    "cost": 100,
+    "costFormula": null,
+    "rarity": 1
+  },
+  {
+    "name": "Radiation Shielding",
+    "effects": "Protects against radiation.",
+    "cost": 100,
+    "costFormula": null,
+    "rarity": 1
+  },
+  {
+    "name": "Reflective Coating",
+    "effects": "Negates the armor penetration of lasers.",
+    "cost": 300,
+    "costFormula": null,
+    "rarity": 1
+  },
+  {
+    "name": "Sealed",
+    "effects": "The armor gains the Vacuum-Sealed quality and becomes usable in space by protecting against the dangers of vacuum, while providing life support for several hours.",
+    "cost": 400,
+    "costFormula": null,
+    "rarity": 2
+  },
+  {
+    "name": "Servos",
+    "effects": "The user gains +2 Speed and a +1 pool bonus on melee and defense checks.\n\nDeactivates when the armor reaches 0 durability.",
+    "cost": 900,
+    "costFormula": null,
+    "rarity": 3
+  },
+  {
+    "name": "Shock Absorber",
+    "effects": "Adds +2 Soak against explosions and falling damage.",
+    "cost": 200,
+    "costFormula": null,
+    "rarity": 1
+  },
+  {
+    "name": "State-of-the-Art",
+    "effects": "Increase the durability of the armor by +50% (round up).\nCannot be combined with the Advanced Materials.",
+    "cost": null,
+    "costFormula": "armor*2",
+    "rarity": 5
+  },
+  {
+    "name": "Stealth Coating",
+    "effects": "Allows the armor's texture to mimick the environment and reduce heat profiles, providing the user with a +5 pool on attempts to stay hidden visually.\n\nDeactivates when the armor reaches 0 durability.",
+    "cost": 800,
+    "costFormula": null,
+    "rarity": 4
+  },
+  {
+    "name": "Visual Enhancer",
+    "effects": "Gain +3 Skill Levels on Vigilance checks when it's about seeing something. The suite also allows zooming, video recording and similar perks.\n\nDeactivates when the armor reaches 0 durability.",
+    "cost": 600,
+    "costFormula": null,
+    "rarity": 3
+  }
+]

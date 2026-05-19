@@ -461,6 +461,11 @@ export type InventoryItem = {
   currentDurability?: number
   /** Only meaningful for source='weapon' or 'armor' on a character (stripped on transfer to party). */
   equipped?: boolean
+  /** Manufacturer name (catalog key into manufacturers.json) for source='weapon' or 'armor'. */
+  manufacturerRef?: string
+  /** Attached mod names. For armor: keys into armor-mods.json, gated by the armor's moddingOptions
+   * and the effective mod limit. Weapon mods follow in phase B. */
+  mods?: string[]
 }
 
 type CharacterRow = Database['public']['Tables']['characters']['Row']
