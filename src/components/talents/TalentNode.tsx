@@ -40,7 +40,7 @@ export function TalentNode({
   onClick,
 }: TalentNodeProps) {
   const isLocked = state.startsWith('locked')
-  const ring = selected ? 'ring-2 ring-purple-700' : ''
+  const ring = selected ? 'ring-2 ring-accent-900' : ''
 
   return (
     <button

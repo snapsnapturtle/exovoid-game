@@ -175,10 +175,10 @@ function OutcomeGroup({
               aria-pressed={isSelected}
               className={`h-9 min-w-[2.5rem] rounded-md border px-2 text-sm font-semibold transition-colors ${
                 isSelected
-                  ? 'border-purple-600 bg-purple-300 text-white'
+                  ? 'border-accent-600 bg-accent-300 text-white'
                   : disabled
                     ? 'border-gray-400 bg-background-200/60 text-gray-700'
-                    : 'border-gray-400 bg-gray-100/60 text-gray-1000 hover:border-purple-500 hover:bg-purple-200'
+                    : 'border-gray-400 bg-gray-100/60 text-gray-1000 hover:border-accent-500 hover:bg-accent-200'
               }`}
             >
               {roll}
