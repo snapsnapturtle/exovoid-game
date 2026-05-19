@@ -4,26 +4,7 @@ A digital companion tool for the **Exovoid** tabletop RPG system. Manage charact
 
 ## Status
 
-### Phase 1: Foundation (In Progress)
-
-- [x] Project scaffolding (TanStack Start + Supabase + Tailwind)
-- [x] Database schema (profiles, games, game_members, characters)
-- [x] Authentication (signup, login, session management)
-- [x] Game lobby (create game, join via invite code, player list)
-- [x] Character sheet (attributes, skills, derived stats, auto-save)
-- [ ] Supabase local setup and migration testing
-- [ ] Realtime sync for character updates
-
-### Future Phases
-
-- [ ] Dice rolling with realtime broadcast
-- [ ] Combat tracker (initiative, action points, damage)
-- [ ] Talent management (talent trees by career)
-- [ ] Cyberware management (immunity tracking, malfunctions)
-- [ ] Inventory management (personal + group)
-- [ ] Shared notes (collaborative editing)
-- [ ] Equipment modification system
-- [ ] Session/encounter log
+See [ROADMAP.md](./ROADMAP.md) for the current feature roadmap and progress.
 
 ## Setup
 
