@@ -6,3 +6,5 @@ dist
 *.local
 src/routeTree.gen.ts
 USERS.md
+.claude
+supabase/snippets
