@@ -76,7 +76,7 @@ export function QualityBadge({ raw, variant = 'quality' }: QualityBadgeProps) {
           <div
             ref={refs.setFloating}
             style={floatingStyles}
-            className="z-50 w-64 rounded-lg border border-gray-400 bg-background-100 px-3 py-2 text-xs text-gray-1000 shadow-xl"
+            className="elevation-float z-50 w-64 rounded-lg border border-gray-400 bg-background-200 px-3 py-2 text-xs text-gray-1000"
             {...getFloatingProps()}
           >
             <div className="mb-0.5 text-[10px] font-semibold uppercase tracking-wide text-gray-700">

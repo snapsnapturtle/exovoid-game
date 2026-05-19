@@ -1,22 +1,22 @@
-import { useMemo, useState } from 'react'
-import { DieCounter } from './Die'
-import { rollDice, type DiceRollData } from '~/lib/server/dice'
-import { applyModifier, type DicePool } from '~/lib/game-logic/dice'
+import { useMemo, useState } from "react";
+import { DieCounter } from "./Die";
+import { rollDice, type DiceRollData } from "~/lib/server/dice";
+import { applyModifier, type DicePool } from "~/lib/game-logic/dice";
 import {
   useDiceFeedBroadcast,
   useDiceFeedRefresh,
-} from '~/lib/hooks/diceFeedContext'
-import { RollResultView } from './RollResultView'
-import { Button } from '~/components/ui/Button'
-import { Modal } from '~/components/ui/Modal'
+} from "~/lib/hooks/diceFeedContext";
+import { RollResultView } from "./RollResultView";
+import { Button } from "~/components/ui/Button";
+import { Modal } from "~/components/ui/Modal";
 
 interface DiceRollerProps {
-  gameId: string
-  characterId: string | null
-  skillName: string
-  pool: DicePool
-  isGm: boolean
-  onClose: () => void
+  gameId: string;
+  characterId: string | null;
+  skillName: string;
+  pool: DicePool;
+  isGm: boolean;
+  onClose: () => void;
 }
 
 export function DiceRoller({
@@ -27,21 +27,24 @@ export function DiceRoller({
   isGm,
   onClose,
 }: DiceRollerProps) {
-  const [modifier, setModifier] = useState(0)
-  const [hidden, setHidden] = useState(false)
-  const [rolling, setRolling] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [result, setResult] = useState<DiceRollData | null>(null)
-  const [rollKey, setRollKey] = useState(0)
-  const refreshFeed = useDiceFeedRefresh()
-  const broadcastNewRoll = useDiceFeedBroadcast()
+  const [modifier, setModifier] = useState(0);
+  const [hidden, setHidden] = useState(false);
+  const [rolling, setRolling] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<DiceRollData | null>(null);
+  const [rollKey, setRollKey] = useState(0);
+  const refreshFeed = useDiceFeedRefresh();
+  const broadcastNewRoll = useDiceFeedBroadcast();
 
-  const adjusted = useMemo(() => applyModifier(pool, modifier), [pool, modifier])
-  const showConfig = !result
+  const adjusted = useMemo(
+    () => applyModifier(pool, modifier),
+    [pool, modifier],
+  );
+  const showConfig = !result;
 
   async function submit() {
-    setRolling(true)
-    setError(null)
+    setRolling(true);
+    setError(null);
     try {
       const row = await rollDice({
         data: {
@@ -56,15 +59,15 @@ export function DiceRoller({
           modifier,
           isHidden: isGm && hidden,
         },
-      })
-      setResult(row.roll_data as unknown as DiceRollData)
-      setRollKey((k) => k + 1)
-      await refreshFeed()
-      broadcastNewRoll()
+      });
+      setResult(row.roll_data as unknown as DiceRollData);
+      setRollKey((k) => k + 1);
+      await refreshFeed();
+      broadcastNewRoll();
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Roll failed')
+      setError(e instanceof Error ? e.message : "Roll failed");
     } finally {
-      setRolling(false)
+      setRolling(false);
     }
   }
 
@@ -81,13 +84,10 @@ export function DiceRoller({
       footer={
         <>
           <Button variant="ghost" onClick={onClose} disabled={rolling}>
-            {rolling || result ? 'Close' : 'Cancel'}
+            {rolling || result ? "Close" : "Cancel"}
           </Button>
-          <Button
-            onClick={submit}
-            disabled={rolling || adjusted.total === 0}
-          >
-            {rolling ? 'Rolling…' : result ? 'Roll Again' : 'Roll'}
+          <Button onClick={submit} disabled={rolling || adjusted.total === 0}>
+            {rolling ? "Rolling…" : result ? "Re-roll" : "Roll"}
           </Button>
         </>
       }
@@ -99,11 +99,7 @@ export function DiceRoller({
               Pool
             </p>
             <div className="flex items-center gap-3">
-              <DieCounter
-                type="standard"
-                count={adjusted.standard}
-                size="sm"
-              />
+              <DieCounter type="standard" count={adjusted.standard} size="sm" />
               {adjusted.aptitude > 0 && (
                 <DieCounter
                   type="aptitude"
@@ -186,5 +182,5 @@ export function DiceRoller({
         </div>
       )}
     </Modal>
-  )
+  );
 }

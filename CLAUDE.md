@@ -68,7 +68,11 @@ Adopts Vercel's [Geist design system](https://github.com/geist-org) — chrome (
 
 **Single border tone**: every panel divider and card border uses `border-gray-400` (Geist's default-border position). Don't reach for darker tones or semi-transparent variants for internal dividers — depth in this system comes from that one hairline border, not from filled-color contrast.
 
-**Modal elevation**: just the border, no `shadow-xl`. Geist treats the 1px border as the elevation; drop shadows aren't part of the language. Floating elements that genuinely sit above the page (toasts, the scroll-to-top button) keep their drop shadows.
+**Modal elevation**: just the border, no shadows. Geist treats the 1px border as the elevation; drop shadows aren't part of the language for in-flow surfaces. Modals and drawers lean on `border-gray-400` for their edge.
+
+**Elevation for genuinely floating elements** (toasts, tooltips, FAB buttons): use the shared `.elevation-float` class in `src/styles/app.css`. It layers a soft white outer glow (so the element silhouettes against the pure-black page bg) with a strong dark drop shadow (so it still reads as lifted when it overlaps lighter surfaces like cards/modals). Don't reach for `shadow-xl`/`shadow-2xl` directly — on `background-100` (#000) a black-tinted Tailwind shadow is physically invisible.
+
+**Selection state** (selectable cards, multi-select cells, "this one is picked" highlights): use **purple**, not accent (teal). Accent is for primary actions and brand surfaces; purple is the dedicated "selectable item" colour so the two don't compete. For card-style selectables that already have their own bg/border, lift the selection with `ring-2 ring-purple-700`. For cell-style selectables (the malfunction table is the canonical example), use `border-purple-600 bg-purple-300` selected and `hover:border-purple-500 hover:bg-purple-200` to anticipate the selection on hover.
 
 ### UI primitives
 
@@ -81,6 +85,7 @@ Live preview of every primitive: `/styleguide` (route `src/routes/_app.styleguid
   - `ghost`: transparent-rest, fills with `bg-gray-100` on hover — low-emphasis or supporting action (Cancel, Back, navigation). No border, no background at rest, so it reads as text until the cursor lands on it.
   - `danger`: filled red (`bg-danger-700`, hover `bg-danger-800`) — destructive actions (Delete, End). Same high-contrast treatment as `primary`, swapped to the danger ramp.
   - High-contrast filled variants (primary, danger) follow the Geist `700 → 800` convention: 700 at rest, 800 on hover (darker, more saturated — Geist hovers go darker, not lighter).
+  - **Active press feedback** (the `scale(0.98)` squeeze on click) is scoped to the `<Button>` primitive only via `buttonClasses()`. Plain `<button>` elements that aren't styled as buttons (talent nodes, dice result cards, etc.) deliberately don't get this — the press should signal "this is a button" rather than "this is interactable." If a `<button>` should feel like a real button, render it via the primitive (or use the `subtle` variant for chip-sized in-play controls).
   - Sizes: `md` (default) and `sm`. For non-button anchors (`<Link>`, `<a>`), import `buttonClasses(variant, size)` from the same module and pass it to `className`.
 - **`<Modal>`** (`~/components/ui/Modal`) — backdrop, centered card, header (title + required X close), optional footer slot. Six of the larger modals predate the wrapper and still render their own backdrop/card; if you touch one, prefer migrating to `<Modal>`. At minimum every dialog must render `<ModalCloseButton>` in the top-right. A footer "Cancel" text button is reserved for the *cancel* role next to a confirm action; pure-informational modals get just the X. Backdrops use `bg-black/60` + `backdrop-blur-sm`; the entrance is a 140ms fade+pop via `.modal-backdrop-in` and `.modal-card-in` (in `app.css`).
 - **`<Alert>`** (`~/components/ui/Alert`) — inline status banner with `danger | warning | info` variants. Use for standalone messages in a page or modal, not for buttons (destructive button actions are `<Button variant="danger">`).

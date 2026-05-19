@@ -15,7 +15,7 @@ interface TalentNodeProps {
 
 const STATE_CLASSES: Record<NodeState, string> = {
   owned:
-    'border-accent-700 bg-accent-700/20 text-white shadow-[0_0_0_1px_rgb(99_102_241_/_0.4)]',
+    'border-accent-700 bg-accent-700/20 text-white',
   available:
     'border-accent-700 bg-gray-100 text-white hover:bg-accent-700/10',
   'locked-prereq':
@@ -40,7 +40,7 @@ export function TalentNode({
   onClick,
 }: TalentNodeProps) {
   const isLocked = state.startsWith('locked')
-  const ring = selected ? 'ring-2 ring-accent-900' : ''
+  const ring = selected ? 'ring-2 ring-purple-700' : ''
 
   return (
     <button

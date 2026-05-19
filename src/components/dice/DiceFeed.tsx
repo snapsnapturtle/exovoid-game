@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { CustomDiceRoller } from './CustomDiceRoller'
 import { RollResultView } from './RollResultView'
+import { Button } from '~/components/ui/Button'
 import { Modal } from '~/components/ui/Modal'
 import type { DiceRollEntry } from '~/lib/server/dice'
 
@@ -129,13 +130,14 @@ export function DiceFeed({
       <aside className="relative flex h-full w-80 shrink-0 flex-col border-l border-gray-400 bg-background-100">
         <div className="flex shrink-0 items-center justify-between border-b border-gray-400 px-4 py-3">
           <h3 className="text-sm font-semibold text-white">Dice Feed</h3>
-          <button
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={() => setCustomOpen(true)}
             title="Custom roll"
-            className="rounded bg-accent-700/20 px-2 py-1 text-xs font-medium text-accent-900 transition hover:bg-accent-700/30"
           >
             + Custom
-          </button>
+          </Button>
         </div>
         {rolls.length === 0 ? (
           <p className="flex-1 px-2 py-6 text-center text-sm text-gray-700">
@@ -161,7 +163,7 @@ export function DiceFeed({
         <button
           onClick={scrollToTop}
           aria-label="Scroll to newest"
-          className={`absolute bottom-3 left-1/2 z-20 flex h-9 w-9 -translate-x-1/2 items-center justify-center rounded-full bg-accent-700 text-white shadow-xl shadow-black/50 transition-all duration-200 hover:bg-accent-900 ${
+          className={`elevation-float absolute bottom-3 left-1/2 z-20 flex h-9 w-9 -translate-x-1/2 items-center justify-center rounded-full bg-accent-700 text-white transition-all duration-200 hover:bg-accent-800 ${
             showScrollTop
               ? 'translate-y-0 opacity-100'
               : 'pointer-events-none translate-y-14 opacity-0'

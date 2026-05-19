@@ -21,14 +21,14 @@ export function SaveStatusToast({ status }: SaveStatusToastProps) {
 
   const tone =
     status === 'error'
-      ? 'bg-danger-700 text-white'
-      : 'bg-success-700 text-white'
+      ? 'border-danger-400 bg-danger-200 text-danger-900'
+      : 'border-success-400 bg-success-200 text-success-900'
 
   return (
     <div
       role="status"
       aria-live="polite"
-      className={`pointer-events-none fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-full px-4 py-2 text-sm shadow-xl shadow-black/50 transition-all duration-200 ${tone} ${
+      className={`elevation-float pointer-events-none fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-full border px-4 py-2 text-sm transition-all duration-200 ${tone} ${
         visible ? 'translate-y-0 opacity-100' : 'translate-y-14 opacity-0'
       }`}
     >

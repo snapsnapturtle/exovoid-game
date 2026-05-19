@@ -29,18 +29,17 @@
    and font-variant-numeric together on the same element; some browsers reset
    one when the other is set. */
 
-/* Subtle press feedback on every enabled <button>. Tailwind v4's `transition`
-   utility includes `scale` in its property list, which would lerp the press
-   over 150ms and feel laggy — override the property list on buttons to drop
-   the transform-family properties so the press registers instantly. Hover
-   color transitions keep their default 150ms ease. */
-button:not(:disabled) {
-  transition-property:
-    color, background-color, border-color, outline-color, text-decoration-color,
-    fill, stroke, opacity, box-shadow, filter, backdrop-filter;
-}
-button:not(:disabled):active {
-  scale: 0.98;
+/* Elevation for elements that genuinely float above the page (toasts,
+   tooltips, FAB-style buttons). On a pure-black page bg a black-tinted drop
+   shadow is physically invisible — the bg is already as dark as the shadow.
+   Dark-UI playbook (Linear, Cron, Vercel): layer a soft white outer glow
+   that silhouettes the element against pure black, plus a strong dark drop
+   shadow for surfaces lighter than black (cards, modals) so the element
+   still reads as lifted when it overlaps them. */
+.elevation-float {
+  box-shadow:
+    0 16px 40px -12px rgba(0, 0, 0, 0.9),
+    0 0 24px -4px rgba(255, 255, 255, 0.06);
 }
 
 @theme static {

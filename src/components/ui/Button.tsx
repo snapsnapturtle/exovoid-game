@@ -35,7 +35,7 @@ export function buttonClasses(
   variant: ButtonVariant = 'primary',
   size: ButtonSize = 'md',
 ): string {
-  return `inline-flex items-center justify-center rounded-lg transition not-disabled:active:scale-[0.98] disabled:cursor-not-allowed ${VARIANT[variant]} ${SIZE[size]}`
+  return `inline-flex items-center justify-center rounded-lg transition-colors not-disabled:active:scale-[0.98] disabled:cursor-not-allowed ${VARIANT[variant]} ${SIZE[size]}`
 }
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

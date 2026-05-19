@@ -173,12 +173,12 @@ function OutcomeGroup({
               onClick={() => onToggle(roll)}
               disabled={disabled}
               aria-pressed={isSelected}
-              className={`h-9 min-w-[2.5rem] rounded-md border px-2 text-sm font-semibold transition ${
+              className={`h-9 min-w-[2.5rem] rounded-md border px-2 text-sm font-semibold transition-colors ${
                 isSelected
-                  ? 'border-accent-700 bg-accent-700/25 text-white shadow-sm shadow-accent-700/20'
+                  ? 'border-purple-600 bg-purple-300 text-white'
                   : disabled
                     ? 'border-gray-400 bg-background-200/60 text-gray-700'
-                    : 'border-gray-400 bg-gray-100/60 text-gray-1000 hover:border-accent-700/60 hover:bg-accent-700/10 hover:text-white'
+                    : 'border-gray-400 bg-gray-100/60 text-gray-1000 hover:border-purple-500 hover:bg-purple-200'
               }`}
             >
               {roll}
