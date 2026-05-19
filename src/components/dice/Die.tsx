@@ -3,18 +3,23 @@ import { DieShape } from './DieShape'
 
 // The die body fills the silhouette in the type's primary color; the
 // wireframe edges sit on top in a lighter shade for 3D definition.
+// Body fills the silhouette with the type's main hue; wire is the
+// brighter highlight on top. Sticking to project ramps so the dice match
+// the rest of the palette. Warning (amber) is non-monotonic across
+// 600–900, so it gets the darker 500 body with a 700 wire — the rest use
+// 700 / 900.
 const DIE_BODY: Record<DieType, string> = {
-  standard: 'text-blue-800',
-  aptitude: 'text-emerald-800',
-  expertise: 'text-amber-700',
-  injury: 'text-red-900',
+  standard: 'text-blue-700',
+  aptitude: 'text-success-700',
+  expertise: 'text-warning-500',
+  injury: 'text-danger-700',
 }
 
 const DIE_WIRE: Record<DieType, string> = {
-  standard: 'text-blue-600',
-  aptitude: 'text-emerald-600',
-  expertise: 'text-amber-500',
-  injury: 'text-red-700',
+  standard: 'text-blue-900',
+  aptitude: 'text-success-900',
+  expertise: 'text-warning-700',
+  injury: 'text-danger-900',
 }
 
 interface DieProps {

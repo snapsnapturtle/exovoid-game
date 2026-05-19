@@ -145,13 +145,14 @@ export function DiceRoller({
                 +
               </button>
               {modifier !== 0 && (
-                <button
-                  type="button"
+                <Button
+                  variant="ghost"
+                  size="sm"
                   onClick={() => setModifier(0)}
-                  className="ml-1 text-xs text-gray-700 hover:text-gray-1000"
+                  className="ml-1"
                 >
-                  reset
-                </button>
+                  Reset
+                </Button>
               )}
             </div>
             <p className="mt-1.5 text-xs text-gray-700">

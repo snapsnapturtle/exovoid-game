@@ -61,7 +61,7 @@ export function SkillsPanel({
         <div className="grid grid-cols-[1fr_auto_auto] gap-2 px-2 text-xs text-gray-700">
           <span>Skill</span>
           <span className="w-16 text-center">Level</span>
-          <span className="w-32 text-center">Roll</span>
+          <span className="w-[90px] pl-2 text-left">Roll</span>
         </div>
         {filtered.map((skill) => {
           const level = skills[skill.id] ?? 0
@@ -125,19 +125,19 @@ export function SkillsPanel({
               <button
                 onClick={() => setRolling({ skillName: skill.name, pool })}
                 title={`Roll ${skill.name}`}
-                className="flex w-32 items-center justify-center gap-1.5 rounded-lg border border-transparent px-2 py-1 text-xs transition hover:border-accent-700 hover:bg-gray-100"
+                className="flex w-[90px] cursor-pointer items-center gap-1.5 rounded-lg px-2 py-1 text-xs"
               >
-                <span className="rounded bg-blue-600/40 px-1.5 py-0.5 text-blue-200">
-                  {pool.standard}S
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded bg-blue-300 text-xs text-blue-1000">
+                  {pool.standard}
                 </span>
                 {pool.aptitude > 0 && (
-                  <span className="rounded bg-emerald-600/40 px-1.5 py-0.5 text-emerald-200">
-                    {pool.aptitude}A
+                  <span className="inline-flex h-5 w-5 items-center justify-center rounded bg-success-300 text-xs text-success-1000">
+                    {pool.aptitude}
                   </span>
                 )}
                 {pool.expertise > 0 && (
-                  <span className="rounded bg-amber-600/40 px-1.5 py-0.5 text-amber-200">
-                    {pool.expertise}E
+                  <span className="inline-flex h-5 w-5 items-center justify-center rounded bg-warning-300 text-xs text-warning-1000">
+                    {pool.expertise}
                   </span>
                 )}
               </button>

@@ -23,6 +23,7 @@ import { AddCustomItemModal } from './AddCustomItemModal'
 import { AddWeaponModal } from './AddWeaponModal'
 import { AddArmorModal } from './AddArmorModal'
 import { Alert } from '~/components/ui/Alert'
+import { Button } from '~/components/ui/Button'
 import { QualityBadge } from './QualityBadge'
 
 type Owner =
@@ -571,30 +572,18 @@ function InventoryColumn({
         <h2 className="text-base font-semibold text-white">{title}</h2>
         {canEdit && (
           <div className="flex gap-2">
-            <button
-              onClick={onAddCatalog}
-              className="rounded-lg border border-accent-700/60 bg-accent-700/15 px-2.5 py-1 text-xs font-medium text-accent-900 transition hover:bg-accent-700/25"
-            >
+            <Button variant="secondary" size="sm" onClick={onAddCatalog}>
               + Catalog
-            </button>
-            <button
-              onClick={onAddWeapon}
-              className="rounded-lg border border-accent-700/60 bg-accent-700/15 px-2.5 py-1 text-xs font-medium text-accent-900 transition hover:bg-accent-700/25"
-            >
+            </Button>
+            <Button variant="secondary" size="sm" onClick={onAddWeapon}>
               + Weapon
-            </button>
-            <button
-              onClick={onAddArmor}
-              className="rounded-lg border border-accent-700/60 bg-accent-700/15 px-2.5 py-1 text-xs font-medium text-accent-900 transition hover:bg-accent-700/25"
-            >
+            </Button>
+            <Button variant="secondary" size="sm" onClick={onAddArmor}>
               + Armor
-            </button>
-            <button
-              onClick={onAddCustom}
-              className="rounded-lg border border-gray-400 bg-gray-100 px-2.5 py-1 text-xs text-gray-1000 transition hover:border-accent-700 hover:text-white"
-            >
+            </Button>
+            <Button variant="secondary" size="sm" onClick={onAddCustom}>
               + Custom
-            </button>
+            </Button>
           </div>
         )}
       </header>
@@ -683,27 +672,25 @@ function ItemRow({
     item.source === 'custom' ||
     item.source === 'weapon' ||
     item.source === 'armor'
-  const [editingLocation, setEditingLocation] = useState(false)
   const [locationDraft, setLocationDraft] = useState(item.location ?? '')
-  const [editingName, setEditingName] = useState(false)
   const [nameDraft, setNameDraft] = useState(item.name)
   const [expanded, setExpanded] = useState(false)
 
+  // Re-sync drafts from the item when the row is collapsed (no user editing
+  // in flight). When expanded, the user owns the draft until blur/commit.
   useEffect(() => {
-    if (!editingLocation) setLocationDraft(item.location ?? '')
-  }, [item.location, editingLocation])
+    if (!expanded) setLocationDraft(item.location ?? '')
+  }, [item.location, expanded])
   useEffect(() => {
-    if (!editingName) setNameDraft(item.name)
-  }, [item.name, editingName])
+    if (!expanded) setNameDraft(item.name)
+  }, [item.name, expanded])
 
   function commitLocation() {
-    setEditingLocation(false)
     if (locationDraft.trim() !== (item.location ?? '').trim()) {
       onLocationChange(locationDraft)
     }
   }
   function commitName() {
-    setEditingName(false)
     const trimmed = nameDraft.trim()
     if (trimmed && trimmed !== item.name) {
       onRename(trimmed)
@@ -712,54 +699,43 @@ function ItemRow({
     }
   }
 
+  const isEquipment = item.source === 'weapon' || item.source === 'armor'
+
   return (
-    <li className="grid gap-2 px-4 py-2.5 sm:grid-cols-[1fr_auto]">
-      <div className="space-y-1">
+    <li>
+      {/* Collapsed click-target row — whole row toggles expansion. */}
+      <div
+        role="button"
+        tabIndex={0}
+        aria-expanded={expanded}
+        onClick={() => setExpanded((v) => !v)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            setExpanded((v) => !v)
+          }
+        }}
+        className="grid cursor-pointer gap-2 px-4 py-2.5 transition hover:bg-gray-100 sm:grid-cols-[1fr_auto]"
+      >
         <div className="flex flex-wrap items-baseline gap-2">
-          {editingName ? (
-            <input
-              autoFocus
-              type="text"
-              value={nameDraft}
-              onChange={(e) => setNameDraft(e.target.value)}
-              onBlur={commitName}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') commitName()
-                else if (e.key === 'Escape') {
-                  setNameDraft(item.name)
-                  setEditingName(false)
-                }
-              }}
-              className="rounded border border-accent-700 bg-gray-100 px-1.5 py-0.5 text-sm font-medium text-white focus:outline-none"
-            />
-          ) : (
-            <button
-              type="button"
-              onClick={() => canEdit && renameAllowed && setEditingName(true)}
-              disabled={!canEdit || !renameAllowed}
-              className="font-medium text-white transition disabled:cursor-default"
-              title={renameAllowed ? 'Click to rename' : undefined}
-            >
-              {item.name}
-            </button>
-          )}
+          <span className="font-medium text-white">{item.name}</span>
           {catalog && (
             <span className="text-[10px] uppercase tracking-wide text-gray-700">
               {catalog.category}
             </span>
           )}
           {weapon && (
-            <span className="rounded border border-accent-700/40 bg-accent-700/10 px-1 py-0.5 text-[10px] uppercase tracking-wide text-accent-900">
+            <span className="text-[10px] uppercase tracking-wide text-gray-700">
               {weapon.type} · {weapon.weapon}
             </span>
           )}
           {armor && (
-            <span className="rounded border border-accent-700/40 bg-accent-700/10 px-1 py-0.5 text-[10px] uppercase tracking-wide text-accent-900">
+            <span className="text-[10px] uppercase tracking-wide text-gray-700">
               Armor · {armor.type}
             </span>
           )}
           {item.source === 'custom' && (
-            <span className="rounded border border-gray-400 bg-gray-100 px-1 py-0.5 text-[10px] uppercase tracking-wide text-gray-900">
+            <span className="text-[10px] uppercase tracking-wide text-gray-700">
               Custom
             </span>
           )}
@@ -769,104 +745,111 @@ function ItemRow({
             </span>
           )}
         </div>
-
-        {weapon && <WeaponStats weapon={weapon} />}
-
-        {armor && (
-          <ArmorStats
-            armor={armor}
-            currentDurability={item.currentDurability}
-            canEdit={canEdit}
-            busy={busy}
-            onDurabilityChange={onDurabilityChange}
-          />
+        {!isEquipment && (
+          <span className="text-sm font-semibold text-white">
+            ×{item.quantity}
+          </span>
         )}
-
-        {description && (
-          <button
-            type="button"
-            onClick={() => setExpanded((v) => !v)}
-            className="block w-full text-left"
-            title={expanded ? 'Click to collapse' : 'Click to expand'}
-          >
-            <span
-              className={`text-xs text-gray-900 transition hover:text-gray-1000 ${
-                expanded ? 'block whitespace-pre-line' : 'line-clamp-2'
-              }`}
-            >
-              {description}
-            </span>
-          </button>
-        )}
-        {canEdit &&
-          (editingLocation ? (
-            <input
-              autoFocus
-              type="text"
-              value={locationDraft}
-              onChange={(e) => setLocationDraft(e.target.value)}
-              onBlur={commitLocation}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') commitLocation()
-                else if (e.key === 'Escape') setEditingLocation(false)
-              }}
-              placeholder="Location (e.g. backpack)"
-              className="rounded border border-accent-700 bg-gray-100 px-1.5 py-0.5 text-xs text-white focus:outline-none"
+      </div>
+      {/* Expanded panel — editing controls + stats + description + actions. */}
+      {expanded && (
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="space-y-3 border-t border-gray-400 bg-background-200/40 px-4 py-3"
+        >
+          {canEdit && (renameAllowed || (isEquipment && onToggleEquipped)) && (
+            <div className="flex flex-wrap items-center gap-2">
+              {renameAllowed && (
+                <input
+                  type="text"
+                  value={nameDraft}
+                  onChange={(e) => setNameDraft(e.target.value)}
+                  onBlur={commitName}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter')
+                      (e.currentTarget as HTMLInputElement).blur()
+                    else if (e.key === 'Escape') {
+                      setNameDraft(item.name)
+                      ;(e.currentTarget as HTMLInputElement).blur()
+                    }
+                  }}
+                  placeholder="Name"
+                  className="rounded border border-gray-400 bg-gray-100 px-2 py-1 text-sm font-medium text-white focus:border-accent-700 focus:outline-none"
+                />
+              )}
+              {isEquipment && onToggleEquipped && (
+                <Button
+                  variant="subtle"
+                  size="sm"
+                  onClick={() => onToggleEquipped(!item.equipped)}
+                  disabled={busy}
+                >
+                  {item.equipped ? 'Unequip' : 'Equip'}
+                </Button>
+              )}
+            </div>
+          )}
+          {weapon && <WeaponStats weapon={weapon} />}
+          {armor && (
+            <ArmorStats
+              armor={armor}
+              currentDurability={item.currentDurability}
+              canEdit={canEdit}
+              busy={busy}
+              onDurabilityChange={onDurabilityChange}
             />
-          ) : (
-            <button
-              type="button"
-              onClick={() => setEditingLocation(true)}
-              className="text-[11px] text-gray-700 transition hover:text-accent-900"
-            >
-              {item.location ? `In ${item.location} · change` : '+ Set location'}
-            </button>
-          ))}
-      </div>
-      <div className="flex items-center gap-1.5 sm:flex-col sm:items-end sm:gap-1">
-        {item.source === 'weapon' || item.source === 'armor' ? (
-          canEdit && onToggleEquipped ? (
-            <button
-              onClick={() => onToggleEquipped(!item.equipped)}
-              disabled={busy}
-              className={`rounded border px-2 py-0.5 text-[11px] font-medium transition disabled:cursor-not-allowed disabled:opacity-40 ${
-                item.equipped
-                  ? 'border-accent-700 bg-accent-700/20 text-accent-900 not-disabled:hover:bg-accent-700/30'
-                  : 'border-gray-400 bg-gray-100 text-gray-1000 not-disabled:hover:border-accent-700/60 not-disabled:hover:text-white'
-              }`}
-            >
-              {item.equipped ? 'Equipped' : 'Equip'}
-            </button>
-          ) : null
-        ) : (
-          <QuantityStepper
-            value={item.quantity}
-            canEdit={canEdit}
-            busy={busy}
-            onCommit={onQuantityChange}
-          />
-        )}
-        {canEdit && (
-          <div className="flex gap-1">
-            <button
-              onClick={onTransfer}
-              disabled={busy}
-              className="rounded border border-gray-400 bg-gray-100 px-1.5 py-0.5 text-[11px] text-gray-1000 transition not-disabled:hover:border-accent-700 not-disabled:hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
-              title="Transfer the whole stack"
-            >
-              {transferLabel}
-            </button>
-            <button
-              onClick={onRemove}
-              disabled={busy}
-              className="rounded border border-gray-400 bg-gray-100 px-1.5 py-0.5 text-[11px] text-gray-900 transition not-disabled:hover:border-danger-700 not-disabled:hover:text-danger-900 disabled:cursor-not-allowed disabled:opacity-40"
-              title="Remove"
-            >
-              ×
-            </button>
-          </div>
-        )}
-      </div>
+          )}
+          {description && (
+            <p className="whitespace-pre-line text-xs text-gray-1000">
+              {description}
+            </p>
+          )}
+          {canEdit && (
+            <div className="flex flex-wrap items-center gap-2 pt-1">
+              {!isEquipment && (
+                <QuantityStepper
+                  value={item.quantity}
+                  canEdit={canEdit}
+                  busy={busy}
+                  onCommit={onQuantityChange}
+                />
+              )}
+              <input
+                type="text"
+                value={locationDraft}
+                onChange={(e) => setLocationDraft(e.target.value)}
+                onBlur={commitLocation}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter')
+                    (e.currentTarget as HTMLInputElement).blur()
+                  else if (e.key === 'Escape') {
+                    setLocationDraft(item.location ?? '')
+                    ;(e.currentTarget as HTMLInputElement).blur()
+                  }
+                }}
+                placeholder="Location (e.g. backpack)"
+                className="min-w-0 flex-1 rounded border border-gray-400 bg-gray-100 px-2 py-1 text-xs text-gray-1000 focus:border-accent-700 focus:outline-none"
+              />
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onTransfer}
+                disabled={busy}
+              >
+                Transfer {transferLabel}
+              </Button>
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={onRemove}
+                disabled={busy}
+              >
+                Remove
+              </Button>
+            </div>
+          )}
+        </div>
+      )}
     </li>
   )
 }
@@ -992,17 +975,20 @@ function DurabilityStepper({
   onCommit: (v: number) => void
 }) {
   const broken = value <= 0
+  const btnClass = 'h-5 w-5 shrink-0 px-0 py-0'
   return (
     <span className="inline-flex items-center gap-0.5">
       {canEdit && (
-        <button
+        <Button
+          variant="subtle"
+          size="sm"
           onClick={() => onCommit(Math.max(0, value - 1))}
           disabled={busy || value <= 0}
-          className="h-5 w-5 rounded border border-gray-400 bg-gray-100 text-xs text-gray-1000 transition not-disabled:hover:border-accent-700 not-disabled:hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
           aria-label="Decrease durability"
+          className={btnClass}
         >
           −
-        </button>
+        </Button>
       )}
       <span
         className={`min-w-[1.25rem] text-center text-xs font-semibold ${
@@ -1012,14 +998,16 @@ function DurabilityStepper({
         {value}
       </span>
       {canEdit && (
-        <button
+        <Button
+          variant="subtle"
+          size="sm"
           onClick={() => onCommit(Math.min(max, value + 1))}
           disabled={busy || value >= max}
-          className="h-5 w-5 rounded border border-gray-400 bg-gray-100 text-xs text-gray-1000 transition not-disabled:hover:border-accent-700 not-disabled:hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
           aria-label="Increase durability"
+          className={btnClass}
         >
           +
-        </button>
+        </Button>
       )}
     </span>
   )
@@ -1036,30 +1024,35 @@ function QuantityStepper({
   busy: boolean
   onCommit: (v: number) => void
 }) {
+  const btnClass = 'h-6 w-6 shrink-0 px-0 py-0'
   return (
     <div className="inline-flex items-center gap-1">
       {canEdit && (
-        <button
+        <Button
+          variant="subtle"
+          size="sm"
           onClick={() => value > 1 && onCommit(value - 1)}
           disabled={busy || value <= 1}
-          className="h-6 w-6 rounded border border-gray-400 bg-gray-100 text-xs text-gray-1000 transition not-disabled:hover:border-accent-700 not-disabled:hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
           aria-label="Decrease quantity"
+          className={btnClass}
         >
           −
-        </button>
+        </Button>
       )}
       <span className="min-w-[2.25rem] text-center text-sm font-semibold text-white">
-        ×{value}
+        {value}
       </span>
       {canEdit && (
-        <button
+        <Button
+          variant="subtle"
+          size="sm"
           onClick={() => onCommit(value + 1)}
           disabled={busy}
-          className="h-6 w-6 rounded border border-gray-400 bg-gray-100 text-xs text-gray-1000 transition not-disabled:hover:border-accent-700 not-disabled:hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
           aria-label="Increase quantity"
+          className={btnClass}
         >
           +
-        </button>
+        </Button>
       )}
     </div>
   )
