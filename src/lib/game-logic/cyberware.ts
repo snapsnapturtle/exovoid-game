@@ -35,7 +35,7 @@ export interface InstallCheck {
   reason?: string
   /**
    * Non-blocking warning — install proceeds but triggers the cybernetic
-   * overload state (rulebook §"Exceeding Cyber Immunity"). Excess points
+   * overload state (rulebook: "Exceeding Cyber Immunity"). Excess points
    * must be allocated to the Cyber Malfunction Table; that allocation UI
    * is not yet implemented.
    */

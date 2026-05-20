@@ -1,7 +1,7 @@
 import type { CombatParticipant } from '~/lib/types/database'
 
 /**
- * Sort combat participants per §202: highest current AP first, then higher
+ * Sort combat participants: highest current AP first, then higher
  * Coolness, then "players act first" (tracked implicitly since we only
  * have PCs in v1 — no NPCs yet). Ties between two PCs of equal AP and
  * Coolness are left for the players to decide at the table.

@@ -3,6 +3,7 @@ import { getSupabaseServerClient } from '~/lib/supabase/server'
 import type {
   Character,
   CharacterAttributes,
+  InjuryEntry,
   TalentEntry,
 } from '~/lib/types/database'
 import {
@@ -137,6 +138,7 @@ export const updateCharacter = createServerFn({ method: 'POST' })
         talents?: TalentEntry[]
         edge_current?: number
         health_current?: number | null
+        injuries?: InjuryEntry[]
         notes?: string
       }
     }) => d,

@@ -1,9 +1,10 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Link, useRouter } from '@tanstack/react-router'
 import type {
   Character,
   CombatParticipant,
   GameState,
+  InjuryEntry,
   InventoryItem,
 } from '~/lib/types/database'
 import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
@@ -24,6 +25,7 @@ import { updateInventoryItem } from '~/lib/server/inventory'
 import { updateCharacter } from '~/lib/server/characters'
 import { useDebouncedNumber } from '~/lib/hooks/useDebouncedNumber'
 import { ApTimeline } from './ApTimeline'
+import { InjuryControls } from '~/components/character/InjuryControls'
 
 interface CombatPageProps {
   game: { id: string; name: string }
@@ -268,6 +270,26 @@ function ParticipantCard({
       }),
   })
 
+  // Injuries are an array, not a number — useDebouncedNumber doesn't fit.
+  // Operations (apply / treat / remove) are discrete and infrequent, so a
+  // straight optimistic-then-save pattern is enough. Re-sync from props when
+  // the upstream character row changes (e.g. realtime).
+  const [injuries, setInjuries] = useState<InjuryEntry[]>(character.injuries)
+  useEffect(() => {
+    setInjuries(character.injuries)
+  }, [character.injuries])
+
+  async function saveInjuries(next: InjuryEntry[]) {
+    setInjuries(next)
+    try {
+      await updateCharacter({
+        data: { characterId: character.id, updates: { injuries: next } },
+      })
+    } catch (e) {
+      onSaveError(e)
+    }
+  }
+
   return (
     <article className="rounded-xl border border-gray-400 bg-background-200 p-4">
       <header className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
@@ -321,6 +343,19 @@ function ParticipantCard({
             )
           }
           canEdit={canAdjust}
+        />
+      </div>
+
+      <div className="mt-3">
+        <InjuryControls
+          gameId={gameId}
+          characterId={character.id}
+          injuries={injuries}
+          edgeCurrent={edgeCurrent}
+          edgeHardMax={edgeHardMax}
+          canEdit={canAdjust}
+          onInjuriesChange={saveInjuries}
+          onEdgeChange={setEdgeCurrent}
         />
       </div>
 

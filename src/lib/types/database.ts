@@ -57,6 +57,7 @@ export type Database = {
           gender: string
           health_current: number | null
           id: string
+          injuries: Json
           inventory: Json
           level: number
           malfunction_allocations: Json
@@ -82,6 +83,7 @@ export type Database = {
           gender?: string
           health_current?: number | null
           id?: string
+          injuries?: Json
           inventory?: Json
           level?: number
           malfunction_allocations?: Json
@@ -107,6 +109,7 @@ export type Database = {
           gender?: string
           health_current?: number | null
           id?: string
+          injuries?: Json
           inventory?: Json
           level?: number
           malfunction_allocations?: Json
@@ -389,6 +392,25 @@ export type CyberwareEntry = {
 }
 
 /**
+ * An injury currently carried by a character. Fields are denormalized from
+ * `src/data/injuries.json` so the row survives data-file evolution — same
+ * pattern as talents and cyberware.
+ *
+ * `modifier` adds that many extra injury dice to *future* injury rolls
+ * ("Every injury... modifies future injury rolls by adding more dice").
+ * Cumulative across all carried injuries, treated or not: treating only
+ * suppresses the immediate effect.
+ */
+export type InjuryEntry = {
+  id: string
+  name: string
+  severity: number
+  modifier: number
+  treated: boolean
+  addedAt: string
+}
+
+/**
  * An entry in a character's or a game's shared inventory.
  * - `catalog` items resolve stats by looking up `name` in `items.json`.
  * - `custom` items are free-text and carry their own description.
@@ -432,6 +454,7 @@ export type Character = Omit<
   | 'talents'
   | 'cyberware'
   | 'inventory'
+  | 'injuries'
   | 'malfunction_allocations'
 > & {
   attributes: CharacterAttributes
@@ -439,6 +462,7 @@ export type Character = Omit<
   talents: TalentEntry[]
   cyberware: CyberwareEntry[]
   inventory: InventoryItem[]
+  injuries: InjuryEntry[]
   /** Cyber Malfunction Table slot numbers (2-40) the player has allocated to.
    * Length equals current excess Cyberimmunity. Each slot can be allocated at
    * most once (rulebook example). */
@@ -447,13 +471,13 @@ export type Character = Omit<
 
 /**
  * One participant in the current combat encounter. AP can go negative when
- * an action overspends — the excess subtracts from the next round (§200).
+ * an action overspends — the excess subtracts from the next round.
  */
 export type CombatParticipant = {
   characterId: string
   /** Display-name fallback for participants without a live character row (e.g. future NPCs). PC names are read live from the character row at render time. */
   name: string
-  /** Coolness at round-start — used for tiebreaks (§202). */
+  /** Coolness at round-start — used for tiebreaks. */
   coolness: number
   /** Derived `actionPoints` at round-start. */
   baseAp: number

@@ -1,11 +1,13 @@
 import type { ReactNode } from 'react'
 
-export type AlertVariant = 'danger' | 'warning' | 'info'
+export type AlertVariant = 'danger' | 'warning' | 'info' | 'success' | 'pink'
 
 const VARIANT: Record<AlertVariant, string> = {
   danger: 'border-danger-400 bg-danger-200 text-danger-900',
   warning: 'border-warning-400 bg-warning-200 text-warning-900',
   info: 'border-accent-400 bg-accent-200 text-accent-900',
+  success: 'border-success-400 bg-success-200 text-success-900',
+  pink: 'border-pink-400 bg-pink-200 text-pink-900',
 }
 
 interface AlertProps {
