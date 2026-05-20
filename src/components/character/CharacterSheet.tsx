@@ -15,7 +15,6 @@ import { SaveStatusToast } from './SaveStatusToast'
 interface CharacterSheetProps {
   initial: Character
   canEdit: boolean
-  isGm: boolean
 }
 
 type SheetMode = 'play' | 'edit'
@@ -23,7 +22,6 @@ type SheetMode = 'play' | 'edit'
 export function CharacterSheet({
   initial,
   canEdit,
-  isGm,
 }: CharacterSheetProps) {
   const [mode, setMode] = useState<SheetMode>('play')
   const [deleting, setDeleting] = useState(false)
@@ -106,7 +104,6 @@ export function CharacterSheet({
           onSkillChange={updateSkill}
           gameId={character.game_id}
           characterId={character.id}
-          isGm={isGm}
         />
         <div className="space-y-4">
           <DerivedStatsPanel
@@ -114,7 +111,6 @@ export function CharacterSheet({
             contributions={effects.derivedContributions}
             gameId={character.game_id}
             characterId={character.id}
-            isGm={isGm}
           />
           <EquipmentTabs
             gender={character.gender}

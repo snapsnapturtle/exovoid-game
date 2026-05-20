@@ -59,7 +59,6 @@ interface DiceFeedProps {
   rolls: DiceRollEntry[]
   currentUserId: string
   gameId: string
-  isGm: boolean
   myCharacters: { id: string; name: string }[]
 }
 
@@ -67,7 +66,6 @@ export function DiceFeed({
   rolls,
   currentUserId,
   gameId,
-  isGm,
   myCharacters,
 }: DiceFeedProps) {
   const [details, setDetails] = useState<DiceRollEntry | null>(null)
@@ -191,7 +189,6 @@ export function DiceFeed({
         <CustomDiceRoller
           gameId={gameId}
           characters={myCharacters}
-          isGm={isGm}
           onClose={() => setCustomOpen(false)}
         />
       )}

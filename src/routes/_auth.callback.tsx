@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { getSupabaseBrowserClient } from '~/lib/supabase/client'
 
 export const Route = createFileRoute('/_auth/callback')({
+  head: () => ({ meta: [{ title: 'Signing in… — Exovoid' }] }),
   component: CallbackPage,
 })
 

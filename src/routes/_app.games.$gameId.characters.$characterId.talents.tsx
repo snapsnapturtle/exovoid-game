@@ -7,6 +7,7 @@ const characterRoute = getRouteApi('/_app/games/$gameId/characters/$characterId'
 export const Route = createFileRoute(
   '/_app/games/$gameId/characters/$characterId/talents',
 )({
+  head: () => ({ meta: [{ title: 'Talents — Exovoid' }] }),
   component: TalentsPage,
 })
 

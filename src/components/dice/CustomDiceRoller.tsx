@@ -20,7 +20,6 @@ const DICE: { type: DieType; label: string }[] = [
 interface CustomDiceRollerProps {
   gameId: string;
   characters: { id: string; name: string }[];
-  isGm: boolean;
   onClose: () => void;
 }
 
@@ -32,7 +31,6 @@ interface CustomDiceRollerProps {
 export function CustomDiceRoller({
   gameId,
   characters,
-  isGm,
   onClose,
 }: CustomDiceRollerProps) {
   const [name, setName] = useState("");
@@ -74,7 +72,7 @@ export function CustomDiceRoller({
           skillName: trimmedName || "Custom roll",
           pool,
           modifier: 0,
-          isHidden: isGm && hidden,
+          isHidden: hidden,
         },
       });
       setResult(row.roll_data as unknown as DiceRollData);
@@ -188,17 +186,15 @@ export function CustomDiceRoller({
             </div>
           </div>
 
-          {isGm && (
-            <label className="mb-4 flex items-center gap-2 text-sm text-gray-1000">
-              <input
-                type="checkbox"
-                checked={hidden}
-                onChange={(e) => setHidden(e.target.checked)}
-                className="h-4 w-4"
-              />
-              Hidden roll (only you see the result)
-            </label>
-          )}
+          <label className="mb-4 flex items-center gap-2 text-sm text-gray-1000">
+            <input
+              type="checkbox"
+              checked={hidden}
+              onChange={(e) => setHidden(e.target.checked)}
+              className="h-4 w-4"
+            />
+            Hidden roll (only you and the GM see the result)
+          </label>
         </>
       )}
 

@@ -4,6 +4,7 @@ import { getSupabaseBrowserClient } from '~/lib/supabase/client'
 import { Button } from '~/components/ui/Button'
 
 export const Route = createFileRoute('/_auth/login')({
+  head: () => ({ meta: [{ title: 'Log in — Exovoid' }] }),
   component: LoginPage,
 })
 

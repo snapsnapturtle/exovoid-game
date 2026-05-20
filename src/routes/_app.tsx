@@ -4,8 +4,11 @@ import {
   redirect,
   Link,
   useMatch,
+  useNavigate,
 } from '@tanstack/react-router'
+import { useEffect, useRef, useState } from 'react'
 import { getAuthUser } from '~/lib/server/auth'
+import { getSupabaseBrowserClient } from '~/lib/supabase/client'
 
 export const Route = createFileRoute('/_app')({
   beforeLoad: async () => {
@@ -20,6 +23,7 @@ export const Route = createFileRoute('/_app')({
 
 function AppLayout() {
   const { user, profile } = Route.useRouteContext()
+  const navigate = useNavigate()
   const gameMatch = useMatch({
     from: '/_app/games/$gameId',
     shouldThrow: false,
@@ -27,6 +31,33 @@ function AppLayout() {
   const game = gameMatch?.loaderData?.game
   const isGm = gameMatch?.loaderData?.isGm
   const combat = gameMatch?.loaderData?.gameState?.combat
+  const [menuOpen, setMenuOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!menuOpen) return
+    function onDocClick(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false)
+      }
+    }
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') setMenuOpen(false)
+    }
+    document.addEventListener('mousedown', onDocClick)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('mousedown', onDocClick)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [menuOpen])
+
+  async function handleLogout() {
+    const supabase = getSupabaseBrowserClient()
+    await supabase.auth.signOut()
+    setMenuOpen(false)
+    navigate({ to: '/login' })
+  }
 
   return (
     <div className="flex h-screen flex-col overflow-hidden">
@@ -71,16 +102,39 @@ function AppLayout() {
             </>
           )}
         </div>
-        <div className="flex shrink-0 items-center gap-3">
-          <div className="text-right">
-            <p className="text-sm font-medium text-white">
-              {profile?.display_name || 'Player'}
-            </p>
-            <p className="text-xs text-gray-900">{user.email}</p>
-          </div>
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-700 text-sm font-medium text-white">
-            {(profile?.display_name || user.email || '?')[0].toUpperCase()}
-          </div>
+        <div ref={menuRef} className="relative flex shrink-0 items-center">
+          <button
+            type="button"
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-haspopup="menu"
+            aria-expanded={menuOpen}
+            className="flex items-center gap-3 rounded-md px-2 py-1 transition hover:bg-gray-100"
+          >
+            <div className="text-right">
+              <p className="text-sm font-medium text-white">
+                {profile?.display_name || 'Player'}
+              </p>
+              <p className="text-xs text-gray-900">{user.email}</p>
+            </div>
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-700 text-sm font-medium text-white">
+              {(profile?.display_name || user.email || '?')[0].toUpperCase()}
+            </div>
+          </button>
+          {menuOpen && (
+            <div
+              role="menu"
+              className="elevation-float absolute right-0 top-full z-50 mt-2 w-44 rounded-md border border-gray-400 bg-background-200 py-1"
+            >
+              <button
+                type="button"
+                role="menuitem"
+                onClick={handleLogout}
+                className="w-full px-3 py-2 text-left text-sm text-gray-1000 transition hover:bg-gray-100"
+              >
+                Log out
+              </button>
+            </div>
+          )}
         </div>
       </header>
       <main className="min-h-0 flex-1 overflow-hidden">

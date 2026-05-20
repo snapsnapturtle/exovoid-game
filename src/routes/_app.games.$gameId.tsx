@@ -22,11 +22,14 @@ export const Route = createFileRoute('/_app/games/$gameId')({
     ])
     return { ...gameData, rolls, gameState }
   },
+  head: ({ loaderData }) => ({
+    meta: [{ title: `${loaderData?.game.name ?? 'Game'} — Exovoid` }],
+  }),
   component: GameLayout,
 })
 
 function GameLayout() {
-  const { game, isGm, rolls, currentUserId, characters, gameState } =
+  const { game, rolls, currentUserId, characters, gameState } =
     Route.useLoaderData()
   const liveGameState = useRealtimeGameState(gameState)
   const location = useLocation()
@@ -75,7 +78,6 @@ function GameLayout() {
           rolls={liveRolls}
           currentUserId={currentUserId}
           gameId={game.id}
-          isGm={isGm}
           myCharacters={myCharacters}
         />
       </div>

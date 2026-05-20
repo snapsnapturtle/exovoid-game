@@ -15,7 +15,6 @@ interface DiceRollerProps {
   characterId: string | null;
   skillName: string;
   pool: DicePool;
-  isGm: boolean;
   onClose: () => void;
 }
 
@@ -24,7 +23,6 @@ export function DiceRoller({
   characterId,
   skillName,
   pool,
-  isGm,
   onClose,
 }: DiceRollerProps) {
   const [modifier, setModifier] = useState(0);
@@ -57,7 +55,7 @@ export function DiceRoller({
             expertise: adjusted.expertise,
           },
           modifier,
-          isHidden: isGm && hidden,
+          isHidden: hidden,
         },
       });
       setResult(row.roll_data as unknown as DiceRollData);
@@ -161,17 +159,15 @@ export function DiceRoller({
             </p>
           </div>
 
-          {isGm && (
-            <label className="mb-4 flex items-center gap-2 text-sm text-gray-1000">
-              <input
-                type="checkbox"
-                checked={hidden}
-                onChange={(e) => setHidden(e.target.checked)}
-                className="h-4 w-4"
-              />
-              Hidden roll (only you see the result)
-            </label>
-          )}
+          <label className="mb-4 flex items-center gap-2 text-sm text-gray-1000">
+            <input
+              type="checkbox"
+              checked={hidden}
+              onChange={(e) => setHidden(e.target.checked)}
+              className="h-4 w-4"
+            />
+            Hidden roll (only you and the GM see the result)
+          </label>
         </>
       )}
 

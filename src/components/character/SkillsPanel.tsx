@@ -17,7 +17,6 @@ interface SkillsPanelProps {
   onSkillChange: (skillId: string, value: number) => void
   gameId: string
   characterId: string
-  isGm: boolean
 }
 
 function attrAbbr(id: AttributeId): string {
@@ -31,7 +30,6 @@ export function SkillsPanel({
   onSkillChange,
   gameId,
   characterId,
-  isGm,
 }: SkillsPanelProps) {
   const [filter, setFilter] = useState('')
   const [rolling, setRolling] = useState<{
@@ -147,7 +145,6 @@ export function SkillsPanel({
           characterId={characterId}
           skillName={rolling.skillName}
           pool={rolling.pool}
-          isGm={isGm}
           onClose={() => setRolling(null)}
         />
       )}

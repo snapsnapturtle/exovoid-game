@@ -10,7 +10,6 @@ interface DerivedStatsPanelProps {
   contributions?: Partial<Record<DerivedStatId, Contribution[]>>
   gameId: string
   characterId: string
-  isGm: boolean
 }
 
 const STAT_DISPLAY: { key: DerivedStatId; label: string }[] = [
@@ -29,7 +28,6 @@ export function DerivedStatsPanel({
   contributions,
   gameId,
   characterId,
-  isGm,
 }: DerivedStatsPanelProps) {
   const [rolling, setRolling] = useState<{
     name: string
@@ -92,7 +90,6 @@ export function DerivedStatsPanel({
           characterId={characterId}
           skillName={rolling.name}
           pool={rolling.pool}
-          isGm={isGm}
           onClose={() => setRolling(null)}
         />
       )}

@@ -15,6 +15,7 @@ export const Route = createFileRoute('/_app/games/$gameId/combat')({
     ])
     return { gameState, characters }
   },
+  head: () => ({ meta: [{ title: 'Combat — Exovoid' }] }),
   component: CombatRoute,
 })
 

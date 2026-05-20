@@ -325,51 +325,6 @@ export type Database = {
         }
         Relationships: []
       }
-      shared_notes: {
-        Row: {
-          content: string
-          created_at: string
-          game_id: string
-          id: string
-          title: string
-          updated_at: string
-          updated_by: string | null
-        }
-        Insert: {
-          content?: string
-          created_at?: string
-          game_id: string
-          id?: string
-          title?: string
-          updated_at?: string
-          updated_by?: string | null
-        }
-        Update: {
-          content?: string
-          created_at?: string
-          game_id?: string
-          id?: string
-          title?: string
-          updated_at?: string
-          updated_by?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'shared_notes_game_id_fkey'
-            columns: ['game_id']
-            isOneToOne: false
-            referencedRelation: 'games'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'shared_notes_updated_by_fkey'
-            columns: ['updated_by']
-            isOneToOne: false
-            referencedRelation: 'profiles'
-            referencedColumns: ['id']
-          },
-        ]
-      }
     }
     Views: {
       [_ in never]: never
@@ -496,7 +451,7 @@ export type Character = Omit<
  */
 export type CombatParticipant = {
   characterId: string
-  /** Snapshot at round-start so renaming a character mid-round doesn't shuffle the bar. */
+  /** Display-name fallback for participants without a live character row (e.g. future NPCs). PC names are read live from the character row at render time. */
   name: string
   /** Coolness at round-start — used for tiebreaks (§202). */
   coolness: number

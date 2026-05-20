@@ -4,6 +4,7 @@ import { createGame } from '~/lib/server/games'
 import { Button } from '~/components/ui/Button'
 
 export const Route = createFileRoute('/_app/games/new')({
+  head: () => ({ meta: [{ title: 'Create game — Exovoid' }] }),
   component: NewGamePage,
 })
 

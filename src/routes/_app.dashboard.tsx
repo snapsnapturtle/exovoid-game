@@ -4,6 +4,7 @@ import { buttonClasses } from '~/components/ui/Button'
 
 export const Route = createFileRoute('/_app/dashboard')({
   loader: () => getUserGames(),
+  head: () => ({ meta: [{ title: 'Dashboard — Exovoid' }] }),
   component: DashboardPage,
 })
 

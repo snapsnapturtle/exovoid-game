@@ -19,6 +19,7 @@ export const Route = createFileRoute('/')({
       throw redirect({ to: '/dashboard' })
     }
   },
+  head: () => ({ meta: [{ title: 'Exovoid' }] }),
   component: LandingPage,
 })
 

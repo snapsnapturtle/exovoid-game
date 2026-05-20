@@ -10,6 +10,7 @@ export const Route = createFileRoute(
   '/_app/games/$gameId/characters/$characterId/inventory',
 )({
   loader: ({ params }) => loadGameState({ data: { gameId: params.gameId } }),
+  head: () => ({ meta: [{ title: 'Inventory — Exovoid' }] }),
   component: InventoryRoute,
 })
 
