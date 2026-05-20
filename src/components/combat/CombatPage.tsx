@@ -46,6 +46,7 @@ export function CombatPage({
   const [error, setError] = useState<string | null>(null)
   const combat = gameState.combat
   const characterById = new Map(characters.map((c) => [c.id, c]))
+  const characterNames = new Map(characters.map((c) => [c.id, c.name]))
 
   async function withGmBusy<T>(key: string, fn: () => Promise<T>) {
     if (gmBusy) return
@@ -177,7 +178,10 @@ export function CombatPage({
         </div>
       ) : (
         <>
-          <ApTimeline participants={combat.participants} />
+          <ApTimeline
+            participants={combat.participants}
+            characterNames={characterNames}
+          />
 
           <div className="space-y-3">
             {sortByTurnOrder(combat.participants).map((participant) => {
@@ -273,7 +277,7 @@ function ParticipantCard({
             params={{ gameId, characterId: character.id }}
             className="text-base font-semibold text-white transition hover:text-accent-900"
           >
-            {participant.name}
+            {character.name}
           </Link>
           <span className="text-[11px] text-gray-700">
             base {participant.baseAp} + d6:{participant.rolled} ={' '}
