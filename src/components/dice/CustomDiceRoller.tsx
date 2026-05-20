@@ -1,26 +1,26 @@
-import { useState } from "react";
-import { DieCounter } from "./Die";
-import { rollDice, type DiceRollData } from "~/lib/server/dice";
-import type { DieType } from "~/lib/game-logic/dice";
+import { useState } from 'react'
+import { DieCounter } from './Die'
+import { rollDice, type DiceRollData } from '~/lib/server/dice'
+import type { DieType } from '~/lib/game-logic/dice'
 import {
   useDiceFeedBroadcast,
   useDiceFeedRefresh,
-} from "~/lib/hooks/diceFeedContext";
-import { RollResultView } from "./RollResultView";
-import { Button } from "~/components/ui/Button";
-import { Modal } from "~/components/ui/Modal";
+} from '~/lib/hooks/diceFeedContext'
+import { RollResultView } from './RollResultView'
+import { Button } from '~/components/ui/Button'
+import { Modal } from '~/components/ui/Modal'
 
 const DICE: { type: DieType; label: string }[] = [
-  { type: "standard", label: "Standard" },
-  { type: "aptitude", label: "Aptitude" },
-  { type: "expertise", label: "Expertise" },
-  { type: "injury", label: "Injury" },
-];
+  { type: 'standard', label: 'Standard' },
+  { type: 'aptitude', label: 'Aptitude' },
+  { type: 'expertise', label: 'Expertise' },
+  { type: 'injury', label: 'Injury' },
+]
 
 interface CustomDiceRollerProps {
-  gameId: string;
-  characters: { id: string; name: string }[];
-  onClose: () => void;
+  gameId: string
+  characters: { id: string; name: string }[]
+  onClose: () => void
 }
 
 /**
@@ -33,56 +33,56 @@ export function CustomDiceRoller({
   characters,
   onClose,
 }: CustomDiceRollerProps) {
-  const [name, setName] = useState("");
+  const [name, setName] = useState('')
   const [characterId, setCharacterId] = useState<string | null>(
     characters[0]?.id ?? null,
-  );
+  )
   const [pool, setPool] = useState<Record<DieType, number>>({
     standard: 0,
     aptitude: 0,
     expertise: 0,
     injury: 0,
-  });
-  const [hidden, setHidden] = useState(false);
-  const [rolling, setRolling] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<DiceRollData | null>(null);
-  const [rollKey, setRollKey] = useState(0);
-  const refreshFeed = useDiceFeedRefresh();
-  const broadcastNewRoll = useDiceFeedBroadcast();
+  })
+  const [hidden, setHidden] = useState(false)
+  const [rolling, setRolling] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [result, setResult] = useState<DiceRollData | null>(null)
+  const [rollKey, setRollKey] = useState(0)
+  const refreshFeed = useDiceFeedRefresh()
+  const broadcastNewRoll = useDiceFeedBroadcast()
 
-  const total = pool.standard + pool.aptitude + pool.expertise + pool.injury;
-  const trimmedName = name.trim();
-  const canRoll = total > 0;
-  const showConfig = !result;
+  const total = pool.standard + pool.aptitude + pool.expertise + pool.injury
+  const trimmedName = name.trim()
+  const canRoll = total > 0
+  const showConfig = !result
 
   function adjust(type: DieType, delta: number) {
-    setPool((p) => ({ ...p, [type]: Math.max(0, p[type] + delta) }));
+    setPool((p) => ({ ...p, [type]: Math.max(0, p[type] + delta) }))
   }
 
   async function submit() {
-    if (!canRoll) return;
-    setRolling(true);
-    setError(null);
+    if (!canRoll) return
+    setRolling(true)
+    setError(null)
     try {
       const row = await rollDice({
         data: {
           gameId,
           characterId,
-          skillName: trimmedName || "Custom roll",
+          skillName: trimmedName || 'Custom roll',
           pool,
           modifier: 0,
           isHidden: hidden,
         },
-      });
-      setResult(row.roll_data as unknown as DiceRollData);
-      setRollKey((k) => k + 1);
-      await refreshFeed();
-      broadcastNewRoll();
+      })
+      setResult(row.roll_data as unknown as DiceRollData)
+      setRollKey((k) => k + 1)
+      await refreshFeed()
+      broadcastNewRoll()
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Roll failed");
+      setError(e instanceof Error ? e.message : 'Roll failed')
     } finally {
-      setRolling(false);
+      setRolling(false)
     }
   }
 
@@ -102,10 +102,10 @@ export function CustomDiceRoller({
       footer={
         <>
           <Button variant="ghost" onClick={onClose} disabled={rolling}>
-            {rolling || result ? "Close" : "Cancel"}
+            {rolling || result ? 'Close' : 'Cancel'}
           </Button>
           <Button onClick={submit} disabled={!canRoll || rolling}>
-            {rolling ? "Rolling…" : result ? "Re-roll" : "Roll"}
+            {rolling ? 'Rolling…' : result ? 'Re-roll' : 'Roll'}
           </Button>
         </>
       }
@@ -139,7 +139,7 @@ export function CustomDiceRoller({
               </label>
               <select
                 id="custom-roll-character"
-                value={characterId ?? ""}
+                value={characterId ?? ''}
                 onChange={(e) => setCharacterId(e.target.value || null)}
                 className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-1.5 text-sm text-white focus:border-accent-900 focus:outline-none"
               >
@@ -206,5 +206,5 @@ export function CustomDiceRoller({
         </div>
       )}
     </Modal>
-  );
+  )
 }

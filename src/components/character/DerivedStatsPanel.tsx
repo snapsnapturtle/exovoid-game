@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import type { DerivedStats } from '~/lib/game-logic/derived-stats'
-import type { Contribution, DerivedStatId } from '~/lib/game-logic/passive-effects'
+import type {
+  Contribution,
+  DerivedStatId,
+} from '~/lib/game-logic/passive-effects'
 import type { DicePool } from '~/lib/game-logic/dice'
 import { Button } from '~/components/ui/Button'
 import { DiceRoller } from '~/components/dice/DiceRoller'

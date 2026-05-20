@@ -92,9 +92,7 @@ function SignupPage() {
             placeholder="At least 6 characters"
           />
         </div>
-        {error && (
-          <p className="text-sm text-danger-900">{error}</p>
-        )}
+        {error && <p className="text-sm text-danger-900">{error}</p>}
         <Button type="submit" disabled={loading} className="w-full">
           {loading ? 'Creating account...' : 'Sign Up'}
         </Button>

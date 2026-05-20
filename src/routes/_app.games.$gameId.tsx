@@ -67,9 +67,7 @@ function GameLayout() {
               <span className="font-semibold">
                 Combat active — Round {liveGameState.combat.round}
               </span>
-              <span className="ml-2 text-warning-900/80">
-                Go to tracker →
-              </span>
+              <span className="ml-2 text-warning-900/80">Go to tracker →</span>
             </Link>
           )}
           <Outlet />

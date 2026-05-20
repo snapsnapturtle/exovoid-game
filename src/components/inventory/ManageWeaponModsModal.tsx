@@ -55,9 +55,7 @@ export function ManageWeaponModsModal({
 
   function toggle(name: string) {
     setDraft((prev) =>
-      prev.includes(name)
-        ? prev.filter((n) => n !== name)
-        : [...prev, name],
+      prev.includes(name) ? prev.filter((n) => n !== name) : [...prev, name],
     )
   }
 
@@ -294,9 +292,7 @@ function ModCard({
         {effects}
       </p>
       {restrictions && (
-        <p className="mt-1 text-[11px] italic text-gray-700">
-          {restrictions}
-        </p>
+        <p className="mt-1 text-[11px] italic text-gray-700">{restrictions}</p>
       )}
     </button>
   )

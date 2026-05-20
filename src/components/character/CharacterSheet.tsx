@@ -19,10 +19,7 @@ interface CharacterSheetProps {
 
 type SheetMode = 'play' | 'edit'
 
-export function CharacterSheet({
-  initial,
-  canEdit,
-}: CharacterSheetProps) {
+export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
   const [mode, setMode] = useState<SheetMode>('play')
   const [deleting, setDeleting] = useState(false)
   const [notesOpen, setNotesOpen] = useState(false)
@@ -71,9 +68,7 @@ export function CharacterSheet({
         onNameChange={(v) => updateField('name', v)}
         onCareerChange={(v) => updateField('career', v)}
         onExperienceChange={(v) => updateField('experience', v)}
-        onModeToggle={() =>
-          setMode((m) => (m === 'play' ? 'edit' : 'play'))
-        }
+        onModeToggle={() => setMode((m) => (m === 'play' ? 'edit' : 'play'))}
         onDelete={handleDelete}
       />
 
@@ -129,9 +124,7 @@ export function CharacterSheet({
             characterId={character.id}
             onGenderChange={(v) => updateField('gender', v)}
             onAgeChange={(v) => updateField('age', v)}
-            onBackgroundNotesChange={(v) =>
-              updateField('background_notes', v)
-            }
+            onBackgroundNotesChange={(v) => updateField('background_notes', v)}
           />
         </div>
       </div>

@@ -182,7 +182,8 @@ export const unlockTalent = createServerFn({ method: 'POST' })
     if (!check.ok) throw new Error(check.reason ?? 'Cannot unlock talent')
 
     const career = careers.find((c) => c.name === data.career)
-    const tier = career?.talents.find((t) => t.talent === data.talentName)?.tier ?? 0
+    const tier =
+      career?.talents.find((t) => t.talent === data.talentName)?.tier ?? 0
     const entry = makeTalentEntry(
       data.talentName,
       data.career,
@@ -390,9 +391,7 @@ function withAllocationReset(
 }
 
 export const setMalfunctionAllocations = createServerFn({ method: 'POST' })
-  .inputValidator(
-    (d: { characterId: string; allocations: number[] }) => d,
-  )
+  .inputValidator((d: { characterId: string; allocations: number[] }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {

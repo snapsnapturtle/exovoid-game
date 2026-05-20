@@ -62,9 +62,7 @@ export function validateCreationAttributes(
     if (!Number.isInteger(v) || v < 0) {
       errors.push(`${a.name} must be a non-negative integer.`)
     } else if (v > CREATION_HIGH_CAP) {
-      errors.push(
-        `${a.name} is ${v}; creation cap is ${CREATION_HIGH_CAP}.`,
-      )
+      errors.push(`${a.name} is ${v}; creation cap is ${CREATION_HIGH_CAP}.`)
     }
   }
   const total = ATTRIBUTE_DEFINITIONS.reduce(
@@ -112,9 +110,7 @@ export function validateCreationSkills(
       )
     }
     if (final < base) {
-      errors.push(
-        `${skill.name} is below the career baseline of ${base}.`,
-      )
+      errors.push(`${skill.name} is below the career baseline of ${base}.`)
     }
     pointsSpent += pointsForSkillLevel(final) - pointsForSkillLevel(base)
   }
@@ -150,9 +146,7 @@ export function validateCreationTalents(
   for (const t of talents) {
     const ref = careerData.talents.find((ct) => ct.talent === t.name)
     if (!ref) {
-      errors.push(
-        `Talent "${t.name}" is not part of the ${careerName} tree.`,
-      )
+      errors.push(`Talent "${t.name}" is not part of the ${careerName} tree.`)
       continue
     }
     if (ref.tier > CREATION_TALENT_MAX_TIER) {

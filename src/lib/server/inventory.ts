@@ -160,7 +160,8 @@ export const updateInventoryItem = createServerFn({ method: 'POST' })
     const existing = current[idx]
     const next: InventoryItem = { ...existing }
     if (data.updates.quantity !== undefined) {
-      if (data.updates.quantity < 1) throw new Error('Quantity must be at least 1')
+      if (data.updates.quantity < 1)
+        throw new Error('Quantity must be at least 1')
       next.quantity = data.updates.quantity
     }
     if (data.updates.location !== undefined) {
@@ -194,7 +195,10 @@ export const updateInventoryItem = createServerFn({ method: 'POST' })
       if (armor.durability == null) {
         throw new Error('This armor does not track durability')
       }
-      const clamped = Math.max(0, Math.min(armor.durability, data.updates.currentDurability))
+      const clamped = Math.max(
+        0,
+        Math.min(armor.durability, data.updates.currentDurability),
+      )
       next.currentDurability = clamped
     }
     if (data.updates.currentAmmo !== undefined) {
@@ -207,7 +211,10 @@ export const updateInventoryItem = createServerFn({ method: 'POST' })
       if (weapon.magazine == null) {
         throw new Error('This weapon does not track ammo')
       }
-      const clamped = Math.max(0, Math.min(weapon.magazine, data.updates.currentAmmo))
+      const clamped = Math.max(
+        0,
+        Math.min(weapon.magazine, data.updates.currentAmmo),
+      )
       next.currentAmmo = clamped
     }
     if (data.updates.manufacturerRef !== undefined) {
@@ -300,7 +307,11 @@ export const updateInventoryItem = createServerFn({ method: 'POST' })
           const slotCheck = validateFirearmModSelection(mods)
           if (!slotCheck.ok) throw new Error(slotCheck.reason)
           const consumed = firearmModsConsumed(mods)
-          const limit = effectiveWeaponModLimit(weapon, next.manufacturerRef, mods)
+          const limit = effectiveWeaponModLimit(
+            weapon,
+            next.manufacturerRef,
+            mods,
+          )
           if (consumed > limit) {
             throw new Error(
               `Too many mods (${consumed}); effective limit is ${limit}`,
@@ -315,7 +326,11 @@ export const updateInventoryItem = createServerFn({ method: 'POST' })
           }
           const slotCheck = validateMeleeModSelection(mods)
           if (!slotCheck.ok) throw new Error(slotCheck.reason)
-          const limit = effectiveWeaponModLimit(weapon, next.manufacturerRef, mods)
+          const limit = effectiveWeaponModLimit(
+            weapon,
+            next.manufacturerRef,
+            mods,
+          )
           if (mods.length > limit) {
             throw new Error(
               `Too many mods (${mods.length}); effective limit is ${limit}`,
@@ -377,7 +392,8 @@ export const transferInventoryItem = createServerFn({ method: 'POST' })
     const source = fromInventory[idx]
     const moveQty = data.quantity ?? source.quantity
     if (moveQty < 1) throw new Error('Quantity must be at least 1')
-    if (moveQty > source.quantity) throw new Error('Not enough quantity to transfer')
+    if (moveQty > source.quantity)
+      throw new Error('Not enough quantity to transfer')
 
     const partial = moveQty < source.quantity
     const updatedFrom = partial
@@ -469,9 +485,7 @@ export const addWeapon = createServerFn({ method: 'POST' })
   })
 
 /** Map a weapon to the manufacturer applicableTo bucket. */
-function weaponManufacturerType(
-  weapon: WeaponData,
-): 'firearms' | 'melee' {
+function weaponManufacturerType(weapon: WeaponData): 'firearms' | 'melee' {
   return isFirearmLike(weapon) ? 'firearms' : 'melee'
 }
 
@@ -569,9 +583,7 @@ export const addArmor = createServerFn({ method: 'POST' })
 // Currency operations.
 
 export const setCurrency = createServerFn({ method: 'POST' })
-  .inputValidator(
-    (d: { owner: Owner; credits?: number; assets?: number }) => d,
-  )
+  .inputValidator((d: { owner: Owner; credits?: number; assets?: number }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {
@@ -610,12 +622,7 @@ export const setCurrency = createServerFn({ method: 'POST' })
 
 export const transferCurrency = createServerFn({ method: 'POST' })
   .inputValidator(
-    (d: {
-      from: Owner
-      to: Owner
-      kind: CurrencyKind
-      amount: number
-    }) => d,
+    (d: { from: Owner; to: Owner; kind: CurrencyKind; amount: number }) => d,
   )
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
@@ -631,7 +638,12 @@ export const transferCurrency = createServerFn({ method: 'POST' })
     }
     const toBalance = await readCurrency(supabase, data.to, data.kind)
 
-    await writeCurrency(supabase, data.from, data.kind, fromBalance - data.amount)
+    await writeCurrency(
+      supabase,
+      data.from,
+      data.kind,
+      fromBalance - data.amount,
+    )
     await writeCurrency(supabase, data.to, data.kind, toBalance + data.amount)
     return { moved: data.amount }
   })

@@ -52,7 +52,9 @@ export interface DerivedStats {
   soak: number
 }
 
-export function computeAllDerivedStats(attrs: CharacterAttributes): DerivedStats {
+export function computeAllDerivedStats(
+  attrs: CharacterAttributes,
+): DerivedStats {
   return {
     health: computeHealth(attrs),
     vigilance: computeVigilance(attrs),

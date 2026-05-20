@@ -1,6 +1,9 @@
 import weaponsData from '~/data/weapons.json'
 import { lookupManufacturer } from '~/lib/game-logic/manufacturers'
-import { firearmModSlotBonus, isFirearmLike } from '~/lib/game-logic/firearm-mods'
+import {
+  firearmModSlotBonus,
+  isFirearmLike,
+} from '~/lib/game-logic/firearm-mods'
 
 export type WeaponType = 'Firearms' | 'Heavy Weapons' | 'Melee' | 'Throwing'
 
@@ -84,7 +87,10 @@ export function effectiveWeaponModLimit(
  * base name and numeric level. The base name is the lookup key into
  * item-qualities.json; level (if any) is the magnitude annotation.
  */
-export function parseQuality(raw: string): { name: string; level: number | null } {
+export function parseQuality(raw: string): {
+  name: string
+  level: number | null
+} {
   const m = raw.match(/^(.+?)\s*\((\d+)\)\s*$/)
   if (!m) return { name: raw.trim(), level: null }
   return { name: m[1].trim(), level: parseInt(m[2], 10) }

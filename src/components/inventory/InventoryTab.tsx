@@ -42,9 +42,7 @@ export function InventoryTab({
       </div>
 
       {inventory.length === 0 ? (
-        <p className="py-6 text-center text-sm text-gray-700">
-          No items yet.
-        </p>
+        <p className="py-6 text-center text-sm text-gray-700">No items yet.</p>
       ) : (
         <div className="space-y-3">
           {groups.map((g) => (

@@ -82,7 +82,10 @@ export function validateAllocations(
       return { ok: false, reason: 'Allocation values must be whole numbers.' }
     }
     if (!LEGAL_ROLLS.has(slot)) {
-      return { ok: false, reason: `Slot ${slot} is not a valid malfunction slot.` }
+      return {
+        ok: false,
+        reason: `Slot ${slot} is not a valid malfunction slot.`,
+      }
     }
     if (seen.has(slot)) {
       return { ok: false, reason: `Slot ${slot} can only be selected once.` }

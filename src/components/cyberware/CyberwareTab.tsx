@@ -1,9 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import type { CyberwareEntry } from '~/lib/types/database'
-import {
-  lookupCyberware,
-  occupationUsed,
-} from '~/lib/game-logic/cyberware'
+import { lookupCyberware, occupationUsed } from '~/lib/game-logic/cyberware'
 import { buttonClasses } from '~/components/ui/Button'
 
 interface CyberwareTabProps {
@@ -29,9 +26,7 @@ export function CyberwareTab({
           <span className="font-medium text-white">{used}</span>
           <span className="text-gray-700"> / </span>
           <span className="text-gray-900">{capacity}</span>
-          <span className="ml-2 text-xs text-gray-700">
-            ({available} free)
-          </span>
+          <span className="ml-2 text-xs text-gray-700">({available} free)</span>
         </div>
         <Link
           to="/games/$gameId/characters/$characterId/cyberware"

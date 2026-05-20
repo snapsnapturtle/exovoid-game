@@ -116,7 +116,9 @@ function EquippedArmorCard({
   armor,
 }: {
   entry: InventoryItem
-  armor: NonNullable<ReturnType<typeof import('~/lib/game-logic/armors').lookupArmor>>
+  armor: NonNullable<
+    ReturnType<typeof import('~/lib/game-logic/armors').lookupArmor>
+  >
 }) {
   const tracksDurability = armor.durability != null
   const current = entry.currentDurability ?? armor.durability ?? 0
@@ -171,7 +173,13 @@ function EquippedArmorCard({
   )
 }
 
-function Stat({ label, children }: { label: string; children: React.ReactNode }) {
+function Stat({
+  label,
+  children,
+}: {
+  label: string
+  children: React.ReactNode
+}) {
   return (
     <span>
       <span className="text-gray-700">{label}:</span>{' '}

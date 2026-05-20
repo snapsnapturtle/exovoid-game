@@ -91,7 +91,9 @@ function readTable(name) {
 
 function writeJson(name, data) {
   writeFileSync(join(OUT, name), JSON.stringify(data, null, 2) + '\n')
-  console.log(`  wrote src/data/${name} (${Array.isArray(data) ? data.length + ' rows' : 'object'})`)
+  console.log(
+    `  wrote src/data/${name} (${Array.isArray(data) ? data.length + ' rows' : 'object'})`,
+  )
 }
 
 // Preserve hand-annotated `effects` arrays across re-imports. The CSVs only
@@ -168,9 +170,9 @@ const careers = overviewRows
     description: r.description ?? '',
     startingSkills: parseStartingSkills(r.startingSkills ?? ''),
     startingEquipment: parseStartingEquipment(r.startingEquipment ?? ''),
-    talents: (careerTalents.get(r.career) ?? []).slice().sort((a, b) =>
-      a.tier - b.tier || a.talent.localeCompare(b.talent),
-    ),
+    talents: (careerTalents.get(r.career) ?? [])
+      .slice()
+      .sort((a, b) => a.tier - b.tier || a.talent.localeCompare(b.talent)),
   }))
 writeJson('careers.json', careers)
 
@@ -333,7 +335,9 @@ writeJson('item-qualities.json', qualities)
 // (forward-fill). Slot 3 is still Critical Shutdown, slot 30 is still
 // Corrupted Data, etc. All 39 rolls are legal allocation slots.
 console.log('Cyber Malfunction Table...')
-const malfunctionRows = readTable('Exovoid Content - Cyberware Malfunction Table.csv')
+const malfunctionRows = readTable(
+  'Exovoid Content - Cyberware Malfunction Table.csv',
+)
 let currentMalfunctionOutcome = ''
 let currentMalfunctionDescription = ''
 let currentMalfunctionRepair = ''

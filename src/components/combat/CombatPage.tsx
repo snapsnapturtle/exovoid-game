@@ -469,7 +469,6 @@ function ArmorRow({
   )
 }
 
-
 function MiniStepper({
   value,
   max,

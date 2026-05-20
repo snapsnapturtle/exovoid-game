@@ -1,9 +1,6 @@
 node_modules
 dist
 .output
-.env.local
-*.local
 src/routeTree.gen.ts
-USERS.md
-.claude
+package-lock.json
 supabase/snippets

@@ -19,9 +19,7 @@ export function CharacterInfoPanel({
 }: CharacterInfoPanelProps) {
   return (
     <div className="rounded-xl border border-gray-400 bg-background-200 p-6">
-      <h3 className="mb-4 text-lg font-semibold text-white">
-        Character Info
-      </h3>
+      <h3 className="mb-4 text-lg font-semibold text-white">Character Info</h3>
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label className="mb-1 block text-sm text-gray-900">Gender</label>

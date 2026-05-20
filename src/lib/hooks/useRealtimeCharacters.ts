@@ -26,9 +26,7 @@ export function useRealtimeCharacters(
     onChange: (payload) => {
       if (!payload.new || !('id' in payload.new)) return
       const next = payload.new as Character
-      setCharacters((prev) =>
-        prev.map((c) => (c.id === next.id ? next : c)),
-      )
+      setCharacters((prev) => prev.map((c) => (c.id === next.id ? next : c)))
     },
   })
 

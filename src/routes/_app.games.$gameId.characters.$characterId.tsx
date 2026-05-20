@@ -7,9 +7,7 @@ export const Route = createFileRoute(
   loader: ({ params }) =>
     getCharacter({ data: { characterId: params.characterId } }),
   head: ({ loaderData }) => ({
-    meta: [
-      { title: `${loaderData?.character.name ?? 'Character'} — Exovoid` },
-    ],
+    meta: [{ title: `${loaderData?.character.name ?? 'Character'} — Exovoid` }],
   }),
   component: CharacterLayout,
 })

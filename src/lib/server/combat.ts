@@ -132,7 +132,9 @@ export const nextRound = createServerFn({ method: 'POST' })
       .select('*')
       .in('id', ids)
     if (error) throw new Error(error.message)
-    const byId = new Map((chars as unknown as Character[]).map((c) => [c.id, c]))
+    const byId = new Map(
+      (chars as unknown as Character[]).map((c) => [c.id, c]),
+    )
 
     const participants = state.combat.participants
       .map((p) => {

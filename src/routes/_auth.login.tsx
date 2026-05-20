@@ -70,9 +70,7 @@ function LoginPage() {
             placeholder="Your password"
           />
         </div>
-        {error && (
-          <p className="text-sm text-danger-900">{error}</p>
-        )}
+        {error && <p className="text-sm text-danger-900">{error}</p>}
         <Button type="submit" disabled={loading} className="w-full">
           {loading ? 'Logging in...' : 'Log In'}
         </Button>

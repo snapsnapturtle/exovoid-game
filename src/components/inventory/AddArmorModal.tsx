@@ -26,7 +26,9 @@ export function AddArmorModal({ busy, onAdd, onClose }: AddArmorModalProps) {
   const manufacturers = useMemo(() => manufacturersFor('armor'), [])
   const [query, setQuery] = useState('')
   const [armor, setArmor] = useState<ArmorData | null>(null)
-  const [manufacturer, setManufacturer] = useState<ManufacturerData | null>(null)
+  const [manufacturer, setManufacturer] = useState<ManufacturerData | null>(
+    null,
+  )
   const [name, setName] = useState('')
   const [location, setLocation] = useState('')
   const [step, setStep] = useState<Step>('armor')
@@ -73,7 +75,9 @@ export function AddArmorModal({ busy, onAdd, onClose }: AddArmorModalProps) {
         <header className="flex items-start justify-between gap-3 border-b border-gray-400 px-5 py-4">
           <div>
             <h3 className="text-lg font-semibold text-white">
-              {step === 'armor' ? 'Add armor — pick model' : 'Add armor — pick manufacturer'}
+              {step === 'armor'
+                ? 'Add armor — pick model'
+                : 'Add armor — pick manufacturer'}
             </h3>
             <p className="mt-1 text-xs text-gray-900">
               {step === 'armor'
@@ -137,7 +141,9 @@ export function AddArmorModal({ busy, onAdd, onClose }: AddArmorModalProps) {
                         {a.cost != null && (
                           <Stat label="Cost">{a.cost.toLocaleString()} ¢</Stat>
                         )}
-                        {a.rarity != null && <Stat label="Rarity">{a.rarity}</Stat>}
+                        {a.rarity != null && (
+                          <Stat label="Rarity">{a.rarity}</Stat>
+                        )}
                         <Stat label="Mod slots">{a.modLimit}</Stat>
                       </div>
                       {a.qualities.length > 0 && (
@@ -258,9 +264,7 @@ function ManufacturerList({
               </div>
               <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-gray-900">
                 {effectiveCost != null && (
-                  <Stat label="Cost">
-                    {effectiveCost.toLocaleString()} ¢
-                  </Stat>
+                  <Stat label="Cost">{effectiveCost.toLocaleString()} ¢</Stat>
                 )}
                 {armor.rarity != null && (
                   <Stat label="Rarity">
@@ -296,7 +300,13 @@ function ManufacturerList({
   )
 }
 
-function Stat({ label, children }: { label: string; children: React.ReactNode }) {
+function Stat({
+  label,
+  children,
+}: {
+  label: string
+  children: React.ReactNode
+}) {
   return (
     <span>
       <span className="text-gray-700">{label}:</span>{' '}

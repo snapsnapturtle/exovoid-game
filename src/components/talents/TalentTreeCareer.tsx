@@ -1,10 +1,7 @@
 import { TalentNode, type NodeState } from './TalentNode'
 import type { TalentEntry } from '~/lib/types/database'
 import type { CareerData } from '~/lib/game-logic/talents'
-import {
-  tierPrereqMet,
-  unlockedInCareer,
-} from '~/lib/game-logic/talents'
+import { tierPrereqMet, unlockedInCareer } from '~/lib/game-logic/talents'
 
 interface TalentTreeCareerProps {
   career: CareerData

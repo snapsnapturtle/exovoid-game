@@ -2,7 +2,9 @@ import { createFileRoute, getRouteApi } from '@tanstack/react-router'
 import { TalentTreePage } from '~/components/talents/TalentTreePage'
 import { useRealtimeCharacter } from '~/lib/hooks/useRealtimeCharacter'
 
-const characterRoute = getRouteApi('/_app/games/$gameId/characters/$characterId')
+const characterRoute = getRouteApi(
+  '/_app/games/$gameId/characters/$characterId',
+)
 
 export const Route = createFileRoute(
   '/_app/games/$gameId/characters/$characterId/talents',

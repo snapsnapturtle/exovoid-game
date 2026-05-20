@@ -57,7 +57,9 @@ export function isLegalTalentSet(
   picks: { talent: string; tier: number }[],
 ): boolean {
   for (const t of picks) {
-    const lowerCount = picks.filter((o) => o.talent !== t.talent && o.tier < t.tier).length
+    const lowerCount = picks.filter(
+      (o) => o.talent !== t.talent && o.tier < t.tier,
+    ).length
     if (!tierPrereqMet(lowerCount, t.tier)) return false
   }
   return true
@@ -110,10 +112,7 @@ export function canUnlock(
   return { ok: true }
 }
 
-export function canRemove(
-  character: Character,
-  talentName: string,
-): CanResult {
+export function canRemove(character: Character, talentName: string): CanResult {
   if (!character.talents.some((t) => t.name === talentName)) {
     return { ok: false, reason: 'Not unlocked.' }
   }
@@ -127,7 +126,8 @@ export function canRemove(
     if (!isLegalTalentSet(picks)) {
       return {
         ok: false,
-        reason: 'Removing this would leave a higher-tier talent without its prerequisite.',
+        reason:
+          'Removing this would leave a higher-tier talent without its prerequisite.',
       }
     }
   }

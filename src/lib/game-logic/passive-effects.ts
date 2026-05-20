@@ -32,7 +32,10 @@ const TALENT_EFFECTS = new Map(
   ALL_TALENTS.filter((t) => t.effects?.length).map((t) => [t.name, t.effects!]),
 )
 const CYBERWARE_EFFECTS = new Map(
-  ALL_CYBERWARE.filter((c) => c.effects?.length).map((c) => [c.name, c.effects!]),
+  ALL_CYBERWARE.filter((c) => c.effects?.length).map((c) => [
+    c.name,
+    c.effects!,
+  ]),
 )
 
 const MAX_ATTRIBUTE = 8
@@ -78,8 +81,10 @@ export function applyPassiveEffects(
   inventory: InventoryItem[] = [],
 ): AppliedPassiveEffects {
   const attributes: CharacterAttributes = { ...baseAttributes }
-  const attributeContributions: Partial<Record<AttributeId, Contribution[]>> = {}
-  const derivedContributions: Partial<Record<DerivedStatId, Contribution[]>> = {}
+  const attributeContributions: Partial<Record<AttributeId, Contribution[]>> =
+    {}
+  const derivedContributions: Partial<Record<DerivedStatId, Contribution[]>> =
+    {}
   const sources = collectSources(talents, cyberware)
 
   for (const source of sources) {
