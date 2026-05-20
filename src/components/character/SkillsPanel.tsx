@@ -20,7 +20,9 @@ interface SkillsPanelProps {
 }
 
 function attrAbbr(id: AttributeId): string {
-  return ATTRIBUTE_DEFINITIONS.find((a) => a.id === id)?.abbr ?? id.toUpperCase()
+  return (
+    ATTRIBUTE_DEFINITIONS.find((a) => a.id === id)?.abbr ?? id.toUpperCase()
+  )
 }
 
 export function SkillsPanel({
@@ -38,9 +40,7 @@ export function SkillsPanel({
   } | null>(null)
 
   const filtered = filter
-    ? SKILLS.filter((s) =>
-        s.name.toLowerCase().includes(filter.toLowerCase()),
-      )
+    ? SKILLS.filter((s) => s.name.toLowerCase().includes(filter.toLowerCase()))
     : SKILLS
 
   return (

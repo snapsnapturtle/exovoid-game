@@ -38,11 +38,7 @@ export function DieShape({
           className={bodyClassName}
         />
       )}
-      <path
-        fill="currentColor"
-        className={wireClassName}
-        d={WIREFRAME_PATH}
-      />
+      <path fill="currentColor" className={wireClassName} d={WIREFRAME_PATH} />
     </svg>
   )
 }

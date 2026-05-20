@@ -14,10 +14,8 @@ interface TalentNodeProps {
 }
 
 const STATE_CLASSES: Record<NodeState, string> = {
-  owned:
-    'border-accent-700 bg-accent-700/20 text-white',
-  available:
-    'border-accent-700 bg-gray-100 text-white hover:bg-accent-700/10',
+  owned: 'border-accent-700 bg-accent-700/20 text-white',
+  available: 'border-accent-700 bg-gray-100 text-white hover:bg-accent-700/10',
   'locked-prereq':
     'border-dashed border-gray-400 bg-background-200 text-gray-700 cursor-not-allowed',
   'locked-no-points':
@@ -56,7 +54,9 @@ export function TalentNode({
         </span>
         <span className="flex-1 truncate font-medium">{name}</span>
       </div>
-      <div className="line-clamp-2 text-[11px] text-gray-900">{description}</div>
+      <div className="line-clamp-2 text-[11px] text-gray-900">
+        {description}
+      </div>
     </button>
   )
 }

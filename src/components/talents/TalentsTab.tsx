@@ -9,7 +9,9 @@ interface TalentMeta {
   description: string
 }
 const ALL_TALENTS = talentsData as TalentMeta[]
-const DESCRIPTION_BY_NAME = new Map(ALL_TALENTS.map((t) => [t.name, t.description]))
+const DESCRIPTION_BY_NAME = new Map(
+  ALL_TALENTS.map((t) => [t.name, t.description]),
+)
 
 interface TalentsTabProps {
   talents: TalentEntry[]
@@ -58,7 +60,9 @@ export function TalentsTab({
       {talents.length === 0 ? (
         <p className="py-6 text-center text-sm text-gray-700">
           No talents unlocked yet.
-          {career ? ` Pick from the ${career} tree to grow your character.` : ''}
+          {career
+            ? ` Pick from the ${career} tree to grow your character.`
+            : ''}
         </p>
       ) : (
         <div className="space-y-3">

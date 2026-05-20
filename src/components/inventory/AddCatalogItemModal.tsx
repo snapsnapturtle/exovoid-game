@@ -4,11 +4,7 @@ import { Button } from '~/components/ui/Button'
 
 interface AddCatalogItemModalProps {
   busy: boolean
-  onAdd: (input: {
-    name: string
-    quantity: number
-    location?: string
-  }) => void
+  onAdd: (input: { name: string; quantity: number; location?: string }) => void
   onClose: () => void
 }
 
@@ -106,7 +102,9 @@ export function AddCatalogItemModal({
                         <span className="text-[10px] uppercase tracking-wide text-gray-700">
                           {it.category}
                         </span>
-                        <span className="font-medium text-white">{it.name}</span>
+                        <span className="font-medium text-white">
+                          {it.name}
+                        </span>
                         <span className="text-xs text-gray-700">
                           {it.cost.toLocaleString()} ¢ · r{it.rarity}
                           {it.size > 0 && ` · size ${it.size}`}

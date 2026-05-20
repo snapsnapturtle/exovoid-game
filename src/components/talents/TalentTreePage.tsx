@@ -9,7 +9,11 @@ import {
   canRemove,
   type CareerData,
 } from '~/lib/game-logic/talents'
-import { unlockTalent, removeTalent, grantTalent } from '~/lib/server/characters'
+import {
+  unlockTalent,
+  removeTalent,
+  grantTalent,
+} from '~/lib/server/characters'
 import careersData from '~/data/careers.json'
 import talentsData from '~/data/talents.json'
 import { TalentBudgetBar } from './TalentBudgetBar'
@@ -76,7 +80,12 @@ export function TalentTreePage({ initial, canEdit }: TalentTreePageProps) {
     if (!selected) return null
     const owned = character.talents.some((t) => t.name === selected.name)
     if (owned) return 'owned'
-    const check = canUnlock(character, selected.career, selected.name, ALL_CAREERS)
+    const check = canUnlock(
+      character,
+      selected.career,
+      selected.name,
+      ALL_CAREERS,
+    )
     if (check.ok) return 'available'
     if (check.reason?.startsWith('No talent points')) return 'locked-no-points'
     return 'locked-prereq'
@@ -84,8 +93,14 @@ export function TalentTreePage({ initial, canEdit }: TalentTreePageProps) {
 
   const selectedReason = useMemo(() => {
     if (!selected) return undefined
-    if (selectedState === 'owned' || selectedState === 'available') return undefined
-    const check = canUnlock(character, selected.career, selected.name, ALL_CAREERS)
+    if (selectedState === 'owned' || selectedState === 'available')
+      return undefined
+    const check = canUnlock(
+      character,
+      selected.career,
+      selected.name,
+      ALL_CAREERS,
+    )
     return check.reason
   }, [selected, selectedState, character])
 
@@ -155,7 +170,8 @@ export function TalentTreePage({ initial, canEdit }: TalentTreePageProps) {
     ? (descriptionByName.get(selected.name) ?? null)
     : null
   const selectedGranted = selected
-    ? (character.talents.find((t) => t.name === selected.name)?.granted ?? false)
+    ? (character.talents.find((t) => t.name === selected.name)?.granted ??
+      false)
     : false
   const grantedTalents = character.talents.filter((t) => t.granted)
 
@@ -191,8 +207,8 @@ export function TalentTreePage({ initial, canEdit }: TalentTreePageProps) {
         <div className="space-y-4">
           {careers.length === 0 ? (
             <div className="rounded-xl border border-gray-400 bg-background-200 p-6 text-sm text-gray-900">
-              No career set for this character. Set a career on the sheet to
-              see its talent tree.
+              No career set for this character. Set a career on the sheet to see
+              its talent tree.
             </div>
           ) : (
             careers.map((c) => (
@@ -232,8 +248,12 @@ export function TalentTreePage({ initial, canEdit }: TalentTreePageProps) {
                     }`}
                   >
                     <div className="mb-1 flex items-center gap-1.5">
-                      <span className="text-sm leading-none text-accent-900">✓</span>
-                      <span className="flex-1 truncate font-medium">{t.name}</span>
+                      <span className="text-sm leading-none text-accent-900">
+                        ✓
+                      </span>
+                      <span className="flex-1 truncate font-medium">
+                        {t.name}
+                      </span>
                     </div>
                     <div className="line-clamp-2 text-[11px] text-gray-900">
                       {descriptionByName.get(t.name) ?? ''}

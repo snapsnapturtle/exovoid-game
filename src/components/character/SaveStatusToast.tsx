@@ -13,11 +13,7 @@ interface SaveStatusToastProps {
 export function SaveStatusToast({ status }: SaveStatusToastProps) {
   const visible = status === 'saved' || status === 'error'
   const label =
-    status === 'saved'
-      ? 'Saved'
-      : status === 'error'
-        ? 'Save failed'
-        : ''
+    status === 'saved' ? 'Saved' : status === 'error' ? 'Save failed' : ''
 
   const tone =
     status === 'error'

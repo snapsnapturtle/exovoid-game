@@ -86,7 +86,10 @@ export function makeCyberwareEntry(
 }
 
 /** Group all cyberware variants by category, preserving CSV order. */
-export function groupByCategory(): { category: string; variants: CyberwareData[] }[] {
+export function groupByCategory(): {
+  category: string
+  variants: CyberwareData[]
+}[] {
   const groups: { category: string; variants: CyberwareData[] }[] = []
   const indexByCategory = new Map<string, number>()
   for (const c of ALL_CYBERWARE) {

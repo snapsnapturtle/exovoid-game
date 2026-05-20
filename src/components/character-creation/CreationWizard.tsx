@@ -130,7 +130,11 @@ const STEP_LABELS = [
 
 // ---------- Derivations ----------
 
-function uniqueRolls(count: number, max: number, exclude: number[] = []): number[] {
+function uniqueRolls(
+  count: number,
+  max: number,
+  exclude: number[] = [],
+): number[] {
   const out = [...exclude]
   while (out.length < count + exclude.length) {
     const r = Math.floor(Math.random() * max) + 1
@@ -139,7 +143,9 @@ function uniqueRolls(count: number, max: number, exclude: number[] = []): number
   return out
 }
 
-function careerSkillBaseline(careerName: string | null): Record<string, number> {
+function careerSkillBaseline(
+  careerName: string | null,
+): Record<string, number> {
   if (!careerName) return {}
   const career = careers.find((c) => c.name === careerName)
   if (!career) return {}
@@ -169,12 +175,13 @@ function chosenBackgroundBonuses(state: State): ChosenBonus[] {
 }
 
 function attrCap(state: State, id: AttributeId): number {
-  return state.highCapAttrs.includes(id)
-    ? CREATION_HIGH_CAP
-    : CREATION_LOW_CAP
+  return state.highCapAttrs.includes(id) ? CREATION_HIGH_CAP : CREATION_LOW_CAP
 }
 
-function totalSkillPointsSpent(state: State, baseline: Record<string, number>): number {
+function totalSkillPointsSpent(
+  state: State,
+  baseline: Record<string, number>,
+): number {
   let total = 0
   for (const skill of SKILLS) {
     const base = baseline[skill.id] ?? 0
@@ -224,10 +231,7 @@ export function CreationWizard({ gameId }: CreationWizardProps) {
 
   const baseAttrPointsUsed = useMemo(
     () =>
-      Object.values(state.baseAttributes).reduce(
-        (sum, v) => sum + (v ?? 0),
-        0,
-      ),
+      Object.values(state.baseAttributes).reduce((sum, v) => sum + (v ?? 0), 0),
     [state.baseAttributes],
   )
   const baseAttrPointsRemaining = TOTAL_ATTRIBUTE_POINTS - baseAttrPointsUsed
@@ -398,10 +402,7 @@ export function CreationWizard({ gameId }: CreationWizardProps) {
           ← Back
         </Button>
         {state.step < STEP_LABELS.length - 1 ? (
-          <Button
-            onClick={() => setStep(state.step + 1)}
-            disabled={!stepValid}
-          >
+          <Button onClick={() => setStep(state.step + 1)} disabled={!stepValid}>
             Next →
           </Button>
         ) : (
@@ -492,10 +493,7 @@ function CareerStep({
     void tier
   }
 
-  function reasonForDisable(
-    name: string,
-    tier: number,
-  ): string | null {
+  function reasonForDisable(name: string, tier: number): string | null {
     const has = state.startingTalents.includes(name)
     if (has) {
       // Removing — only blocked if it would orphan a higher-tier pick
@@ -556,9 +554,7 @@ function CareerStep({
       {career && (
         <div className="space-y-4 rounded-lg border border-gray-400 bg-gray-100 p-4">
           <div>
-            <h3 className="text-sm font-semibold text-white">
-              {career.name}
-            </h3>
+            <h3 className="text-sm font-semibold text-white">{career.name}</h3>
             <p className="mt-1 text-sm text-gray-1000">{career.description}</p>
           </div>
 
@@ -848,8 +844,8 @@ function BackgroundStep({
         <h2 className="text-2xl font-bold text-white">Background</h2>
         <p className="mt-1 text-sm text-gray-900">
           Roll twice on each table and choose one. Once across this step, you
-          may roll two extra dice on a single table for more options. Bonuses
-          we can mechanize (attribute / skill / talent grants) auto-apply on
+          may roll two extra dice on a single table for more options. Bonuses we
+          can mechanize (attribute / skill / talent grants) auto-apply on
           submission; the rest is captured in your character notes.
         </p>
       </header>
@@ -890,15 +886,11 @@ function BackgroundTablePicker({
   const die = max === 20 ? 'd20' : 'd10'
   const isManual = pick.mode === 'manual'
   const extraUsed =
-    state.extraRollsAppliedTo !== null &&
-    state.extraRollsAppliedTo !== bgKey
+    state.extraRollsAppliedTo !== null && state.extraRollsAppliedTo !== bgKey
   const canExtraHere =
-    !isManual &&
-    pick.rolls.length === 2 &&
-    state.extraRollsAppliedTo === null
-  const chosenEntry = pick.chosen != null
-    ? table.find((e) => e.id === pick.chosen)
-    : null
+    !isManual && pick.rolls.length === 2 && state.extraRollsAppliedTo === null
+  const chosenEntry =
+    pick.chosen != null ? table.find((e) => e.id === pick.chosen) : null
 
   return (
     <section className="rounded-lg border border-gray-400 bg-gray-100 p-4">
@@ -963,9 +955,7 @@ function BackgroundTablePicker({
         <div className="space-y-2">
           <select
             value={pick.chosen ?? ''}
-            onChange={(e) =>
-              onChoose(parseInt(e.target.value, 10))
-            }
+            onChange={(e) => onChoose(parseInt(e.target.value, 10))}
             className="w-full rounded-lg border border-gray-400 bg-background-200 px-3 py-2 text-sm text-white focus:border-accent-900 focus:outline-none"
           >
             <option value="">— pick an entry —</option>
@@ -1064,9 +1054,9 @@ function SkillsStep({
       <header>
         <h2 className="text-2xl font-bold text-white">Further training</h2>
         <p className="mt-1 text-sm text-gray-900">
-          You have {CREATION_SKILL_POINTS} skill points to spend on top of your career's
-          starting skills. Levels 1–4 cost 1 point each; level 5 and 6 cost 2
-          points each. No skill can exceed {CREATION_SKILL_MAX} during
+          You have {CREATION_SKILL_POINTS} skill points to spend on top of your
+          career's starting skills. Levels 1–4 cost 1 point each; level 5 and 6
+          cost 2 points each. No skill can exceed {CREATION_SKILL_MAX} during
           creation. Background skill bonuses are tracked separately and listed
           on the review step for you to apply by hand.
         </p>
@@ -1081,7 +1071,8 @@ function SkillsStep({
               : 'border-warning-700/40 bg-warning-700/10 text-warning-900'
         }`}
       >
-        {CREATION_SKILL_POINTS - spent} of {CREATION_SKILL_POINTS} skill points remaining
+        {CREATION_SKILL_POINTS - spent} of {CREATION_SKILL_POINTS} skill points
+        remaining
       </div>
 
       <div className="grid gap-2 sm:grid-cols-2">
@@ -1154,9 +1145,7 @@ function FinalStep({
           <input
             type="text"
             value={state.name}
-            onChange={(e) =>
-              setState((s) => ({ ...s, name: e.target.value }))
-            }
+            onChange={(e) => setState((s) => ({ ...s, name: e.target.value }))}
             placeholder="Kira Voss"
             className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
           />
@@ -1177,9 +1166,7 @@ function FinalStep({
           <input
             type="number"
             value={state.age}
-            onChange={(e) =>
-              setState((s) => ({ ...s, age: e.target.value }))
-            }
+            onChange={(e) => setState((s) => ({ ...s, age: e.target.value }))}
             min={0}
             className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
           />

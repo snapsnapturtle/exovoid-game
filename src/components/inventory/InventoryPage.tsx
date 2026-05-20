@@ -13,11 +13,7 @@ import {
   useRole,
 } from '@floating-ui/react'
 import { Link, useRouter } from '@tanstack/react-router'
-import type {
-  Character,
-  GameState,
-  InventoryItem,
-} from '~/lib/types/database'
+import type { Character, GameState, InventoryItem } from '~/lib/types/database'
 import { inventoryByLocation, lookupItem } from '~/lib/game-logic/items'
 import {
   effectiveWeaponModLimit,
@@ -269,7 +265,9 @@ export function InventoryPage({
           items={gameState.inventory}
           canEdit={canEdit}
           busyId={busyId}
-          onAddCatalog={() => setAddModal({ kind: 'catalog', owner: gameOwner })}
+          onAddCatalog={() =>
+            setAddModal({ kind: 'catalog', owner: gameOwner })
+          }
           onAddCustom={() => setAddModal({ kind: 'custom', owner: gameOwner })}
           onAddWeapon={() => setAddModal({ kind: 'weapon', owner: gameOwner })}
           onAddArmor={() => setAddModal({ kind: 'armor', owner: gameOwner })}
@@ -683,9 +681,7 @@ function InventoryColumn({
         )}
       </header>
       {items.length === 0 ? (
-        <p className="py-8 text-center text-sm text-gray-700">
-          No items yet.
-        </p>
+        <p className="py-8 text-center text-sm text-gray-700">No items yet.</p>
       ) : (
         <div className="divide-y divide-gray-100">
           {groups.map((g) => (
@@ -1027,7 +1023,10 @@ function WeaponStats({
             <span className="text-gray-700">Mag:</span>{' '}
             <span className="text-gray-1000">{weapon.magazine}</span>
             {weapon.reloadAP != null && (
-              <span className="text-gray-700"> · reload {weapon.reloadAP} AP</span>
+              <span className="text-gray-700">
+                {' '}
+                · reload {weapon.reloadAP} AP
+              </span>
             )}
           </span>
         )}
@@ -1113,8 +1112,7 @@ function ArmorStats({
   onManageMods?: () => void
 }) {
   const broken =
-    armor.durability != null &&
-    (currentDurability ?? armor.durability) <= 0
+    armor.durability != null && (currentDurability ?? armor.durability) <= 0
   const manufacturer = item.manufacturerRef
     ? lookupManufacturer(item.manufacturerRef)
     : undefined
@@ -1227,7 +1225,10 @@ function EffectTooltip({
     middleware: [offset(6), flip({ padding: 8 }), shift({ padding: 8 })],
     whileElementsMounted: autoUpdate,
   })
-  const hover = useHover(context, { delay: { open: 100, close: 0 }, move: false })
+  const hover = useHover(context, {
+    delay: { open: 100, close: 0 },
+    move: false,
+  })
   const focus = useFocus(context)
   const dismiss = useDismiss(context)
   const role = useRole(context, { role: 'tooltip' })

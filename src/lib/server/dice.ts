@@ -108,25 +108,19 @@ export const getRecentRolls = createServerFn()
 
     const [{ data: profiles }, { data: characters }] = await Promise.all([
       userIds.length
-        ? supabase
-            .from('profiles')
-            .select('id, display_name')
-            .in('id', userIds)
-        : Promise.resolve({ data: [] as { id: string; display_name: string }[] }),
+        ? supabase.from('profiles').select('id, display_name').in('id', userIds)
+        : Promise.resolve({
+            data: [] as { id: string; display_name: string }[],
+          }),
       characterIds.length
-        ? supabase
-            .from('characters')
-            .select('id, name')
-            .in('id', characterIds)
+        ? supabase.from('characters').select('id, name').in('id', characterIds)
         : Promise.resolve({ data: [] as { id: string; name: string }[] }),
     ])
 
     const profileMap = new Map(
       (profiles ?? []).map((p) => [p.id, p.display_name]),
     )
-    const characterMap = new Map(
-      (characters ?? []).map((c) => [c.id, c.name]),
-    )
+    const characterMap = new Map((characters ?? []).map((c) => [c.id, c.name]))
 
     const entries: DiceRollEntry[] = (rows ?? []).map((r) => ({
       id: r.id,

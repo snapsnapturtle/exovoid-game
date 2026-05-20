@@ -11,12 +11,8 @@
     "damageType": "Physical",
     "optimalRange": "2-5",
     "maxRange": 15,
-    "qualities": [
-      "Concealed (1)"
-    ],
-    "triggerOptions": [
-      "Concussing"
-    ],
+    "qualities": ["Concealed (1)"],
+    "triggerOptions": ["Concussing"],
     "specialRules": "",
     "modLimit": 2,
     "cost": 200,
@@ -35,14 +31,8 @@
     "damageType": "Electrical",
     "optimalRange": "2-4",
     "maxRange": 6,
-    "qualities": [
-      "Concealed (1)",
-      "Silenced"
-    ],
-    "triggerOptions": [
-      "Incapacitating",
-      "Stunning"
-    ],
+    "qualities": ["Concealed (1)", "Silenced"],
+    "triggerOptions": ["Incapacitating", "Stunning"],
     "specialRules": "",
     "modLimit": 2,
     "cost": 200,
@@ -61,13 +51,8 @@
     "damageType": "Physical",
     "optimalRange": "2-8",
     "maxRange": 30,
-    "qualities": [
-      "Burst (5)",
-      "Concealed (2)"
-    ],
-    "triggerOptions": [
-      "Shredding (1)"
-    ],
+    "qualities": ["Burst (5)", "Concealed (2)"],
+    "triggerOptions": ["Shredding (1)"],
     "specialRules": "",
     "modLimit": 3,
     "cost": 250,
@@ -86,13 +71,8 @@
     "damageType": "Physical",
     "optimalRange": "2-8",
     "maxRange": 35,
-    "qualities": [
-      "Handling (1)",
-      "Concealed (2)"
-    ],
-    "triggerOptions": [
-      "Penetrating (2)"
-    ],
+    "qualities": ["Handling (1)", "Concealed (2)"],
+    "triggerOptions": ["Penetrating (2)"],
     "specialRules": "",
     "modLimit": 3,
     "cost": 300,
@@ -111,13 +91,8 @@
     "damageType": "Physical",
     "optimalRange": "2-10",
     "maxRange": 50,
-    "qualities": [
-      "Concealed (2)"
-    ],
-    "triggerOptions": [
-      "Lethal (5)",
-      "Shredding (2)"
-    ],
+    "qualities": ["Concealed (2)"],
+    "triggerOptions": ["Lethal (5)", "Shredding (2)"],
     "specialRules": "Once per encounter, you may ignore the first weapon jam or \"Damaged\" quality that would otherwise be applied to the Revolver.",
     "modLimit": 2,
     "cost": 250,
@@ -136,15 +111,8 @@
     "damageType": "Physical",
     "optimalRange": "3-12",
     "maxRange": 80,
-    "qualities": [
-      "Loud",
-      "Concealed (2)"
-    ],
-    "triggerOptions": [
-      "Lethal (5)",
-      "Knocking",
-      "Penetrating (3)"
-    ],
+    "qualities": ["Loud", "Concealed (2)"],
+    "triggerOptions": ["Lethal (5)", "Knocking", "Penetrating (3)"],
     "specialRules": "Can be fired in one hand, but then it gains the improvised quality unless the wielder has 6 or more Strength.",
     "modLimit": 3,
     "cost": 350,
@@ -171,10 +139,7 @@
       "Indiscriminate",
       "Concealed (2)"
     ],
-    "triggerOptions": [
-      "Penetrating (5)",
-      "Shredding (2)"
-    ],
+    "triggerOptions": ["Penetrating (5)", "Shredding (2)"],
     "specialRules": "",
     "modLimit": 3,
     "cost": 800,
@@ -193,14 +158,8 @@
     "damageType": "Physical",
     "optimalRange": "2-8",
     "maxRange": 40,
-    "qualities": [
-      "Burst (6)",
-      "Full Auto (18)",
-      "Concealed (2)"
-    ],
-    "triggerOptions": [
-      "Penetrating (2)"
-    ],
+    "qualities": ["Burst (6)", "Full Auto (18)", "Concealed (2)"],
+    "triggerOptions": ["Penetrating (2)"],
     "specialRules": "",
     "modLimit": 3,
     "cost": 300,
@@ -219,13 +178,8 @@
     "damageType": "Physical",
     "optimalRange": "2-6",
     "maxRange": 30,
-    "qualities": [
-      "Burst (5)",
-      "Concealed (3)"
-    ],
-    "triggerOptions": [
-      "Lethal (3)"
-    ],
+    "qualities": ["Burst (5)", "Concealed (3)"],
+    "triggerOptions": ["Lethal (3)"],
     "specialRules": "Gains \"Compensated (1)\" when used with two hands.",
     "modLimit": 4,
     "cost": 350,
@@ -244,13 +198,8 @@
     "damageType": "Physical",
     "optimalRange": "2-15",
     "maxRange": 75,
-    "qualities": [
-      "Handling (2)",
-      "Burst (5)"
-    ],
-    "triggerOptions": [
-      "Concussing"
-    ],
+    "qualities": ["Handling (2)", "Burst (5)"],
+    "triggerOptions": ["Concussing"],
     "specialRules": "",
     "modLimit": 4,
     "cost": 400,
@@ -269,13 +218,8 @@
     "damageType": "Physical",
     "optimalRange": "2-12",
     "maxRange": 50,
-    "qualities": [
-      "Compensated (1)",
-      "Full Auto (15)"
-    ],
-    "triggerOptions": [
-      "Penetrating (3)"
-    ],
+    "qualities": ["Compensated (1)", "Full Auto (15)"],
+    "triggerOptions": ["Penetrating (3)"],
     "specialRules": "",
     "modLimit": 4,
     "cost": 450,
@@ -294,14 +238,8 @@
     "damageType": "Physical",
     "optimalRange": "3-20",
     "maxRange": 120,
-    "qualities": [
-      "Handling (1)",
-      "Burst (5)",
-      "Full Auto (15)"
-    ],
-    "triggerOptions": [
-      "Lethal (4)"
-    ],
+    "qualities": ["Handling (1)", "Burst (5)", "Full Auto (15)"],
+    "triggerOptions": ["Lethal (4)"],
     "specialRules": "",
     "modLimit": 5,
     "cost": 450,
@@ -320,14 +258,8 @@
     "damageType": "Physical",
     "optimalRange": "3-20",
     "maxRange": 150,
-    "qualities": [
-      "Loud",
-      "Burst (5)"
-    ],
-    "triggerOptions": [
-      "Lethal (5)",
-      "Penetrating (3)"
-    ],
+    "qualities": ["Loud", "Burst (5)"],
+    "triggerOptions": ["Lethal (5)", "Penetrating (3)"],
     "specialRules": "",
     "modLimit": 6,
     "cost": 600,
@@ -354,10 +286,7 @@
       "Compensated (1)",
       "Indiscriminate"
     ],
-    "triggerOptions": [
-      "Penetrating (6)",
-      "Shredding (2)"
-    ],
+    "triggerOptions": ["Penetrating (6)", "Shredding (2)"],
     "specialRules": "",
     "modLimit": 5,
     "cost": 1400,
@@ -376,16 +305,8 @@
     "damageType": "Physical",
     "optimalRange": "2-6",
     "maxRange": 15,
-    "qualities": [
-      "Loud",
-      "Burst (2)"
-    ],
-    "triggerOptions": [
-      "Concussing",
-      "Lethal (8)",
-      "Shredding (3)",
-      "Knocking"
-    ],
+    "qualities": ["Loud", "Burst (2)"],
+    "triggerOptions": ["Concussing", "Lethal (8)", "Shredding (3)", "Knocking"],
     "specialRules": "",
     "modLimit": 4,
     "cost": 400,
@@ -405,11 +326,7 @@
     "optimalRange": "2-6",
     "maxRange": 20,
     "qualities": [],
-    "triggerOptions": [
-      "Lethal (5)",
-      "Shredding (2)",
-      "Knocking"
-    ],
+    "triggerOptions": ["Lethal (5)", "Shredding (2)", "Knocking"],
     "specialRules": "",
     "modLimit": 5,
     "cost": 450,
@@ -428,15 +345,8 @@
     "damageType": "Physical",
     "optimalRange": "2-6",
     "maxRange": 20,
-    "qualities": [
-      "Burst (5)",
-      "Full Auto (15)"
-    ],
-    "triggerOptions": [
-      "Lethal (3)",
-      "Shredding (2)",
-      "Knocking"
-    ],
+    "qualities": ["Burst (5)", "Full Auto (15)"],
+    "triggerOptions": ["Lethal (3)", "Shredding (2)", "Knocking"],
     "specialRules": "",
     "modLimit": 4,
     "cost": 500,
@@ -455,15 +365,8 @@
     "damageType": "Electrical",
     "optimalRange": "2-5",
     "maxRange": 12,
-    "qualities": [
-      "Handling (1)"
-    ],
-    "triggerOptions": [
-      "Incapacitating",
-      "Concussing",
-      "Stunning",
-      "Knocking"
-    ],
+    "qualities": ["Handling (1)"],
+    "triggerOptions": ["Incapacitating", "Concussing", "Stunning", "Knocking"],
     "specialRules": "",
     "modLimit": 4,
     "cost": 450,
@@ -482,13 +385,8 @@
     "damageType": "Physical",
     "optimalRange": "8-30",
     "maxRange": 150,
-    "qualities": [
-      "Handling (1)"
-    ],
-    "triggerOptions": [
-      "Penetrating (3)",
-      "Lethal (3)"
-    ],
+    "qualities": ["Handling (1)"],
+    "triggerOptions": ["Penetrating (3)", "Lethal (3)"],
     "specialRules": "",
     "modLimit": 6,
     "cost": 800,
@@ -507,13 +405,8 @@
     "damageType": "Physical",
     "optimalRange": "15-80",
     "maxRange": 300,
-    "qualities": [
-      "Handling (2)"
-    ],
-    "triggerOptions": [
-      "Penetrating (4)",
-      "Lethal (4)"
-    ],
+    "qualities": ["Handling (2)"],
+    "triggerOptions": ["Penetrating (4)", "Lethal (4)"],
     "specialRules": "",
     "modLimit": 5,
     "cost": 1000,
@@ -532,16 +425,8 @@
     "damageType": "Physical",
     "optimalRange": "20-120",
     "maxRange": 1000,
-    "qualities": [
-      "Handling (1)",
-      "Destructive (7)",
-      "Loud"
-    ],
-    "triggerOptions": [
-      "Penetrating (6)",
-      "Shredding (4)",
-      "Lethal (4)"
-    ],
+    "qualities": ["Handling (1)", "Destructive (7)", "Loud"],
+    "triggerOptions": ["Penetrating (6)", "Shredding (4)", "Lethal (4)"],
     "specialRules": "Every trigger spent on the weapon's options is automatically spent on all options at once.",
     "modLimit": 5,
     "cost": 1300,
@@ -560,11 +445,7 @@
     "damageType": "Fire",
     "optimalRange": "3-30",
     "maxRange": 150,
-    "qualities": [
-      "Burst (4)",
-      "Compensated (1)",
-      "Handling (2)"
-    ],
+    "qualities": ["Burst (4)", "Compensated (1)", "Handling (2)"],
     "triggerOptions": [
       "Shredding (5)",
       "Burning",
@@ -589,12 +470,8 @@
     "damageType": "Physical",
     "optimalRange": "3-20",
     "maxRange": 60,
-    "qualities": [
-      "Silenced"
-    ],
-    "triggerOptions": [
-      "Injuring (3)"
-    ],
+    "qualities": ["Silenced"],
+    "triggerOptions": ["Injuring (3)"],
     "specialRules": "The wielder's Heft is added to the damage.",
     "modLimit": 0,
     "cost": 250,
@@ -651,10 +528,7 @@
       "Area (1)",
       "Indiscriminate"
     ],
-    "triggerOptions": [
-      "Burning",
-      "Penetrating (5)"
-    ],
+    "triggerOptions": ["Burning", "Penetrating (5)"],
     "specialRules": "When using  Full Auto, the attacks have to happen against different targets / squares that must not be further away than 3 squares from each other.",
     "modLimit": 2,
     "cost": 600,
@@ -673,12 +547,7 @@
     "damageType": "Explosive",
     "optimalRange": "5-15",
     "maxRange": 30,
-    "qualities": [
-      "Loud",
-      "Area (2)",
-      "Indiscriminate",
-      "Destructive (6)"
-    ],
+    "qualities": ["Loud", "Area (2)", "Indiscriminate", "Destructive (6)"],
     "triggerOptions": [
       "Penetrating (3)",
       "Shredding (2)",
@@ -711,11 +580,7 @@
       "Compensated (1)",
       "Improvised"
     ],
-    "triggerOptions": [
-      "Penetrating (3)",
-      "Shredding (4)",
-      "Lethal (5)"
-    ],
+    "triggerOptions": ["Penetrating (3)", "Shredding (4)", "Lethal (5)"],
     "specialRules": "Characters with 6 Strength or more ignore Improvised.",
     "modLimit": 4,
     "cost": 900,
@@ -734,10 +599,7 @@
     "damageType": "Fire",
     "optimalRange": "5-20",
     "maxRange": 50,
-    "qualities": [
-      "Area (4)",
-      "Indiscriminate"
-    ],
+    "qualities": ["Area (4)", "Indiscriminate"],
     "triggerOptions": [
       "Shredding (5)",
       "Burning",
@@ -801,10 +663,7 @@
       "Area (3)",
       "Indiscriminate"
     ],
-    "triggerOptions": [
-      "Concussing",
-      "Stunning"
-    ],
+    "triggerOptions": ["Concussing", "Stunning"],
     "specialRules": "",
     "modLimit": 0,
     "cost": 40,
@@ -823,15 +682,8 @@
     "damageType": "Explosive",
     "optimalRange": "1-8",
     "maxRange": 12,
-    "qualities": [
-      "Concealed (2)",
-      "Loud",
-      "Area (2)",
-      "Indiscriminate"
-    ],
-    "triggerOptions": [
-      "Lethal (4)"
-    ],
+    "qualities": ["Concealed (2)", "Loud", "Area (2)", "Indiscriminate"],
+    "triggerOptions": ["Lethal (4)"],
     "specialRules": "",
     "modLimit": 0,
     "cost": 80,
@@ -850,14 +702,8 @@
     "damageType": "Physical",
     "optimalRange": "1-8",
     "maxRange": 12,
-    "qualities": [
-      "Concealed (2)",
-      "Area (3)",
-      "Indiscriminate"
-    ],
-    "triggerOptions": [
-      "Incapacitating"
-    ],
+    "qualities": ["Concealed (2)", "Area (3)", "Indiscriminate"],
+    "triggerOptions": ["Incapacitating"],
     "specialRules": "Ignores armor. Incapacitating option is automatically active. The Area lingers for this and two more rounds. Anyone ending a round within the area needs to resist the Incapacitating trigger option.",
     "modLimit": 0,
     "cost": 100,
@@ -876,11 +722,7 @@
     "damageType": "Physical",
     "optimalRange": "1-8",
     "maxRange": 12,
-    "qualities": [
-      "Concealed (2)",
-      "Area (3)",
-      "Handling (1)"
-    ],
+    "qualities": ["Concealed (2)", "Area (3)", "Handling (1)"],
     "triggerOptions": [],
     "specialRules": "The Area lingers for this and two more rounds. Anyone trying to attack through or across the smoke suffers +2 difficulty.",
     "modLimit": 0,
@@ -926,14 +768,8 @@
     "damageType": "Physical",
     "optimalRange": "1-5",
     "maxRange": 8,
-    "qualities": [
-      "Silenced",
-      "Concealed (1)"
-    ],
-    "triggerOptions": [
-      "Lethal (2)",
-      "Murderous"
-    ],
+    "qualities": ["Silenced", "Concealed (1)"],
+    "triggerOptions": ["Lethal (2)", "Murderous"],
     "specialRules": "Adds Heft to the damage like a melee weapon would.",
     "modLimit": 1,
     "cost": 40,
@@ -952,15 +788,8 @@
     "damageType": "Physical",
     "optimalRange": "1",
     "maxRange": null,
-    "qualities": [
-      "Silenced",
-      "Handling (1)"
-    ],
-    "triggerOptions": [
-      "Knocking",
-      "Incapacitating",
-      "Penetrating (2)"
-    ],
+    "qualities": ["Silenced", "Handling (1)"],
+    "triggerOptions": ["Knocking", "Incapacitating", "Penetrating (2)"],
     "specialRules": "Cannot perform a Parry against real melee weapons.",
     "modLimit": 0,
     "cost": null,
@@ -979,14 +808,8 @@
     "damageType": "Physical",
     "optimalRange": "1",
     "maxRange": null,
-    "qualities": [
-      "Silenced",
-      "Concealed (1)"
-    ],
-    "triggerOptions": [
-      "Lethal (2)",
-      "Murderous"
-    ],
+    "qualities": ["Silenced", "Concealed (1)"],
+    "triggerOptions": ["Lethal (2)", "Murderous"],
     "specialRules": "",
     "modLimit": 1,
     "cost": 50,
@@ -1005,15 +828,8 @@
     "damageType": "Physical",
     "optimalRange": "1",
     "maxRange": null,
-    "qualities": [
-      "Silenced",
-      "Concealed (1)"
-    ],
-    "triggerOptions": [
-      "Stunning",
-      "Incapacitating",
-      "Knocking"
-    ],
+    "qualities": ["Silenced", "Concealed (1)"],
+    "triggerOptions": ["Stunning", "Incapacitating", "Knocking"],
     "specialRules": "Cannot do a parry against real melee weapons.",
     "modLimit": 1,
     "cost": 50,
@@ -1032,14 +848,8 @@
     "damageType": "Physical",
     "optimalRange": "1",
     "maxRange": null,
-    "qualities": [
-      "Silenced",
-      "Concealed (2)"
-    ],
-    "triggerOptions": [
-      "Concussing",
-      "Incapacitating"
-    ],
+    "qualities": ["Silenced", "Concealed (2)"],
+    "triggerOptions": ["Concussing", "Incapacitating"],
     "specialRules": "",
     "modLimit": 2,
     "cost": 40,
@@ -1058,14 +868,8 @@
     "damageType": "Physical",
     "optimalRange": "1",
     "maxRange": 2,
-    "qualities": [
-      "Silenced",
-      "Handling (1)"
-    ],
-    "triggerOptions": [
-      "Lethal (2)",
-      "Concussing"
-    ],
+    "qualities": ["Silenced", "Handling (1)"],
+    "triggerOptions": ["Lethal (2)", "Concussing"],
     "specialRules": "",
     "modLimit": 2,
     "cost": 40,
@@ -1084,14 +888,8 @@
     "damageType": "Electrical",
     "optimalRange": "1",
     "maxRange": null,
-    "qualities": [
-      "Silenced",
-      "Handling (3)"
-    ],
-    "triggerOptions": [
-      "Incapacitating",
-      "Stunning"
-    ],
+    "qualities": ["Silenced", "Handling (3)"],
+    "triggerOptions": ["Incapacitating", "Stunning"],
     "specialRules": "",
     "modLimit": 2,
     "cost": 80,
@@ -1110,14 +908,8 @@
     "damageType": "Physical",
     "optimalRange": "1",
     "maxRange": null,
-    "qualities": [
-      "Silenced",
-      "Defensive (1",
-      "Melee)"
-    ],
-    "triggerOptions": [
-      "Lethal (4)"
-    ],
+    "qualities": ["Silenced", "Defensive (1", "Melee)"],
+    "triggerOptions": ["Lethal (4)"],
     "specialRules": "",
     "modLimit": 2,
     "cost": 150,
@@ -1136,14 +928,8 @@
     "damageType": "Physical",
     "optimalRange": "1",
     "maxRange": 2,
-    "qualities": [
-      "Silenced",
-      "Defensive (1",
-      "Melee)"
-    ],
-    "triggerOptions": [
-      "Lethal (4)"
-    ],
+    "qualities": ["Silenced", "Defensive (1", "Melee)"],
+    "triggerOptions": ["Lethal (4)"],
     "specialRules": "Can be wielded in one hand, but then it gains the Improvised quality.",
     "modLimit": 2,
     "cost": 250,
@@ -1162,14 +948,8 @@
     "damageType": "Physical",
     "optimalRange": "2-4",
     "maxRange": null,
-    "qualities": [
-      "Silenced",
-      "Concealed (1)"
-    ],
-    "triggerOptions": [
-      "Murderous",
-      "Penetrating (4)"
-    ],
+    "qualities": ["Silenced", "Concealed (1)"],
+    "triggerOptions": ["Murderous", "Penetrating (4)"],
     "specialRules": "Heft is never added to the damage of attacks with this weapon. A rolled Botch means harming yourself or an ally within range for the full damage.",
     "modLimit": 0,
     "cost": 2000,
@@ -1188,10 +968,7 @@
     "damageType": "Fire",
     "optimalRange": "1-2",
     "maxRange": null,
-    "qualities": [
-      "Defensive (1",
-      "Melee)"
-    ],
+    "qualities": ["Defensive (1", "Melee)"],
     "triggerOptions": [
       "Penetrating (3)",
       "Lethal (5)",
@@ -1216,16 +993,8 @@
     "damageType": "Physical",
     "optimalRange": "1-2",
     "maxRange": null,
-    "qualities": [
-      "Silenced",
-      "Throwable (2-8 | 15)",
-      "Defensive (1",
-      "Melee)"
-    ],
-    "triggerOptions": [
-      "Penetrating (2)",
-      "Lethal (2)"
-    ],
+    "qualities": ["Silenced", "Throwable (2-8 | 15)", "Defensive (1", "Melee)"],
+    "triggerOptions": ["Penetrating (2)", "Lethal (2)"],
     "specialRules": "Can be wielded in two hands, providing Handling (2). Heft remains that of a one-handed weapon.",
     "modLimit": 3,
     "cost": 200,
@@ -1244,9 +1013,7 @@
     "damageType": "Physical",
     "optimalRange": "1",
     "maxRange": null,
-    "qualities": [
-      "Improvised"
-    ],
+    "qualities": ["Improvised"],
     "triggerOptions": [
       "Penetrating (3)",
       "Lethal (2)",
@@ -1271,12 +1038,8 @@
     "damageType": "Physical",
     "optimalRange": "1",
     "maxRange": null,
-    "qualities": [
-      "Silenced"
-    ],
-    "triggerOptions": [
-      "Lethal (5)"
-    ],
+    "qualities": ["Silenced"],
+    "triggerOptions": ["Lethal (5)"],
     "specialRules": "",
     "modLimit": 3,
     "cost": 250,
@@ -1295,14 +1058,8 @@
     "damageType": "Physical",
     "optimalRange": "1",
     "maxRange": null,
-    "qualities": [
-      "Silenced",
-      "Improvised"
-    ],
-    "triggerOptions": [
-      "Penetrating (5)",
-      "Lethal (4)"
-    ],
+    "qualities": ["Silenced", "Improvised"],
+    "triggerOptions": ["Penetrating (5)", "Lethal (4)"],
     "specialRules": "Characters with 6 Strength or more ignore Improvised.",
     "modLimit": 1,
     "cost": 200,
@@ -1321,12 +1078,8 @@
     "damageType": "Physical",
     "optimalRange": "1",
     "maxRange": null,
-    "qualities": [
-      "Defensive (1)"
-    ],
-    "triggerOptions": [
-      "Concussing"
-    ],
+    "qualities": ["Defensive (1)"],
+    "triggerOptions": ["Concussing"],
     "specialRules": "",
     "modLimit": 1,
     "cost": 120,
@@ -1345,14 +1098,8 @@
     "damageType": "Physical",
     "optimalRange": "1",
     "maxRange": null,
-    "qualities": [
-      "Defensive (2)",
-      "-2 Speed"
-    ],
-    "triggerOptions": [
-      "Stunning",
-      "Incapacitating"
-    ],
+    "qualities": ["Defensive (2)", "-2 Speed"],
+    "triggerOptions": ["Stunning", "Incapacitating"],
     "specialRules": "Adds +1 difficulty to all attacks made due to limited vision.",
     "modLimit": 2,
     "cost": 250,

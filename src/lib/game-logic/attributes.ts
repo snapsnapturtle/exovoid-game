@@ -1,13 +1,43 @@
 import type { CharacterAttributes } from '~/lib/types/database'
 
 export const ATTRIBUTE_DEFINITIONS = [
-  { id: 'con', name: 'Constitution', abbr: 'CON', description: 'Health and toughness' },
+  {
+    id: 'con',
+    name: 'Constitution',
+    abbr: 'CON',
+    description: 'Health and toughness',
+  },
   { id: 'str', name: 'Strength', abbr: 'STR', description: 'Physical force' },
-  { id: 'agi', name: 'Agility', abbr: 'AGI', description: 'Speed, reaction, fine motor skills' },
-  { id: 'int', name: 'Intelligence', abbr: 'INT', description: 'Logical thinking, analysis' },
-  { id: 'edu', name: 'Education', abbr: 'EDU', description: 'Knowledge and life experience' },
-  { id: 'per', name: 'Personality', abbr: 'PER', description: 'Charisma and social skills' },
-  { id: 'coo', name: 'Coolness', abbr: 'COO', description: 'Improvisation and composure' },
+  {
+    id: 'agi',
+    name: 'Agility',
+    abbr: 'AGI',
+    description: 'Speed, reaction, fine motor skills',
+  },
+  {
+    id: 'int',
+    name: 'Intelligence',
+    abbr: 'INT',
+    description: 'Logical thinking, analysis',
+  },
+  {
+    id: 'edu',
+    name: 'Education',
+    abbr: 'EDU',
+    description: 'Knowledge and life experience',
+  },
+  {
+    id: 'per',
+    name: 'Personality',
+    abbr: 'PER',
+    description: 'Charisma and social skills',
+  },
+  {
+    id: 'coo',
+    name: 'Coolness',
+    abbr: 'COO',
+    description: 'Improvisation and composure',
+  },
 ] as const
 
 export type AttributeId = (typeof ATTRIBUTE_DEFINITIONS)[number]['id']

@@ -1,4 +1,4 @@
-@import "tailwindcss" source("../");
+@import 'tailwindcss' source('../');
 
 /* Inter v4.1 — the official variable WOFF2 from rsms.me, self-hosted.
    fontsource's variable Inter ships a heavily-subsetted file (only 10 of
@@ -50,9 +50,10 @@
      and inherited globally. Avoid `ss01` — it substitutes every digit
      (including 0) and would override the slashed zero. */
   --font-sans:
-    "InterVariable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --default-font-feature-settings: "tnum", "zero", "cv09", "cv02", "cv03", "cv04";
+    'InterVariable', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --default-font-feature-settings:
+    'tnum', 'zero', 'cv09', 'cv02', 'cv03', 'cv04';
 
   /* Background — page and elevated surfaces. Geist's convention is to use
      `background-100` as the *default* page/element background and reach for

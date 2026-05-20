@@ -4,7 +4,9 @@ import { useRealtimeCharacter } from '~/lib/hooks/useRealtimeCharacter'
 import { useRealtimeGameState } from '~/lib/hooks/useRealtimeGameState'
 import { loadGameState } from '~/lib/server/inventory'
 
-const characterRoute = getRouteApi('/_app/games/$gameId/characters/$characterId')
+const characterRoute = getRouteApi(
+  '/_app/games/$gameId/characters/$characterId',
+)
 
 export const Route = createFileRoute(
   '/_app/games/$gameId/characters/$characterId/inventory',

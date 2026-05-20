@@ -51,7 +51,8 @@ export function CyberwarePage({ initial, canEdit }: CyberwarePageProps) {
           v.tier.toLowerCase().includes(q) ||
           v.description.toLowerCase().includes(q),
       )
-      if (matching.length > 0) out.push({ category: g.category, variants: matching })
+      if (matching.length > 0)
+        out.push({ category: g.category, variants: matching })
     }
     return out
   }, [groups, query])
@@ -70,7 +71,10 @@ export function CyberwarePage({ initial, canEdit }: CyberwarePageProps) {
       character.inventory,
     ],
   )
-  const used = useMemo(() => occupationUsed(character.cyberware), [character.cyberware])
+  const used = useMemo(
+    () => occupationUsed(character.cyberware),
+    [character.cyberware],
+  )
   const installedByName = useMemo(
     () => new Map(character.cyberware.map((c) => [c.name, c])),
     [character.cyberware],
@@ -159,7 +163,8 @@ export function CyberwarePage({ initial, canEdit }: CyberwarePageProps) {
         </div>
         <div className="flex flex-col items-end gap-1">
           <OccupationBar used={used} capacity={capacity} over={overCapacity} />
-          {(allocationStatus === 'partial' || allocationStatus === 'complete') &&
+          {(allocationStatus === 'partial' ||
+            allocationStatus === 'complete') &&
             canEdit && (
               <Button
                 variant="ghost"
@@ -337,7 +342,7 @@ function CategoryCard({
               variant={v}
               installed={isInstalled}
               replaces={check.replaces ?? null}
-              disabledReason={check.ok ? null : check.reason ?? null}
+              disabledReason={check.ok ? null : (check.reason ?? null)}
               canEdit={canEdit}
               busy={busyName === v.name}
               onInstall={() => onInstall(v.name)}
@@ -350,8 +355,7 @@ function CategoryCard({
   )
 }
 
-const TIER_CLASS =
-  'border-gray-500 bg-gray-100 text-gray-1000'
+const TIER_CLASS = 'border-gray-500 bg-gray-100 text-gray-1000'
 
 function VariantRow({
   variant,
@@ -401,41 +405,45 @@ function VariantRow({
             {variant.cost.toLocaleString()} ¢
           </span>
           <span>
-            <span className="font-medium text-gray-900">Rarity:</span> {variant.rarity}
+            <span className="font-medium text-gray-900">Rarity:</span>{' '}
+            {variant.rarity}
           </span>
         </div>
       </div>
       <div className="flex flex-col items-end gap-1 sm:justify-center">
-        {installed ? (
-          canEdit && (
-            <Button variant="danger" size="sm" onClick={onUninstall} disabled={busy}>
-              {busy ? 'Removing…' : 'Uninstall'}
-            </Button>
-          )
-        ) : (
-          canEdit && (
-            <>
+        {installed
+          ? canEdit && (
               <Button
-                variant="subtle"
+                variant="danger"
                 size="sm"
-                onClick={onInstall}
-                disabled={busy || !!disabledReason}
+                onClick={onUninstall}
+                disabled={busy}
               >
-                {busy ? 'Installing…' : replaces ? 'Replace' : 'Install'}
+                {busy ? 'Removing…' : 'Uninstall'}
               </Button>
-              {replaces && !disabledReason && (
-                <span className="max-w-[200px] text-right text-[10px] text-gray-700">
-                  Replaces {replaces}
-                </span>
-              )}
-              {disabledReason && (
-                <span className="max-w-[180px] text-right text-[10px] text-danger-900">
-                  {disabledReason}
-                </span>
-              )}
-            </>
-          )
-        )}
+            )
+          : canEdit && (
+              <>
+                <Button
+                  variant="subtle"
+                  size="sm"
+                  onClick={onInstall}
+                  disabled={busy || !!disabledReason}
+                >
+                  {busy ? 'Installing…' : replaces ? 'Replace' : 'Install'}
+                </Button>
+                {replaces && !disabledReason && (
+                  <span className="max-w-[200px] text-right text-[10px] text-gray-700">
+                    Replaces {replaces}
+                  </span>
+                )}
+                {disabledReason && (
+                  <span className="max-w-[180px] text-right text-[10px] text-danger-900">
+                    {disabledReason}
+                  </span>
+                )}
+              </>
+            )}
       </div>
     </div>
   )

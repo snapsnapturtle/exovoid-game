@@ -58,7 +58,7 @@ The following describes the attributes that are present in Exovoid.
 
 **Sensors (INT / EDU) \-** Thanks to this skill, a character can use and read the sensory data from various devices, including drones.
 
-**Skullduggery (COO / INT) \-** The skill covers means to trick someone with a distraction, pick locks,  pickpocketing or other means of theft.
+**Skullduggery (COO / INT) \-** The skill covers means to trick someone with a distraction, pick locks, pickpocketing or other means of theft.
 
 **Streetwise (INT / PER) \-** With this skill, a character may know their way around a city, where to find certain contacts or even black markets.
 
@@ -75,25 +75,25 @@ The following describes the attributes that are present in Exovoid.
 Every character is comprised of a number of derived attributes that are used during various gameplay situations:
 
 **Health** \- The general physical health of a character before they begin to suffer injuries from further sources of damage.  
-*Health \= 5 \+ CON.*
+_Health \= 5 \+ CON._
 
 **Vigilance** \- This describes the character’s ability to notice incoming threats or when something is just generally off. A character rolls attribute dice equal to their vigilance when called for.  
-*Vigilance \= 3 \+ (INT \+ COO) / 3\.*
+_Vigilance \= 3 \+ (INT \+ COO) / 3\._
 
 **Heft** \- Heft is added to a character’s damage when attacking with a melee weapon. The bonus is doubled when attacking with a two-handed melee weapon.  
-*Heft \= STR / 2\.*
+_Heft \= STR / 2\._
 
 **Edge** \- A player receives several edge points per adventure. A player can use them before any roll to gain a \+3 pool bonus , or after any roll to re-roll all dice \- the new result must be kept.  
-*Edge \= 3 \+ (COO / 4\) \+ (EDU / 2).*
+_Edge \= 3 \+ (COO / 4\) \+ (EDU / 2)._
 
 **Action Points** \- This determines a character’s overall initiative and speed during a combat encounter, giving them more actions to perform.  
-*Action Points \= 3 \+ (AGI) / 2\.*
+_Action Points \= 3 \+ (AGI) / 2\._
 
 **Speed** \- This is a character’s speed (in squares) when they take the “Maneuver” action during encounters.  
-*Speed \= 3 \+ (CON \+ AGI) / 2\.*
+_Speed \= 3 \+ (CON \+ AGI) / 2\._
 
 **Cyber Immunity** \- A character with a high cyber immunity can have more cybernetics in them before risking detrimental health effects.  
-*Cyber Immunity \= CON \+ STR*
+_Cyber Immunity \= CON \+ STR_
 
 ### Skill Checks
 
@@ -102,17 +102,17 @@ Each skill is related to 1 to 2 attributes \- in case multiple attributes are in
 
 Then you roll a number of different dice:
 
-* One standard die. You always have this one, and it’s never modified.  
-* One aptitude die per (average) attribute point you have in that skill.  
-* If you have skill points, convert one aptitude die into an expertise die instead, for each level of the skill.  
-  * Should your skill exceed your attribute level, the higher value determines the aptitude dice, and the lower the expertise dice.
+- One standard die. You always have this one, and it’s never modified.
+- One aptitude die per (average) attribute point you have in that skill.
+- If you have skill points, convert one aptitude die into an expertise die instead, for each level of the skill.
+  - Should your skill exceed your attribute level, the higher value determines the aptitude dice, and the lower the expertise dice.
 
-***Example:***  
-*Harold has 4 attribute levels in piloting and 3 skill levels.*  
-*Therefore he would roll one standard die, one aptitude die and three expertise dice.*
+**_Example:_**  
+_Harold has 4 attribute levels in piloting and 3 skill levels._  
+_Therefore he would roll one standard die, one aptitude die and three expertise dice._
 
-*Kentrall has only 2 attribute levels in firearms, and 5 skill levels.*  
-*Therefore she would roll one standard die, three aptitude dice (since her skill is three levels above the attribute) and two expertise dice.*
+_Kentrall has only 2 attribute levels in firearms, and 5 skill levels._  
+_Therefore she would roll one standard die, three aptitude dice (since her skill is three levels above the attribute) and two expertise dice._
 
 The GM will mention a difficulty and the skill check needs to show a number of successes that meets or exceeds that number.
 
@@ -201,9 +201,9 @@ The above step is repeated each round and a round ends once all participants hav
 
 The combatant with the highest remaining Action Points value acts first. Should two participants have the same value, the following factors decide the order:
 
-* Higher Coolness attribute first.  
-* On a tie, players act first.  
-* Should two players have the same remaining Action Points and Coolness, they can decide their order.
+- Higher Coolness attribute first.
+- On a tie, players act first.
+- Should two players have the same remaining Action Points and Coolness, they can decide their order.
 
 Once it is a combatant’s turn, they can perform **one action** by spending the corresponding amount of **Action Points**.
 
@@ -238,7 +238,7 @@ You perform a defense roll (with the \-3 pool penalty) and add the successes to 
 
 **Assist (3 AP)** \- You aid the ambitions of an allied character. You either make a command roll or use an appropriate skill / item to aid their next roll. **The difficulty is 2**. In case of a success, they gain \+2 triggers on their next roll, plus one additional trigger for every surplus success.
 
-**Second Wind (4 AP)** \- You rally yourself. Recover one health point for every success rolled on a **Survival d0 check**  \- you can only do this once per day.
+**Second Wind (4 AP)** \- You rally yourself. Recover one health point for every success rolled on a **Survival d0 check** \- you can only do this once per day.
 
 **Assess Opportunities (4 AP)** \- You assess your opportunities in the current scene. Make a **Vigilance d2 roll**. If you succeed, you regain one Edge point that has to be spent during this encounter (or it is discarded). Alternatively, you may discover a heroic opportunity based on the number of successes and your creative ideas and the GM’s discretion.
 
@@ -280,22 +280,22 @@ In Zero-G environments or difficult terrain, the GM may demand a **Zero-G or Ath
 
 Certain factors can make it harder or easier for an attacker to hit their target, modifying the difficulty.
 
-| Circumstance | Modifier |
-| :---- | :---: |
-| The target is within range, but not within optimal range. | \+1 |
-| The target is behind cover. | \+1 |
-| The target is in a fast moving vehicle. | \+1 |
-| Bad weather or lighting conditions. | \+1 |
-| Immense Darkness | \+2 |
-| The target is noticeably smaller than a human (e.g. small drone). | \+1 |
-| You are within reach of someone with a melee weapon. | \+2 |
-| Target is prone and at least 10 squares away. | \+1 |
-| Target is prone and within 5 squares. | \-1 |
-| Target is incapacitated or otherwise not moving. | \-1 |
-| Target is unaware or caught off-guard. | \-1 |
-| The target is noticeably larger than a human (e.g. large alien or vehicle). *Note: This modifier does not apply during spaceship-to-spaceship combat.* | \-1 |
+| Circumstance                                                                                                                                           | Modifier |
+| :----------------------------------------------------------------------------------------------------------------------------------------------------- | :------: |
+| The target is within range, but not within optimal range.                                                                                              |   \+1    |
+| The target is behind cover.                                                                                                                            |   \+1    |
+| The target is in a fast moving vehicle.                                                                                                                |   \+1    |
+| Bad weather or lighting conditions.                                                                                                                    |   \+1    |
+| Immense Darkness                                                                                                                                       |   \+2    |
+| The target is noticeably smaller than a human (e.g. small drone).                                                                                      |   \+1    |
+| You are within reach of someone with a melee weapon.                                                                                                   |   \+2    |
+| Target is prone and at least 10 squares away.                                                                                                          |   \+1    |
+| Target is prone and within 5 squares.                                                                                                                  |   \-1    |
+| Target is incapacitated or otherwise not moving.                                                                                                       |   \-1    |
+| Target is unaware or caught off-guard.                                                                                                                 |   \-1    |
+| The target is noticeably larger than a human (e.g. large alien or vehicle). _Note: This modifier does not apply during spaceship-to-spaceship combat._ |   \-1    |
 
-### 
+###
 
 ## Spaceships & Combat
 
@@ -311,14 +311,14 @@ Assuming or **changing a station requires spending 4 Action Points**.
 
 The stations that are available depend on the type of ship and its available subsystems, but usually include:
 
-| Role | Duties |
-| :---: | :---- |
-| **Officer** | Gives commands, coordinates efforts and maintains the overview of battle, as well as negotiating with involved parties. |
-| **Pilot** | Steers the ship, navigates and performs evasive maneuvers. |
-| **Gunner** | Operates a single dedicated weapon that is mounted on the ship. |
-| **Engineer** | Runs around the ship to re-route energy or to jury-rig systems for immediate, temporary repairs. |
-| **Sensor Operator** | Operates sensors to scan for threats and weaknesses, providing general intel or making calculations for flight & attack paths. |
-| **Electronic Warfare Specialist** | Hacks into the systems of other ships and prevents the same from happening to their own vessel. |
+|               Role                | Duties                                                                                                                         |
+| :-------------------------------: | :----------------------------------------------------------------------------------------------------------------------------- |
+|            **Officer**            | Gives commands, coordinates efforts and maintains the overview of battle, as well as negotiating with involved parties.        |
+|             **Pilot**             | Steers the ship, navigates and performs evasive maneuvers.                                                                     |
+|            **Gunner**             | Operates a single dedicated weapon that is mounted on the ship.                                                                |
+|           **Engineer**            | Runs around the ship to re-route energy or to jury-rig systems for immediate, temporary repairs.                               |
+|        **Sensor Operator**        | Operates sensors to scan for threats and weaknesses, providing general intel or making calculations for flight & attack paths. |
+| **Electronic Warfare Specialist** | Hacks into the systems of other ships and prevents the same from happening to their own vessel.                                |
 
 ### Officer Actions
 
@@ -334,7 +334,7 @@ The stations that are available depend on the type of ship and its available sub
 You then make a **Pilot d2 test** (which the GM may increase based on other factors like nearby asteroids etc.). If you succeed, you can perform X turns based on the maneuverability of your ship, as well as Y spaces to move forward based on the speed of your ship.  
 You can spend surplus successes to provide a gunner of your choice with an equal pool bonus on their next attack during this or the next round.
 
-*Note: A ship can never move forward more than twice its speed per round, no matter how many “Maneuver” actions you manage to perform in a given round.*
+_Note: A ship can never move forward more than twice its speed per round, no matter how many “Maneuver” actions you manage to perform in a given round._
 
 **Evade (X AP)** \- The action points spent depend on the size class of your ship, divided by 2 (round up).  
 This is an out-of-turn action that you can do reactively so long as you still have Action Points. Make a Pilot check (with a general \-3 pool penalty) to add your successes to the difficulty to hit you. This has to be done before the attacker makes their roll, but after they announced you as their target\!
@@ -377,15 +377,15 @@ If you succeed, all Gunners of your own ship increase their damage (after all mo
 
 **Scan Interior (3 AP)** \- You scan the insides of an enemy ship so long as it has its shields down, making a **Sensors d0 check**. You can gain one piece of information for every 2 successes rolled on a Sensor’s check:
 
-* Number of alive & dead biological creatures aboard, and their general size.  
-* Looking for a particular type of item (e.g. weapons, illicit drugs etc.).  
-* Looking for irregularities in the enemy ship’s system (provides rough estimation about damage).  
-* Making a digital 3D map of the internal layout.  
-* Assessing the current activity / action of one particular crew member or station (e.g. if a gunner is reading a weapon, or which system an engineer is repairing).
+- Number of alive & dead biological creatures aboard, and their general size.
+- Looking for a particular type of item (e.g. weapons, illicit drugs etc.).
+- Looking for irregularities in the enemy ship’s system (provides rough estimation about damage).
+- Making a digital 3D map of the internal layout.
+- Assessing the current activity / action of one particular crew member or station (e.g. if a gunner is reading a weapon, or which system an engineer is repairing).
 
 **Jam Signal (4 AP)** \- You perform a **Sensors d2 check**. On a success, increase the difficulty to scan your ship by \+1, and another \+1 for every bonus success. The effect lasts for this and the next round. Only the highest jamming effect counts.
 
-**Scan FTL Signature (6 AP)** \- You can scan for remaining radiation of another ship that has performed an FTL jump recently. This is a **Sensors d2 check**. For every 12 hours that have passed since the jump, you suffer a \-1 pool penalty due to decaying radiation.  On a success, you get to know the location where a ship has jumped to \- you also get intel about the size class of the ship, and its drive signature. If the drive signature is known to you (or a database you own), you can recognize the specific ship.  
+**Scan FTL Signature (6 AP)** \- You can scan for remaining radiation of another ship that has performed an FTL jump recently. This is a **Sensors d2 check**. For every 12 hours that have passed since the jump, you suffer a \-1 pool penalty due to decaying radiation. On a success, you get to know the location where a ship has jumped to \- you also get intel about the size class of the ship, and its drive signature. If the drive signature is known to you (or a database you own), you can recognize the specific ship.  
 The information can be used to calculate an FTL jump on your own to follow said ship.
 
 ### Electronic Warfare Specialist Actions
@@ -406,7 +406,7 @@ If two ships share the same space, they are considered to be left, right, in fro
 
 When a ship **moves** (through maneuvering), the pilot has to determine how many turns and how many forward-movements the ship is going to make. **They then have to distribute between turns and forward-movements as equally as possible**.
 
-*Example: A ship wants to make 2 turns and 3 forward-movements. The ship then has to make one forward-movement, one turn, then the second forward-movement, the last turn, and the last forward-movement.*
+_Example: A ship wants to make 2 turns and 3 forward-movements. The ship then has to make one forward-movement, one turn, then the second forward-movement, the last turn, and the last forward-movement._
 
 Each turn a ship performs means a rotation along its middle-axis towards the next hex-edge, left or right.
 
@@ -423,7 +423,7 @@ In game terms, when a ship gets constructed, the owner has to **distribute its t
 
 Whenever a ship gets hit by an attack, you need to **check from where the attack struck** the ship \- this is the arc that will take the damage. You then perform the usual calculation of damage by soaking damage against the shields, then the armor & soak, and then the hull. The hull is never based on quadrant distribution, so hull damage is simply global.
 
-*Example: The USC Karakum has a total armor durability of 20 points. Since this frigate is designed to fight with one broadside facing its enemies, the owner of the ship allocates 10 points of armor to the port quadrant, 4 points to its starboard and then 3 points each to the forward and aft quadrants.*
+_Example: The USC Karakum has a total armor durability of 20 points. Since this frigate is designed to fight with one broadside facing its enemies, the owner of the ship allocates 10 points of armor to the port quadrant, 4 points to its starboard and then 3 points each to the forward and aft quadrants._
 
 When a ship regains shield or armor points, e.g. through the usual regeneration of shields each round, the commanding officer can simply distribute the regained points among the four quadrants, so long as they maintain the allocated maximum points for that quadrant.
 
@@ -446,8 +446,8 @@ The **multitasking limitation** determines how many people at once the board com
 If an operator’s skill level is at or below the first **threshold**, they gain **\+3 pool bonus** so long as they actively receive aid from the board computer (based on the multitasking limitation and how it was assigned by the captain).  
 If an operator’s skill level is within the second threshold, they still gain **\+2 pool bonus**. And lastly, if someone’s skill is at or below the third threshold, they gain **\+1 pool bonus** \- only the best computers would be able to provide valuable advice & aid to the most skilled pilots, gunners and so on.
 
-*Example: A board computer has the thresholds 2 | 5 | 7\. The gunner has a skill level of 3 in heavy weapons, so their skill level is above the first but within the second threshold. If the board computer gets assigned to them, they gain \+2 pool bonus.*  
-*The pilot is an absolute ace and has 8 skill levels. Despite this highly capable board computer, there is nothing of value it could provide the pilot with \- the pilot won’t get any bonus.*
+_Example: A board computer has the thresholds 2 | 5 | 7\. The gunner has a skill level of 3 in heavy weapons, so their skill level is above the first but within the second threshold. If the board computer gets assigned to them, they gain \+2 pool bonus._  
+_The pilot is an absolute ace and has 8 skill levels. Despite this highly capable board computer, there is nothing of value it could provide the pilot with \- the pilot won’t get any bonus._
 
 ### Auto-Tasks
 
@@ -457,7 +457,7 @@ A board computer can perform some tasks without an operator assigned, so long as
 
 In case it does, it has an attribute level equal to its second threshold and a skill level equal to its first threshold.
 
-*Example: If we take the board computer from the above example with 2 | 5 | 7, if that computer was assigned to act as an interim officer, it would have an attribute level of 5 and a skill level of 2 in that task.* 
+_Example: If we take the board computer from the above example with 2 | 5 | 7, if that computer was assigned to act as an interim officer, it would have an attribute level of 5 and a skill level of 2 in that task._
 
 A board computer has an amount of **Action Points** each round equal to 8 \+ its multi-tasking capacity \- it does not roll 1d6\! If it occupies several stations, it has to divide its action points among the various actions.
 
@@ -487,7 +487,7 @@ When Captains spend their action points, the GM may spend any amount. Then, a **
 GMs should use these actions typically only to fire weapons, but can put **one action** (for that NPC ship) aside to do any other ship action, including leaving it to perform a reaction during the same round.  
 The **dice pool** for all these actions is equal to the **captain’s aptitude and expertise** that is determined once and used for all skill checks.
 
-## 
+##
 
 ## Triggers & Complications
 
@@ -496,53 +496,53 @@ Options marked with a “+” can be used repeatedly on the same roll.
 
 ### Combat Triggers
 
-| Triggers | Effect |
-| :---: | :---- |
-| **1+** | **Reposition**After resolving your action, you may move one square (this may be in addition to potential free movement). |
-| **1+** | **Restrain**You restrain your attack, e.g. by aiming at less vital parts. When the target makes an injury roll, you may cancel up to two rolled wound symbols per Trigger spent. |
-| **1+** | **Distract / Suppress** A target of your attack suffers a \-1 pool penalty on their next check. |
-| **2** | **Support**You support another ally’s endeavors during combat, providing them with a \+2 pool bonus on their next action. Multiple sources of this on the same target do not stack. |
-| **2+** | **Enable Opening**You create an opportunity for an ally, immediately providing them with one Action Point. Limited to \+2 AP this way per target per round. |
-| **2** | **Cover Fire** An ally gains \+4 pool on their next Dodge or Parry attempt this round. Multiple sources of this on the same target do not stack, and this effect cannot be combined with “Support”. |
-| **3+** | **Heroic Inspiration**You immediately provide an ally with one Edge point which they have to use during this encounter, or it expires. |
-| **3** | **Critical Hit** The attack deals twice the usual damage (after all other modifiers). |
+| Triggers | Effect                                                                                                                                                                                              |
+| :------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|  **1+**  | **Reposition**After resolving your action, you may move one square (this may be in addition to potential free movement).                                                                            |
+|  **1+**  | **Restrain**You restrain your attack, e.g. by aiming at less vital parts. When the target makes an injury roll, you may cancel up to two rolled wound symbols per Trigger spent.                    |
+|  **1+**  | **Distract / Suppress** A target of your attack suffers a \-1 pool penalty on their next check.                                                                                                     |
+|  **2**   | **Support**You support another ally’s endeavors during combat, providing them with a \+2 pool bonus on their next action. Multiple sources of this on the same target do not stack.                 |
+|  **2+**  | **Enable Opening**You create an opportunity for an ally, immediately providing them with one Action Point. Limited to \+2 AP this way per target per round.                                         |
+|  **2**   | **Cover Fire** An ally gains \+4 pool on their next Dodge or Parry attempt this round. Multiple sources of this on the same target do not stack, and this effect cannot be combined with “Support”. |
+|  **3+**  | **Heroic Inspiration**You immediately provide an ally with one Edge point which they have to use during this encounter, or it expires.                                                              |
+|  **3**   | **Critical Hit** The attack deals twice the usual damage (after all other modifiers).                                                                                                               |
 
 ### Universal Triggers
 
-| Triggers | Effect |
-| :---: | :---- |
-| **1+** | **Hide Traces** You leave less traces of your action, making it more difficult to pinpoint you, or for witnesses to identify you. Any attempts to follow your traces suffer a \-2 pool penalty. |
-| **1** | **Flow**You gain a \+1 pool bonus on your next own check as you feel inspired, or simply in the flow of things. |
-| **2** | **Flashy Execution**You perform your action in a particularly flashy, elegant or otherwise impressive fashion. This might result in a \+1 pool bonus for follow-up social interactions. |
-| **2+** | **Mitigate Risks**You cancel the downsides of one rolled complication, while retaining the 2 successes it generated. |
-| **2+** | **Extra Information**You uncover or notice something additional that wasn’t part of the initial check. This could be a hidden clue in an investigation, extra details in a document, or more data from a system you’re hacking. |
-| **2** | **Speedy Completion**You complete the task faster than expected. Reduce the time required to perform the action by half. |
-| **2+** | **Reduce Suspicion**You manage to perform the task in a way that reduces the likelihood of drawing attention or suspicion. Any security or observers suffer a \-3 pool penalty to detect your actions. |
-| **3** | **Save Materials**If the check involved the use of materials, you reduce the amount of resources needed by half, as you are resourceful or able to improvise parts from your surroundings \- the GM is the final arbiter. |
-| **3** | **Immediate Solution**You find an immediate and unexpected shortcut or workaround, completely bypassing a step in the task or challenge, potentially skipping a secondary check or requirement. |
-| **4+** | **Extended Success**Your success extends beyond the initial task, creating a long-term benefit. For example, gaining a future contact through a social interaction, leaving a backdoor in a hacked system, or leaving a trail that leads to future clues. |
+| Triggers | Effect                                                                                                                                                                                                                                                    |
+| :------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|  **1+**  | **Hide Traces** You leave less traces of your action, making it more difficult to pinpoint you, or for witnesses to identify you. Any attempts to follow your traces suffer a \-2 pool penalty.                                                           |
+|  **1**   | **Flow**You gain a \+1 pool bonus on your next own check as you feel inspired, or simply in the flow of things.                                                                                                                                           |
+|  **2**   | **Flashy Execution**You perform your action in a particularly flashy, elegant or otherwise impressive fashion. This might result in a \+1 pool bonus for follow-up social interactions.                                                                   |
+|  **2+**  | **Mitigate Risks**You cancel the downsides of one rolled complication, while retaining the 2 successes it generated.                                                                                                                                      |
+|  **2+**  | **Extra Information**You uncover or notice something additional that wasn’t part of the initial check. This could be a hidden clue in an investigation, extra details in a document, or more data from a system you’re hacking.                           |
+|  **2**   | **Speedy Completion**You complete the task faster than expected. Reduce the time required to perform the action by half.                                                                                                                                  |
+|  **2+**  | **Reduce Suspicion**You manage to perform the task in a way that reduces the likelihood of drawing attention or suspicion. Any security or observers suffer a \-3 pool penalty to detect your actions.                                                    |
+|  **3**   | **Save Materials**If the check involved the use of materials, you reduce the amount of resources needed by half, as you are resourceful or able to improvise parts from your surroundings \- the GM is the final arbiter.                                 |
+|  **3**   | **Immediate Solution**You find an immediate and unexpected shortcut or workaround, completely bypassing a step in the task or challenge, potentially skipping a secondary check or requirement.                                                           |
+|  **4+**  | **Extended Success**Your success extends beyond the initial task, creating a long-term benefit. For example, gaining a future contact through a social interaction, leaving a backdoor in a hacked system, or leaving a trail that leads to future clues. |
 
 ### Complications
 
 Below you can find a list of typical **complications** during rolls, but feel free to use complications creatively based on the current situation. The examples provide a goalpost to understand the level of severity attached to complications.
 
-| Compli- cations | Effect |
-| :---: | :---- |
-| **1** | **Stumble**The character is either moved 2 squares in a random direction, or falls prone. Additionally they immediately lose 2 AP. |
-| **1** | **Lost Item**Somehow, the character lost an item (or several items like ammunition), up to a value of 100 Credits. |
-| **1** | **Weapon Jamming** A weapon jams. It requires 4 AP and a successful Tech d2 check to get it to work again. |
-| **1** | **Equipment Damage**A piece of equipment (a weapon, a mod, a tool) is now considered damaged. Any checks involving it suffer a \-2 pool modifier until it is repaired (see Downtime Activities). If it is damaged again, it requires two repairs and is fully unusable until repaired. |
-| **1** | **Misdirection**The character gets confused or distracted. They take a \-2 pool penalty on their next action due to being misled by false information, a sensory overload, or a momentary lapse in focus. |
-| **1** | **Environmental Hazard**The environment works against the character, such as a sudden gust of wind, slippery surface, or falling debris. The character must make an immediate Athletics d2 check or suffer a minor mishap (e.g., lose 2 AP or drop a small item). |
-| **2** | **Self-Injury** Immediately roll for injury with 5 dice, but limit the severity of the wound to level 2\. The character cannot re-gain Edge Points during that roll. |
-| **2** | **Harmful Execution** The character immediately suffers 1d6 \+ 1 damage (ignoring soak) by doing their action in a reckless or clumsy fashion. |
-| **2** | **System Failure** A piece of technology, such as a computer, cyberware or mechanical system, malfunctions unexpectedly. The character must spend 3 AP and make a Tech d3 check to restore functionality. The piece is unusable until then. |
-| **2** | **Unwanted Attention**The character causes a loud noise or disturbance, alerting nearby enemies, guards, or others to their presence. The GM can trigger additional encounters or increase the difficulty of future stealth or infiltration checks. |
-| **2** | **Blackout** The character momentarily forgets crucial information (like an access code, password, or vital fact) and needs to spend an 3 AP and a suitable skill check to recall it. |
-| **3** | **Severe Equipment Failure** A critical system or important piece of gear fails catastrophically (a hacking attempt corrupts data, a weapon explodes in your hand, etc.). The item becomes fully unusable and requires extensive repairs during downtime. |
-| **3** | **Severe Injury** The character suffers a major injury (e.g., a deep cut, broken bone). Immediately roll 7 injury dice and resolve the results, limiting the injury to level 3 or lower. The character cannot re-gain Edge Points during that roll. |
-| **3** | **Involuntary Movement** The character is pushed or moved violently by an external force (e.g., an explosion, malfunctioning equipment, or being knocked off balance). They are moved 5 squares in a random direction and fall prone if they collide with an obstacle. |
-| **3** | **Unintended Harm** The character’s action accidentally harms an ally or important NPC nearby. Roll 2d6 to determine the amount of damage the ally or NPC suffers. This could also apply to critical failures in social situations, where a key ally turns against the group. |
+| Compli- cations | Effect                                                                                                                                                                                                                                                                                 |
+| :-------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|      **1**      | **Stumble**The character is either moved 2 squares in a random direction, or falls prone. Additionally they immediately lose 2 AP.                                                                                                                                                     |
+|      **1**      | **Lost Item**Somehow, the character lost an item (or several items like ammunition), up to a value of 100 Credits.                                                                                                                                                                     |
+|      **1**      | **Weapon Jamming** A weapon jams. It requires 4 AP and a successful Tech d2 check to get it to work again.                                                                                                                                                                             |
+|      **1**      | **Equipment Damage**A piece of equipment (a weapon, a mod, a tool) is now considered damaged. Any checks involving it suffer a \-2 pool modifier until it is repaired (see Downtime Activities). If it is damaged again, it requires two repairs and is fully unusable until repaired. |
+|      **1**      | **Misdirection**The character gets confused or distracted. They take a \-2 pool penalty on their next action due to being misled by false information, a sensory overload, or a momentary lapse in focus.                                                                              |
+|      **1**      | **Environmental Hazard**The environment works against the character, such as a sudden gust of wind, slippery surface, or falling debris. The character must make an immediate Athletics d2 check or suffer a minor mishap (e.g., lose 2 AP or drop a small item).                      |
+|      **2**      | **Self-Injury** Immediately roll for injury with 5 dice, but limit the severity of the wound to level 2\. The character cannot re-gain Edge Points during that roll.                                                                                                                   |
+|      **2**      | **Harmful Execution** The character immediately suffers 1d6 \+ 1 damage (ignoring soak) by doing their action in a reckless or clumsy fashion.                                                                                                                                         |
+|      **2**      | **System Failure** A piece of technology, such as a computer, cyberware or mechanical system, malfunctions unexpectedly. The character must spend 3 AP and make a Tech d3 check to restore functionality. The piece is unusable until then.                                            |
+|      **2**      | **Unwanted Attention**The character causes a loud noise or disturbance, alerting nearby enemies, guards, or others to their presence. The GM can trigger additional encounters or increase the difficulty of future stealth or infiltration checks.                                    |
+|      **2**      | **Blackout** The character momentarily forgets crucial information (like an access code, password, or vital fact) and needs to spend an 3 AP and a suitable skill check to recall it.                                                                                                  |
+|      **3**      | **Severe Equipment Failure** A critical system or important piece of gear fails catastrophically (a hacking attempt corrupts data, a weapon explodes in your hand, etc.). The item becomes fully unusable and requires extensive repairs during downtime.                              |
+|      **3**      | **Severe Injury** The character suffers a major injury (e.g., a deep cut, broken bone). Immediately roll 7 injury dice and resolve the results, limiting the injury to level 3 or lower. The character cannot re-gain Edge Points during that roll.                                    |
+|      **3**      | **Involuntary Movement** The character is pushed or moved violently by an external force (e.g., an explosion, malfunctioning equipment, or being knocked off balance). They are moved 5 squares in a random direction and fall prone if they collide with an obstacle.                 |
+|      **3**      | **Unintended Harm** The character’s action accidentally harms an ally or important NPC nearby. Roll 2d6 to determine the amount of damage the ally or NPC suffers. This could also apply to critical failures in social situations, where a key ally turns against the group.          |
 
 ## Hacking
 
@@ -589,7 +589,7 @@ The following is a list of possible actions with their respective cost in Access
 
 **Scan System (1 AT)** \- Provides an overview of all files and folders within the target system, as well as slaved devices, with a rough description for each.
 
-**Manipulate File (1 AT)** \- The hacker can create, download, delete or manipulate a specific file on the target device (or do a sensible combination of these). 
+**Manipulate File (1 AT)** \- The hacker can create, download, delete or manipulate a specific file on the target device (or do a sensible combination of these).
 
 **System Shutdown (2 AT)** \- Deactivates the entire system, and it takes at least one round before it reboots (so long as a technician is nearby to do so).
 
@@ -670,7 +670,7 @@ Should the character have lost a limb or other body part, then the medic require
 
 A lab-grown replacement typically costs 500 to 1000 Credits \- depending on size \- and requires a week to produce and grow.
 
-## 
+##
 
 ## Cyberware System
 
@@ -800,7 +800,7 @@ When pursuing this activity, the character makes a check with **difficulty 2**, 
 
 **Butter Up Officials (Politics)** \- The character focuses on getting to know people of power, or to leave an impression some way. The next time the character needs to achieve something in that region where an official’s word would be helpful (e.g. gaining access to a restricted area, avoiding trouble with police), the character **gains \+1 pool bonus in those situations, and another \+1 for every 2 Triggers**. After using the bonus, it is lost. The bonus cannot be stacked up \- only the highest achieved pool bonus counts.
 
-**Draft Crew Members (Streetwise)** \- The character attempts to discover hidden talent in the region. Be it gunners, service people, engineers or other trades. On a success, the GM needs to **present two potential crew members that are up for hire**, including their expected hiring cost (which can be negotiated in a separate roll). For every 2 Triggers, another Crew member needs to be presented. 
+**Draft Crew Members (Streetwise)** \- The character attempts to discover hidden talent in the region. Be it gunners, service people, engineers or other trades. On a success, the GM needs to **present two potential crew members that are up for hire**, including their expected hiring cost (which can be negotiated in a separate roll). For every 2 Triggers, another Crew member needs to be presented.
 
 **Gather Intel (Investigation or Streetwise)** \- The character focuses on gathering information about a specific target, location, or event. This could involve talking to informants, scouring public records, or simply listening to local gossip. On a success, the character **gains a useful piece of information or a lead** related to their target. For every 2 Triggers, the information is more detailed or reveals additional, unexpected insights.
 
@@ -848,22 +848,22 @@ Whenever a character reaches a threshold of experience points, they achieve a le
 
 The below table provides an overview about the amount of total experience points required per level \- it is worth noting that experience points do not reset upon achieving a new level:
 
-| Level | Experience Needed |
-| :---: | :---: |
-| **2** | 10 |
-| **3** | 25 |
-| **4** | 40 |
-| **5** | 65 |
-| **6** | 90 |
-| **7** | 120 |
-| **8** | 155 |
-| **9** | 200 |
-| **10** | 255 |
-| **11** | 315 |
-| **12** | 385 |
-| **13** | 470 |
-| **14** | 570 |
-| **15** | 700 |
+| Level  | Experience Needed |
+| :----: | :---------------: |
+| **2**  |        10         |
+| **3**  |        25         |
+| **4**  |        40         |
+| **5**  |        65         |
+| **6**  |        90         |
+| **7**  |        120        |
+| **8**  |        155        |
+| **9**  |        200        |
+| **10** |        255        |
+| **11** |        315        |
+| **12** |        385        |
+| **13** |        470        |
+| **14** |        570        |
+| **15** |        700        |
 
 ### Level Up Benefits
 
@@ -890,7 +890,7 @@ Space, hostile planets or other circumstances can provoke detrimental effects to
 All hazards and circumstances described below make use of one universal “Survival Clock”, but a character tracks their Survival Clocks individually per hazard or circumstance.
 
 The Survival Clock is a meter that has a set limit of ticks, and is calculated as:  
-***10 \+ Constitution \+ Levels in Survival***
+**_10 \+ Constitution \+ Levels in Survival_**
 
 Based on the situation, the GM will regularly give a player (who is affected by the given hazard) a set number of **ticks**, filling up the Survival Clock for that hazard.
 
@@ -905,26 +905,26 @@ A character needs to be removed long enough from a given hazard or circumstance 
 In most cases, players shouldn’t ever have to track this hazard. The GM should only bring it up in harsh survival situations, where it is expected that quenching thirst and satisfying hunger will be difficult or near impossible.  
 **Hunger / Thirst Ticks:**
 
-| Situation | Ticks Gained |
-| :---: | :---: |
-| Character Remains Sedentary | 2 / 4 hours |
-| Character Travels | 4 / 4 hours |
-| Character Performs Hard Work | 6 / 4 hours |
+|          Situation           | Ticks Gained |
+| :--------------------------: | :----------: |
+| Character Remains Sedentary  | 2 / 4 hours  |
+|      Character Travels       | 4 / 4 hours  |
+| Character Performs Hard Work | 6 / 4 hours  |
 
 **Hunger / Thirst Escalation Levels:**
 
-| Level | Effects |
-| :---: | :---: |
-| **1:Hungry / Parched** | You becomes irritable and distracted, resulting in a \-1 pool penalty on mental tasks. |
-| **2:Malnourished** | No natural health regeneration possible any longer, and you suffer a \-1 pool penalty to all checks. |
-| **3:Starving** | No natural health regeneration possible any longer, and you suffer a \-2 pool penalty to all checks. You also lose 2d6 health. |
-| **4:Starved** | You fall unconscious and will die within 1d6 hours. |
+|         Level          |                                                            Effects                                                             |
+| :--------------------: | :----------------------------------------------------------------------------------------------------------------------------: |
+| **1:Hungry / Parched** |                     You becomes irritable and distracted, resulting in a \-1 pool penalty on mental tasks.                     |
+|   **2:Malnourished**   |              No natural health regeneration possible any longer, and you suffer a \-1 pool penalty to all checks.              |
+|     **3:Starving**     | No natural health regeneration possible any longer, and you suffer a \-2 pool penalty to all checks. You also lose 2d6 health. |
+|     **4:Starved**      |                                      You fall unconscious and will die within 1d6 hours.                                       |
 
 **Means To Mitigate:**
 
-| Strategy / Tool | Mitigation |
-| :---: | :---: |
-| Ration Food Reserves | 1 |
+|   Strategy / Tool    | Mitigation |
+| :------------------: | :--------: |
+| Ration Food Reserves |     1      |
 
 ### Radiation
 
@@ -934,29 +934,29 @@ If a character suffered radiation, they either need intensive treatment in a hos
 
 **Radiation Ticks:**
 
-| Situation | Ticks Gained |
-| :---: | :---: |
-| Minor Radiation | 1 / 4 hours |
-| Moderate Radiation | 2 / hour |
-| High Radiation | 4 / 5m |
-| Severe Radiation | 5 / round |
+|     Situation      | Ticks Gained |
+| :----------------: | :----------: |
+|  Minor Radiation   | 1 / 4 hours  |
+| Moderate Radiation |   2 / hour   |
+|   High Radiation   |    4 / 5m    |
+|  Severe Radiation  |  5 / round   |
 
 **Radiation Escalation Levels:**
 
-| Level | Effects |
-| :---: | :---: |
-| **1:Mild Sickness** | Suffer a \-1 pool penalty to all physical checks. |
-| **2:Moderate Sickness** | Lose 1d6 health and suffer a \-2 pool penalty to all checks. |
+|           Level           |                                                                                   Effects                                                                                   |
+| :-----------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|    **1:Mild Sickness**    |                                                              Suffer a \-1 pool penalty to all physical checks.                                                              |
+|  **2:Moderate Sickness**  |                                                        Lose 1d6 health and suffer a \-2 pool penalty to all checks.                                                         |
 | **3:Radiation Poisoning** | Suffer 2d6 damage (ignoring armor), and then another 2d6 damage (ignoring armor). Suffer a \-3 pool penalty to all checks, and no natural regeneration possible any longer. |
-| **4:Walking Ghost** | Suffer a \-4 pool penalty to all checks for 24 hours. Then be absolutely fine for 1d4 days until you suddenly die. |
+|    **4:Walking Ghost**    |                             Suffer a \-4 pool penalty to all checks for 24 hours. Then be absolutely fine for 1d4 days until you suddenly die.                              |
 
 **Means To Mitigate:**
 
-| Strategy / Tool | Mitigation |
-| :---: | :---: |
-| Vac Suit | 2 |
-| Radiation Meds | 1 |
-| Thick Shelter or Radiation Shielding | 2 |
+|           Strategy / Tool            | Mitigation |
+| :----------------------------------: | :--------: |
+|               Vac Suit               |     2      |
+|            Radiation Meds            |     1      |
+| Thick Shelter or Radiation Shielding |     2      |
 
 ### Heat
 
@@ -964,28 +964,28 @@ The emptiness of space is also a space of extremes. Unlike the very stable Earth
 
 **Heat Ticks:**
 
-| Situation | Ticks Gained |
-| :---: | :---: |
-| High Heat (Desert-like) | 1 / 2 hours |
-| Extreme Heat (Sauna-like) | 3 / 30m |
-| Lethal Heat (Reactor Interior or hellish planet) | 8 / 10m |
+|                    Situation                     | Ticks Gained |
+| :----------------------------------------------: | :----------: |
+|             High Heat (Desert-like)              | 1 / 2 hours  |
+|            Extreme Heat (Sauna-like)             |   3 / 30m    |
+| Lethal Heat (Reactor Interior or hellish planet) |   8 / 10m    |
 
 **Heat Escalation Levels:**
 
-| Level | Effects |
-| :---: | :---: |
-| **1:Dehydration** | Suffer a \-1 pool penalty to all physical checks and lose 2 health. |
-| **2:Heatstroke** | Suffer a \-2 pool penalty to all checks and lose 5 health. |
+|           Level            |                                    Effects                                    |
+| :------------------------: | :---------------------------------------------------------------------------: |
+|     **1:Dehydration**      |      Suffer a \-1 pool penalty to all physical checks and lose 2 health.      |
+|      **2:Heatstroke**      |          Suffer a \-2 pool penalty to all checks and lose 5 health.           |
 | **3:Burns / Organ Damage** | Take 2d6 damage (ignoring armor) and suffer a \-3 pool penalty to all checks. |
-| **4:Fatal Heat Exposure** | You become incapacitated and suffer 1d3 damage (ignoring armor) every minute. |
+| **4:Fatal Heat Exposure**  | You become incapacitated and suffer 1d3 damage (ignoring armor) every minute. |
 
 **Means To Mitigate:**
 
-| Strategy / Tool | Mitigation |
-| :---: | :---: |
-| Vac Suit | 1 |
-| Vac Suit with Heat Shielding | 5 |
-| Using large amounts of fluids to cool down | 2 |
+|              Strategy / Tool               | Mitigation |
+| :----------------------------------------: | :--------: |
+|                  Vac Suit                  |     1      |
+|        Vac Suit with Heat Shielding        |     5      |
+| Using large amounts of fluids to cool down |     2      |
 
 ### Cold
 
@@ -993,30 +993,30 @@ Similar to heat, extremely cold places are common across the galaxy.
 
 **Cold Ticks:**
 
-| Situation | Ticks Gained |
-| :---: | :---: |
-| Freezing Cold (Around 0°) | 1 / 2 hours |
-| Extreme Cold (Arctic) | 3 / 30m |
-| Lethal Cold (Open Space / Deep Freeze) | 8 / 10m |
+|               Situation                | Ticks Gained |
+| :------------------------------------: | :----------: |
+|       Freezing Cold (Around 0°)        | 1 / 2 hours  |
+|         Extreme Cold (Arctic)          |   3 / 30m    |
+| Lethal Cold (Open Space / Deep Freeze) |   8 / 10m    |
 
 **Cold Escalation Levels:**
 
-| Level | Effects |
-| :---: | :---: |
-| **1:Numbness** | Suffer a \-2 pool penalty to all physical checks. |
-| **2:Hypothermia** | Suffer a \-2 pool penalty to all checks, and lose 1d6 health. |
-| **3:Frostbite** | Suffer a \-3 pool penalty to all checks, and suffer 2d6 damage (ignoring armor). Also halve your speed and reduce your action points by 3\. |
-| **4:Fatal Cold Exposure** | You become incapacitated and suffer permanent damage unless heated up within 1d6 hours. |
+|           Level           |                                                                   Effects                                                                   |
+| :-----------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------: |
+|      **1:Numbness**       |                                              Suffer a \-2 pool penalty to all physical checks.                                              |
+|     **2:Hypothermia**     |                                        Suffer a \-2 pool penalty to all checks, and lose 1d6 health.                                        |
+|      **3:Frostbite**      | Suffer a \-3 pool penalty to all checks, and suffer 2d6 damage (ignoring armor). Also halve your speed and reduce your action points by 3\. |
+| **4:Fatal Cold Exposure** |                           You become incapacitated and suffer permanent damage unless heated up within 1d6 hours.                           |
 
 **Means To Mitigate:**
 
-| Strategy / Tool | Mitigation |
-| :---: | :---: |
-| Vac Suit | 2 |
-| Vac Suit with Insulation | 5 |
-| Campfire | 2 |
-| Access to hot meals | 1 |
-| Warm Thoughts | 0 |
+|     Strategy / Tool      | Mitigation |
+| :----------------------: | :--------: |
+|         Vac Suit         |     2      |
+| Vac Suit with Insulation |     5      |
+|         Campfire         |     2      |
+|   Access to hot meals    |     1      |
+|      Warm Thoughts       |     0      |
 
 ### Vacuum
 
@@ -1025,28 +1025,28 @@ This is an issue for humans as their bodies are built for 1 bar environments, an
 
 **Vacuum Ticks:**
 
-| Situation | Ticks Gained |
-| :---: | :---: |
-| Sudden Vacuum Exposure | 5 / round |
-| Partial Vacuum (e.g. decompression chamber) | 3 / round |
+|                  Situation                  | Ticks Gained |
+| :-----------------------------------------: | :----------: |
+|           Sudden Vacuum Exposure            |  5 / round   |
+| Partial Vacuum (e.g. decompression chamber) |  3 / round   |
 
 **Vacuum Escalation Levels:**
 
-| Level | Effects |
-| :---: | :---: |
-| **1:Oxygen Deprivation** | Suffer a \-1 pool penalty to all checks. |
-| **2:De-compression** | Lose 1d6 health and suffer a \-2 pool penalty to all checks due to panic and pain. |
+|          Level           |                                                   Effects                                                   |
+| :----------------------: | :---------------------------------------------------------------------------------------------------------: |
+| **1:Oxygen Deprivation** |                                  Suffer a \-1 pool penalty to all checks.                                   |
+|   **2:De-compression**   |             Lose 1d6 health and suffer a \-2 pool penalty to all checks due to panic and pain.              |
 | **3:Critical Condition** | Suffer 1d6 damage (ignoring armor) as five separate instances, and suffer a \-3 pool penalty to all checks. |
-| **4:Corpse In Space** | You become unconscious and die within 3 rounds. |
+|  **4:Corpse In Space**   |                               You become unconscious and die within 3 rounds.                               |
 
 **Means To Mitigate:**
 
 | Strategy / Tool | Mitigation |
-| :---: | :---: |
-| Vac Suit | 5 |
-| Breathing Mask | 2 |
+| :-------------: | :--------: |
+|    Vac Suit     |     5      |
+| Breathing Mask  |     2      |
 
-## 
+##
 
 ## Misc Rules
 
@@ -1057,16 +1057,16 @@ When a character falls from greater heights, they are at the risk of suffering i
 The GM determines the distance class of the fall, ignoring any fall that is one meter or less:
 
 | Distance in meters | Distance Class |
-| :---: | :---: |
-| 1-2 | 1 |
-| 3-5 | 2 |
-| 6-8 | 3 |
-| 9-12 | 4 |
-| 13-15 | 5 |
-| 16-18 | 6 |
-| 19-22 | 8 |
-| 23-25 | 10 |
-| 26+ | 12 |
+| :----------------: | :------------: |
+|        1-2         |       1        |
+|        3-5         |       2        |
+|        6-8         |       3        |
+|        9-12        |       4        |
+|       13-15        |       5        |
+|       16-18        |       6        |
+|       19-22        |       8        |
+|       23-25        |       10       |
+|        26+         |       12       |
 
 The character may attempt an **Acrobatics d0 check**, reducing the distance class by 1 for each success.
 
@@ -1100,15 +1100,15 @@ Many relatives decide not to revive people in this way, knowing that something i
 
 However, if a player character ever gets revived in this fashion, they need to perform a **roll on the below table** using a d8 to determine in which way their engram is faulty. Perform one additional roll for every 20 minutes that they were dead before the engram was captured:
 
-| d8 Roll | Effect |
-| :---: | ----- |
-| **1-2** | Lucky\! You are one of the rare cases in which the engram was created without obvious errors. |
-| **3** | You lose skill levels worth 3 skill points as your memories have significant gaps. |
-| **4** | You regularly suffer from depression or panic attacks. Whenever you attempt to rest or relax, roll a d6. On a 5+, you don’t get any benefits from that rest. |
-| **5** | Lose one attribute level of your choice, as your new body is faulty, or you simply didn’t fully adapt to your new self. |
-| **6** | Choose 1d3 important NPCs or PCs: you forget everything about them, as partial amnesia wiped out memories related to them.You also reduce your maximum edge points by 1\. |
-| **7** | Choose a skill in which you have 5 or more skill levels. You lose all skill levels in it, but regain one skill level whenever you gain a character level, as you re-remember your knowledge over time. |
-| **8** | Full amnesia\! Reduce all your skill levels by 1, and forget any knowledge you have about your past or people you have known.You can now spend downtimes towards regaining a lost skill level of your choice for each downtime spent on this. |
+| d8 Roll | Effect                                                                                                                                                                                                                                        |
+| :-----: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **1-2** | Lucky\! You are one of the rare cases in which the engram was created without obvious errors.                                                                                                                                                 |
+|  **3**  | You lose skill levels worth 3 skill points as your memories have significant gaps.                                                                                                                                                            |
+|  **4**  | You regularly suffer from depression or panic attacks. Whenever you attempt to rest or relax, roll a d6. On a 5+, you don’t get any benefits from that rest.                                                                                  |
+|  **5**  | Lose one attribute level of your choice, as your new body is faulty, or you simply didn’t fully adapt to your new self.                                                                                                                       |
+|  **6**  | Choose 1d3 important NPCs or PCs: you forget everything about them, as partial amnesia wiped out memories related to them.You also reduce your maximum edge points by 1\.                                                                     |
+|  **7**  | Choose a skill in which you have 5 or more skill levels. You lose all skill levels in it, but regain one skill level whenever you gain a character level, as you re-remember your knowledge over time.                                        |
+|  **8**  | Full amnesia\! Reduce all your skill levels by 1, and forget any knowledge you have about your past or people you have known.You can now spend downtimes towards regaining a lost skill level of your choice for each downtime spent on this. |
 
 ### Crew Members
 
@@ -1160,23 +1160,18 @@ When a piece of cyberware should be installed in a different body, it needs to b
 However, a player character can do these adjustments on their own by spending a downtime in a med bay (or similar), requiring materials equal to 25% of the cyberware’s base value. They then need to succeed at a **Science check** with a difficulty based on the quality level of the cyberware:
 
 | Quality Level | Check Difficulty |
-| :---: | :---: |
-| **Alpha** | 2 |
-| **Beta** | 3 |
-| **Omega** | 4 |
+| :-----------: | :--------------: |
+|   **Alpha**   |        2         |
+|   **Beta**    |        3         |
+|   **Omega**   |        4         |
 
 Failing the check means that the character simply requires more time to adjust the piece in question, and can re-attempt it during a future downtime without additional costs.
 
 As soon as piece of cyberware has been modified to suit its new host, it can be installed as per the usual “Install Cyberware” downtime activity.
 
-[image1]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAnElEQVR4XmMwrpzAgIZZgVgBTQzEZ0NXCyH2/wdjIHuq4uqb/4F0P0wMKt4PFZ+KJIbQzLjv7x+QAnyaQRikDkUzzEYkzYZomg3R5KfCNLOiSXAja0QygBNNHStIUAHkLChGsREdg+SR1CqgBBgpGOZsDAliMFU0U+RnNrRQ5ETXBNXIjqaODWy9MQXxDFZAdgpDUkR62kbDROcqAByHjgY6ZM3lAAAAAElFTkSuQmCC>
-
-[image2]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAvElEQVR4XqWTQQ6CMBBF66LdQQgL1/UMnKZH8RbewzvoDdiw8jCmzm86OnyJElj8lJn+1/mE4obzxZG8KFIPdWAvg9Pp+siyjqJG1Ila1LU/LcKH2zPDoLC75/KMVWEIPobLRAMnghPtlwQAPW0cBXAWRi39nnwezYhYVZgI8AuuByTjjRq7qaa37BTeg19jQ501/xP8Ft48edc7B4rUL8HSb8kXNPbm71y054bNEsA8fO421t9322j1X/UCZknAJQtOjnAAAAAASUVORK5CYII=>
-
-[image3]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAbUlEQVR4XqWQsQ2AMAwEqZEyBB1TZQXmYTSWweRRCuSj4ElxSnLyy46niJj+AuEA4QDhAFGXQ8yNfVvP0Kl3u6MWogcVypRc+xZWpxy8J8i1CPdRgXyuRXiocx38syjq9Nh2+bRtBwgHCAcIhwsKGHNc72FlMAAAAABJRU5ErkJggg==>
-
-[image4]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAABL0lEQVR4XmMwrpzAgIa5gNgGTQzE50FXi67xsuLqm/+B9HkgjgTibiCOB/Gh4pexambc9/c/SIHSiqtgGh0rLb8MpkHq0DWDbYRhIH82iGbY/x/Gn4cmD3YBSCMXxOQrMAmxm6sVGdAxUFwIrG4FXB0XSBAUGOegAmtBCr8c0gNpYALRULYdEM8Eyi+EqgOFiQ3M2V4wJyFpnvl2j/ZNIBskBsJMSM4GBSbcz5UgQe4dn8CagVgHqgGG3UEGIoVBO7JmD2Sb761X/v9mt9ZVILsZZDPM+Ug2h8A0I/t5HlBDMRBbIvkX7ndjaCwYI/mZBy0UhYDOAzkRBQPF+dDU8eCKZ3CoIvlxLZo8PJ7BmFAKU152CUxjS2EoLgDS54DYG4groTQsTLCnbSRMdK4CAB6ItvxIAkIsAAAAAElFTkSuQmCC>
-
-[image5]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAA4ElEQVR4XmO4qahoB8TWQMwExAxEYJA6kB4zEEcdiP9D8UwgZvmfk8OAjoHizFB5mFp5kCAjksb/QIUgNjO6Rqg4XB0QM8CcMhHJRBQD0DTC8CRkzUzoCqB8Vhzi4PABa4bagGHASwcHrBqh6hGacRmATSNWzVBBUGhj0wjyArI6DJuxBQ6yAfBYQNGMTSMOPiwW4KGNSyMuL4ASDETzHXX1eVgUwEIVIxC/hIVdhWkGp7APfn4n0TUi+Q9uAJJBjCAJPZiJf9LSPqNrxGYAFKuCBLWBWP4mxO/EYkUgVgMAz0KSS3TNKc0AAAAASUVORK5CYII=>
-
-[image6]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAuklEQVR4XmP4//8/A7kYQ4AUjCFACmZQvFnGEPZ1AQYGigsA6f9AWgxdDiqPXTNQzB6IQRph2B+LGkzNQP50NI0wPBOnZiDNEgZxJhhD2axOryecRRNjR9EMxLJotkyCKpgMMgCIa9Hk1WGauYF4JhK2BmIuZFcAsQYUI6sTxuZnTSRNIEUwdiFOP0MFipAUx0DFlNAMY0T3MwjLA3E9FIsjiYMwiyLE3yC5QJg4RqohBWMIkIIxBEjBAMMiErImHzhbAAAAAElFTkSuQmCC>
+[image1]: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAnElEQVR4XmMwrpzAgIZZgVgBTQzEZ0NXCyH2/wdjIHuq4uqb/4F0P0wMKt4PFZ+KJIbQzLjv7x+QAnyaQRikDkUzzEYkzYZomg3R5KfCNLOiSXAja0QygBNNHStIUAHkLChGsREdg+SR1CqgBBgpGOZsDAliMFU0U+RnNrRQ5ETXBNXIjqaODWy9MQXxDFZAdgpDUkR62kbDROcqAByHjgY6ZM3lAAAAAElFTkSuQmCC
+[image2]: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAvElEQVR4XqWTQQ6CMBBF66LdQQgL1/UMnKZH8RbewzvoDdiw8jCmzm86OnyJElj8lJn+1/mE4obzxZG8KFIPdWAvg9Pp+siyjqJG1Ila1LU/LcKH2zPDoLC75/KMVWEIPobLRAMnghPtlwQAPW0cBXAWRi39nnwezYhYVZgI8AuuByTjjRq7qaa37BTeg19jQ501/xP8Ft48edc7B4rUL8HSb8kXNPbm71y054bNEsA8fO421t9322j1X/UCZknAJQtOjnAAAAAASUVORK5CYII=
+[image3]: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAbUlEQVR4XqWQsQ2AMAwEqZEyBB1TZQXmYTSWweRRCuSj4ElxSnLyy46niJj+AuEA4QDhAFGXQ8yNfVvP0Kl3u6MWogcVypRc+xZWpxy8J8i1CPdRgXyuRXiocx38syjq9Nh2+bRtBwgHCAcIhwsKGHNc72FlMAAAAABJRU5ErkJggg==
+[image4]: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAABL0lEQVR4XmMwrpzAgIa5gNgGTQzE50FXi67xsuLqm/+B9HkgjgTibiCOB/Gh4pexambc9/c/SIHSiqtgGh0rLb8MpkHq0DWDbYRhIH82iGbY/x/Gn4cmD3YBSCMXxOQrMAmxm6sVGdAxUFwIrG4FXB0XSBAUGOegAmtBCr8c0gNpYALRULYdEM8Eyi+EqgOFiQ3M2V4wJyFpnvl2j/ZNIBskBsJMSM4GBSbcz5UgQe4dn8CagVgHqgGG3UEGIoVBO7JmD2Sb761X/v9mt9ZVILsZZDPM+Ug2h8A0I/t5HlBDMRBbIvkX7ndjaCwYI/mZBy0UhYDOAzkRBQPF+dDU8eCKZ3CoIvlxLZo8PJ7BmFAKU152CUxjS2EoLgDS54DYG4groTQsTLCnbSRMdK4CAB6ItvxIAkIsAAAAAElFTkSuQmCC
+[image5]: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAA4ElEQVR4XmO4qahoB8TWQMwExAxEYJA6kB4zEEcdiP9D8UwgZvmfk8OAjoHizFB5mFp5kCAjksb/QIUgNjO6Rqg4XB0QM8CcMhHJRBQD0DTC8CRkzUzoCqB8Vhzi4PABa4bagGHASwcHrBqh6hGacRmATSNWzVBBUGhj0wjyArI6DJuxBQ6yAfBYQNGMTSMOPiwW4KGNSyMuL4ASDETzHXX1eVgUwEIVIxC/hIVdhWkGp7APfn4n0TUi+Q9uAJJBjCAJPZiJf9LSPqNrxGYAFKuCBLWBWP4mxO/EYkUgVgMAz0KSS3TNKc0AAAAASUVORK5CYII=
+[image6]: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAuklEQVR4XmP4//8/A7kYQ4AUjCFACmZQvFnGEPZ1AQYGigsA6f9AWgxdDiqPXTNQzB6IQRph2B+LGkzNQP50NI0wPBOnZiDNEgZxJhhD2axOryecRRNjR9EMxLJotkyCKpgMMgCIa9Hk1WGauYF4JhK2BmIuZFcAsQYUI6sTxuZnTSRNIEUwdiFOP0MFipAUx0DFlNAMY0T3MwjLA3E9FIsjiYMwiyLE3yC5QJg4RqohBWMIkIIxBEjBAMMiErImHzhbAAAAAElFTkSuQmCC

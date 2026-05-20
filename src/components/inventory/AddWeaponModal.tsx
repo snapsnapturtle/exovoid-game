@@ -39,7 +39,9 @@ export function AddWeaponModal({ busy, onAdd, onClose }: AddWeaponModalProps) {
   const [query, setQuery] = useState('')
   const [typeFilter, setTypeFilter] = useState<WeaponType | null>(null)
   const [weapon, setWeapon] = useState<WeaponData | null>(null)
-  const [manufacturer, setManufacturer] = useState<ManufacturerData | null>(null)
+  const [manufacturer, setManufacturer] = useState<ManufacturerData | null>(
+    null,
+  )
   const [name, setName] = useState('')
   const [location, setLocation] = useState('')
   const [step, setStep] = useState<Step>('weapon')
@@ -64,8 +66,7 @@ export function AddWeaponModal({ busy, onAdd, onClose }: AddWeaponModalProps) {
   const filteredGroups = useMemo(() => {
     const q = query.trim().toLowerCase()
     const ordered = [...groups].sort(
-      (a, b) =>
-        TYPE_ORDER.indexOf(a.type) - TYPE_ORDER.indexOf(b.type),
+      (a, b) => TYPE_ORDER.indexOf(a.type) - TYPE_ORDER.indexOf(b.type),
     )
     return ordered
       .filter((g) => !typeFilter || g.type === typeFilter)
@@ -203,7 +204,9 @@ export function AddWeaponModal({ busy, onAdd, onClose }: AddWeaponModalProps) {
                               </span>
                             </div>
                             <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-gray-900">
-                              <Stat label="DMG">{w.damage} {w.damageType}</Stat>
+                              <Stat label="DMG">
+                                {w.damage} {w.damageType}
+                              </Stat>
                               <Stat label="AP">{w.attackAP}</Stat>
                               <Stat label="Range">
                                 {w.optimalRange}
@@ -355,9 +358,7 @@ function ManufacturerList({
               </div>
               <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-gray-900">
                 {effectiveCost != null && (
-                  <Stat label="Cost">
-                    {effectiveCost.toLocaleString()} ¢
-                  </Stat>
+                  <Stat label="Cost">{effectiveCost.toLocaleString()} ¢</Stat>
                 )}
                 {weapon.rarity != null && (
                   <Stat label="Rarity">
@@ -416,7 +417,13 @@ function TypePill({
   )
 }
 
-function Stat({ label, children }: { label: string; children: React.ReactNode }) {
+function Stat({
+  label,
+  children,
+}: {
+  label: string
+  children: React.ReactNode
+}) {
   return (
     <span>
       <span className="text-gray-700">{label}:</span>{' '}

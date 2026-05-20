@@ -21,7 +21,9 @@ export interface ManufacturerData {
   description: string
   companyDetails: string
   exampleProductNames: string[]
-  effectsByType: Partial<Record<ManufacturerEquipmentType, ManufacturerTypeEffect>>
+  effectsByType: Partial<
+    Record<ManufacturerEquipmentType, ManufacturerTypeEffect>
+  >
   hegemony: boolean
 }
 
