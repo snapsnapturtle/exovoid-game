@@ -81,13 +81,17 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
           onAttributeChange={updateAttribute}
         />
         <LivePlayPanel
+          gameId={character.game_id}
+          characterId={character.id}
           healthMax={derivedStats.health}
           healthCurrent={character.health_current}
           edgeMax={derivedStats.edge}
           edgeCurrent={character.edge_current}
+          injuries={character.injuries}
           canEdit={canEdit}
           onHealthChange={(v) => updateField('health_current', v)}
           onEdgeChange={(v) => updateField('edge_current', v)}
+          onInjuriesChange={(v) => updateField('injuries', v)}
         />
       </div>
 

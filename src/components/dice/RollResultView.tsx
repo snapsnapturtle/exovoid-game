@@ -38,7 +38,7 @@ interface RollResultViewProps {
 
 export function RollResultView({
   data,
-  dieSize = 'md',
+  dieSize = 'sm',
   animate = true,
 }: RollResultViewProps) {
   const summary = data.summary ?? {}

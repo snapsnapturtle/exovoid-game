@@ -5,6 +5,7 @@ import { Modal } from '~/components/ui/Modal'
 import { Alert } from '~/components/ui/Alert'
 import { Stepper } from '~/components/ui/Stepper'
 import { Drawer } from '~/components/ui/Drawer'
+import { Popover, usePopover } from '~/components/ui/Popover'
 
 export const Route = createFileRoute('/_app/styleguide')({
   component: StyleguidePage,
@@ -62,13 +63,14 @@ function StyleguidePage() {
 
         <Section
           title="Button"
-          description="Five variants × two sizes. Primary is the single main action on a surface; secondary is an alternate action with similar weight; subtle is the in-play chip (steppers, inline +/-) — more present than ghost, less loud than secondary; ghost is the canonical Cancel; danger is reserved for destructive actions."
+          description="Six variants × three sizes. Primary is the single main action on a surface; secondary is an alternate action with similar weight; subtle is the in-play chip (steppers, inline +/-) — more present than ghost, less loud than secondary; ghost is the canonical Cancel; ghostDanger is the danger flavour of ghost (inline destructive actions in lists, e.g. row-level ✕); danger is reserved for the loud destructive primary."
         >
           <Row label="md (default)">
             <Button>Primary</Button>
             <Button variant="secondary">Secondary</Button>
             <Button variant="subtle">Subtle</Button>
             <Button variant="ghost">Ghost</Button>
+            <Button variant="ghostDanger">Ghost danger</Button>
             <Button variant="danger">Danger</Button>
           </Row>
           <Row label="sm">
@@ -82,7 +84,28 @@ function StyleguidePage() {
             <Button variant="ghost" size="sm">
               Ghost
             </Button>
+            <Button variant="ghostDanger" size="sm">
+              Ghost danger
+            </Button>
             <Button variant="danger" size="sm">
+              Danger
+            </Button>
+          </Row>
+          <Row label="xs (inline list actions)">
+            <Button size="xs">Primary</Button>
+            <Button variant="secondary" size="xs">
+              Secondary
+            </Button>
+            <Button variant="subtle" size="xs">
+              Subtle
+            </Button>
+            <Button variant="ghost" size="xs">
+              Treat
+            </Button>
+            <Button variant="ghostDanger" size="xs">
+              ✕
+            </Button>
+            <Button variant="danger" size="xs">
               Danger
             </Button>
           </Row>
@@ -96,6 +119,9 @@ function StyleguidePage() {
             </Button>
             <Button variant="ghost" disabled>
               Ghost
+            </Button>
+            <Button variant="ghostDanger" disabled>
+              Ghost danger
             </Button>
             <Button variant="danger" disabled>
               Danger
@@ -128,6 +154,10 @@ function StyleguidePage() {
           <Alert variant="info">
             Realtime sync is connected. Changes propagate live.
           </Alert>
+          <Alert variant="success">
+            No wound symbols rolled — no injury suffered.
+          </Alert>
+          <Alert variant="pink">+2 Edge from adrenaline symbols.</Alert>
         </Section>
 
         <Section
@@ -158,6 +188,16 @@ function StyleguidePage() {
               </p>
             </Modal>
           )}
+        </Section>
+
+        <Section
+          title="Popover"
+          description="Click-toggled floating panel anchored to a trigger. Built on floating-ui via the usePopover() hook + <Popover> component. Open direction defaults to bottom-start and flips if there's no room; max-height auto-caps to available viewport space so the body scrolls when content is long; entrance and exit animate. Reach for it whenever you need a list of actions, a detail panel, or a dropdown that shouldn't be a full modal."
+        >
+          <Row>
+            <PopoverExample />
+            <PopoverExample longContent />
+          </Row>
         </Section>
 
         <Section
@@ -352,6 +392,55 @@ type RampFamily =
 
 function fullRamp(family: RampFamily): string[] {
   return RAMP_STEPS.map((step) => `${family}-${step}`)
+}
+
+function PopoverExample({ longContent = false }: { longContent?: boolean }) {
+  const popover = usePopover()
+  const rows = Array.from(
+    { length: longContent ? 30 : 4 },
+    (_, i) => `Row ${i + 1}`,
+  )
+  return (
+    <>
+      <button
+        ref={popover.refs.setReference}
+        type="button"
+        className={buttonClasses('secondary')}
+        {...popover.getReferenceProps()}
+      >
+        {longContent ? 'Open (long)' : 'Open popover'}
+        <svg
+          width="10"
+          height="10"
+          viewBox="0 0 12 12"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden
+          className={`ml-1.5 transition-transform ${popover.open ? 'rotate-180' : ''}`}
+        >
+          <polyline points="3 4.5 6 7.5 9 4.5" />
+        </svg>
+      </button>
+      <Popover popover={popover} className="w-64 text-xs">
+        <div className="shrink-0 border-b border-gray-400 px-3 py-2 text-[10px] font-semibold uppercase tracking-wide text-gray-700">
+          {longContent ? 'Long list (scrolls)' : 'Popover header'}
+        </div>
+        <ul className="flex-1 divide-y divide-gray-400 overflow-y-auto">
+          {rows.map((r) => (
+            <li key={r} className="px-3 py-2 text-gray-1000">
+              {r}
+            </li>
+          ))}
+        </ul>
+        <div className="shrink-0 border-t border-gray-400 px-3 py-2 text-[11px] text-gray-900">
+          Footer slot
+        </div>
+      </Popover>
+    </>
+  )
 }
 
 function PaletteRow({ label, tokens }: { label: string; tokens: string[] }) {

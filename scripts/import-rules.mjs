@@ -329,7 +329,7 @@ const qualities = qualityRows
 writeJson('item-qualities.json', qualities)
 
 // --- Cyber Malfunction Table ------------------------------------------------
-// Rulebook §"Exceeding Cyber Immunity": when over capacity, the character
+// Rulebook "Exceeding Cyber Immunity": when over capacity, the character
 // must allocate excess points across this table (rolls 2-40). Named rows
 // start an outcome's range; blank rows below them inherit that outcome
 // (forward-fill). Slot 3 is still Critical Shutdown, slot 30 is still
@@ -357,5 +357,20 @@ const malfunctions = malfunctionRows
     }
   })
 writeJson('cyberware-malfunctions.json', malfunctions)
+
+// --- Injury Table -----------------------------------------------------------
+// On damage past 0 health, roll injury dice and draw a
+// random entry from the row matching the number of wound symbols rolled.
+console.log('Injury Table...')
+const injuryRows = readTable('Exovoid Content - Injury Table.csv')
+const injuries = injuryRows
+  .filter((r) => r.injury && r.injury.trim() !== '')
+  .map((r) => ({
+    name: r.injury,
+    severity: parseInt(r.severity, 10),
+    modifier: parseInt(r.poolModifier, 10) || 0,
+    effect: r.result,
+  }))
+writeJson('injuries.json', injuries)
 
 console.log('done.')

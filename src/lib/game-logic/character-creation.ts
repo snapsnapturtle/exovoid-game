@@ -12,8 +12,7 @@ import { isLegalTalentSet, type CareerData } from './talents'
 /**
  * Shared creation-time validation used by both the wizard (for inline
  * step gating + error display) and the createCharacter server function
- * (for authoritative checks before insert). Rules per §162 / §176 of
- * the rulebook.
+ * (for authoritative checks before insert).
  *
  * NOTE: these rules apply only at *creation*. Once the character exists,
  * attributes can climb past the 4/6 caps via training talents, etc., and
@@ -48,8 +47,8 @@ function merge(...results: ValidationResult[]): ValidationResult {
 }
 
 /**
- * §162-163: total 28 points; three attributes capped at 6, the other
- * four at 4. We don't track which 3 are "the high-cap ones" — instead
+ * Total 28 points; three attributes capped at 6, the other four at 4.
+ * We don't track which 3 are "the high-cap ones" — instead
  * we infer from the final values: any attribute > 4 must be one of the
  * three high-cap slots, so the count of those can be at most 3.
  */
@@ -86,8 +85,8 @@ export function validateCreationAttributes(
 }
 
 /**
- * §176: 30 skill points to spend on top of career baseline; no skill
- * above 6; levels 5 and 6 cost 2 points each. Career baseline is free.
+ * 30 skill points to spend on top of career baseline; no skill above 6;
+ * levels 5 and 6 cost 2 points each. Career baseline is free.
  * Final skill values cannot go below the baseline (the player can't
  * downgrade what the career grants).
  */
@@ -123,8 +122,8 @@ export function validateCreationSkills(
 }
 
 /**
- * §155: up to 2 starting talents from the chosen career's tree, with
- * normal tier prereqs (a tier-1 talent needs a tier-0 prereq from the
+ * Up to 2 starting talents from the chosen career's tree, with normal
+ * tier prereqs (a tier-1 talent needs a tier-0 prereq from the
  * same career). At creation only tier 0 and 1 are reachable — picking
  * a higher tier would require more prereq slots than we have.
  */

@@ -29,6 +29,16 @@
    and font-variant-numeric together on the same element; some browsers reset
    one when the other is set. */
 
+/* Reserve the scrollbar's gutter on every scroll container — even when
+   content fits without scrolling — so transient overlays (modals,
+   drawers) that briefly hide a container's scrollbar don't shift its
+   content horizontally by the scrollbar's width. Only has effect on
+   elements with `overflow: auto` or `overflow: scroll`, so the `*`
+   selector is a safe broad apply. */
+* {
+  scrollbar-gutter: stable;
+}
+
 /* Elevation for elements that genuinely float above the page (toasts,
    tooltips, FAB-style buttons). On a pure-black page bg a black-tinted drop
    shadow is physically invisible — the bg is already as dark as the shadow.
@@ -237,6 +247,29 @@
 
 .modal-card-in {
   animation: modal-card-in 140ms ease-out;
+}
+
+/* Popover open/close transition. Driven by floating-ui's useTransitionStatus
+   — the parent toggles `popover-card-open` once the element is mounted, and
+   back to `popover-card-closed` to play the exit before unmount. */
+.popover-card {
+  transition:
+    opacity 120ms ease-out,
+    transform 120ms ease-out;
+  transform-origin: top center;
+  /* Set by Popover's size middleware on the outer floating element; the
+     variable inherits down to here so we cap to the available viewport
+     room and the inner scrollable region engages. Falls back to none when
+     not set (e.g. tiny popovers that fit unconditionally). */
+  max-height: var(--popover-max-height, none);
+}
+.popover-card-closed {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+.popover-card-open {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Adds a 1px white outline around an image's alpha silhouette via stacked

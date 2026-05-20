@@ -5,8 +5,9 @@ export type ButtonVariant =
   | 'secondary'
   | 'subtle'
   | 'ghost'
+  | 'ghostDanger'
   | 'danger'
-export type ButtonSize = 'sm' | 'md'
+export type ButtonSize = 'xs' | 'sm' | 'md'
 
 const VARIANT: Record<ButtonVariant, string> = {
   primary:
@@ -17,11 +18,14 @@ const VARIANT: Record<ButtonVariant, string> = {
     'bg-gray-400 text-gray-1000 not-disabled:hover:bg-gray-500 disabled:opacity-40',
   ghost:
     'text-gray-1000 not-disabled:hover:bg-gray-100 not-disabled:hover:text-white disabled:opacity-50',
+  ghostDanger:
+    'text-danger-900 not-disabled:hover:bg-danger-100 not-disabled:hover:text-white disabled:opacity-50',
   danger:
     'bg-danger-700 text-white not-disabled:hover:bg-danger-800 disabled:opacity-50',
 }
 
 const SIZE: Record<ButtonSize, string> = {
+  xs: 'px-1.5 py-0.5 text-[10px]',
   sm: 'px-2.5 py-1 text-xs',
   md: 'px-3 py-1.5 text-sm font-medium',
 }

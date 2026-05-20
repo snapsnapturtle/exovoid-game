@@ -1,4 +1,5 @@
 import type { MouseEventHandler, ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 
 /**
  * Standard close affordance for any dialog: a small "×" in the top-right
@@ -53,8 +54,15 @@ export function Modal({
   footer,
   children,
 }: ModalProps) {
+  // SSR-safe: skip on the server. Modals only mount in response to user
+  // interaction anyway, so the client-only path is fine.
+  if (typeof document === 'undefined') return null
   const alignClass = align === 'center' ? 'items-center' : 'items-start'
-  return (
+  return createPortal(
+    // Portaled to document.body so the modal isn't a flex/grid child of
+    // its caller — otherwise its DOM position would absorb a `gap` /
+    // `space-y` allocation in the parent, nudging siblings by a few px
+    // even though the modal itself is `position: fixed`.
     <div
       className={`modal-backdrop-in fixed backdrop-blur-sm inset-0 z-50 flex ${alignClass} justify-center bg-black/60 p-4 sm:p-8`}
       onClick={onClose}
@@ -83,6 +91,7 @@ export function Modal({
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }

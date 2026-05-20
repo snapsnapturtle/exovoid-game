@@ -1,0 +1,164 @@
+[
+  {
+    "name": "Hobble",
+    "severity": 1,
+    "modifier": 1,
+    "effect": "Reduce your speed by 1. Stacks."
+  },
+  {
+    "name": "Disoriented",
+    "severity": 1,
+    "modifier": 1,
+    "effect": "Reduce your vigilance by 1. Stacks."
+  },
+  {
+    "name": "Tripping",
+    "severity": 1,
+    "modifier": 1,
+    "effect": "Immediately lose 4 Action Points."
+  },
+  {
+    "name": "Just A Flesh Wound",
+    "severity": 1,
+    "modifier": 2,
+    "effect": "No further effects other than the injury pool modifier."
+  },
+  {
+    "name": "Falling",
+    "severity": 1,
+    "modifier": 1,
+    "effect": "You are knocked prone. Others within 5 squares have -1 difficulty to hit you, and +1 difficulty if they 10 squares or further away, and you need to spend 2 AP to stand up."
+  },
+  {
+    "name": "Lost It",
+    "severity": 1,
+    "modifier": 1,
+    "effect": "You let your weapon or some other piece of equipment fall - GM's discretion."
+  },
+  {
+    "name": "Dizzy",
+    "severity": 2,
+    "modifier": 1,
+    "effect": "Reduce your action points each round by 1. Stacks."
+  },
+  {
+    "name": "Injured Arm",
+    "severity": 2,
+    "modifier": 1,
+    "effect": "Suffer -1 pool with all checks that use this arm. Stacks."
+  },
+  {
+    "name": "Injured Leg",
+    "severity": 2,
+    "modifier": 1,
+    "effect": "Halve your speed. Stacks."
+  },
+  {
+    "name": "Nausea",
+    "severity": 2,
+    "modifier": 1,
+    "effect": "All actions cost +1 AP. Stacks."
+  },
+  {
+    "name": "Pyrrhic Victory",
+    "severity": 2,
+    "modifier": 3,
+    "effect": "Your next roll gains +3 successes."
+  },
+  {
+    "name": "Concussion",
+    "severity": 2,
+    "modifier": 2,
+    "effect": "Immediately lose 7 Action Points."
+  },
+  {
+    "name": "Distracting Suffering",
+    "severity": 2,
+    "modifier": 2,
+    "effect": "Declare an ally. They suffer a -4 pool penalty on their next check."
+  },
+  {
+    "name": "Gruesome Wound",
+    "severity": 3,
+    "modifier": 2,
+    "effect": "Treating this wound has +2 difficulty."
+  },
+  {
+    "name": "Bleeding",
+    "severity": 3,
+    "modifier": 0,
+    "effect": "Suffer 1 damage (ignoring armor) at the end of each round for 1d6 rounds. Stacks."
+  },
+  {
+    "name": "Crippled Leg",
+    "severity": 3,
+    "modifier": 1,
+    "effect": "You cannot perform free movements any longer, you are permanently prone and your speed becomes 1."
+  },
+  {
+    "name": "Head Injury",
+    "severity": 3,
+    "modifier": 2,
+    "effect": "Increase the difficulty of all checks that involve Intelligence by +1. Stacks."
+  },
+  {
+    "name": "Internal Trauma",
+    "severity": 3,
+    "modifier": 0,
+    "effect": "Every time you perform an action you have to roll one single injury die (with no further modifiers)."
+  },
+  {
+    "name": "Traumatized",
+    "severity": 3,
+    "modifier": 4,
+    "effect": "If you receive this wound, you can immediately discard it by spending 2 edge points."
+  },
+  {
+    "name": "Brutal Mutilation",
+    "severity": 4,
+    "modifier": 0,
+    "effect": "You suffer a graphic mutilation (like lost fingers or similar) at the GM's discretion. This will result in penalties on social checks (and related checks) until healed."
+  },
+  {
+    "name": "Lost Arm",
+    "severity": 4,
+    "modifier": 0,
+    "effect": "You lose an arm and cannot use it anymore for any actions. Additionally you suffer 1 damage for 1d6 rounds from bleeding."
+  },
+  {
+    "name": "Lost Leg",
+    "severity": 4,
+    "modifier": 0,
+    "effect": "You cannot perform free movements any longer, you are permanently prone and your speed becomes 1. Additionally you suffer 1 damage for 1d6 rounds from bleeding."
+  },
+  {
+    "name": "Blinded",
+    "severity": 4,
+    "modifier": 1,
+    "effect": "All sight-based checks require +2 difficulty. Stacks."
+  },
+  {
+    "name": "Passed Out",
+    "severity": 4,
+    "modifier": 3,
+    "effect": "You become unconscious, but you can attempt a Survival d3 check by spending 5 AP repeatedly to wake up on success."
+  },
+  {
+    "name": "Unconscious",
+    "severity": 5,
+    "modifier": 2,
+    "effect": "You become unconscious for at least one hour or until treated medically."
+  },
+  {
+    "name": "Bleeding Out",
+    "severity": 6,
+    "modifier": 0,
+    "effect": "You become unconscious and will die within 10 rounds, unless treated. To stabilize, another character must succeed with a Medicine d4 check and spend 8 AP. If successful, treat this result as \"Unconscious\" instead."
+  },
+  {
+    "name": "Instant Death",
+    "severity": 7,
+    "modifier": 0,
+    "effect": "You are dead."
+  }
+]
