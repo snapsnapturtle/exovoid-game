@@ -1,6 +1,7 @@
 import { createFileRoute, getRouteApi, Link } from '@tanstack/react-router'
 import { useState } from 'react'
 import { buttonClasses } from '~/components/ui/Button'
+import { CharacterPortrait } from '~/components/character/CharacterPortrait'
 
 const gameRoute = getRouteApi('/_app/games/$gameId')
 
@@ -91,9 +92,14 @@ function GameLobbyPage() {
                   <Link
                     to="/games/$gameId/characters/$characterId"
                     params={{ gameId: game.id, characterId: char.id }}
-                    className="flex items-center justify-between rounded-lg border border-gray-400 p-3 transition hover:border-accent-700"
+                    className="flex items-center gap-3 rounded-lg border border-gray-400 p-3 transition hover:border-accent-700"
                   >
-                    <div>
+                    <CharacterPortrait
+                      name={char.name}
+                      portraitUrl={char.portrait_url}
+                      size="sm"
+                    />
+                    <div className="min-w-0 flex-1">
                       <p className="font-medium text-white">{char.name}</p>
                       <p className="text-xs text-gray-900">
                         {char.career || 'No career'} &middot; Level {char.level}

@@ -48,6 +48,7 @@ export function useCharacter(initial: Character, canEdit: boolean) {
                 health_current: updated.health_current,
                 injuries: updated.injuries,
                 notes: updated.notes,
+                portrait_url: updated.portrait_url,
               },
             },
           })
