@@ -63,6 +63,7 @@ export type Database = {
           malfunction_allocations: Json
           name: string
           notes: string
+          portrait_url: string | null
           skills: Json
           talents: Json
           updated_at: string
@@ -89,6 +90,7 @@ export type Database = {
           malfunction_allocations?: Json
           name?: string
           notes?: string
+          portrait_url?: string | null
           skills?: Json
           talents?: Json
           updated_at?: string
@@ -115,6 +117,7 @@ export type Database = {
           malfunction_allocations?: Json
           name?: string
           notes?: string
+          portrait_url?: string | null
           skills?: Json
           talents?: Json
           updated_at?: string

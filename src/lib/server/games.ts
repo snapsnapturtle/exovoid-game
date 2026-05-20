@@ -113,7 +113,7 @@ export const getGame = createServerFn()
 
     const { data: characters } = await supabase
       .from('characters')
-      .select('id, name, career, level, user_id')
+      .select('id, name, career, level, user_id, portrait_url')
       .eq('game_id', data.gameId)
 
     const isMember = members?.some((m) => m.user_id === user.id)

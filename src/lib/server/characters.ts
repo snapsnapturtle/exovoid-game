@@ -140,6 +140,7 @@ export const updateCharacter = createServerFn({ method: 'POST' })
         health_current?: number | null
         injuries?: InjuryEntry[]
         notes?: string
+        portrait_url?: string | null
       }
     }) => d,
   )
@@ -451,11 +452,45 @@ export const deleteCharacter = createServerFn({ method: 'POST' })
 
     if (!character) throw new Error('Character not found')
 
+    // Scrub portrait objects *before* deleting the row: storage RLS gates
+    // writes on a SELECT against the character row, so once the row is gone
+    // the storage delete is silently denied.
+    const { data: objects } = await supabase.storage
+      .from('character-portraits')
+      .list(data.characterId)
+    if (objects && objects.length > 0) {
+      const { error: rmError } = await supabase.storage
+        .from('character-portraits')
+        .remove(objects.map((o) => `${data.characterId}/${o.name}`))
+      if (rmError) throw new Error(rmError.message)
+    }
+
     const { error } = await supabase
       .from('characters')
       .delete()
       .eq('id', data.characterId)
 
     if (error) throw new Error(error.message)
+
     return { gameId: character.game_id }
+  })
+
+export const updatePortraitUrl = createServerFn({ method: 'POST' })
+  .inputValidator((d: { characterId: string; portraitUrl: string | null }) => d)
+  .handler(async ({ data }) => {
+    const supabase = getSupabaseServerClient()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (!user) throw new Error('Not authenticated')
+
+    const { data: character, error } = await supabase
+      .from('characters')
+      .update({ portrait_url: data.portraitUrl } as never)
+      .eq('id', data.characterId)
+      .select()
+      .single()
+
+    if (error) throw new Error(error.message)
+    return character as unknown as Character
   })

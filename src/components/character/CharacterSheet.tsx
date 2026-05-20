@@ -3,7 +3,8 @@ import { useNavigate } from '@tanstack/react-router'
 import type { Character } from '~/lib/types/database'
 import { useCharacter } from '~/lib/hooks/useCharacter'
 import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
-import { deleteCharacter } from '~/lib/server/characters'
+import { deleteCharacter, updatePortraitUrl } from '~/lib/server/characters'
+import { uploadPortrait, PortraitError } from '~/lib/portrait'
 import { CharacterHeader } from './CharacterHeader'
 import { AttributesPanel } from './AttributesPanel'
 import { DerivedStatsPanel } from './DerivedStatsPanel'
@@ -22,6 +23,7 @@ type SheetMode = 'play' | 'edit'
 export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
   const [mode, setMode] = useState<SheetMode>('play')
   const [deleting, setDeleting] = useState(false)
+  const [portraitUploading, setPortraitUploading] = useState(false)
   const [notesOpen, setNotesOpen] = useState(false)
   const navigate = useNavigate()
   const { character, saveStatus, updateField, updateAttribute, updateSkill } =
@@ -36,6 +38,27 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
   const derivedStats = effects.derived
   const isEditMode = mode === 'edit'
   const editScopeCanEdit = canEdit && isEditMode
+
+  async function handlePortraitChange(file: File) {
+    setPortraitUploading(true)
+    try {
+      const url = await uploadPortrait(character.id, file)
+      await updatePortraitUrl({
+        data: { characterId: character.id, portraitUrl: url },
+      })
+      updateField('portrait_url', url)
+    } catch (e) {
+      const msg =
+        e instanceof PortraitError
+          ? e.message
+          : e instanceof Error
+            ? e.message
+            : 'Failed to upload portrait'
+      alert(msg)
+    } finally {
+      setPortraitUploading(false)
+    }
+  }
 
   async function handleDelete() {
     const confirmed = window.confirm(
@@ -61,13 +84,16 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
         career={character.career}
         level={character.level}
         experience={character.experience}
+        portraitUrl={character.portrait_url}
         canEdit={editScopeCanEdit}
         showModeToggle={canEdit}
         isEditMode={isEditMode}
         deleting={deleting}
+        portraitUploading={portraitUploading}
         onNameChange={(v) => updateField('name', v)}
         onCareerChange={(v) => updateField('career', v)}
         onExperienceChange={(v) => updateField('experience', v)}
+        onPortraitChange={handlePortraitChange}
         onModeToggle={() => setMode((m) => (m === 'play' ? 'edit' : 'play'))}
         onDelete={handleDelete}
       />

@@ -1,18 +1,22 @@
 import { Button } from '~/components/ui/Button'
 import { xpProgress } from '~/lib/game-logic/leveling'
+import { CharacterPortrait } from './CharacterPortrait'
 
 interface CharacterHeaderProps {
   name: string
   career: string
   level: number
   experience: number
+  portraitUrl: string | null
   canEdit: boolean
   showModeToggle: boolean
   isEditMode: boolean
   deleting: boolean
+  portraitUploading: boolean
   onNameChange: (name: string) => void
   onCareerChange: (career: string) => void
   onExperienceChange: (value: number) => void
+  onPortraitChange: (file: File) => void
   onModeToggle: () => void
   onDelete: () => void
 }
@@ -22,13 +26,16 @@ export function CharacterHeader({
   career,
   level,
   experience,
+  portraitUrl,
   canEdit,
   showModeToggle,
   isEditMode,
   deleting,
+  portraitUploading,
   onNameChange,
   onCareerChange,
   onExperienceChange,
+  onPortraitChange,
   onModeToggle,
   onDelete,
 }: CharacterHeaderProps) {
@@ -36,6 +43,14 @@ export function CharacterHeader({
 
   return (
     <div className="flex flex-wrap items-start gap-4 rounded-xl border border-gray-400 bg-background-200 p-6">
+      <CharacterPortrait
+        name={name}
+        portraitUrl={portraitUrl}
+        size="md"
+        canEdit={canEdit}
+        onUpload={onPortraitChange}
+        uploading={portraitUploading}
+      />
       <div className="min-w-0 flex-1 space-y-3">
         <div className="flex flex-wrap items-center gap-3">
           {canEdit ? (
