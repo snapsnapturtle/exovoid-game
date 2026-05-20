@@ -1,3 +1,4 @@
+import { Button } from '~/components/ui/Button'
 import { xpProgress } from '~/lib/game-logic/leveling'
 
 interface CharacterHeaderProps {
@@ -101,37 +102,29 @@ export function CharacterHeader({
       </div>
       <div className="flex items-center gap-3 text-sm">
         {showModeToggle && (
-          <button
+          <Button
+            variant="danger"
             onClick={onDelete}
             disabled={deleting || !isEditMode}
             aria-hidden={!isEditMode}
             tabIndex={isEditMode ? 0 : -1}
-            className={`rounded-lg border border-danger-700/60 bg-danger-700/10 px-3 py-1.5 text-sm text-danger-900 transition not-disabled:hover:bg-danger-700/20 disabled:cursor-not-allowed disabled:opacity-50 ${
-              !isEditMode ? 'pointer-events-none invisible' : ''
-            }`}
+            className={!isEditMode ? 'pointer-events-none invisible' : ''}
           >
             {deleting ? 'Deleting…' : 'Delete'}
-          </button>
+          </Button>
         )}
         {showModeToggle && (
-          <button
+          <Button
+            variant="ghost"
             onClick={onModeToggle}
-            className={`min-w-[7.5rem] rounded-lg border px-3 py-1.5 text-sm transition ${
-              isEditMode
-                ? 'border-accent-700 bg-accent-700/20 text-accent-900 hover:bg-accent-700/30'
-                : 'border-gray-400 bg-gray-100 text-gray-1000 hover:border-accent-700 hover:text-white'
-            }`}
+            className="min-w-[7.5rem]"
           >
             {isEditMode ? 'Done editing' : 'Edit'}
-          </button>
+          </Button>
         )}
-        <button
-          disabled
-          title="Coming soon"
-          className="rounded-lg border border-gray-400 bg-gray-100/50 px-3 py-1.5 text-sm text-gray-700"
-        >
+        <Button variant="secondary" disabled title="Coming soon">
           Downtime
-        </button>
+        </Button>
       </div>
     </div>
   )

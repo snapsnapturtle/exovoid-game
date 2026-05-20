@@ -6,6 +6,7 @@ import {
   type SeverityRange,
 } from '~/lib/game-logic/cyberware-malfunctions'
 import { Button } from '~/components/ui/Button'
+import { ModalCloseButton } from '~/components/ui/Modal'
 
 interface MalfunctionTableModalProps {
   excess: number
@@ -75,13 +76,7 @@ export function MalfunctionTableModal({
               severe but rarely hit. Each slot can only be picked once.
             </p>
           </div>
-          <button
-            onClick={onClose}
-            className="text-gray-900 transition hover:text-white"
-            aria-label="Close"
-          >
-            ✕
-          </button>
+          <ModalCloseButton onClose={onClose} />
         </header>
 
         <div className="flex items-center justify-between border-b border-gray-400 bg-background-100/50 px-5 py-3 text-sm">

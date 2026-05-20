@@ -6,7 +6,7 @@ import { Modal } from '~/components/ui/Modal'
 import type { DiceRollEntry } from '~/lib/server/dice'
 
 const TIME_TICK_MS = 15_000
-const HIGHLIGHT_MS = 2200
+const HIGHLIGHT_MS = 1800
 const SCROLL_TOP_THRESHOLD_PX = 80
 
 const SYMBOL_ORDER = [
@@ -98,32 +98,31 @@ export function DiceFeed({
       seenIds.current = new Set(rolls.map((r) => r.id))
       return
     }
-    const hasAnyNew = rolls.some((r) => !seenIds.current!.has(r.id))
-    const newOwnIds = rolls
-      .filter((r) => r.user_id === currentUserId && !seenIds.current!.has(r.id))
+    const newIds = rolls
+      .filter((r) => !seenIds.current!.has(r.id))
       .map((r) => r.id)
     seenIds.current = new Set(rolls.map((r) => r.id))
 
-    if (hasAnyNew && scrollRef.current) {
+    if (newIds.length === 0) return
+
+    if (scrollRef.current) {
       scrollRef.current.scrollTo({ top: 0, behavior: 'smooth' })
     }
 
-    if (newOwnIds.length === 0) return
-
     setHighlighted((prev) => {
       const next = new Set(prev)
-      newOwnIds.forEach((id) => next.add(id))
+      newIds.forEach((id) => next.add(id))
       return next
     })
     const timer = setTimeout(() => {
       setHighlighted((prev) => {
         const next = new Set(prev)
-        newOwnIds.forEach((id) => next.delete(id))
+        newIds.forEach((id) => next.delete(id))
         return next
       })
     }, HIGHLIGHT_MS)
     return () => clearTimeout(timer)
-  }, [rolls, currentUserId])
+  }, [rolls])
 
   return (
     <>

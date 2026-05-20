@@ -56,7 +56,8 @@ Informed by what the first playtest actually breaks. Best guesses today:
 - [ ] **Rules reference / glossary tooltips** — hover-defs for game terms (Trigger, Complication, etc.) and skills.
 - [ ] **Per-route page titles** — every route should set a `head: () => ({ meta: [{ title: '… — Exovoid' }] })` so the browser tab reflects the page (currently only the root title is set, and `/styleguide`). Cheap to do but needs a sweep of every route in `src/routes/` to pick a sensible title for each (Dashboard, Game lobby, Character sheet incl. character name, Combat, Inventory, Cyberware, Talents, Login/Signup, etc.).
 - [ ] **Prettier config + format sweep** — there's no Prettier config checked in, so an editor formatter has been drifting touched files between single/double quotes and adding semicolons inconsistently (visible in the dice files after recent styling work). Pin a `.prettierrc` to match the project's convention (single quotes, no semis, 2-space indent — what the bulk of the codebase uses), add `format` / `format:check` npm scripts, run a one-shot sweep so the whole tree is consistent, and consider wiring a pre-commit hook so it stays that way.
-- [ ] **Character portrait upload** — Supabase Storage.
+- [ ] **Character portrait upload** — Supabase Storage. Rendered as a square thumbnail to the left of the name + level row in `CharacterHeader`; click-to-replace when in edit mode, falls back to a placeholder when none is set.
+- [ ] **Logout** — currently no UI to sign out. Add a logout action (likely in the app header / user menu) that calls `supabase.auth.signOut()` and redirects to the login route. Trivial to ship but a real gap.
 
 ## Tier 3 — System completeness
 

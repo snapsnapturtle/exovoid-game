@@ -67,7 +67,6 @@ export function SkillsPanel({
           const level = skills[skill.id] ?? 0
           const attrAvg = computeAttributeAverage(attributes, skill.attributes)
           const pool = computeDicePool(attrAvg, level)
-          const uninvested = level === 0
 
           return (
             <div
@@ -95,9 +94,7 @@ export function SkillsPanel({
                     >
                       −
                     </button>
-                    <span
-                      className={`min-w-[2ch] text-center text-sm font-medium ${uninvested ? 'text-gray-700' : 'text-white'}`}
-                    >
+                    <span className="min-w-[2ch] text-center text-sm font-medium text-white">
                       {level}
                     </span>
                     <button
@@ -115,9 +112,7 @@ export function SkillsPanel({
                     </button>
                   </>
                 ) : (
-                  <span
-                    className={`text-sm font-medium ${uninvested ? 'text-gray-700' : 'text-white'}`}
-                  >
+                  <span className="text-sm font-medium text-white">
                     {level}
                   </span>
                 )}

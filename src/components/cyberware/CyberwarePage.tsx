@@ -15,6 +15,7 @@ import {
 } from '~/lib/server/characters'
 import { MalfunctionTableModal } from './MalfunctionTableModal'
 import { Alert } from '~/components/ui/Alert'
+import { Button } from '~/components/ui/Button'
 
 interface CyberwarePageProps {
   initial: Character
@@ -160,27 +161,38 @@ export function CyberwarePage({ initial, canEdit }: CyberwarePageProps) {
           <OccupationBar used={used} capacity={capacity} over={overCapacity} />
           {(allocationStatus === 'partial' || allocationStatus === 'complete') &&
             canEdit && (
-              <button
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={() => setShowMalfunctionModal(true)}
-                className={`text-xs font-medium transition ${
-                  allocationStatus === 'partial'
-                    ? 'text-warning-900 hover:text-warning-900/80'
-                    : 'text-accent-900 hover:text-accent-900'
-                }`}
+                className="gap-1.5"
               >
+                <span
+                  className={`inline-block h-1.5 w-1.5 rounded-full ${
+                    allocationStatus === 'partial'
+                      ? 'bg-warning-700'
+                      : 'bg-accent-700'
+                  }`}
+                  aria-hidden
+                />
                 {allocationStatus === 'partial'
-                  ? `${allocated}/${excess} malfunction points allocated — allocate →`
-                  : `Malfunction table allocated (${allocated} pts) — edit →`}
-              </button>
+                  ? `Allocate malfunctions (${allocated}/${excess})`
+                  : 'Edit malfunctions'}
+              </Button>
             )}
           {allocationStatus === 'stale' && canEdit && (
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => setShowMalfunctionModal(true)}
-              className="text-xs font-medium text-warning-900 transition hover:text-warning-900/80"
+              className="gap-1.5"
             >
-              {allocated} stale malfunction {allocated === 1 ? 'point' : 'points'} —
-              clear →
-            </button>
+              <span
+                className="inline-block h-1.5 w-1.5 rounded-full bg-warning-700"
+                aria-hidden
+              />
+              Clear stale ({allocated})
+            </Button>
           )}
         </div>
       </header>
@@ -234,21 +246,13 @@ function SearchBox({
   onChange: (v: string) => void
 }) {
   return (
-    <div className="relative">
-      <input
-        type="search"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder="Search cyberware — by category, name, tier, or description"
-        className="w-full rounded-lg border border-gray-400 bg-background-200 px-3 py-2 pl-9 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
-      />
-      <span
-        aria-hidden
-        className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-700"
-      >
-        ⌕
-      </span>
-    </div>
+    <input
+      type="search"
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder="Search cyberware — by category, name, tier, or description"
+      className="w-full rounded-lg border border-gray-400 bg-background-200 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+    />
   )
 }
 
@@ -334,7 +338,6 @@ function CategoryCard({
               installed={isInstalled}
               replaces={check.replaces ?? null}
               disabledReason={check.ok ? null : check.reason ?? null}
-              warning={check.warning ?? null}
               canEdit={canEdit}
               busy={busyName === v.name}
               onInstall={() => onInstall(v.name)}
@@ -347,18 +350,14 @@ function CategoryCard({
   )
 }
 
-const TIER_STYLES: Record<string, string> = {
-  Alpha: 'border-gray-500 bg-gray-100 text-gray-1000',
-  Beta: 'border-accent-700/60 bg-accent-700/15 text-accent-900',
-  Omega: 'border-accent-700/60 bg-accent-700/15 text-accent-900',
-}
+const TIER_CLASS =
+  'border-gray-500 bg-gray-100 text-gray-1000'
 
 function VariantRow({
   variant,
   installed,
   replaces,
   disabledReason,
-  warning,
   canEdit,
   busy,
   onInstall,
@@ -368,28 +367,26 @@ function VariantRow({
   installed: boolean
   replaces: string | null
   disabledReason: string | null
-  warning: string | null
   canEdit: boolean
   busy: boolean
   onInstall: () => void
   onUninstall: () => void
 }) {
-  const tierClass = TIER_STYLES[variant.tier] ?? TIER_STYLES.Alpha
   return (
     <div className="grid gap-3 px-4 py-3 sm:grid-cols-[1fr_auto]">
       <div className="space-y-1">
         <div className="flex items-center gap-2">
-          <span
-            className={`inline-flex rounded-md border px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${tierClass}`}
-          >
-            {variant.tier}
-          </span>
-          <span className="font-medium text-white">{variant.name}</span>
           {installed && (
             <span className="inline-flex items-center gap-1 rounded-md border border-accent-700/60 bg-accent-700/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-accent-900">
               ✓ Installed
             </span>
           )}
+          <span className="font-medium text-white">{variant.name}</span>
+          <span
+            className={`inline-flex rounded-md border px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${TIER_CLASS}`}
+          >
+            {variant.tier}
+          </span>
         </div>
         <p className="whitespace-pre-line text-sm text-gray-1000">
           {variant.description}
@@ -411,34 +408,22 @@ function VariantRow({
       <div className="flex flex-col items-end gap-1 sm:justify-center">
         {installed ? (
           canEdit && (
-            <button
-              onClick={onUninstall}
-              disabled={busy}
-              className="rounded-lg border border-gray-400 bg-gray-100 px-3 py-1.5 text-xs text-gray-1000 transition not-disabled:hover:border-danger-700 not-disabled:hover:text-danger-900 disabled:cursor-not-allowed disabled:opacity-50"
-            >
+            <Button variant="danger" size="sm" onClick={onUninstall} disabled={busy}>
               {busy ? 'Removing…' : 'Uninstall'}
-            </button>
+            </Button>
           )
         ) : (
           canEdit && (
             <>
-              <button
+              <Button
+                variant="subtle"
+                size="sm"
                 onClick={onInstall}
                 disabled={busy || !!disabledReason}
-                className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition disabled:cursor-not-allowed disabled:opacity-40 ${
-                  warning
-                    ? 'border-warning-700/60 bg-warning-700/15 text-warning-900 not-disabled:hover:bg-warning-700/25'
-                    : 'border-accent-700/60 bg-accent-700/15 text-accent-900 not-disabled:hover:bg-accent-700/25'
-                }`}
               >
                 {busy ? 'Installing…' : replaces ? 'Replace' : 'Install'}
-              </button>
-              {replaces && !disabledReason && !warning && (
-                <span className="max-w-[180px] text-right text-[10px] text-gray-700">
-                  Replaces {replaces}
-                </span>
-              )}
-              {warning && !disabledReason && replaces && (
+              </Button>
+              {replaces && !disabledReason && (
                 <span className="max-w-[200px] text-right text-[10px] text-gray-700">
                   Replaces {replaces}
                 </span>

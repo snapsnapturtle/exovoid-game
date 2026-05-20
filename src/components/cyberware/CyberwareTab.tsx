@@ -4,6 +4,7 @@ import {
   lookupCyberware,
   occupationUsed,
 } from '~/lib/game-logic/cyberware'
+import { buttonClasses } from '~/components/ui/Button'
 
 interface CyberwareTabProps {
   cyberware: CyberwareEntry[]
@@ -35,9 +36,9 @@ export function CyberwareTab({
         <Link
           to="/games/$gameId/characters/$characterId/cyberware"
           params={{ gameId, characterId }}
-          className="text-xs text-accent-900 transition hover:text-accent-900 hover:underline"
+          className={buttonClasses('secondary', 'sm')}
         >
-          Manage cyberware →
+          Manage cyberware
         </Link>
       </div>
 

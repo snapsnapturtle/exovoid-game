@@ -2,6 +2,7 @@ import { Link } from '@tanstack/react-router'
 import type { TalentEntry } from '~/lib/types/database'
 import talentsData from '~/data/talents.json'
 import { pointsTotal, pointsSpent } from '~/lib/game-logic/talents'
+import { buttonClasses } from '~/components/ui/Button'
 
 interface TalentMeta {
   name: string
@@ -48,9 +49,9 @@ export function TalentsTab({
         <Link
           to="/games/$gameId/characters/$characterId/talents"
           params={{ gameId, characterId }}
-          className="text-xs text-accent-900 transition hover:text-accent-900 hover:underline"
+          className={buttonClasses('secondary', 'sm')}
         >
-          Manage talents →
+          Manage talents
         </Link>
       </div>
 

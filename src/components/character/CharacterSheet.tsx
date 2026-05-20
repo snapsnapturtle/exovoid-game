@@ -112,6 +112,9 @@ export function CharacterSheet({
           <DerivedStatsPanel
             stats={derivedStats}
             contributions={effects.derivedContributions}
+            gameId={character.game_id}
+            characterId={character.id}
+            isGm={isGm}
           />
           <EquipmentTabs
             gender={character.gender}
