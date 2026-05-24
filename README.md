@@ -4,7 +4,7 @@ A digital companion tool for the **Exovoid** tabletop RPG system. Manage charact
 
 ## Status
 
-See [ROADMAP.md](./ROADMAP.md) for the current feature roadmap and progress.
+Planned work lives on the [issue tracker](https://github.com/snapsnapturtle/exovoid-game/issues) — filter by label (`homebrew`, `talents`, `npc`, `combat`, `survival`, etc.) or look at [`tracking`-labelled issues](https://github.com/snapsnapturtle/exovoid-game/labels/tracking) for the umbrella efforts.
 
 ## Setup
 
