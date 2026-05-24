@@ -5,6 +5,7 @@ import {
 } from '~/lib/game-logic/attributes'
 import type { AttributeId } from '~/lib/game-logic/attributes'
 import type { Contribution } from '~/lib/game-logic/passive-effects'
+import { InlineStepper } from '~/components/ui/InlineStepper'
 
 interface AttributesPanelProps {
   attributes: CharacterAttributes
@@ -55,23 +56,17 @@ export function AttributesPanel({
                 </span>
               )}
               {canEdit && (
-                <div className="mt-1 flex gap-1">
-                  <button
-                    onClick={() => onAttributeChange(attr.id, base - 1)}
-                    disabled={base <= 0}
-                    aria-label={`Decrease ${attr.name}`}
-                    className="flex h-5 w-5 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition not-disabled:hover:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-30"
-                  >
-                    −
-                  </button>
-                  <button
-                    onClick={() => onAttributeChange(attr.id, base + 1)}
-                    disabled={base >= MAX_ATTRIBUTE_LEVEL}
-                    aria-label={`Increase ${attr.name}`}
-                    className="flex h-5 w-5 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition not-disabled:hover:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-30"
-                  >
-                    +
-                  </button>
+                <div className="mt-1">
+                  <InlineStepper
+                    ariaLabel={attr.name}
+                    value={base}
+                    min={0}
+                    max={MAX_ATTRIBUTE_LEVEL}
+                    valueClassName="hidden"
+                    onAdjust={(delta) =>
+                      onAttributeChange(attr.id, base + delta)
+                    }
+                  />
                 </div>
               )}
             </div>
