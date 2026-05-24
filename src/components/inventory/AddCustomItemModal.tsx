@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Button } from '~/components/ui/Button'
+import { Modal } from '~/components/ui/Modal'
 
 interface AddCustomItemModalProps {
   busy: boolean
@@ -35,89 +36,67 @@ export function AddCustomItemModal({
   }
 
   return (
-    <div
-      className="modal-backdrop-in fixed backdrop-blur-sm inset-0 z-50 flex items-start justify-center bg-black/60 p-4 sm:p-8"
-      onClick={onClose}
-    >
-      <div
-        className="w-full max-w-md modal-card-in rounded-xl border border-gray-400 bg-background-200"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <header className="flex items-start justify-between gap-3 border-b border-gray-400 px-5 py-4">
-          <div>
-            <h3 className="text-lg font-semibold text-white">
-              Add custom item
-            </h3>
-            <p className="mt-1 text-xs text-gray-900">
-              Free-text item, e.g. a mission-specific object or trinket.
-            </p>
-          </div>
-          <button
-            onClick={onClose}
-            className="text-gray-900 transition hover:text-white"
-            aria-label="Close"
-          >
-            ✕
-          </button>
-        </header>
-
-        <div className="space-y-3 px-5 py-4">
-          <label className="block text-xs text-gray-900">
-            Name
-            <input
-              autoFocus
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. cursed amulet"
-              className="mt-1 w-full rounded border border-gray-400 bg-gray-100 px-2 py-1.5 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
-            />
-          </label>
-          <label className="block text-xs text-gray-900">
-            Description (optional)
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              rows={3}
-              placeholder="What is it, where did it come from…"
-              className="mt-1 w-full rounded border border-gray-400 bg-gray-100 px-2 py-1.5 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
-            />
-          </label>
-          <div className="flex gap-3">
-            <label className="block text-xs text-gray-900">
-              <span className="block">Quantity</span>
-              <input
-                type="number"
-                min={1}
-                value={quantity}
-                onChange={(e) =>
-                  setQuantity(Math.max(1, parseInt(e.target.value, 10) || 1))
-                }
-                className="mt-1 w-20 rounded border border-gray-400 bg-gray-100 px-2 py-1.5 text-sm text-white focus:border-accent-900 focus:outline-none"
-              />
-            </label>
-            <label className="block flex-1 text-xs text-gray-900">
-              <span className="block">Location (optional)</span>
-              <input
-                type="text"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                placeholder="e.g. backpack"
-                className="mt-1 w-full rounded border border-gray-400 bg-gray-100 px-2 py-1.5 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
-              />
-            </label>
-          </div>
+    <Modal
+      onClose={onClose}
+      title="Add custom item"
+      subtitle="Free-text item, e.g. a mission-specific object or trinket."
+      size="lg"
+      footerLeft={
+        <div className="flex flex-wrap items-center gap-2">
+          <input
+            type="number"
+            min={1}
+            value={quantity}
+            onChange={(e) =>
+              setQuantity(Math.max(1, parseInt(e.target.value, 10) || 1))
+            }
+            aria-label="Quantity"
+            className="w-20 rounded border border-gray-400 bg-gray-100 px-2 py-1 text-sm text-white focus:border-accent-900 focus:outline-none"
+          />
+          <input
+            type="text"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            placeholder="Location (e.g. backpack)"
+            aria-label="Location (optional)"
+            className="w-44 rounded border border-gray-400 bg-gray-100 px-2 py-1 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+          />
         </div>
-
-        <footer className="flex items-center justify-end gap-2 border-t border-gray-400 px-5 py-3">
+      }
+      footer={
+        <>
           <Button variant="ghost" onClick={onClose} disabled={busy}>
             Cancel
           </Button>
           <Button onClick={handleAdd} disabled={!canSubmit}>
             {busy ? 'Adding…' : 'Add item'}
           </Button>
-        </footer>
+        </>
+      }
+    >
+      <div className="space-y-3">
+        <label className="block text-xs text-gray-900">
+          Name
+          <input
+            autoFocus
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="e.g. cursed amulet"
+            className="mt-1 w-full rounded border border-gray-400 bg-gray-100 px-2 py-1.5 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+          />
+        </label>
+        <label className="block text-xs text-gray-900">
+          Description (optional)
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={3}
+            placeholder="What is it, where did it come from…"
+            className="mt-1 w-full rounded border border-gray-400 bg-gray-100 px-2 py-1.5 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+          />
+        </label>
       </div>
-    </div>
+    </Modal>
   )
 }

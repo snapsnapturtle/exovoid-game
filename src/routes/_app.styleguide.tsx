@@ -16,6 +16,8 @@ export const Route = createFileRoute('/_app/styleguide')({
 
 function StyleguidePage() {
   const [modalOpen, setModalOpen] = useState(false)
+  const [stickyModalOpen, setStickyModalOpen] = useState(false)
+  const [stickyQuery, setStickyQuery] = useState('')
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [stepperValue, setStepperValue] = useState(5)
   const [stepperWithMax, setStepperWithMax] = useState(3)
@@ -162,10 +164,13 @@ function StyleguidePage() {
 
         <Section
           title="Modal"
-          description="Standard dialog with a backdrop, header (title + required X close), optional footer for action buttons. Backdrop blurs subtly and the entrance animates."
+          description="Standard dialog with a backdrop, header (title + required X close), optional footer for action buttons. Backdrop blurs subtly and the entrance animates. Optional stickyHeader slot pins content (search, filters, status) below the title while the body scrolls. Optional footerLeft slot pairs inline form fields with the right-aligned action buttons."
         >
           <Row>
             <Button onClick={() => setModalOpen(true)}>Open modal</Button>
+            <Button onClick={() => setStickyModalOpen(true)}>
+              Open with sticky header + footer form
+            </Button>
           </Row>
           {modalOpen && (
             <Modal
@@ -186,6 +191,54 @@ function StyleguidePage() {
                 capped <code className="text-gray-900">max-h-[90vh]</code> with
                 the body scrolling inside.
               </p>
+            </Modal>
+          )}
+          {stickyModalOpen && (
+            <Modal
+              onClose={() => setStickyModalOpen(false)}
+              title="Modal with sticky header + footer form"
+              subtitle="Search stays pinned at the top, inline fields share the footer with action buttons."
+              stickyHeader={
+                <input
+                  type="search"
+                  value={stickyQuery}
+                  onChange={(e) => setStickyQuery(e.target.value)}
+                  placeholder="Search…"
+                  className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+                />
+              }
+              footerLeft={
+                <label className="block text-xs text-gray-900">
+                  <span className="block">Quantity</span>
+                  <input
+                    type="number"
+                    defaultValue={1}
+                    className="mt-1 w-20 rounded border border-gray-400 bg-gray-100 px-2 py-1 text-sm text-white focus:border-accent-900 focus:outline-none"
+                  />
+                </label>
+              }
+              footer={
+                <>
+                  <Button
+                    variant="ghost"
+                    onClick={() => setStickyModalOpen(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button onClick={() => setStickyModalOpen(false)}>Add</Button>
+                </>
+              }
+            >
+              <ul className="space-y-1">
+                {Array.from({ length: 40 }, (_, i) => (
+                  <li
+                    key={i}
+                    className="rounded border border-gray-400 bg-background-100/40 p-2 text-sm text-gray-1000"
+                  >
+                    Result row {i + 1} — body scrolls beneath the pinned search.
+                  </li>
+                ))}
+              </ul>
             </Modal>
           )}
         </Section>

@@ -13,6 +13,7 @@ import {
 } from '~/lib/game-logic/manufacturers'
 import { QualityBadge } from './QualityBadge'
 import { Button } from '~/components/ui/Button'
+import { Modal } from '~/components/ui/Modal'
 
 interface AddWeaponModalProps {
   busy: boolean
@@ -113,38 +114,22 @@ export function AddWeaponModal({ busy, onAdd, onClose }: AddWeaponModalProps) {
     !!weapon && (weapon.type === 'Throwing' || !!manufacturer) && !busy
 
   return (
-    <div
-      className="modal-backdrop-in fixed backdrop-blur-sm inset-0 z-50 flex items-start justify-center bg-black/60 p-4 sm:p-8"
-      onClick={onClose}
-    >
-      <div
-        className="flex max-h-[90vh] w-full max-w-3xl flex-col modal-card-in rounded-xl border border-gray-400 bg-background-200"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <header className="flex items-start justify-between gap-3 border-b border-gray-400 px-5 py-4">
-          <div>
-            <h3 className="text-lg font-semibold text-white">
-              {step === 'weapon'
-                ? 'Add weapon — pick model'
-                : 'Add weapon — pick manufacturer'}
-            </h3>
-            <p className="mt-1 text-xs text-gray-900">
-              {step === 'weapon'
-                ? 'Pick a weapon from the catalog. The illustrative name is just a default — rename it however you like.'
-                : `Manufacturer for ${weapon?.weapon}. Their treatment changes cost, mod slots, rarity and grants a passive effect.`}
-            </p>
-          </div>
-          <button
-            onClick={onClose}
-            className="text-gray-900 transition hover:text-white"
-            aria-label="Close"
-          >
-            ✕
-          </button>
-        </header>
-
-        {step === 'weapon' && (
-          <div className="space-y-2 border-b border-gray-400 px-5 py-3">
+    <Modal
+      onClose={onClose}
+      title={
+        step === 'weapon'
+          ? 'Add weapon — pick model'
+          : 'Add weapon — pick manufacturer'
+      }
+      subtitle={
+        step === 'weapon'
+          ? 'Pick a weapon from the catalog. The illustrative name is just a default — rename it however you like.'
+          : `Manufacturer for ${weapon?.weapon}. Their treatment changes cost, mod slots, rarity and grants a passive effect.`
+      }
+      size="lg"
+      stickyHeader={
+        step === 'weapon' ? (
+          <div className="space-y-2">
             <input
               autoFocus
               type="search"
@@ -169,140 +154,135 @@ export function AddWeaponModal({ busy, onAdd, onClose }: AddWeaponModalProps) {
               ))}
             </div>
           </div>
-        )}
-
-        <div className="flex-1 overflow-y-auto px-5 py-3">
-          {step === 'weapon' ? (
-            filteredGroups.length === 0 ? (
-              <p className="py-6 text-center text-sm text-gray-700">
-                No weapons match.
-              </p>
-            ) : (
-              <div className="space-y-4">
-                {filteredGroups.map((g) => (
-                  <div key={g.type}>
-                    <h4 className="mb-2 text-[11px] font-medium uppercase tracking-wide text-gray-700">
-                      {g.type}
-                    </h4>
-                    <ul className="space-y-1">
-                      {g.weapons.map((w) => (
-                        <li key={w.weapon}>
-                          <button
-                            onClick={() => selectWeapon(w)}
-                            className={`w-full rounded-lg border p-2 text-left transition ${
-                              weapon?.weapon === w.weapon
-                                ? 'border-accent-700 bg-accent-700/15'
-                                : 'border-gray-400 bg-background-100/40 hover:border-accent-700/50 hover:bg-accent-700/5'
-                            }`}
-                          >
-                            <div className="flex flex-wrap items-baseline gap-2">
-                              <span className="font-medium text-white">
-                                {w.weapon}
-                              </span>
-                              <span className="text-xs italic text-gray-700">
-                                {w.illustrativeName}
-                              </span>
-                            </div>
-                            <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-gray-900">
-                              <Stat label="DMG">
-                                {w.damage} {w.damageType}
-                              </Stat>
-                              <Stat label="AP">{w.attackAP}</Stat>
-                              <Stat label="Range">
-                                {w.optimalRange}
-                                {w.maxRange != null ? ` / ${w.maxRange}` : ''}
-                              </Stat>
-                              <Stat label="Hands">{w.hands}</Stat>
-                              {w.magazine != null && (
-                                <Stat label="Mag">{w.magazine}</Stat>
-                              )}
-                              <Stat label="Mod slots">{w.modLimit}</Stat>
-                            </div>
-                            {(w.qualities.length > 0 ||
-                              w.triggerOptions.length > 0) && (
-                              <div className="mt-2 flex flex-wrap gap-1">
-                                {w.qualities.map((q) => (
-                                  <QualityBadge
-                                    key={`q-${q}`}
-                                    raw={q}
-                                    variant="quality"
-                                  />
-                                ))}
-                                {w.triggerOptions.map((t) => (
-                                  <QualityBadge
-                                    key={`t-${t}`}
-                                    raw={t}
-                                    variant="trigger"
-                                  />
-                                ))}
-                              </div>
-                            )}
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            )
-          ) : (
-            weapon &&
-            manufacturerType && (
-              <ManufacturerList
-                manufacturers={manufacturers}
-                weapon={weapon}
-                manufacturerType={manufacturerType}
-                selected={manufacturer}
-                onSelect={setManufacturer}
-              />
-            )
-          )}
+        ) : undefined
+      }
+      footerLeft={
+        <div className="flex flex-wrap items-center gap-2">
+          <input
+            type="text"
+            value={name}
+            disabled={!weapon}
+            onChange={(e) => setName(e.target.value)}
+            placeholder={weapon ? 'Name' : 'Pick a weapon first'}
+            aria-label="Name"
+            className="w-48 rounded border border-gray-400 bg-gray-100 px-2 py-1 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none disabled:opacity-50"
+          />
+          <input
+            type="text"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            placeholder="Location (e.g. holster)"
+            aria-label="Location (optional)"
+            className="w-44 rounded border border-gray-400 bg-gray-100 px-2 py-1 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+          />
         </div>
-
-        <footer className="flex flex-wrap items-end justify-between gap-3 border-t border-gray-400 px-5 py-3">
-          <div className="flex gap-3">
-            <label className="block text-xs text-gray-900">
-              <span className="block">Name</span>
-              <input
-                type="text"
-                value={name}
-                disabled={!weapon}
-                onChange={(e) => setName(e.target.value)}
-                placeholder={weapon ? '' : 'Pick a weapon first'}
-                className="mt-1 w-48 rounded border border-gray-400 bg-gray-100 px-2 py-1 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none disabled:opacity-50"
-              />
-            </label>
-            <label className="block text-xs text-gray-900">
-              <span className="block">Location (optional)</span>
-              <input
-                type="text"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                placeholder="e.g. holster"
-                className="mt-1 w-40 rounded border border-gray-400 bg-gray-100 px-2 py-1 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
-              />
-            </label>
-          </div>
-          <div className="flex gap-2">
-            {step === 'manufacturer' && (
-              <Button
-                variant="ghost"
-                onClick={() => setStep('weapon')}
-                disabled={busy}
-              >
-                Back
-              </Button>
-            )}
-            <Button variant="ghost" onClick={onClose} disabled={busy}>
-              Cancel
+      }
+      footer={
+        <>
+          {step === 'manufacturer' && (
+            <Button
+              variant="ghost"
+              onClick={() => setStep('weapon')}
+              disabled={busy}
+            >
+              Back
             </Button>
-            <Button onClick={handleAdd} disabled={!canAdd}>
-              {busy ? 'Adding…' : 'Add weapon'}
-            </Button>
+          )}
+          <Button variant="ghost" onClick={onClose} disabled={busy}>
+            Cancel
+          </Button>
+          <Button onClick={handleAdd} disabled={!canAdd}>
+            {busy ? 'Adding…' : 'Add weapon'}
+          </Button>
+        </>
+      }
+    >
+      {step === 'weapon' ? (
+        filteredGroups.length === 0 ? (
+          <p className="py-6 text-center text-sm text-gray-700">
+            No weapons match.
+          </p>
+        ) : (
+          <div className="space-y-4">
+            {filteredGroups.map((g) => (
+              <div key={g.type}>
+                <h4 className="mb-2 text-[11px] font-medium uppercase tracking-wide text-gray-700">
+                  {g.type}
+                </h4>
+                <ul className="space-y-1">
+                  {g.weapons.map((w) => (
+                    <li key={w.weapon}>
+                      <button
+                        onClick={() => selectWeapon(w)}
+                        className={`w-full rounded-lg border p-2 text-left transition ${
+                          weapon?.weapon === w.weapon
+                            ? 'border-accent-700 bg-accent-700/15'
+                            : 'border-gray-400 bg-background-100/40 hover:border-accent-700/50 hover:bg-accent-700/5'
+                        }`}
+                      >
+                        <div className="flex flex-wrap items-baseline gap-2">
+                          <span className="font-medium text-white">
+                            {w.weapon}
+                          </span>
+                          <span className="text-xs italic text-gray-700">
+                            {w.illustrativeName}
+                          </span>
+                        </div>
+                        <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-gray-900">
+                          <Stat label="DMG">
+                            {w.damage} {w.damageType}
+                          </Stat>
+                          <Stat label="AP">{w.attackAP}</Stat>
+                          <Stat label="Range">
+                            {w.optimalRange}
+                            {w.maxRange != null ? ` / ${w.maxRange}` : ''}
+                          </Stat>
+                          <Stat label="Hands">{w.hands}</Stat>
+                          {w.magazine != null && (
+                            <Stat label="Mag">{w.magazine}</Stat>
+                          )}
+                          <Stat label="Mod slots">{w.modLimit}</Stat>
+                        </div>
+                        {(w.qualities.length > 0 ||
+                          w.triggerOptions.length > 0) && (
+                          <div className="mt-2 flex flex-wrap gap-1">
+                            {w.qualities.map((q) => (
+                              <QualityBadge
+                                key={`q-${q}`}
+                                raw={q}
+                                variant="quality"
+                              />
+                            ))}
+                            {w.triggerOptions.map((t) => (
+                              <QualityBadge
+                                key={`t-${t}`}
+                                raw={t}
+                                variant="trigger"
+                              />
+                            ))}
+                          </div>
+                        )}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
-        </footer>
-      </div>
-    </div>
+        )
+      ) : (
+        weapon &&
+        manufacturerType && (
+          <ManufacturerList
+            manufacturers={manufacturers}
+            weapon={weapon}
+            manufacturerType={manufacturerType}
+            selected={manufacturer}
+            onSelect={setManufacturer}
+          />
+        )
+      )}
+    </Modal>
   )
 }
 

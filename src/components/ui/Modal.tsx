@@ -30,6 +30,19 @@ interface ModalProps {
   subtitle?: ReactNode
   size?: 'sm' | 'md' | 'lg'
   align?: 'start' | 'center'
+  /**
+   * Pinned content between the title header and the scrollable body —
+   * search bars, filter pills, status lines. Stays visible while the body
+   * scrolls. Wrapped in the standard `border-b border-gray-400 px-5 py-3`
+   * chrome; caller passes bare content.
+   */
+  stickyHeader?: ReactNode
+  /**
+   * Left-aligned content in the footer (typically inline form fields).
+   * When provided, the footer switches from a right-aligned button row
+   * to a split layout: `footerLeft` on the left, `footer` on the right.
+   */
+  footerLeft?: ReactNode
   footer?: ReactNode
   children: ReactNode
 }
@@ -51,6 +64,8 @@ export function Modal({
   subtitle,
   size = 'md',
   align = 'start',
+  stickyHeader,
+  footerLeft,
   footer,
   children,
 }: ModalProps) {
@@ -84,12 +99,23 @@ export function Modal({
           </div>
           <ModalCloseButton onClose={onClose} />
         </header>
-        <div className="flex-1 overflow-y-auto px-5 py-4">{children}</div>
-        {footer && (
-          <div className="flex items-center justify-end gap-2 border-t border-gray-400 px-5 py-3">
-            {footer}
+        {stickyHeader && (
+          <div className="border-b border-gray-400 px-5 py-3">
+            {stickyHeader}
           </div>
         )}
+        <div className="flex-1 overflow-y-auto px-5 py-4">{children}</div>
+        {(footer || footerLeft) &&
+          (footerLeft ? (
+            <div className="flex flex-wrap items-end justify-between gap-3 border-t border-gray-400 px-5 py-3">
+              {footerLeft}
+              {footer && <div className="flex gap-2">{footer}</div>}
+            </div>
+          ) : (
+            <div className="flex items-center justify-end gap-2 border-t border-gray-400 px-5 py-3">
+              {footer}
+            </div>
+          ))}
       </div>
     </div>,
     document.body,
