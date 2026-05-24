@@ -35,6 +35,7 @@ interface EquipmentTabsProps {
   career: string
   gameId: string
   characterId: string
+  isNpc: boolean
   onGenderChange: (value: string) => void
   onAgeChange: (value: number | null) => void
   onBackgroundNotesChange: (value: string) => void
@@ -60,6 +61,7 @@ export function EquipmentTabs({
   career,
   gameId,
   characterId,
+  isNpc,
   onGenderChange,
   onAgeChange,
   onBackgroundNotesChange,
@@ -90,6 +92,7 @@ export function EquipmentTabs({
             gameId={gameId}
             characterId={characterId}
             canEdit={canEdit}
+            isNpc={isNpc}
           />
         )}
         {tab === 'inventory' && (
@@ -116,6 +119,7 @@ export function EquipmentTabs({
             capacity={cyberImmunityCapacity}
             gameId={gameId}
             characterId={characterId}
+            isNpc={isNpc}
           />
         )}
         {tab === 'background' && (

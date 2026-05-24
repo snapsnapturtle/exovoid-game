@@ -4,6 +4,7 @@ import type {
   Character,
   CharacterAttributes,
   InjuryEntry,
+  PendingBonus,
   TalentEntry,
 } from '~/lib/types/database'
 import {
@@ -105,7 +106,6 @@ export const getCharacter = createServerFn()
 
     const isOwner = character.user_id === user.id
 
-    // Check if GM
     const { data: game } = await supabase
       .from('games')
       .select('gm_id')
@@ -114,10 +114,20 @@ export const getCharacter = createServerFn()
 
     const isGm = game?.gm_id === user.id
 
+    // Stat-edit rights:
+    //   PC  → owner (= player) or GM.
+    //   NPC → GM or the delegated controller. The creator alone is NOT
+    //         enough (matches the tightened RLS UPDATE policy) — they
+    //         keep banner-edit rights via update_npc_flags but lose stat
+    //         edits after handing the NPC off.
+    const canEdit = character.is_npc
+      ? isGm || character.controller_user_id === user.id
+      : isOwner || isGm
+
     return {
       character: character as unknown as Character,
       isOwner,
-      canEdit: isOwner || isGm,
+      canEdit,
     }
   })
 
@@ -139,6 +149,7 @@ export const updateCharacter = createServerFn({ method: 'POST' })
         edge_current?: number
         health_current?: number | null
         injuries?: InjuryEntry[]
+        pending_bonuses?: PendingBonus[]
         notes?: string
         portrait_url?: string | null
       }

@@ -21,6 +21,13 @@ interface RollForInjuryModalProps {
   characterId: string
   currentInjuries: InjuryEntry[]
   edgeCurrent: number
+  /** Minion target: count `minion` injury-die faces as wounds. Drops fast
+   * on light hits. (Rulebook treats `minion` as a wound symbol only when
+   * the target is a minion — for normal targets it's a miss.) */
+  isMinion?: boolean
+  /** Insert the dice_rolls row with `is_hidden=true`. Set when rolling for
+   * a hidden NPC so the roll's existence doesn't leak through the feed. */
+  isHidden?: boolean
   onApply: (injury: InjuryEntry | null, adrenalineToAdd: number) => void
   onClose: () => void
 }
@@ -37,6 +44,8 @@ export function RollForInjuryModal({
   characterId,
   currentInjuries,
   edgeCurrent,
+  isMinion = false,
+  isHidden = false,
   onApply,
   onClose,
 }: RollForInjuryModalProps) {
@@ -66,11 +75,13 @@ export function RollForInjuryModal({
           characterId,
           skillName: 'Injury roll',
           pool: { injury: totalDice },
+          isHidden,
         },
       })
       const data = row.roll_data as unknown as DiceRollData
       const summary = data.summary ?? {}
-      const woundCount = summary.wound ?? 0
+      const minionCount = summary.minion ?? 0
+      const woundCount = (summary.wound ?? 0) + (isMinion ? minionCount : 0)
       const adrenalineCount = summary.adrenaline ?? 0
       const cyberwareCount = summary.cyberware ?? 0
       const drawn = pickInjury(woundCount)
@@ -101,8 +112,8 @@ export function RollForInjuryModal({
       footer={
         roll ? (
           <>
-            <Button variant="ghost" onClick={() => setRoll(null)}>
-              Back
+            <Button variant="ghost" onClick={onClose}>
+              Close
             </Button>
             <Button variant="ghost" onClick={executeRoll} disabled={rolling}>
               {rolling ? 'Rolling…' : 'Re-roll'}

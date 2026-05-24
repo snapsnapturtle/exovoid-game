@@ -1,6 +1,6 @@
-import { useState } from 'react'
-import { useNavigate } from '@tanstack/react-router'
-import type { Character } from '~/lib/types/database'
+import { useCallback, useState } from 'react'
+import { getRouteApi, useNavigate } from '@tanstack/react-router'
+import type { Character, PendingBonus } from '~/lib/types/database'
 import { useCharacter } from '~/lib/hooks/useCharacter'
 import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
 import { deleteCharacter, updatePortraitUrl } from '~/lib/server/characters'
@@ -12,6 +12,10 @@ import { LivePlayPanel } from './LivePlayPanel'
 import { SkillsPanel } from './SkillsPanel'
 import { EquipmentTabs } from './EquipmentTabs'
 import { SaveStatusToast } from './SaveStatusToast'
+import { NpcSheetControls } from '~/components/npcs/NpcSheetControls'
+import type { ApplyBonusInput } from '~/components/dice/RollResultView'
+
+const gameRoute = getRouteApi('/_app/games/$gameId')
 
 interface CharacterSheetProps {
   initial: Character
@@ -28,6 +32,13 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
   const navigate = useNavigate()
   const { character, saveStatus, updateField, updateAttribute, updateSkill } =
     useCharacter(initial, canEdit)
+  const { members, currentUserId, isGm } = gameRoute.useLoaderData()
+  // Single role: GM (always allowed in their own game) or the current
+  // controller. The creator field is informational only — once an NPC is
+  // handed off, the previous controller loses every right.
+  const canManageNpcFlags =
+    character.is_npc &&
+    (isGm || character.controller_user_id === currentUserId)
 
   const effects = applyPassiveEffects(
     character.attributes,
@@ -60,9 +71,42 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
     }
   }
 
+  const applyPendingBonus = useCallback(
+    (bonus: ApplyBonusInput): string => {
+      const entry: PendingBonus = {
+        id: crypto.randomUUID(),
+        label: bonus.label,
+        modifier: bonus.modifier,
+        source: bonus.source,
+        addedAt: new Date().toISOString(),
+      }
+      updateField('pending_bonuses', [...character.pending_bonuses, entry])
+      return entry.id
+    },
+    [character.pending_bonuses, updateField],
+  )
+
+  const consumePendingBonuses = useCallback(
+    (ids: string[]) => {
+      if (ids.length === 0) return
+      const drop = new Set(ids)
+      updateField(
+        'pending_bonuses',
+        character.pending_bonuses.filter((b) => !drop.has(b.id)),
+      )
+    },
+    [character.pending_bonuses, updateField],
+  )
+
+  const removePendingBonus = useCallback(
+    (id: string) => consumePendingBonuses([id]),
+    [consumePendingBonuses],
+  )
+
   async function handleDelete() {
+    const label = character.is_npc ? 'NPC' : 'character'
     const confirmed = window.confirm(
-      `Delete ${character.name || 'this character'}? This cannot be undone.`,
+      `Delete ${character.name || `this ${label}`}? This cannot be undone.`,
     )
     if (!confirmed) return
     setDeleting(true)
@@ -70,7 +114,11 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
       const { gameId } = await deleteCharacter({
         data: { characterId: character.id },
       })
-      navigate({ to: '/games/$gameId', params: { gameId } })
+      if (character.is_npc) {
+        navigate({ to: '/games/$gameId/npcs', params: { gameId } })
+      } else {
+        navigate({ to: '/games/$gameId', params: { gameId } })
+      }
     } catch (e) {
       setDeleting(false)
       alert(e instanceof Error ? e.message : 'Failed to delete character')
@@ -79,6 +127,16 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
 
   return (
     <div className="space-y-4 p-6">
+      {character.is_npc && (
+        <NpcSheetControls
+          characterId={character.id}
+          isMinion={character.is_minion}
+          visibleToPlayers={character.visible_to_players}
+          controllerUserId={character.controller_user_id}
+          canManageFlags={canManageNpcFlags}
+          members={members}
+        />
+      )}
       <CharacterHeader
         name={character.name}
         career={character.career}
@@ -88,6 +146,7 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
         canEdit={editScopeCanEdit}
         showModeToggle={canEdit}
         isEditMode={isEditMode}
+        isNpc={character.is_npc}
         deleting={deleting}
         portraitUploading={portraitUploading}
         onNameChange={(v) => updateField('name', v)}
@@ -98,27 +157,37 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
         onDelete={handleDelete}
       />
 
-      <div className="grid gap-3 lg:grid-cols-[1fr_auto]">
-        <AttributesPanel
-          attributes={character.attributes}
-          effectiveAttributes={effects.attributes}
-          contributions={effects.attributeContributions}
-          canEdit={editScopeCanEdit}
-          onAttributeChange={updateAttribute}
-        />
-        <LivePlayPanel
-          gameId={character.game_id}
-          characterId={character.id}
-          healthMax={derivedStats.health}
-          healthCurrent={character.health_current}
-          edgeMax={derivedStats.edge}
-          edgeCurrent={character.edge_current}
-          injuries={character.injuries}
-          canEdit={canEdit}
-          onHealthChange={(v) => updateField('health_current', v)}
-          onEdgeChange={(v) => updateField('edge_current', v)}
-          onInjuriesChange={(v) => updateField('injuries', v)}
-        />
+      <div className="grid gap-3 lg:grid-cols-12">
+        <div className="lg:col-span-8">
+          <AttributesPanel
+            attributes={character.attributes}
+            effectiveAttributes={effects.attributes}
+            contributions={effects.attributeContributions}
+            canEdit={editScopeCanEdit}
+            onAttributeChange={updateAttribute}
+          />
+        </div>
+        <div className="lg:col-span-4">
+          <LivePlayPanel
+            gameId={character.game_id}
+            characterId={character.id}
+            healthMax={derivedStats.health}
+            healthCurrent={character.health_current}
+            edgeMax={derivedStats.edge}
+            edgeCurrent={character.edge_current}
+            injuries={character.injuries}
+            pendingBonuses={character.pending_bonuses}
+            canEdit={canEdit}
+            isMinion={character.is_minion}
+            defaultHidden={
+              character.is_npc && !character.visible_to_players
+            }
+            onHealthChange={(v) => updateField('health_current', v)}
+            onEdgeChange={(v) => updateField('edge_current', v)}
+            onInjuriesChange={(v) => updateField('injuries', v)}
+            onRemoveBonus={removePendingBonus}
+          />
+        </div>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
@@ -129,6 +198,17 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
           onSkillChange={updateSkill}
           gameId={character.game_id}
           characterId={character.id}
+          edgeAvailable={character.edge_current}
+          onSpendEdge={() =>
+            updateField('edge_current', Math.max(0, character.edge_current - 1))
+          }
+          pendingBonuses={character.pending_bonuses}
+          onApplyBonus={applyPendingBonus}
+          onConsumeBonuses={consumePendingBonuses}
+          onRemoveBonus={removePendingBonus}
+          defaultHidden={
+            character.is_npc && !character.visible_to_players
+          }
         />
         <div className="space-y-4">
           <DerivedStatsPanel
@@ -136,6 +216,20 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
             contributions={effects.derivedContributions}
             gameId={character.game_id}
             characterId={character.id}
+            edgeAvailable={character.edge_current}
+            onSpendEdge={() =>
+              updateField(
+                'edge_current',
+                Math.max(0, character.edge_current - 1),
+              )
+            }
+            pendingBonuses={character.pending_bonuses}
+            onApplyBonus={applyPendingBonus}
+            onConsumeBonuses={consumePendingBonuses}
+            onRemoveBonus={removePendingBonus}
+            defaultHidden={
+              character.is_npc && !character.visible_to_players
+            }
           />
           <EquipmentTabs
             gender={character.gender}
@@ -152,6 +246,7 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
             career={character.career}
             gameId={character.game_id}
             characterId={character.id}
+            isNpc={character.is_npc}
             onGenderChange={(v) => updateField('gender', v)}
             onAgeChange={(v) => updateField('age', v)}
             onBackgroundNotesChange={(v) => updateField('background_notes', v)}

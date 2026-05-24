@@ -8,6 +8,9 @@ interface CyberwareTabProps {
   capacity: number
   gameId: string
   characterId: string
+  /** Pick the NPC-flavoured manage route when true (PCs and NPCs use the
+   * same component but live under different `$gameId/...` segments). */
+  isNpc?: boolean
 }
 
 export function CyberwareTab({
@@ -15,6 +18,7 @@ export function CyberwareTab({
   capacity,
   gameId,
   characterId,
+  isNpc = false,
 }: CyberwareTabProps) {
   const used = occupationUsed(cyberware)
   const available = capacity - used
@@ -28,13 +32,23 @@ export function CyberwareTab({
           <span className="text-gray-900">{capacity}</span>
           <span className="ml-2 text-xs text-gray-700">({available} free)</span>
         </div>
-        <Link
-          to="/games/$gameId/characters/$characterId/cyberware"
-          params={{ gameId, characterId }}
-          className={buttonClasses('secondary', 'sm')}
-        >
-          Manage cyberware
-        </Link>
+        {isNpc ? (
+          <Link
+            to="/games/$gameId/npcs/$npcId/cyberware"
+            params={{ gameId, npcId: characterId }}
+            className={buttonClasses('secondary', 'sm')}
+          >
+            Manage cyberware
+          </Link>
+        ) : (
+          <Link
+            to="/games/$gameId/characters/$characterId/cyberware"
+            params={{ gameId, characterId }}
+            className={buttonClasses('secondary', 'sm')}
+          >
+            Manage cyberware
+          </Link>
+        )}
       </div>
 
       {cyberware.length === 0 ? (

@@ -12,6 +12,13 @@ interface InjuryControlsProps {
   /** Hard cap for edge after applying adrenaline (defaults to no cap). */
   edgeHardMax?: number
   canEdit: boolean
+  /** True for minion NPCs — the injury die "minion" face counts as a wound
+   * on the modal's roll, so they drop fast on light hits. */
+  isMinion?: boolean
+  /** Default the injury roll's `is_hidden` to true. Set when the target is
+   * a hidden NPC, so the roll doesn't leak the NPC's existence through the
+   * dice feed. */
+  defaultHidden?: boolean
   onInjuriesChange: (next: InjuryEntry[]) => void
   onEdgeChange: (next: number) => void
 }
@@ -29,6 +36,8 @@ export function InjuryControls({
   edgeCurrent,
   edgeHardMax,
   canEdit,
+  isMinion = false,
+  defaultHidden = false,
   onInjuriesChange,
   onEdgeChange,
 }: InjuryControlsProps) {
@@ -78,6 +87,8 @@ export function InjuryControls({
           characterId={characterId}
           currentInjuries={injuries}
           edgeCurrent={edgeCurrent}
+          isMinion={isMinion}
+          isHidden={defaultHidden}
           onApply={handleApply}
           onClose={() => setRollOpen(false)}
         />

@@ -113,8 +113,9 @@ export const getGame = createServerFn()
 
     const { data: characters } = await supabase
       .from('characters')
-      .select('id, name, career, level, user_id, portrait_url')
+      .select('id, name, career, level, user_id, portrait_url, is_npc')
       .eq('game_id', data.gameId)
+      .eq('is_npc', false)
 
     const isMember = members?.some((m) => m.user_id === user.id)
     if (!isMember) throw new Error('Not a member of this game')
