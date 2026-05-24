@@ -6,7 +6,7 @@ import {
   type SeverityRange,
 } from '~/lib/game-logic/cyberware-malfunctions'
 import { Button } from '~/components/ui/Button'
-import { ModalCloseButton } from '~/components/ui/Modal'
+import { Modal } from '~/components/ui/Modal'
 
 interface MalfunctionTableModalProps {
   excess: number
@@ -56,30 +56,13 @@ export function MalfunctionTableModal({
   }
 
   return (
-    <div
-      className="modal-backdrop-in fixed backdrop-blur-sm inset-0 z-50 flex items-start justify-center bg-black/60 p-4 sm:p-8"
-      onClick={onClose}
-    >
-      <div
-        className="flex max-h-[90vh] w-full max-w-2xl flex-col modal-card-in rounded-xl border border-gray-400 bg-background-200"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <header className="flex items-start justify-between gap-3 border-b border-gray-400 px-5 py-4">
-          <div>
-            <h3 className="text-lg font-semibold text-white">
-              Cyber Malfunction Table
-            </h3>
-            <p className="mt-1 text-xs text-gray-900">
-              Pick {excess} {excess === 1 ? 'slot' : 'slots'} across the table.
-              Slots near the center (15–25) trigger mild malfunctions but are
-              more likely to be rolled; slots at the extremes (2–9, 31–40) are
-              severe but rarely hit. Each slot can only be picked once.
-            </p>
-          </div>
-          <ModalCloseButton onClose={onClose} />
-        </header>
-
-        <div className="flex items-center justify-between border-b border-gray-400 bg-background-100/50 px-5 py-3 text-sm">
+    <Modal
+      onClose={onClose}
+      title="Cyber Malfunction Table"
+      subtitle={`Pick ${excess} ${excess === 1 ? 'slot' : 'slots'} across the table. Slots near the center (15–25) trigger mild malfunctions but are more likely to be rolled; slots at the extremes (2–9, 31–40) are severe but rarely hit. Each slot can only be picked once.`}
+      size="md"
+      stickyHeader={
+        <div className="flex items-center justify-between text-sm">
           <span className="text-gray-900">
             Selected{' '}
             <span
@@ -99,31 +82,30 @@ export function MalfunctionTableModal({
             )}
           </span>
         </div>
-
-        <div className="flex-1 overflow-y-auto px-5 py-3">
-          <ul className="space-y-3">
-            {groups.map((g) => (
-              <OutcomeGroup
-                key={g.outcome}
-                group={g}
-                selected={selected}
-                canSelectMore={remaining > 0}
-                onToggle={toggle}
-              />
-            ))}
-          </ul>
-        </div>
-
-        <footer className="flex items-center justify-end gap-2 border-t border-gray-400 px-5 py-3">
+      }
+      footer={
+        <>
           <Button variant="ghost" onClick={onClose} disabled={busy}>
             Cancel
           </Button>
           <Button onClick={handleSave} disabled={!canSave}>
             {busy ? 'Saving…' : 'Save allocations'}
           </Button>
-        </footer>
-      </div>
-    </div>
+        </>
+      }
+    >
+      <ul className="space-y-3">
+        {groups.map((g) => (
+          <OutcomeGroup
+            key={g.outcome}
+            group={g}
+            selected={selected}
+            canSelectMore={remaining > 0}
+            onToggle={toggle}
+          />
+        ))}
+      </ul>
+    </Modal>
   )
 }
 
