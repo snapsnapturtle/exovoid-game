@@ -66,9 +66,7 @@ export function CombatPage({
   // for an at-a-glance party view), players default to expanded (their own
   // card front-and-center). Toggling adds/removes from the set in both
   // cases; the actual expanded state is derived per render.
-  const [toggledCards, setToggledCards] = useState<Set<string>>(
-    () => new Set(),
-  )
+  const [toggledCards, setToggledCards] = useState<Set<string>>(() => new Set())
   const combat = gameState.combat
   const characterById = new Map(characters.map((c) => [c.id, c]))
   const characterNames = new Map(characters.map((c) => [c.id, c.name]))
@@ -91,7 +89,8 @@ export function CombatPage({
     return c.user_id === currentUserId
   }
   const userCanJoin =
-    !!combat && characters.some((c) => canAddToCombat(c) && !participantIds.has(c.id))
+    !!combat &&
+    characters.some((c) => canAddToCombat(c) && !participantIds.has(c.id))
 
   async function withGmBusy<T>(key: string, fn: () => Promise<T>) {
     if (gmBusy) return
@@ -649,9 +648,7 @@ function ParticipantCard({
           edgeHardMax={edgeHardMax}
           canEdit={canAdjust}
           isMinion={character.is_minion}
-          defaultHidden={
-            character.is_npc && !character.visible_to_players
-          }
+          defaultHidden={character.is_npc && !character.visible_to_players}
           onInjuriesChange={saveInjuries}
           onEdgeChange={setEdgeCurrent}
         />
@@ -722,9 +719,7 @@ function ParticipantCard({
           onApplyBonus={applyBonus}
           onConsumeBonuses={consumeBonuses}
           onRemoveBonus={removeBonus}
-          defaultHidden={
-            character.is_npc && !character.visible_to_players
-          }
+          defaultHidden={character.is_npc && !character.visible_to_players}
         />
       </div>
     </article>

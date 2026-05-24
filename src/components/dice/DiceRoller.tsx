@@ -95,9 +95,7 @@ export function DiceRoller({
   const refreshFeed = useDiceFeedRefresh()
   const broadcastNewRoll = useDiceFeedBroadcast()
 
-  const activeBonuses = appliedBonuses.filter(
-    (b) => !skippedBonusIds.has(b.id),
-  )
+  const activeBonuses = appliedBonuses.filter((b) => !skippedBonusIds.has(b.id))
   const edgeEnabled = onSpendEdge != null && edgeAvailable != null
   const bonusModifierSum = activeBonuses.reduce((s, b) => s + b.modifier, 0)
   const effectiveModifier =

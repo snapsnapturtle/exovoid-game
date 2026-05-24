@@ -77,10 +77,7 @@ export function EquippedArmorCard({
           {mods.map((name) => {
             const mod = lookupArmorMod(name)
             return (
-              <EffectTooltip
-                key={name}
-                text={mod?.effects ?? 'Unknown mod.'}
-              >
+              <EffectTooltip key={name} text={mod?.effects ?? 'Unknown mod.'}>
                 <span className="cursor-help text-gray-1000 underline decoration-dotted underline-offset-2">
                   {name}
                 </span>

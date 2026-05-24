@@ -182,9 +182,7 @@ export const joinCombat = createServerFn({ method: 'POST' })
     const state = await loadGameState(supabase, data.gameId)
     if (!state.combat) throw new Error('No combat active')
     if (
-      state.combat.participants.some(
-        (p) => p.characterId === data.characterId,
-      )
+      state.combat.participants.some((p) => p.characterId === data.characterId)
     ) {
       throw new Error('Already in this combat')
     }
@@ -313,10 +311,7 @@ export const adjustAp = createServerFn({ method: 'POST' })
     if (char.game_id !== data.gameId) {
       throw new Error('Character does not belong to this game')
     }
-    if (
-      char.user_id !== user.id &&
-      char.controller_user_id !== user.id
-    ) {
+    if (char.user_id !== user.id && char.controller_user_id !== user.id) {
       await requireGm(supabase, data.gameId, user.id)
     }
 

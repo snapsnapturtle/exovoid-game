@@ -37,8 +37,7 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
   // controller. The creator field is informational only — once an NPC is
   // handed off, the previous controller loses every right.
   const canManageNpcFlags =
-    character.is_npc &&
-    (isGm || character.controller_user_id === currentUserId)
+    character.is_npc && (isGm || character.controller_user_id === currentUserId)
 
   const effects = applyPassiveEffects(
     character.attributes,
@@ -179,9 +178,7 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
             pendingBonuses={character.pending_bonuses}
             canEdit={canEdit}
             isMinion={character.is_minion}
-            defaultHidden={
-              character.is_npc && !character.visible_to_players
-            }
+            defaultHidden={character.is_npc && !character.visible_to_players}
             onHealthChange={(v) => updateField('health_current', v)}
             onEdgeChange={(v) => updateField('edge_current', v)}
             onInjuriesChange={(v) => updateField('injuries', v)}
@@ -206,9 +203,7 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
           onApplyBonus={applyPendingBonus}
           onConsumeBonuses={consumePendingBonuses}
           onRemoveBonus={removePendingBonus}
-          defaultHidden={
-            character.is_npc && !character.visible_to_players
-          }
+          defaultHidden={character.is_npc && !character.visible_to_players}
         />
         <div className="space-y-4">
           <DerivedStatsPanel
@@ -227,9 +222,7 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
             onApplyBonus={applyPendingBonus}
             onConsumeBonuses={consumePendingBonuses}
             onRemoveBonus={removePendingBonus}
-            defaultHidden={
-              character.is_npc && !character.visible_to_players
-            }
+            defaultHidden={character.is_npc && !character.visible_to_players}
           />
           <EquipmentTabs
             gender={character.gender}

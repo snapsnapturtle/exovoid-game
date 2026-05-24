@@ -155,7 +155,12 @@ interface NpcCardProps {
   showController: boolean
 }
 
-function NpcCard({ npc, gameId, controllerLabel, showController }: NpcCardProps) {
+function NpcCard({
+  npc,
+  gameId,
+  controllerLabel,
+  showController,
+}: NpcCardProps) {
   const { derived } = applyPassiveEffects(
     npc.attributes,
     npc.talents,

@@ -2,10 +2,7 @@ import type { InventoryItem } from '~/lib/types/database'
 import type { WeaponData } from '~/lib/game-logic/weapons'
 import { QualityBadge } from '~/components/inventory/QualityBadge'
 import { EffectTooltip } from '~/components/inventory/EffectTooltip'
-import {
-  isFirearmLike,
-  lookupFirearmMod,
-} from '~/lib/game-logic/firearm-mods'
+import { isFirearmLike, lookupFirearmMod } from '~/lib/game-logic/firearm-mods'
 import { lookupMeleeMod } from '~/lib/game-logic/melee-mods'
 
 interface EquippedWeaponCardProps {
@@ -81,10 +78,7 @@ export function EquippedWeaponCard({
               ? lookupFirearmMod(name)
               : lookupMeleeMod(name)
             return (
-              <EffectTooltip
-                key={name}
-                text={data?.effects ?? 'Unknown mod.'}
-              >
+              <EffectTooltip key={name} text={data?.effects ?? 'Unknown mod.'}>
                 <span className="cursor-help text-gray-1000 underline decoration-dotted underline-offset-2">
                   {name}
                 </span>

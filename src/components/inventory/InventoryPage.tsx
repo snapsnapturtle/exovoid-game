@@ -1192,7 +1192,6 @@ function ArmorStats({
   )
 }
 
-
 function DurabilityStepper({
   value,
   max,

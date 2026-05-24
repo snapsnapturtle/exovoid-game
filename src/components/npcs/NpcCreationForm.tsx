@@ -131,9 +131,7 @@ export function NpcCreationForm({
             />
           </label>
           <label className="block">
-            <span className="mb-1 block text-xs text-gray-900">
-              Controller
-            </span>
+            <span className="mb-1 block text-xs text-gray-900">Controller</span>
             <select
               value={controllerUserId ?? ''}
               onChange={(e) => setControllerUserId(e.target.value || null)}

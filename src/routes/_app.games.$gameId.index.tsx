@@ -108,8 +108,7 @@ function GameLobbyPage() {
             ) : (
               <ul className="space-y-2">
                 {(isGm ? characters : myCharacters).map((char) => {
-                  const ownerName =
-                    nameByUserId.get(char.user_id) ?? 'Unknown'
+                  const ownerName = nameByUserId.get(char.user_id) ?? 'Unknown'
                   return (
                     <li key={char.id}>
                       <Link
