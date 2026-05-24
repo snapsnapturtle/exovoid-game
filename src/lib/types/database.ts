@@ -48,6 +48,7 @@ export type Database = {
           attributes: Json
           background_notes: string
           career: string
+          controller_user_id: string | null
           created_at: string
           credits: number
           cyberware: Json
@@ -59,15 +60,19 @@ export type Database = {
           id: string
           injuries: Json
           inventory: Json
+          is_minion: boolean
+          is_npc: boolean
           level: number
           malfunction_allocations: Json
           name: string
           notes: string
+          pending_bonuses: Json
           portrait_url: string | null
           skills: Json
           talents: Json
           updated_at: string
           user_id: string
+          visible_to_players: boolean
         }
         Insert: {
           age?: number | null
@@ -75,6 +80,7 @@ export type Database = {
           attributes?: Json
           background_notes?: string
           career?: string
+          controller_user_id?: string | null
           created_at?: string
           credits?: number
           cyberware?: Json
@@ -86,15 +92,19 @@ export type Database = {
           id?: string
           injuries?: Json
           inventory?: Json
+          is_minion?: boolean
+          is_npc?: boolean
           level?: number
           malfunction_allocations?: Json
           name?: string
           notes?: string
+          pending_bonuses?: Json
           portrait_url?: string | null
           skills?: Json
           talents?: Json
           updated_at?: string
           user_id: string
+          visible_to_players?: boolean
         }
         Update: {
           age?: number | null
@@ -102,6 +112,7 @@ export type Database = {
           attributes?: Json
           background_notes?: string
           career?: string
+          controller_user_id?: string | null
           created_at?: string
           credits?: number
           cyberware?: Json
@@ -113,17 +124,28 @@ export type Database = {
           id?: string
           injuries?: Json
           inventory?: Json
+          is_minion?: boolean
+          is_npc?: boolean
           level?: number
           malfunction_allocations?: Json
           name?: string
           notes?: string
+          pending_bonuses?: Json
           portrait_url?: string | null
           skills?: Json
           talents?: Json
           updated_at?: string
           user_id?: string
+          visible_to_players?: boolean
         }
         Relationships: [
+          {
+            foreignKeyName: 'characters_controller_user_id_fkey'
+            columns: ['controller_user_id']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
           {
             foreignKeyName: 'characters_game_id_fkey'
             columns: ['game_id']
@@ -414,6 +436,22 @@ export type InjuryEntry = {
 }
 
 /**
+ * A pool modifier that persists on the character until the next roll consumes
+ * it (or the player removes it manually). The canonical case is the Flow
+ * trigger option's "+1 pool on your next own check", which players routinely
+ * forget across rolls and sessions. `source` is a free-form discriminator
+ * ("trigger:flow" today; "manual", "talent:prepare", "ally:support" etc.
+ * later) — keep it human-readable, the UI doesn't switch on it yet.
+ */
+export type PendingBonus = {
+  id: string
+  label: string
+  modifier: number
+  source: string
+  addedAt: string
+}
+
+/**
  * An entry in a character's or a game's shared inventory.
  * - `catalog` items resolve stats by looking up `name` in `items.json`.
  * - `custom` items are free-text and carry their own description.
@@ -459,6 +497,7 @@ export type Character = Omit<
   | 'inventory'
   | 'injuries'
   | 'malfunction_allocations'
+  | 'pending_bonuses'
 > & {
   attributes: CharacterAttributes
   skills: Record<string, number>
@@ -470,6 +509,7 @@ export type Character = Omit<
    * Length equals current excess Cyberimmunity. Each slot can be allocated at
    * most once (rulebook example). */
   malfunction_allocations: number[]
+  pending_bonuses: PendingBonus[]
 }
 
 /**
@@ -478,7 +518,7 @@ export type Character = Omit<
  */
 export type CombatParticipant = {
   characterId: string
-  /** Display-name fallback for participants without a live character row (e.g. future NPCs). PC names are read live from the character row at render time. */
+  /** Display-name fallback for participants whose live row isn't accessible to this viewer (hidden NPCs). PC and visible-NPC names are read live from the character row at render time. */
   name: string
   /** Coolness at round-start — used for tiebreaks. */
   coolness: number
@@ -486,8 +526,18 @@ export type CombatParticipant = {
   baseAp: number
   /** 1d6 initiative roll for this round. */
   rolled: number
+  /**
+   * Negative AP carried over from the previous round (always ≤ 0; 0 when
+   * starting fresh). Per rulebook §210: "subtract the excess Action
+   * Points from their result of the following round."
+   */
+  apOverflow?: number
   /** Remaining AP this round. May go negative. */
   ap: number
+  /** True for NPCs. Drives UI labels (NPC badge) + GM-only controls. */
+  isNpc?: boolean
+  /** True for minion NPCs. Drives the injury-die "minion → wound" rule. */
+  isMinion?: boolean
 }
 
 export type CombatState = {

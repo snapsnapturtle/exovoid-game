@@ -7,12 +7,24 @@ import type {
 import type { DicePool } from '~/lib/game-logic/dice'
 import { Button } from '~/components/ui/Button'
 import { DiceRoller } from '~/components/dice/DiceRoller'
+import type { ApplyBonusInput } from '~/components/dice/RollResultView'
+import type { PendingBonus } from '~/lib/types/database'
 
 interface DerivedStatsPanelProps {
   stats: DerivedStats
   contributions?: Partial<Record<DerivedStatId, Contribution[]>>
   gameId: string
   characterId: string
+  /** Pass `undefined` for NPCs to hide the spend-Edge affordance entirely. */
+  edgeAvailable: number | undefined
+  onSpendEdge: () => void
+  pendingBonuses: PendingBonus[]
+  onApplyBonus: (bonus: ApplyBonusInput) => string
+  onConsumeBonuses: (ids: string[]) => void
+  onRemoveBonus: (id: string) => void
+  /** Initial state for the roll modal's "Hidden roll" checkbox. True for
+   * hidden NPCs so the GM doesn't have to remember to tick it. */
+  defaultHidden?: boolean
 }
 
 const STAT_DISPLAY: { key: DerivedStatId; label: string }[] = [
@@ -31,6 +43,13 @@ export function DerivedStatsPanel({
   contributions,
   gameId,
   characterId,
+  edgeAvailable,
+  onSpendEdge,
+  pendingBonuses,
+  onApplyBonus,
+  onConsumeBonuses,
+  onRemoveBonus,
+  defaultHidden,
 }: DerivedStatsPanelProps) {
   const [rolling, setRolling] = useState<{
     name: string
@@ -93,6 +112,13 @@ export function DerivedStatsPanel({
           characterId={characterId}
           skillName={rolling.name}
           pool={rolling.pool}
+          edgeAvailable={edgeAvailable}
+          onSpendEdge={onSpendEdge}
+          pendingBonuses={pendingBonuses}
+          onApplyBonus={onApplyBonus}
+          onConsumeBonuses={onConsumeBonuses}
+          onRemoveBonus={onRemoveBonus}
+          defaultHidden={defaultHidden}
           onClose={() => setRolling(null)}
         />
       )}

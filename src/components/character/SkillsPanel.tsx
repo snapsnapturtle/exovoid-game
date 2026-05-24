@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { CharacterAttributes } from '~/lib/types/database'
+import type { CharacterAttributes, PendingBonus } from '~/lib/types/database'
 import { SKILLS, MAX_SKILL_LEVEL } from '~/lib/game-logic/skills'
 import { ATTRIBUTE_DEFINITIONS } from '~/lib/game-logic/attributes'
 import {
@@ -9,6 +9,8 @@ import {
 } from '~/lib/game-logic/dice'
 import type { AttributeId } from '~/lib/game-logic/attributes'
 import { DiceRoller } from '~/components/dice/DiceRoller'
+import { InlineStepper } from '~/components/ui/InlineStepper'
+import type { ApplyBonusInput } from '~/components/dice/RollResultView'
 
 interface SkillsPanelProps {
   attributes: CharacterAttributes
@@ -17,6 +19,16 @@ interface SkillsPanelProps {
   onSkillChange: (skillId: string, value: number) => void
   gameId: string
   characterId: string
+  /** Pass `undefined` for NPCs to hide the spend-Edge affordance entirely. */
+  edgeAvailable: number | undefined
+  onSpendEdge: () => void
+  pendingBonuses: PendingBonus[]
+  onApplyBonus: (bonus: ApplyBonusInput) => string
+  onConsumeBonuses: (ids: string[]) => void
+  onRemoveBonus: (id: string) => void
+  /** Initial state for the roll modal's "Hidden roll" checkbox. True for
+   * hidden NPCs so the GM doesn't have to remember to tick it. */
+  defaultHidden?: boolean
 }
 
 function attrAbbr(id: AttributeId): string {
@@ -32,6 +44,13 @@ export function SkillsPanel({
   onSkillChange,
   gameId,
   characterId,
+  edgeAvailable,
+  onSpendEdge,
+  pendingBonuses,
+  onApplyBonus,
+  onConsumeBonuses,
+  onRemoveBonus,
+  defaultHidden,
 }: SkillsPanelProps) {
   const [filter, setFilter] = useState('')
   const [rolling, setRolling] = useState<{
@@ -81,34 +100,18 @@ export function SkillsPanel({
               </div>
               <div className="flex h-6 w-16 items-center justify-center gap-1">
                 {canEdit ? (
-                  <>
-                    <button
-                      onClick={() =>
-                        onSkillChange(skill.id, Math.max(0, level - 1))
-                      }
-                      disabled={level <= 0}
-                      aria-label={`Decrease ${skill.name}`}
-                      className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition not-disabled:hover:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-30"
-                    >
-                      −
-                    </button>
-                    <span className="min-w-[2ch] text-center text-sm font-medium text-white">
-                      {level}
-                    </span>
-                    <button
-                      onClick={() =>
-                        onSkillChange(
-                          skill.id,
-                          Math.min(MAX_SKILL_LEVEL, level + 1),
-                        )
-                      }
-                      disabled={level >= MAX_SKILL_LEVEL}
-                      aria-label={`Increase ${skill.name}`}
-                      className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition not-disabled:hover:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-30"
-                    >
-                      +
-                    </button>
-                  </>
+                  <InlineStepper
+                    ariaLabel={skill.name}
+                    value={level}
+                    min={0}
+                    max={MAX_SKILL_LEVEL}
+                    onAdjust={(delta) =>
+                      onSkillChange(
+                        skill.id,
+                        Math.max(0, Math.min(MAX_SKILL_LEVEL, level + delta)),
+                      )
+                    }
+                  />
                 ) : (
                   <span className="text-sm font-medium text-white">
                     {level}
@@ -145,6 +148,13 @@ export function SkillsPanel({
           characterId={characterId}
           skillName={rolling.skillName}
           pool={rolling.pool}
+          edgeAvailable={edgeAvailable}
+          onSpendEdge={onSpendEdge}
+          pendingBonuses={pendingBonuses}
+          onApplyBonus={onApplyBonus}
+          onConsumeBonuses={onConsumeBonuses}
+          onRemoveBonus={onRemoveBonus}
+          defaultHidden={defaultHidden}
           onClose={() => setRolling(null)}
         />
       )}

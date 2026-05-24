@@ -37,6 +37,25 @@ export function allWeapons(): readonly WeaponData[] {
   return ALL_WEAPONS
 }
 
+/**
+ * Skill id used to roll an attack with this weapon. Throwing has no
+ * dedicated skill in the rulebook; we map it to Athletics (the physical-
+ * throwing fit via CON/STR). Players can override by retyping the skill
+ * in the roll modal.
+ */
+export function weaponAttackSkill(weapon: WeaponData): string {
+  switch (weapon.type) {
+    case 'Firearms':
+      return 'firearms'
+    case 'Heavy Weapons':
+      return 'heavy_weapons'
+    case 'Melee':
+      return 'melee'
+    case 'Throwing':
+      return 'athletics'
+  }
+}
+
 export function lookupWeapon(weaponRef: string): WeaponData | undefined {
   return BY_WEAPON.get(weaponRef)
 }

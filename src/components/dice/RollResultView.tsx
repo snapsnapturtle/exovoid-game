@@ -2,7 +2,17 @@ import { useState } from 'react'
 import { Die } from './Die'
 import type { DieType } from '~/lib/game-logic/dice'
 import type { DiceRollData } from '~/lib/server/dice'
-import { UNIVERSAL_TRIGGER_OPTIONS } from '~/data/trigger-options'
+import {
+  UNIVERSAL_TRIGGER_OPTIONS,
+  type TriggerOption,
+} from '~/data/trigger-options'
+import { COMBAT_TRIGGER_OPTIONS } from '~/data/combat-triggers'
+import { parseQuality } from '~/lib/game-logic/weapons'
+import { lookupQuality } from '~/lib/game-logic/item-qualities'
+import { Button } from '~/components/ui/Button'
+import type { PendingBonus } from '~/lib/types/database'
+
+export type ApplyBonusInput = NonNullable<TriggerOption['bonus']>
 
 const SYMBOL_ORDER = [
   'botch',
@@ -36,12 +46,32 @@ interface RollResultViewProps {
   data: DiceRollData
   dieSize?: 'sm' | 'md' | 'lg'
   animate?: boolean
+  /** Weapon-specific trigger option names (e.g. "Critical Hit", "Concealed (1)"). Resolved via lookupQuality. */
+  weaponTriggers?: string[]
+  /** If true, show the rulebook "Combat Triggers" section alongside the universal one. */
+  showCombatTriggers?: boolean
+  /**
+   * Persist a bonus on the character (used by trigger options with a `bonus`
+   * descriptor, e.g. Flow). Returns the new bonus's id so the panel can
+   * un-apply it if the player toggles off. When undefined, Apply buttons
+   * aren't shown.
+   */
+  onApplyBonus?: (bonus: ApplyBonusInput) => string
+  /** Remove a previously-applied bonus (un-toggle). Wired alongside onApplyBonus. */
+  onRemoveBonus?: (id: string) => void
+  /** Live pending bonuses on the character — used to gate non-stackable Apply buttons (e.g. Flow). */
+  currentBonuses?: PendingBonus[]
 }
 
 export function RollResultView({
   data,
   dieSize = 'sm',
   animate = true,
+  weaponTriggers,
+  showCombatTriggers = false,
+  onApplyBonus,
+  onRemoveBonus,
+  currentBonuses,
 }: RollResultViewProps) {
   const summary = data.summary ?? {}
   const ordered = orderSymbols(summary)
@@ -106,19 +136,81 @@ export function RollResultView({
           </div>
         </div>
       )}
-      {triggerCount > 0 && <TriggerOptionsPanel triggerCount={triggerCount} />}
+      {triggerCount > 0 && (
+        <div className="space-y-2">
+          {weaponTriggers && weaponTriggers.length > 0 && (
+            <WeaponTriggerPanel names={weaponTriggers} defaultOpen />
+          )}
+          {showCombatTriggers && (
+            <TriggerOptionsPanel
+              label="Combat triggers"
+              triggerCount={triggerCount}
+              options={COMBAT_TRIGGER_OPTIONS}
+              onApplyBonus={onApplyBonus}
+              onRemoveBonus={onRemoveBonus}
+              currentBonuses={currentBonuses}
+            />
+          )}
+          <TriggerOptionsPanel
+            label="Universal triggers"
+            triggerCount={triggerCount}
+            options={UNIVERSAL_TRIGGER_OPTIONS}
+            onApplyBonus={onApplyBonus}
+            onRemoveBonus={onRemoveBonus}
+            currentBonuses={currentBonuses}
+          />
+        </div>
+      )}
     </div>
   )
 }
 
 /**
- * Collapsible "what can I do with these triggers?" panel — shown only on
- * rolls that produced trigger symbols. Lists the rulebook's universal
- * trigger options plus the always-on 2-for-1 success conversion.
- * Context-specific options (combat, weapon-specific) aren't included yet.
+ * Collapsible panel listing a set of trigger options (universal or combat).
+ * Affordable options stand out by row colour and pill tint.
  */
-function TriggerOptionsPanel({ triggerCount }: { triggerCount: number }) {
-  const [open, setOpen] = useState(false)
+function TriggerOptionsPanel({
+  label,
+  triggerCount,
+  options,
+  defaultOpen = false,
+  onApplyBonus,
+  onRemoveBonus,
+  currentBonuses,
+}: {
+  label: string
+  triggerCount: number
+  options: TriggerOption[]
+  defaultOpen?: boolean
+  onApplyBonus?: (bonus: ApplyBonusInput) => string
+  onRemoveBonus?: (id: string) => void
+  currentBonuses?: PendingBonus[]
+}) {
+  const [open, setOpen] = useState(defaultOpen)
+  // Tracks the persisted bonus id per option name so the Apply button can
+  // toggle between applying and un-applying within the same modal session.
+  const [appliedIds, setAppliedIds] = useState<Map<string, string>>(
+    () => new Map(),
+  )
+
+  function handleToggle(opt: TriggerOption) {
+    if (!opt.bonus) return
+    const existingId = appliedIds.get(opt.name)
+    if (existingId) {
+      if (!onRemoveBonus) return
+      onRemoveBonus(existingId)
+      setAppliedIds((prev) => {
+        const next = new Map(prev)
+        next.delete(opt.name)
+        return next
+      })
+      return
+    }
+    if (!onApplyBonus) return
+    const newId = onApplyBonus(opt.bonus)
+    setAppliedIds((prev) => new Map(prev).set(opt.name, newId))
+  }
+
   return (
     <div className="rounded-lg border border-gray-400 bg-background-100">
       <button
@@ -127,31 +219,27 @@ function TriggerOptionsPanel({ triggerCount }: { triggerCount: number }) {
         className="flex w-full items-center justify-between gap-2 px-3 py-2 text-left text-xs text-gray-1000 transition hover:bg-gray-100"
         aria-expanded={open}
       >
-        <span>
-          What can I do with{' '}
-          <span className="font-semibold">{triggerCount}</span>{' '}
-          {triggerCount === 1 ? 'trigger' : 'triggers'}?
-        </span>
-        <svg
-          width="10"
-          height="10"
-          viewBox="0 0 12 12"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden
-          className={`shrink-0 text-gray-700 transition-transform ${open ? 'rotate-180' : ''}`}
-        >
-          <polyline points="3 4.5 6 7.5 9 4.5" />
-        </svg>
+        <span>{label}</span>
+        <Chevron open={open} />
       </button>
       {open && (
         <ul className="divide-y divide-gray-400 border-t border-gray-400">
-          {UNIVERSAL_TRIGGER_OPTIONS.map((opt) => {
+          {options.map((opt) => {
             const baseCost = parseInt(opt.cost, 10)
             const affordable = !isNaN(baseCost) && triggerCount >= baseCost
+            const wasApplied = appliedIds.has(opt.name)
+            // Non-stackable bonuses (Flow) can't be applied a second time
+            // while one with the same source already lives on the character.
+            const blockedByExisting =
+              !!opt.bonus &&
+              opt.bonus.stackable === false &&
+              !wasApplied &&
+              !!currentBonuses?.some((b) => b.source === opt.bonus!.source)
+            const canToggle =
+              !!opt.bonus &&
+              (wasApplied
+                ? !!onRemoveBonus
+                : !!onApplyBonus && affordable && !blockedByExisting)
             return (
               <li
                 key={opt.name}
@@ -171,11 +259,106 @@ function TriggerOptionsPanel({ triggerCount }: { triggerCount: number }) {
                   <p className="font-medium">{opt.name}</p>
                   <p className="mt-0.5 leading-snug">{opt.description}</p>
                 </div>
+                {opt.bonus && onApplyBonus && (
+                  <Button
+                    variant={
+                      wasApplied || blockedByExisting ? 'secondary' : 'subtle'
+                    }
+                    size="xs"
+                    disabled={!canToggle}
+                    onClick={() => handleToggle(opt)}
+                    className="shrink-0 self-start"
+                    title={
+                      wasApplied
+                        ? 'Click to remove from your pending bonuses'
+                        : blockedByExisting
+                          ? 'Already on your character — remove the chip from your sheet to re-apply'
+                          : affordable
+                            ? 'Persist this bonus on your character for the next roll'
+                            : 'Not enough triggers'
+                    }
+                  >
+                    {wasApplied || blockedByExisting ? '✓ Applied' : 'Apply'}
+                  </Button>
+                )}
               </li>
             )
           })}
         </ul>
       )}
     </div>
+  )
+}
+
+/**
+ * Weapon-specific trigger options — resolved via lookupQuality from
+ * item-qualities.json. These don't carry a standardised numeric cost
+ * (the rulebook describes them in prose), so we render them without a
+ * cost pill; the player decides what to spend based on the effect text.
+ */
+function WeaponTriggerPanel({
+  names,
+  defaultOpen = false,
+}: {
+  names: string[]
+  defaultOpen?: boolean
+}) {
+  const [open, setOpen] = useState(defaultOpen)
+  const resolved = names
+    .map((raw) => {
+      const { name, level } = parseQuality(raw)
+      const quality = lookupQuality(name)
+      return quality
+        ? {
+            display: level !== null ? `${name} (${level})` : name,
+            effect: quality.effect,
+          }
+        : null
+    })
+    .filter((x): x is { display: string; effect: string } => x !== null)
+  if (resolved.length === 0) return null
+  return (
+    <div className="rounded-lg border border-accent-700/40 bg-background-100">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="flex w-full items-center justify-between gap-2 px-3 py-2 text-left text-xs text-gray-1000 transition hover:bg-gray-100"
+        aria-expanded={open}
+      >
+        <span>Weapon triggers</span>
+        <Chevron open={open} />
+      </button>
+      {open && (
+        <ul className="divide-y divide-gray-400 border-t border-accent-700/40">
+          {resolved.map((opt) => (
+            <li key={opt.display} className="px-3 py-2 text-xs text-gray-1000">
+              <p className="font-medium text-accent-900">{opt.display}</p>
+              <p className="mt-0.5 whitespace-pre-line leading-snug">
+                {opt.effect}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+function Chevron({ open }: { open: boolean }) {
+  return (
+    <svg
+      width="10"
+      height="10"
+      viewBox="0 0 12 12"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+      className={`shrink-0 text-gray-700 transition-transform ${open ? 'rotate-180' : ''}`}
+    >
+      <polyline points="3 4.5 6 7.5 9 4.5" />
+    </svg>
   )
 }

@@ -1,7 +1,8 @@
 import { edgeCap } from '~/lib/game-logic/derived-stats'
 import { Stepper } from '~/components/ui/Stepper'
 import { InjuryControls } from './InjuryControls'
-import type { InjuryEntry } from '~/lib/types/database'
+import { PendingBonusChips } from './PendingBonusChips'
+import type { InjuryEntry, PendingBonus } from '~/lib/types/database'
 
 interface LivePlayPanelProps {
   gameId: string
@@ -11,10 +12,16 @@ interface LivePlayPanelProps {
   edgeMax: number
   edgeCurrent: number
   injuries: InjuryEntry[]
+  pendingBonuses: PendingBonus[]
   canEdit: boolean
+  isMinion?: boolean
+  /** Default the injury roll's hidden flag for hidden NPCs so the roll
+   * doesn't leak through the dice feed. */
+  defaultHidden?: boolean
   onHealthChange: (value: number | null) => void
   onEdgeChange: (value: number) => void
   onInjuriesChange: (next: InjuryEntry[]) => void
+  onRemoveBonus: (id: string) => void
 }
 
 /**
@@ -30,10 +37,14 @@ export function LivePlayPanel({
   edgeMax,
   edgeCurrent,
   injuries,
+  pendingBonuses,
   canEdit,
+  isMinion = false,
+  defaultHidden = false,
   onHealthChange,
   onEdgeChange,
   onInjuriesChange,
+  onRemoveBonus,
 }: LivePlayPanelProps) {
   const currentHealth = healthCurrent ?? healthMax
   const edgeHardMax = edgeCap(edgeMax)
@@ -77,8 +88,15 @@ export function LivePlayPanel({
         edgeCurrent={edgeCurrent}
         edgeHardMax={edgeHardMax}
         canEdit={canEdit}
+        isMinion={isMinion}
+        defaultHidden={defaultHidden}
         onInjuriesChange={onInjuriesChange}
         onEdgeChange={onEdgeChange}
+      />
+      <PendingBonusChips
+        bonuses={pendingBonuses}
+        canEdit={canEdit}
+        onRemove={onRemoveBonus}
       />
     </div>
   )

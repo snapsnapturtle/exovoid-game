@@ -13,6 +13,23 @@ export interface TriggerOption {
   cost: string
   name: string
   description: string
+  /**
+   * If set, the result panel renders an "Apply" button that persists this
+   * bonus on the character's pending-bonuses list. Used to make leaked
+   * cross-roll effects survive instead of being forgotten. Only Flow today;
+   * other persistent options can opt in later by adding their own descriptor.
+   */
+  bonus?: {
+    label: string
+    modifier: number
+    source: string
+    /**
+     * When false, the Apply button is disabled if a bonus with the same
+     * source already exists on the character. Defaults to true (multiple
+     * applications stack as additive +1, +1, …).
+     */
+    stackable?: boolean
+  }
 }
 
 export const UNIVERSAL_TRIGGER_OPTIONS: TriggerOption[] = [
@@ -33,6 +50,12 @@ export const UNIVERSAL_TRIGGER_OPTIONS: TriggerOption[] = [
     name: 'Flow',
     description:
       'You gain a +1 pool bonus on your next own check as you feel inspired.',
+    bonus: {
+      label: 'Flow',
+      modifier: 1,
+      source: 'trigger:flow',
+      stackable: false,
+    },
   },
   {
     cost: '2',
