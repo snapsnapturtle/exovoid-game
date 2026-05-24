@@ -78,9 +78,13 @@ function AppLayout() {
                 Games
               </Link>
               <span className="text-gray-700">/</span>
-              <h2 className="truncate text-sm font-semibold text-white">
+              <Link
+                to="/games/$gameId"
+                params={{ gameId: game.id }}
+                className="truncate text-sm font-semibold text-white transition hover:text-accent-900"
+              >
                 {game.name}
-              </h2>
+              </Link>
               {isGm && (
                 <span className="shrink-0 rounded-full bg-warning-700/20 px-2 py-0.5 text-xs font-medium text-warning-900">
                   GM
