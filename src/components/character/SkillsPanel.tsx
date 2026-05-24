@@ -17,6 +17,12 @@ interface SkillsPanelProps {
   skills: Record<string, number>
   canEdit: boolean
   onSkillChange: (skillId: string, value: number) => void
+  favoriteSkills: string[]
+  /** Owner-toggled star. True whenever the viewer has stat-edit rights
+   * regardless of the sheet's play/edit mode — star toggles work outside
+   * of edit mode by design. */
+  canFavorite: boolean
+  onToggleFavorite: (skillId: string) => void
   gameId: string
   characterId: string
   /** Pass `undefined` for NPCs to hide the spend-Edge affordance entirely. */
@@ -42,6 +48,9 @@ export function SkillsPanel({
   skills,
   canEdit,
   onSkillChange,
+  favoriteSkills,
+  canFavorite,
+  onToggleFavorite,
   gameId,
   characterId,
   edgeAvailable,
@@ -62,6 +71,14 @@ export function SkillsPanel({
     ? SKILLS.filter((s) => s.name.toLowerCase().includes(filter.toLowerCase()))
     : SKILLS
 
+  const favoriteSet = new Set(favoriteSkills)
+  const sorted = [...filtered].sort((a, b) => {
+    const aFav = favoriteSet.has(a.id) ? 0 : 1
+    const bFav = favoriteSet.has(b.id) ? 0 : 1
+    if (aFav !== bFav) return aFav - bFav
+    return a.name.localeCompare(b.name)
+  })
+
   return (
     <div className="rounded-xl border border-gray-400 bg-background-200 p-6">
       <div className="mb-4 flex items-center justify-between gap-4">
@@ -80,21 +97,57 @@ export function SkillsPanel({
           <span className="w-16 text-center">Level</span>
           <span className="w-[90px] pl-2 text-left">Roll</span>
         </div>
-        {filtered.map((skill) => {
+        {sorted.map((skill) => {
           const level = skills[skill.id] ?? 0
           const attrAvg = computeAttributeAverage(attributes, skill.attributes)
           const pool = computeDicePool(attrAvg, level)
+          const isFavorite = favoriteSet.has(skill.id)
 
           return (
             <div
               key={skill.id}
               className="grid grid-cols-[1fr_auto_auto] items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-gray-100"
             >
-              <div>
+              <div className="flex items-center gap-2">
+                {(canFavorite || isFavorite) && (
+                  <button
+                    type="button"
+                    onClick={
+                      canFavorite ? () => onToggleFavorite(skill.id) : undefined
+                    }
+                    disabled={!canFavorite}
+                    aria-pressed={isFavorite}
+                    aria-label={
+                      isFavorite
+                        ? `Unfavorite ${skill.name}`
+                        : `Favorite ${skill.name}`
+                    }
+                    title={isFavorite ? 'Remove favorite' : 'Mark as favorite'}
+                    className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded transition disabled:cursor-default ${
+                      isFavorite
+                        ? 'text-warning-900'
+                        : 'text-gray-700 not-disabled:hover:text-warning-900'
+                    }`}
+                  >
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill={isFavorite ? 'currentColor' : 'none'}
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden
+                    >
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                  </button>
+                )}
                 <span className="text-sm font-medium text-gray-1000">
                   {skill.name}
                 </span>
-                <span className="ml-2 text-xs text-gray-700">
+                <span className="text-xs text-gray-700">
                   {skill.attributes.map(attrAbbr).join(' / ')}
                 </span>
               </div>

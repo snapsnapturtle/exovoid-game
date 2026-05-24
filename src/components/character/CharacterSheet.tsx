@@ -102,6 +102,17 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
     [consumePendingBonuses],
   )
 
+  const toggleFavoriteSkill = useCallback(
+    (skillId: string) => {
+      const current = character.favorite_skills
+      const next = current.includes(skillId)
+        ? current.filter((id) => id !== skillId)
+        : [...current, skillId]
+      updateField('favorite_skills', next)
+    },
+    [character.favorite_skills, updateField],
+  )
+
   async function handleDelete() {
     const label = character.is_npc ? 'NPC' : 'character'
     const confirmed = window.confirm(
@@ -193,6 +204,9 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
           skills={character.skills}
           canEdit={editScopeCanEdit}
           onSkillChange={updateSkill}
+          favoriteSkills={character.favorite_skills}
+          canFavorite={canEdit}
+          onToggleFavorite={toggleFavoriteSkill}
           gameId={character.game_id}
           characterId={character.id}
           edgeAvailable={character.edge_current}

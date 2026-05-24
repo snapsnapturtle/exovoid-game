@@ -54,6 +54,7 @@ export type Database = {
           cyberware: Json
           edge_current: number
           experience: number
+          favorite_skills: Json
           game_id: string
           gender: string
           health_current: number | null
@@ -86,6 +87,7 @@ export type Database = {
           cyberware?: Json
           edge_current?: number
           experience?: number
+          favorite_skills?: Json
           game_id: string
           gender?: string
           health_current?: number | null
@@ -118,6 +120,7 @@ export type Database = {
           cyberware?: Json
           edge_current?: number
           experience?: number
+          favorite_skills?: Json
           game_id?: string
           gender?: string
           health_current?: number | null
@@ -498,6 +501,7 @@ export type Character = Omit<
   | 'injuries'
   | 'malfunction_allocations'
   | 'pending_bonuses'
+  | 'favorite_skills'
 > & {
   attributes: CharacterAttributes
   skills: Record<string, number>
@@ -510,6 +514,8 @@ export type Character = Omit<
    * most once (rulebook example). */
   malfunction_allocations: number[]
   pending_bonuses: PendingBonus[]
+  /** Skill ids the owner has starred — sorted to the top of SkillsPanel. */
+  favorite_skills: string[]
 }
 
 /**

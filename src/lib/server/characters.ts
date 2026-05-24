@@ -150,6 +150,7 @@ export const updateCharacter = createServerFn({ method: 'POST' })
         health_current?: number | null
         injuries?: InjuryEntry[]
         pending_bonuses?: PendingBonus[]
+        favorite_skills?: string[]
         notes?: string
         portrait_url?: string | null
       }
