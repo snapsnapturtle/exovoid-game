@@ -1,18 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
-import {
-  autoUpdate,
-  flip,
-  FloatingPortal,
-  offset,
-  shift,
-  useDismiss,
-  useFloating,
-  useFocus,
-  useHover,
-  useInteractions,
-  useRole,
-} from '@floating-ui/react'
 import { Link, useRouter } from '@tanstack/react-router'
+import { EffectTooltip } from './EffectTooltip'
 import type { Character, GameState, InventoryItem } from '~/lib/types/database'
 import { inventoryByLocation, lookupItem } from '~/lib/game-logic/items'
 import {
@@ -1204,60 +1192,6 @@ function ArmorStats({
   )
 }
 
-/**
- * Hover/focus tooltip that surfaces an arbitrary effect string. Same
- * floating-ui plumbing as QualityBadge — extracted locally since both the
- * manufacturer line and mod chips need it. Move to a shared primitive when
- * weapon mods land and a third consumer makes the abstraction worthwhile.
- */
-function EffectTooltip({
-  text,
-  children,
-}: {
-  text: string
-  children: React.ReactNode
-}) {
-  const [open, setOpen] = useState(false)
-  const { refs, floatingStyles, context } = useFloating({
-    open,
-    onOpenChange: setOpen,
-    placement: 'top',
-    middleware: [offset(6), flip({ padding: 8 }), shift({ padding: 8 })],
-    whileElementsMounted: autoUpdate,
-  })
-  const hover = useHover(context, {
-    delay: { open: 100, close: 0 },
-    move: false,
-  })
-  const focus = useFocus(context)
-  const dismiss = useDismiss(context)
-  const role = useRole(context, { role: 'tooltip' })
-  const { getReferenceProps, getFloatingProps } = useInteractions([
-    hover,
-    focus,
-    dismiss,
-    role,
-  ])
-  return (
-    <>
-      <span ref={refs.setReference} tabIndex={0} {...getReferenceProps()}>
-        {children}
-      </span>
-      {open && (
-        <FloatingPortal>
-          <div
-            ref={refs.setFloating}
-            style={floatingStyles}
-            className="elevation-float z-50 w-72 rounded-lg border border-gray-400 bg-background-200 px-3 py-2 text-xs text-gray-1000 whitespace-pre-line"
-            {...getFloatingProps()}
-          >
-            {text}
-          </div>
-        </FloatingPortal>
-      )}
-    </>
-  )
-}
 
 function DurabilityStepper({
   value,
