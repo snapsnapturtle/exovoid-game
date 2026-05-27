@@ -77,6 +77,7 @@ function GameLayout() {
           currentUserId={currentUserId}
           gameId={game.id}
           myCharacters={myCharacters}
+          pendingSupport={liveGameState.pending_support}
         />
       </div>
     </DiceFeedContext.Provider>

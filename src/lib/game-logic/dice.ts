@@ -209,6 +209,17 @@ export function computeAttributeAverage(
 }
 
 /**
+ * Compute the dice pool for a support contribution. Per rulebook §"Support
+ * Checks": ceil(skill/2) aptitude dice — no standard, no expertise. Untrained
+ * supporter (skill 0) still rolls a single aptitude die when their aid makes
+ * narrative sense.
+ */
+export function computeSupportPool(skillLevel: number): DicePool {
+  const aptitude = skillLevel <= 0 ? 1 : Math.ceil(skillLevel / 2)
+  return { standard: 0, aptitude, expertise: 0, total: aptitude }
+}
+
+/**
  * Compute the dice pool for a skill check.
  *
  * Rules:

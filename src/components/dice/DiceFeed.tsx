@@ -3,7 +3,12 @@ import { CustomDiceRoller } from './CustomDiceRoller'
 import { RollResultView } from './RollResultView'
 import { Button } from '~/components/ui/Button'
 import { Modal } from '~/components/ui/Modal'
-import type { DiceRollEntry } from '~/lib/server/dice'
+import {
+  clearPendingSupport,
+  removePendingSupport,
+  type DiceRollEntry,
+} from '~/lib/server/dice'
+import type { PendingSupport } from '~/lib/types/database'
 
 const TIME_TICK_MS = 15_000
 const HIGHLIGHT_MS = 1800
@@ -60,6 +65,7 @@ interface DiceFeedProps {
   currentUserId: string
   gameId: string
   myCharacters: { id: string; name: string }[]
+  pendingSupport: PendingSupport[]
 }
 
 export function DiceFeed({
@@ -67,6 +73,7 @@ export function DiceFeed({
   currentUserId,
   gameId,
   myCharacters,
+  pendingSupport,
 }: DiceFeedProps) {
   const [details, setDetails] = useState<DiceRollEntry | null>(null)
   const [highlighted, setHighlighted] = useState<Set<string>>(() => new Set())
@@ -136,6 +143,9 @@ export function DiceFeed({
             + Custom
           </Button>
         </div>
+        {pendingSupport.length > 0 && (
+          <PendingSupportStrip gameId={gameId} pendingSupport={pendingSupport} />
+        )}
         {rolls.length === 0 ? (
           <p className="flex-1 px-2 py-6 text-center text-sm text-gray-700">
             No rolls yet.
@@ -214,6 +224,8 @@ function RollCard({
   const label = roll.character_name ?? roll.player_name ?? 'Unknown'
   const skill = roll.skill_name ?? 'Custom roll'
   const modifier = roll.data.modifier ?? 0
+  const isSupport = roll.data.kind === 'support'
+  const absorbedCount = roll.data.absorbedSupports?.length ?? 0
 
   return (
     <button
@@ -229,16 +241,26 @@ function RollCard({
           {relativeTime(roll.created_at, now)}
         </span>
       </div>
-      <div className="mt-0.5">
+      <div className="mt-0.5 flex flex-wrap items-center gap-x-1.5">
         <span className="font-medium text-white">{skill}</span>
+        {isSupport && (
+          <span className="rounded bg-accent-700/20 px-1.5 py-0.5 text-[10px] leading-none text-accent-900">
+            AS SUPPORT
+          </span>
+        )}
+        {absorbedCount > 0 && (
+          <span className="text-xs text-accent-900">
+            (+{absorbedCount} support)
+          </span>
+        )}
         {modifier !== 0 && (
-          <span className="ml-1.5 text-xs text-gray-700">
+          <span className="text-xs text-gray-700">
             ({modifier > 0 ? '+' : ''}
             {modifier})
           </span>
         )}
         {roll.is_hidden && (
-          <span className="ml-1.5 rounded bg-warning-700/20 px-1.5 py-0.5 text-[10px] text-warning-900">
+          <span className="rounded bg-warning-700/20 px-1.5 py-0.5 text-[10px] leading-none text-warning-900">
             HIDDEN
           </span>
         )}
@@ -266,6 +288,79 @@ function RollCard({
         )}
       </div>
     </button>
+  )
+}
+
+function PendingSupportStrip({
+  gameId,
+  pendingSupport,
+}: {
+  gameId: string
+  pendingSupport: PendingSupport[]
+}) {
+  const [busy, setBusy] = useState(false)
+
+  async function handleRemove(supportId: string) {
+    if (busy) return
+    setBusy(true)
+    try {
+      await removePendingSupport({ data: { gameId, supportId } })
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  async function handleClearAll() {
+    if (busy) return
+    setBusy(true)
+    try {
+      await clearPendingSupport({ data: { gameId } })
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <div className="shrink-0 border-b border-gray-400 bg-background-200 px-3 py-2">
+      <div className="mb-1.5 flex items-center justify-between gap-2">
+        <span className="text-[10px] font-semibold uppercase tracking-wide text-accent-900">
+          Pending supports ({pendingSupport.length})
+        </span>
+        <button
+          type="button"
+          onClick={handleClearAll}
+          disabled={busy}
+          className="text-[10px] uppercase tracking-wide text-gray-700 transition not-disabled:hover:text-danger-900 disabled:cursor-not-allowed"
+          title="Discard all pending supports"
+        >
+          Clear all
+        </button>
+      </div>
+      <ul className="flex flex-wrap gap-1">
+        {pendingSupport.map((s) => (
+          <li
+            key={s.id}
+            className="inline-flex items-center gap-1 rounded border border-accent-700/40 bg-accent-700/15 py-0.5 pl-1.5 pr-0.5 text-[11px] text-accent-900"
+            title={`${s.supporterName} — ${s.skillName}`}
+          >
+            <span className="truncate">
+              <span className="font-medium">{s.supporterName}</span>
+              <span className="text-gray-700"> · {s.skillName}</span>
+            </span>
+            <button
+              type="button"
+              onClick={() => handleRemove(s.id)}
+              disabled={busy}
+              aria-label={`Discard ${s.supporterName}'s support for ${s.skillName}`}
+              title="Discard this support"
+              className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded text-accent-900 transition not-disabled:hover:bg-accent-700/30 not-disabled:hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              ×
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
   )
 }
 

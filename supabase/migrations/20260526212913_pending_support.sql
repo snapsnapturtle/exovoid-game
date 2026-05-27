@@ -1,0 +1,25 @@
+-- Per-game pending support contributions: supporter pre-rolls (ceil(skill/2)
+-- aptitude dice, min 1) "as support for X skill", and the rolled summary sits
+-- here until a main roller for that skill absorbs it. See rulebook §"Support
+-- Checks" — supporters must roll before the main performer, and "add all
+-- results" to the main check (no pool modifier; result symbols carry over,
+-- which is why this isn't piggy-backed on character.pending_bonuses).
+--
+-- Shape per entry (mirrored in src/lib/types/database.ts as PendingSupport):
+--   { id: uuid,
+--     diceRollId: uuid,                -- the supporter's row in dice_rolls
+--     supporterUserId: uuid,
+--     supporterCharacterId: uuid|null,
+--     supporterName: text,             -- cached label
+--     skillId: text,                   -- canonical SKILLS id, used for matching
+--     skillName: text,
+--     summary: { success: n, trigger: n, ... },
+--     createdAt: ISO timestamp }
+--
+-- Entries are consumed (removed) when a main roll commits with absorbSupportIds.
+--
+-- game_state already has REPLICA IDENTITY FULL (migration 004) and is on the
+-- supabase_realtime publication (migration 006), so realtime updates to this
+-- column propagate without further wiring.
+alter table public.game_state
+  add column pending_support jsonb not null default '[]';

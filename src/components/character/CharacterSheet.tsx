@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 import { getRouteApi, useNavigate } from '@tanstack/react-router'
 import type { Character, PendingBonus } from '~/lib/types/database'
 import { useCharacter } from '~/lib/hooks/useCharacter'
+import { useRealtimeGameState } from '~/lib/hooks/useRealtimeGameState'
 import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
 import { deleteCharacter, updatePortraitUrl } from '~/lib/server/characters'
 import { uploadPortrait, PortraitError } from '~/lib/portrait'
@@ -32,7 +33,8 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
   const navigate = useNavigate()
   const { character, saveStatus, updateField, updateAttribute, updateSkill } =
     useCharacter(initial, canEdit)
-  const { members, currentUserId, isGm } = gameRoute.useLoaderData()
+  const { members, currentUserId, isGm, gameState } = gameRoute.useLoaderData()
+  const liveGameState = useRealtimeGameState(gameState)
   // Single role: GM (always allowed in their own game) or the current
   // controller. The creator field is informational only — once an NPC is
   // handed off, the previous controller loses every right.
@@ -209,6 +211,8 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
           onToggleFavorite={toggleFavoriteSkill}
           gameId={character.game_id}
           characterId={character.id}
+          characterName={character.name}
+          availableSupport={liveGameState.pending_support}
           edgeAvailable={character.edge_current}
           onSpendEdge={() =>
             updateField('edge_current', Math.max(0, character.edge_current - 1))
