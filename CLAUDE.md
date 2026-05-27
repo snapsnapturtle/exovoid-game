@@ -140,3 +140,9 @@ supabase db reset     # Reset DB and run migrations
 VITE_SUPABASE_URL=http://127.0.0.1:54321
 VITE_SUPABASE_ANON_KEY=<your-anon-key>
 ```
+
+## Production / hosting
+
+Vercel + Supabase Cloud. The local Supabase CLI is linked to the cloud project `ndvutykwkidazmvtktby` (Frankfurt, region `eu-central-1`) — `supabase db push` deploys the migrations in `supabase/migrations/` to production. The Vercel project, build settings, and `VITE_SUPABASE_*` env vars live in the `../infrastructure` repo (`exovoid-game.tf`); never set them in the Vercel dashboard manually — Terraform will reconcile them away.
+
+The build adapter is `nitro/vite`. Nitro auto-detects Vercel via the `VERCEL=1` env var that Vercel sets during build, producing a `.vercel/output/` directory in the Build Output API shape. Locally the same plugin emits a Node.js server to `.output/server/index.mjs` (run via `npm run start`, or `npx vite preview` for a quick check).
