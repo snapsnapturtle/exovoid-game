@@ -92,15 +92,13 @@ function GameLobbyPage() {
               <h3 className="text-lg font-semibold text-white">
                 {isGm ? 'All Characters' : 'Your Characters'}
               </h3>
-              {!isGm && (
-                <Link
-                  to="/games/$gameId/characters/new"
-                  params={{ gameId: game.id }}
-                  className={buttonClasses('primary')}
-                >
-                  New Character
-                </Link>
-              )}
+              <Link
+                to="/games/$gameId/characters/new"
+                params={{ gameId: game.id }}
+                className={buttonClasses('primary')}
+              >
+                New Character
+              </Link>
             </div>
 
             {(isGm ? characters : myCharacters).length === 0 ? (
