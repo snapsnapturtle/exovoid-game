@@ -1,6 +1,10 @@
 import { useMemo, useState } from 'react'
 import { DieCounter } from './Die'
-import { rollDice, type DiceRollData } from '~/lib/server/dice'
+import {
+  rollDice,
+  rollSupportContribution,
+  type DiceRollData,
+} from '~/lib/server/dice'
 import { applyModifier, type DicePool } from '~/lib/game-logic/dice'
 import {
   useDiceFeedBroadcast,
@@ -9,14 +13,24 @@ import {
 import { RollResultView, type ApplyBonusInput } from './RollResultView'
 import { Button } from '~/components/ui/Button'
 import { Modal } from '~/components/ui/Modal'
-import type { PendingBonus } from '~/lib/types/database'
+import type { PendingBonus, PendingSupport } from '~/lib/types/database'
 
 interface DiceRollerProps {
   gameId: string
   characterId: string | null
+  /** Canonical skill id (used for support matching). */
+  skillId?: string
+  /** Human-readable skill name (modal title + dice_rolls.skill_name). */
   skillName: string
   pool: DicePool
   onClose: () => void
+  /** `support` = supporter contribution flow. Hides edge/bonus/hidden affordances,
+   * persists via rollSupportContribution, and labels the modal accordingly. */
+  mode?: 'normal' | 'support'
+  /** Cached display label used to populate PendingSupport.supporterName (mode=support). */
+  supporterName?: string
+  /** Pending support contributions matching this skill — surfaced as absorbable pills (mode=normal). */
+  availableSupport?: PendingSupport[]
   /** Optional AP cost — shown as a hint in the footer; consumer wires the actual debit via onAfterRoll. */
   apCost?: number
   /** Pre-applied pool modifier (e.g. -3 for Dodge/Parry). */
@@ -47,12 +61,38 @@ interface DiceRollerProps {
   defaultHidden?: boolean
 }
 
+const SUPPORT_SYMBOL_ORDER = [
+  'success',
+  'trigger',
+  'complication',
+  'botch',
+  'xp',
+] as const
+
+function formatSupportSummary(summary: Record<string, number>): string {
+  const parts: string[] = []
+  for (const s of SUPPORT_SYMBOL_ORDER) {
+    const n = summary[s] ?? 0
+    if (n > 0) parts.push(`${n} ${s}`)
+  }
+  // Catch anything not in the canonical order (defensive — shouldn't happen for support rolls).
+  for (const [s, n] of Object.entries(summary)) {
+    if (n > 0 && !SUPPORT_SYMBOL_ORDER.includes(s as never))
+      parts.push(`${n} ${s}`)
+  }
+  return parts.length === 0 ? 'no symbols' : parts.join(', ')
+}
+
 export function DiceRoller({
   gameId,
   characterId,
+  skillId,
   skillName,
   pool,
   onClose,
+  mode = 'normal',
+  supporterName,
+  availableSupport,
   apCost,
   initialModifier = 0,
   weaponTriggers,
@@ -67,6 +107,7 @@ export function DiceRoller({
   onRemoveBonus,
   defaultHidden = false,
 }: DiceRollerProps) {
+  const isSupport = mode === 'support'
   const [modifier, setModifier] = useState(initialModifier)
   const [hidden, setHidden] = useState(defaultHidden)
   const [rolling, setRolling] = useState(false)
@@ -84,7 +125,9 @@ export function DiceRoller({
   // Snapshot the pending bonuses at modal-open so we can keep displaying
   // them after the character row has them removed. Consume once on the
   // first roll; re-rolls in the same modal don't re-consume.
-  const [appliedBonuses] = useState<PendingBonus[]>(() => pendingBonuses ?? [])
+  const [appliedBonuses] = useState<PendingBonus[]>(() =>
+    isSupport ? [] : (pendingBonuses ?? []),
+  )
   // Bonuses the user opted out of for this roll. Skipped bonuses don't
   // contribute to the pool and aren't consumed on commit — they stay on
   // the character for next time.
@@ -92,24 +135,66 @@ export function DiceRoller({
     () => new Set(),
   )
   const [bonusesConsumed, setBonusesConsumed] = useState(false)
+  // Support contributions the user has opted to absorb on this main roll.
+  // Default to all available — easy to forget otherwise, and the worst case
+  // is one click to deselect a support you didn't mean to take.
+  const [absorbedIds, setAbsorbedIds] = useState<Set<string>>(
+    () => new Set(isSupport ? [] : (availableSupport ?? []).map((s) => s.id)),
+  )
+  // Snapshot of the supports the first roll consumed. On Edge re-rolls the
+  // pending_support entry is already gone from game_state, so we resend the
+  // snapshot via preAbsorbedSupports to keep the contribution sticky.
+  const [consumedSupportSnapshot, setConsumedSupportSnapshot] = useState<
+    PendingSupport[] | null
+  >(null)
   const refreshFeed = useDiceFeedRefresh()
   const broadcastNewRoll = useDiceFeedBroadcast()
 
   const activeBonuses = appliedBonuses.filter((b) => !skippedBonusIds.has(b.id))
-  const edgeEnabled = onSpendEdge != null && edgeAvailable != null
-  const bonusModifierSum = activeBonuses.reduce((s, b) => s + b.modifier, 0)
-  const effectiveModifier =
-    modifier + (edgeBonusReserved ? 3 : 0) + bonusModifierSum
+  const edgeEnabled = !isSupport && onSpendEdge != null && edgeAvailable != null
+  const bonusModifierSum = isSupport
+    ? 0
+    : activeBonuses.reduce((s, b) => s + b.modifier, 0)
+  const effectiveModifier = isSupport
+    ? 0
+    : modifier + (edgeBonusReserved ? 3 : 0) + bonusModifierSum
   const adjusted = useMemo(
-    () => applyModifier(pool, effectiveModifier),
-    [pool, effectiveModifier],
+    () => (isSupport ? pool : applyModifier(pool, effectiveModifier)),
+    [pool, effectiveModifier, isSupport],
   )
   const showConfig = !result
+  const supportList = isSupport ? [] : (availableSupport ?? [])
 
   async function submit() {
     setRolling(true)
     setError(null)
     try {
+      if (isSupport) {
+        if (!skillId) {
+          throw new Error('Missing skillId for support roll')
+        }
+        const { roll } = await rollSupportContribution({
+          data: {
+            gameId,
+            characterId,
+            skillId,
+            skillName,
+            pool: {
+              standard: adjusted.standard,
+              aptitude: adjusted.aptitude,
+              expertise: adjusted.expertise,
+            },
+            supporterName: supporterName ?? 'Supporter',
+          },
+        })
+        const rollData = roll.roll_data as unknown as DiceRollData
+        setResult(rollData)
+        setRollKey((k) => k + 1)
+        await refreshFeed()
+        broadcastNewRoll()
+        return
+      }
+
       const row = await rollDice({
         data: {
           gameId,
@@ -122,11 +207,21 @@ export function DiceRoller({
           },
           modifier: effectiveModifier,
           isHidden: hidden,
+          // First roll: consume from game_state. Re-roll: resend the snapshot
+          // so the same supporter contribution merges into the new result.
+          absorbSupportIds:
+            !consumedSupportSnapshot && absorbedIds.size > 0
+              ? Array.from(absorbedIds)
+              : undefined,
+          preAbsorbedSupports: consumedSupportSnapshot ?? undefined,
         },
       })
       const rollData = row.roll_data as unknown as DiceRollData
       setResult(rollData)
       setRollKey((k) => k + 1)
+      if (!consumedSupportSnapshot && rollData.absorbedSupports?.length) {
+        setConsumedSupportSnapshot(rollData.absorbedSupports)
+      }
       await refreshFeed()
       broadcastNewRoll()
       if (edgeBonusReserved && !edgeBonusDebited && onSpendEdge) {
@@ -175,10 +270,11 @@ export function DiceRoller({
     void submit()
   }
 
-  const showApHint = apCost != null && apCost > 0 && !result
+  const showApHint = !isSupport && apCost != null && apCost > 0 && !result
   const canReserveEdge =
     !result && (edgeBonusReserved || (edgeAvailable ?? 0) > 0)
   const canSpendEdgeReroll = !!result && !rolling && (edgeAvailable ?? 0) > 0
+  const rollLabel = isSupport ? 'Roll as support' : 'Roll'
 
   return (
     <Modal
@@ -187,7 +283,8 @@ export function DiceRoller({
       align="center"
       title={
         <>
-          Roll: <span className="text-accent-900">{skillName}</span>
+          {isSupport ? 'Support: ' : 'Roll: '}
+          <span className="text-accent-900">{skillName}</span>
           {contextLabel && (
             <span className="ml-2 align-middle text-xs font-normal text-gray-700">
               {contextLabel}
@@ -221,7 +318,7 @@ export function DiceRoller({
             )
           ) : (
             <Button onClick={submit} disabled={rolling || adjusted.total === 0}>
-              {rolling ? 'Rolling…' : 'Roll'}
+              {rolling ? 'Rolling…' : rollLabel}
             </Button>
           )}
         </>
@@ -234,7 +331,13 @@ export function DiceRoller({
               Pool
             </p>
             <div className="flex items-center gap-3">
-              <DieCounter type="standard" count={adjusted.standard} size="sm" />
+              {adjusted.standard > 0 && (
+                <DieCounter
+                  type="standard"
+                  count={adjusted.standard}
+                  size="sm"
+                />
+              )}
               {adjusted.aptitude > 0 && (
                 <DieCounter
                   type="aptitude"
@@ -255,48 +358,50 @@ export function DiceRoller({
             </div>
           </div>
 
-          <div className="mb-4">
-            <p className="mb-2 text-xs uppercase tracking-wide text-gray-700">
-              Modifier
-            </p>
-            <div className="flex items-center gap-1.5">
-              <button
-                type="button"
-                onClick={() => setModifier((m) => m - 1)}
-                aria-label="Decrease modifier"
-                className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition hover:bg-gray-500"
-              >
-                −
-              </button>
-              <span className="min-w-[3ch] text-center text-sm font-medium text-white">
-                {modifier > 0 ? `+${modifier}` : modifier}
-              </span>
-              <button
-                type="button"
-                onClick={() => setModifier((m) => m + 1)}
-                aria-label="Increase modifier"
-                className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition hover:bg-gray-500"
-              >
-                +
-              </button>
-              {modifier !== initialModifier && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setModifier(initialModifier)}
-                  className="ml-1"
+          {!isSupport && (
+            <div className="mb-4">
+              <p className="mb-2 text-xs uppercase tracking-wide text-gray-700">
+                Modifier
+              </p>
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setModifier((m) => m - 1)}
+                  aria-label="Decrease modifier"
+                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition hover:bg-gray-500"
                 >
-                  Reset
-                </Button>
-              )}
+                  −
+                </button>
+                <span className="min-w-[3ch] text-center text-sm font-medium text-white">
+                  {modifier > 0 ? `+${modifier}` : modifier}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setModifier((m) => m + 1)}
+                  aria-label="Increase modifier"
+                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition hover:bg-gray-500"
+                >
+                  +
+                </button>
+                {modifier !== initialModifier && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setModifier(initialModifier)}
+                    className="ml-1"
+                  >
+                    Reset
+                  </Button>
+                )}
+              </div>
+              <p className="mt-1.5 text-xs text-gray-700">
+                Negative reduces aptitude first, then expertise. Standard die is
+                never modified.
+              </p>
             </div>
-            <p className="mt-1.5 text-xs text-gray-700">
-              Negative reduces aptitude first, then expertise. Standard die is
-              never modified.
-            </p>
-          </div>
+          )}
 
-          {appliedBonuses.length > 0 && (
+          {!isSupport && appliedBonuses.length > 0 && (
             <div className="mb-4">
               <p className="mb-2 text-xs uppercase tracking-wide text-gray-700">
                 Pending bonuses
@@ -342,6 +447,48 @@ export function DiceRoller({
             </div>
           )}
 
+          {!isSupport && supportList.length > 0 && (
+            <div className="mb-4">
+              <p className="mb-2 text-xs uppercase tracking-wide text-gray-700">
+                Available support
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {supportList.map((s) => {
+                  const picked = absorbedIds.has(s.id)
+                  return (
+                    <button
+                      key={s.id}
+                      type="button"
+                      onClick={() =>
+                        setAbsorbedIds((prev) => {
+                          const next = new Set(prev)
+                          if (next.has(s.id)) next.delete(s.id)
+                          else next.add(s.id)
+                          return next
+                        })
+                      }
+                      title={
+                        picked
+                          ? `Click to skip ${s.supporterName}'s support`
+                          : `Click to absorb ${s.supporterName}'s support`
+                      }
+                      className={`inline-flex items-center gap-1 rounded border px-1.5 py-0.5 text-[11px] transition ${
+                        picked
+                          ? 'border-accent-700/60 bg-accent-700/15 text-accent-900 hover:bg-accent-700/25'
+                          : 'border-gray-400 bg-transparent text-gray-1000 hover:bg-gray-100'
+                      }`}
+                    >
+                      <span className="font-semibold">{s.supporterName}</span>
+                      <span className="text-gray-700">
+                        ({formatSupportSummary(s.summary)})
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
           {edgeEnabled && (
             <div className="mb-4 flex items-center gap-2">
               <Button
@@ -365,15 +512,17 @@ export function DiceRoller({
             </div>
           )}
 
-          <label className="mb-4 flex items-center gap-2 text-sm text-gray-1000">
-            <input
-              type="checkbox"
-              checked={hidden}
-              onChange={(e) => setHidden(e.target.checked)}
-              className="h-4 w-4"
-            />
-            Hidden roll (only you and the GM see the result)
-          </label>
+          {!isSupport && (
+            <label className="mb-4 flex items-center gap-2 text-sm text-gray-1000">
+              <input
+                type="checkbox"
+                checked={hidden}
+                onChange={(e) => setHidden(e.target.checked)}
+                className="h-4 w-4"
+              />
+              Hidden roll (only you and the GM see the result)
+            </label>
+          )}
         </>
       )}
 
@@ -383,11 +532,11 @@ export function DiceRoller({
         <div key={rollKey} className="mb-4">
           <RollResultView
             data={result}
-            weaponTriggers={weaponTriggers}
-            showCombatTriggers={showCombatTriggers}
-            onApplyBonus={onApplyBonus}
-            onRemoveBonus={onRemoveBonus}
-            currentBonuses={pendingBonuses}
+            weaponTriggers={isSupport ? undefined : weaponTriggers}
+            showCombatTriggers={!isSupport && showCombatTriggers}
+            onApplyBonus={isSupport ? undefined : onApplyBonus}
+            onRemoveBonus={isSupport ? undefined : onRemoveBonus}
+            currentBonuses={isSupport ? undefined : pendingBonuses}
           />
         </div>
       )}

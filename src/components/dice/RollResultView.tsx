@@ -42,6 +42,27 @@ const TYPE_ORDER: DieType[] = ['standard', 'aptitude', 'expertise', 'injury']
 // Tunes how quickly result dice cascade in. Total animation ≈ stagger * dice + 420ms.
 const CASCADE_STAGGER_MS = 60
 
+const ABSORBED_SYMBOL_ORDER = [
+  'success',
+  'trigger',
+  'complication',
+  'botch',
+  'xp',
+] as const
+
+function formatAbsorbedSummary(summary: Record<string, number>): string {
+  const parts: string[] = []
+  for (const s of ABSORBED_SYMBOL_ORDER) {
+    const n = summary[s] ?? 0
+    if (n > 0) parts.push(`+${n} ${s}`)
+  }
+  for (const [s, n] of Object.entries(summary)) {
+    if (n > 0 && !ABSORBED_SYMBOL_ORDER.includes(s as never))
+      parts.push(`+${n} ${s}`)
+  }
+  return parts.length === 0 ? 'no symbols' : parts.join(', ')
+}
+
 interface RollResultViewProps {
   data: DiceRollData
   dieSize?: 'sm' | 'md' | 'lg'
@@ -78,10 +99,34 @@ export function RollResultView({
   const dice = [...(data.result ?? [])].sort(
     (a, b) => TYPE_ORDER.indexOf(a.type) - TYPE_ORDER.indexOf(b.type),
   )
+  const absorbedSupports = data.absorbedSupports ?? []
   const triggerCount = summary.trigger ?? 0
+
+  const isSupport = data.kind === 'support'
 
   return (
     <div>
+      {isSupport && (
+        <p className="mb-3 rounded border border-accent-700/40 bg-accent-700/15 px-2.5 py-1.5 text-xs text-accent-900">
+          Support contribution — these symbols will be added to the main
+          roller's check when they absorb this support.
+        </p>
+      )}
+      {absorbedSupports.length > 0 && (
+        <div className="mb-4 rounded border border-accent-700/40 bg-accent-700/15 px-2.5 py-2 text-xs text-gray-1000">
+          <p className="mb-1 font-medium text-accent-900">Including support</p>
+          <ul className="space-y-0.5">
+            {absorbedSupports.map((s) => (
+              <li key={s.id}>
+                <span className="font-medium">{s.supporterName}</span>{' '}
+                <span className="text-gray-700">
+                  ({s.skillName}): {formatAbsorbedSummary(s.summary)}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <div className="mb-5">
         <p className="mb-2 text-xs uppercase tracking-wide text-gray-700">
           Result
@@ -136,7 +181,7 @@ export function RollResultView({
           </div>
         </div>
       )}
-      {triggerCount > 0 && (
+      {!isSupport && triggerCount > 0 && (
         <div className="space-y-2">
           {weaponTriggers && weaponTriggers.length > 0 && (
             <WeaponTriggerPanel names={weaponTriggers} defaultOpen />

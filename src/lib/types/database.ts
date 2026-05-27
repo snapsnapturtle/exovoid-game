@@ -266,6 +266,7 @@ export type Database = {
           credits: number
           game_id: string
           inventory: Json
+          pending_support: Json
           updated_at: string
         }
         Insert: {
@@ -274,6 +275,7 @@ export type Database = {
           credits?: number
           game_id: string
           inventory?: Json
+          pending_support?: Json
           updated_at?: string
         }
         Update: {
@@ -282,6 +284,7 @@ export type Database = {
           credits?: number
           game_id?: string
           inventory?: Json
+          pending_support?: Json
           updated_at?: string
         }
         Relationships: [
@@ -553,9 +556,39 @@ export type CombatState = {
   participants: CombatParticipant[]
 }
 
+/**
+ * A pre-rolled support contribution sitting in game_state.pending_support
+ * until a main roller for the matching skill absorbs it. See rulebook
+ * §"Support Checks": supporters roll ceil(skill/2) aptitude dice before the
+ * main check and "add all results" to the main pool. Matching is by skillId
+ * alone — voice chat handles which contribution goes to whom.
+ */
+export type PendingSupport = {
+  id: string
+  /** FK into dice_rolls — the supporter's full roll row, for audit/feed links. */
+  diceRollId: string
+  supporterUserId: string
+  /** null for GM-as-self / non-character rolls. */
+  supporterCharacterId: string | null
+  /** Cached display label ("Alice" — character name fallbacks to profile). */
+  supporterName: string
+  /** Canonical SKILLS id used for matching against the main roller's skill. */
+  skillId: string
+  /** Cached for UI display. */
+  skillName: string
+  /** Summary of rolled symbols (success, trigger, complication, botch, xp). */
+  summary: Record<string, number>
+  /** ISO timestamp of when the support roll committed. */
+  createdAt: string
+}
+
 type GameStateRow = Database['public']['Tables']['game_state']['Row']
 
-export type GameState = Omit<GameStateRow, 'inventory' | 'combat'> & {
+export type GameState = Omit<
+  GameStateRow,
+  'inventory' | 'combat' | 'pending_support'
+> & {
   inventory: InventoryItem[]
   combat: CombatState | null
+  pending_support: PendingSupport[]
 }

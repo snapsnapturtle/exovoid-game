@@ -1,13 +1,16 @@
 import { useState } from 'react'
-import type { CharacterAttributes, PendingBonus } from '~/lib/types/database'
+import type {
+  CharacterAttributes,
+  PendingBonus,
+  PendingSupport,
+} from '~/lib/types/database'
 import { SKILLS, MAX_SKILL_LEVEL } from '~/lib/game-logic/skills'
-import { ATTRIBUTE_DEFINITIONS } from '~/lib/game-logic/attributes'
 import {
   computeAttributeAverage,
   computeDicePool,
+  computeSupportPool,
   type DicePool,
 } from '~/lib/game-logic/dice'
-import type { AttributeId } from '~/lib/game-logic/attributes'
 import { DiceRoller } from '~/components/dice/DiceRoller'
 import { InlineStepper } from '~/components/ui/InlineStepper'
 import type { ApplyBonusInput } from '~/components/dice/RollResultView'
@@ -35,12 +38,13 @@ interface SkillsPanelProps {
   /** Initial state for the roll modal's "Hidden roll" checkbox. True for
    * hidden NPCs so the GM doesn't have to remember to tick it. */
   defaultHidden?: boolean
-}
-
-function attrAbbr(id: AttributeId): string {
-  return (
-    ATTRIBUTE_DEFINITIONS.find((a) => a.id === id)?.abbr ?? id.toUpperCase()
-  )
+  /** Pre-rolled support contributions available in this game (any skill). The
+   * panel filters by current skill id at the per-row level when opening the
+   * Roll modal. */
+  availableSupport?: PendingSupport[]
+  /** Display label used to populate PendingSupport.supporterName when this
+   * character rolls support — defaults to the character's name. */
+  characterName: string
 }
 
 export function SkillsPanel({
@@ -60,9 +64,13 @@ export function SkillsPanel({
   onConsumeBonuses,
   onRemoveBonus,
   defaultHidden,
+  availableSupport,
+  characterName,
 }: SkillsPanelProps) {
   const [filter, setFilter] = useState('')
   const [rolling, setRolling] = useState<{
+    mode: 'normal' | 'support'
+    skillId: string
     skillName: string
     pool: DicePool
   } | null>(null)
@@ -92,21 +100,23 @@ export function SkillsPanel({
         />
       </div>
       <div className="space-y-1">
-        <div className="grid grid-cols-[1fr_auto_auto] gap-2 px-2 text-xs text-gray-700">
+        <div className="grid grid-cols-[1fr_auto_auto_auto] gap-2 px-2 text-xs text-gray-700">
           <span>Skill</span>
           <span className="w-16 text-center">Level</span>
           <span className="w-[90px] pl-2 text-left">Roll</span>
+          <span className="w-[64px] pl-1 text-left">Support</span>
         </div>
         {sorted.map((skill) => {
           const level = skills[skill.id] ?? 0
           const attrAvg = computeAttributeAverage(attributes, skill.attributes)
           const pool = computeDicePool(attrAvg, level)
+          const supportPool = computeSupportPool(level)
           const isFavorite = favoriteSet.has(skill.id)
 
           return (
             <div
               key={skill.id}
-              className="grid grid-cols-[1fr_auto_auto] items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-gray-100"
+              className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-gray-100"
             >
               <div className="flex items-center gap-2">
                 {(canFavorite || isFavorite) && (
@@ -147,9 +157,6 @@ export function SkillsPanel({
                 <span className="text-sm font-medium text-gray-1000">
                   {skill.name}
                 </span>
-                <span className="text-xs text-gray-700">
-                  {skill.attributes.map(attrAbbr).join(' / ')}
-                </span>
               </div>
               <div className="flex h-6 w-16 items-center justify-center gap-1">
                 {canEdit ? (
@@ -172,7 +179,14 @@ export function SkillsPanel({
                 )}
               </div>
               <button
-                onClick={() => setRolling({ skillName: skill.name, pool })}
+                onClick={() =>
+                  setRolling({
+                    mode: 'normal',
+                    skillId: skill.id,
+                    skillName: skill.name,
+                    pool,
+                  })
+                }
                 title={`Roll ${skill.name}`}
                 className="flex w-[90px] cursor-pointer items-center gap-1.5 rounded-lg px-2 py-1 text-xs"
               >
@@ -190,6 +204,22 @@ export function SkillsPanel({
                   </span>
                 )}
               </button>
+              <button
+                onClick={() =>
+                  setRolling({
+                    mode: 'support',
+                    skillId: skill.id,
+                    skillName: skill.name,
+                    pool: supportPool,
+                  })
+                }
+                title={`Roll as support for ${skill.name} (${supportPool.aptitude} aptitude die${supportPool.aptitude === 1 ? '' : 's'})`}
+                className="flex w-[64px] cursor-pointer items-center gap-1.5 rounded-lg px-2 py-1 text-xs text-gray-1000 hover:bg-gray-100"
+              >
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded bg-success-300 text-xs text-success-1000">
+                  {supportPool.aptitude}
+                </span>
+              </button>
             </div>
           )
         })}
@@ -199,9 +229,19 @@ export function SkillsPanel({
         <DiceRoller
           gameId={gameId}
           characterId={characterId}
+          skillId={rolling.skillId}
           skillName={rolling.skillName}
           pool={rolling.pool}
-          edgeAvailable={edgeAvailable}
+          mode={rolling.mode}
+          supporterName={characterName}
+          availableSupport={
+            rolling.mode === 'normal'
+              ? (availableSupport ?? []).filter(
+                  (s) => s.skillId === rolling.skillId,
+                )
+              : undefined
+          }
+          edgeAvailable={rolling.mode === 'support' ? undefined : edgeAvailable}
           onSpendEdge={onSpendEdge}
           pendingBonuses={pendingBonuses}
           onApplyBonus={onApplyBonus}
