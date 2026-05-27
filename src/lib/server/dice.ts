@@ -79,7 +79,8 @@ export const rollDice = createServerFn({ method: 'POST' })
         .single()
       if (stateErr || !stateRow) throw new Error('Game state not found')
 
-      const all = (stateRow.pending_support as unknown as PendingSupport[]) ?? []
+      const all =
+        (stateRow.pending_support as unknown as PendingSupport[]) ?? []
       const matched = all.filter((p) => ids.has(p.id))
       const remaining = all.filter((p) => !ids.has(p.id))
 
@@ -182,7 +183,8 @@ export const rollSupportContribution = createServerFn({ method: 'POST' })
       .single()
     if (stateErr || !stateRow) throw new Error('Game state not found')
 
-    const current = (stateRow.pending_support as unknown as PendingSupport[]) ?? []
+    const current =
+      (stateRow.pending_support as unknown as PendingSupport[]) ?? []
     // A given supporter can only have one live support per skill — re-rolling
     // support for the same skill replaces the previous contribution. Scope by
     // character when present (so a single user GMing multiple NPCs can have
@@ -232,7 +234,8 @@ export const removePendingSupport = createServerFn({ method: 'POST' })
       .single()
     if (stateErr || !stateRow) throw new Error('Game state not found')
 
-    const current = (stateRow.pending_support as unknown as PendingSupport[]) ?? []
+    const current =
+      (stateRow.pending_support as unknown as PendingSupport[]) ?? []
     const next = current.filter((p) => p.id !== data.supportId)
     if (next.length === current.length) return { removed: false }
 

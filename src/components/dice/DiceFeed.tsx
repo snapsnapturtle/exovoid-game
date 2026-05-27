@@ -144,7 +144,10 @@ export function DiceFeed({
           </Button>
         </div>
         {pendingSupport.length > 0 && (
-          <PendingSupportStrip gameId={gameId} pendingSupport={pendingSupport} />
+          <PendingSupportStrip
+            gameId={gameId}
+            pendingSupport={pendingSupport}
+          />
         )}
         {rolls.length === 0 ? (
           <p className="flex-1 px-2 py-6 text-center text-sm text-gray-700">
