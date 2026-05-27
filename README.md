@@ -44,6 +44,14 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+## Deployment
+
+Production runs on **Vercel** against a **Supabase** project hosted in Central EU (Frankfurt, project ref `ndvutykwkidazmvtktby`).
+
+- The Vercel project and its env vars are managed via Terraform in the `infrastructure` repo (`exovoid-game.tf`). Pushing to `main` triggers a deploy.
+- Migrations: run `supabase db push` against the linked project to apply new SQL to production.
+- The build uses Nitro's Vercel Build Output API integration (`nitro/vite` plugin in `vite.config.ts`), which Vercel auto-detects — no framework preset needs to be set.
+
 ## Game Rules
 
 The complete Exovoid rule set is in `Exovoid game rules.md`. Key mechanics implemented:
