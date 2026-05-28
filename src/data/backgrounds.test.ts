@@ -51,20 +51,20 @@ function validateLeaf(leaf: LeafBonus): string | null {
     case 'attribute-bump':
     case 'attribute-choice':
       if ('attribute' in leaf && !ATTRIBUTE_IDS.has(leaf.attribute))
-        return `attribute-bump references unknown attribute "${leaf.attribute}"`
+        return `${leaf.kind} references unknown attribute "${leaf.attribute}"`
       if ('from' in leaf && leaf.from)
         for (const a of leaf.from)
           if (!ATTRIBUTE_IDS.has(a))
-            return `attribute-choice references unknown attribute "${a}"`
+            return `${leaf.kind} references unknown attribute "${a}"`
       return null
     case 'skill-bump':
     case 'skill-choice':
       if ('skill' in leaf && !SKILL_IDS.has(leaf.skill))
-        return `skill-bump references unknown skill "${leaf.skill}"`
+        return `${leaf.kind} references unknown skill "${leaf.skill}"`
       if ('from' in leaf && leaf.from)
         for (const s of leaf.from)
           if (!SKILL_IDS.has(s))
-            return `skill-choice references unknown skill "${s}"`
+            return `${leaf.kind} references unknown skill "${s}"`
       return null
     default:
       return null
