@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 import { getSupabaseBrowserClient } from '~/lib/supabase/client'
 import { Button } from '~/components/ui/Button'
@@ -9,14 +9,15 @@ export const Route = createFileRoute('/_auth/reset-password')({
   component: ResetPasswordPage,
 })
 
+// `pending` while we wait for Supabase to parse the recovery link;
+// `ready` once `PASSWORD_RECOVERY` has fired; `invalid` if no recovery is
+// in flight; `already-signed-in` if a normal authenticated visitor lands
+// here without a recovery token.
+type Status = 'pending' | 'ready' | 'invalid' | 'already-signed-in'
+
 function ResetPasswordPage() {
   const navigate = useNavigate()
-  const [recoveryReady, setRecoveryReady] = useState(false)
-  // `null` = still checking; `true`/`false` = decided. Used to render the
-  // "invalid or expired" state only after Supabase has had a chance to
-  // parse the URL hash and either emit PASSWORD_RECOVERY or hydrate an
-  // existing session.
-  const [hasSession, setHasSession] = useState<boolean | null>(null)
+  const [status, setStatus] = useState<Status>('pending')
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
   const [error, setError] = useState<string | null>(null)
@@ -24,24 +25,41 @@ function ResetPasswordPage() {
 
   useEffect(() => {
     const supabase = getSupabaseBrowserClient()
+    let timeoutId: ReturnType<typeof setTimeout> | undefined
 
-    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+    // Recovery links arrive with either a `?code=...` query param (PKCE)
+    // or a `#type=recovery` hash (implicit flow). If neither is present
+    // the page isn't being reached via a recovery link — fall through to
+    // the signed-in / unauthenticated branches below.
+    const hasRecoveryMarkers =
+      new URLSearchParams(window.location.search).has('code') ||
+      window.location.hash.includes('type=recovery')
+
+    const { data: sub } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'PASSWORD_RECOVERY') {
-        setRecoveryReady(true)
-        setHasSession(true)
-      } else if (event === 'SIGNED_IN' && session) {
-        setHasSession(true)
+        setStatus('ready')
       }
     })
 
-    // Fallback: if Supabase has already hydrated a session before this
-    // effect runs (or there's no recovery hash at all), check directly.
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setHasSession((prev) => (prev === null ? !!session : prev))
-    })
+    if (hasRecoveryMarkers) {
+      // Wait briefly for `PASSWORD_RECOVERY`. If it doesn't arrive the
+      // token is bad or expired and we fall back to the invalid state.
+      timeoutId = setTimeout(() => {
+        setStatus((prev) => (prev === 'pending' ? 'invalid' : prev))
+      }, 3000)
+    } else {
+      // No recovery in flight. A signed-in user shouldn't be on this
+      // page — bouncing them to `/account` keeps the re-auth requirement
+      // intact (the change-password form there asks for the current
+      // password). Everyone else gets the expired-link UI.
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        setStatus(session ? 'already-signed-in' : 'invalid')
+      })
+    }
 
     return () => {
       sub.subscription.unsubscribe()
+      if (timeoutId) clearTimeout(timeoutId)
     }
   }, [])
 
@@ -70,7 +88,7 @@ function ResetPasswordPage() {
     navigate({ to: '/dashboard' })
   }
 
-  if (hasSession === false && !recoveryReady) {
+  if (status === 'invalid') {
     return (
       <>
         <h2 className="mb-6 text-xl font-semibold text-white">
@@ -90,6 +108,29 @@ function ResetPasswordPage() {
         </p>
       </>
     )
+  }
+
+  if (status === 'already-signed-in') {
+    return (
+      <>
+        <h2 className="mb-6 text-xl font-semibold text-white">
+          Set new password
+        </h2>
+        <Alert variant="info">
+          You're already signed in. To change your password, use Account
+          settings — it'll ask you to confirm your current password first.
+        </Alert>
+        <p className="mt-4 text-center text-sm text-gray-900">
+          <Link to="/account" className="text-accent-900 hover:underline">
+            Go to Account settings
+          </Link>
+        </p>
+      </>
+    )
+  }
+
+  if (status === 'pending') {
+    return <p className="text-center text-sm text-gray-900">Loading…</p>
   }
 
   return (
