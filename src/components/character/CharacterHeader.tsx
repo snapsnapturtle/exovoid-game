@@ -151,7 +151,12 @@ export function CharacterHeader({
             {isEditMode ? 'Done editing' : 'Edit'}
           </Button>
         )}
-        {!isNpc && (
+        {!isNpc && showModeToggle && (
+          // Gate on edit permission (showModeToggle is the root canEdit signal
+          // from CharacterSheet). Viewers without edit rights can't open the
+          // downtime modal — otherwise their Apply clicks would mutate local
+          // state, the save would silently drop, and Train Skill would fire a
+          // recordProgression call that RLS rejects.
           <Button variant="secondary" onClick={onDowntime}>
             Downtime
           </Button>

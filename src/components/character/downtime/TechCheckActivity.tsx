@@ -34,14 +34,9 @@ export function TechCheckActivity({
   onCloseAll,
   onUpdateField,
 }: Props) {
-  if (!activity.check) return null
-  const skill = SKILLS.find((s) => s.id === activity.check!.skillId)
-  if (!skill) return null
-
-  const level = character.skills[skill.id] ?? 0
-  const attrAvg = computeAttributeAverage(effects.attributes, skill.attributes)
-  const pool = computeDicePool(attrAvg, level)
-
+  // Hooks must be declared before any early return — see React's Rules of
+  // Hooks. The bonus callbacks are activity-agnostic so they're safe to
+  // build unconditionally.
   const applyBonus = useCallback(
     (bonus: ApplyBonusInput): string => {
       const entry: PendingBonus = {
@@ -74,6 +69,17 @@ export function TechCheckActivity({
     [consumeBonuses],
   )
 
+  if (!activity.check) return null
+  // Hoist past the early return so TS keeps the narrowed type inside the
+  // SKILLS.find callback (closures lose flow-narrowing across boundaries).
+  const check = activity.check
+  const skill = SKILLS.find((s) => s.id === check.skillId)
+  if (!skill) return null
+
+  const level = character.skills[skill.id] ?? 0
+  const attrAvg = computeAttributeAverage(effects.attributes, skill.attributes)
+  const pool = computeDicePool(attrAvg, level)
+
   return (
     <DiceRoller
       gameId={gameId}
@@ -81,7 +87,7 @@ export function TechCheckActivity({
       skillId={skill.id}
       skillName={skill.name}
       pool={pool}
-      contextLabel={`Downtime · ${activity.name} (d${activity.check.difficulty})`}
+      contextLabel={`Downtime · ${activity.name} (d${check.difficulty})`}
       edgeAvailable={character.edge_current}
       onSpendEdge={() =>
         onUpdateField('edge_current', Math.max(0, character.edge_current - 1))

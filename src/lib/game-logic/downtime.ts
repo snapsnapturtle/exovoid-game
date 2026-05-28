@@ -1,4 +1,5 @@
 import downtimeActivitiesData from '~/data/downtime-activities.json'
+import { SKILLS } from './skills'
 
 export interface DowntimeCheck {
   skillId: string
@@ -34,9 +35,10 @@ export function seekInspirationEdgeCap(maxEdge: number): number {
 }
 
 // Skill is trainable when current level <= 3 (rulebook: "+1 skill level, but
-// only in a skill they have 3 or less levels in"). Missing keys default to 0.
+// only in a skill they have 3 or less levels in"). Iterates the full SKILLS
+// catalog so skills missing from the persisted JSONB blob (which default to
+// level 0 everywhere else in the app) still show up — they are exactly the
+// most-eligible candidates.
 export function trainableSkillIds(skills: Record<string, number>): string[] {
-  return Object.entries(skills)
-    .filter(([, lvl]) => (lvl ?? 0) <= 3)
-    .map(([id]) => id)
+  return SKILLS.filter((s) => (skills[s.id] ?? 0) <= 3).map((s) => s.id)
 }

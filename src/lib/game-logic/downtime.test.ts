@@ -85,14 +85,29 @@ describe('seekInspirationEdgeCap', () => {
 })
 
 describe('trainableSkillIds', () => {
-  it('returns skills with level <= 3 and treats missing keys as 0', () => {
-    expect(
-      trainableSkillIds({
-        firearms: 5,
-        medicine: 3,
-        tech: 0,
-        survival: 2,
-      }).sort(),
-    ).toEqual(['medicine', 'survival', 'tech'])
+  it('returns skills with level <= 3 from the persisted map', () => {
+    const result = trainableSkillIds({
+      firearms: 5,
+      medicine: 3,
+      tech: 0,
+      survival: 2,
+    })
+    expect(result).toContain('medicine')
+    expect(result).toContain('survival')
+    expect(result).toContain('tech')
+    expect(result).not.toContain('firearms')
+  })
+
+  it('includes skills missing from the persisted map (default 0)', () => {
+    // Empty skills blob → every SKILL is eligible. Previously the
+    // implementation iterated the blob only, dropping unset skills.
+    const result = trainableSkillIds({})
+    expect(result).toContain('firearms')
+    expect(result).toContain('tech')
+    expect(result).toContain('xenology')
+  })
+
+  it('excludes skills past the cap even when other skills are missing', () => {
+    expect(trainableSkillIds({ firearms: 5 })).not.toContain('firearms')
   })
 })
