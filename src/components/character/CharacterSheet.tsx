@@ -46,6 +46,7 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
     character.talents,
     character.cyberware,
     character.inventory,
+    character.derived_stat_bonuses,
   )
   const derivedStats = effects.derived
   const isEditMode = mode === 'edit'

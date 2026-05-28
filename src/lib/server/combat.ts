@@ -82,6 +82,7 @@ function snapshotParticipant(
     character.talents,
     character.cyberware,
     character.inventory,
+    character.derived_stat_bonuses,
   )
   const rolled = rollD6()
   // Carry the prior round's overspend forward (always ≤ 0). Rulebook §210:

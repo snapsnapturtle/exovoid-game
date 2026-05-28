@@ -387,6 +387,7 @@ function ParticipantCard({
     character.talents,
     character.cyberware,
     character.inventory,
+    character.derived_stat_bonuses,
   )
   const { derived, attributes: effectiveAttributes } = effects
   const equippedWeapons = character.inventory.filter(

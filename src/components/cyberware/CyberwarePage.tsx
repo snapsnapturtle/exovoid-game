@@ -63,12 +63,14 @@ export function CyberwarePage({ initial, canEdit }: CyberwarePageProps) {
         character.talents,
         character.cyberware,
         character.inventory,
+        character.derived_stat_bonuses,
       ).derived.cyberImmunity,
     [
       character.attributes,
       character.talents,
       character.cyberware,
       character.inventory,
+      character.derived_stat_bonuses,
     ],
   )
   const used = useMemo(

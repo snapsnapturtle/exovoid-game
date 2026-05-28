@@ -3,6 +3,7 @@ import { getSupabaseServerClient } from '~/lib/supabase/server'
 import type {
   Character,
   CharacterAttributes,
+  DerivedStatBonuses,
   InjuryEntry,
   PendingBonus,
   TalentEntry,
@@ -38,9 +39,16 @@ export const createCharacter = createServerFn({ method: 'POST' })
       age?: number | null
       background_notes?: string
       attributes: CharacterAttributes
+      /** Pre-bonus attribute allocation, validated separately against the 28+6/4 caps. */
+      baseAttributes?: CharacterAttributes
       skills: Record<string, number>
+      /** Pre-bonus final skills (career baseline + spent points), validated separately. */
+      baseFinalSkills?: Record<string, number>
       talents?: TalentEntry[]
       credits?: number
+      assets?: number
+      derived_stat_bonuses?: DerivedStatBonuses
+      skillPointsBudget?: number
     }) => d,
   )
   .handler(async ({ data }) => {
@@ -56,8 +64,11 @@ export const createCharacter = createServerFn({ method: 'POST' })
       {
         careerName: data.career,
         attributes: data.attributes,
+        baseAttributes: data.baseAttributes,
         finalSkills: data.skills,
+        baseFinalSkills: data.baseFinalSkills,
         talents: data.talents ?? [],
+        skillPointsBudget: data.skillPointsBudget,
       },
       careers,
     )
@@ -79,6 +90,8 @@ export const createCharacter = createServerFn({ method: 'POST' })
         skills: data.skills,
         talents: (data.talents ?? []) as never,
         credits: data.credits ?? 1000,
+        assets: data.assets ?? 0,
+        derived_stat_bonuses: (data.derived_stat_bonuses ?? {}) as never,
       })
       .select()
       .single()
@@ -323,6 +336,7 @@ export const installCyberware = createServerFn({ method: 'POST' })
       character.talents,
       character.cyberware,
       character.inventory,
+      character.derived_stat_bonuses,
     )
     const check = canInstallCyberware(
       character,
@@ -397,6 +411,7 @@ function withAllocationReset(
     character.talents,
     nextCyberware,
     character.inventory,
+    character.derived_stat_bonuses,
   )
   const used = occupationUsed(nextCyberware)
   if (used <= derived.cyberImmunity) {
@@ -427,6 +442,7 @@ export const setMalfunctionAllocations = createServerFn({ method: 'POST' })
       character.talents,
       character.cyberware,
       character.inventory,
+      character.derived_stat_bonuses,
     )
     const used = occupationUsed(character.cyberware)
     const excess = Math.max(0, used - derived.cyberImmunity)
