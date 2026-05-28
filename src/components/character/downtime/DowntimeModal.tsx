@@ -196,6 +196,7 @@ function ActivityDispatcher(props: DispatcherProps) {
         <RelaxAndRest
           character={props.character}
           effects={props.effects}
+          onCloseAll={props.onCloseAll}
           onUpdateField={props.onUpdateField}
         />
       )
@@ -204,6 +205,7 @@ function ActivityDispatcher(props: DispatcherProps) {
         <SeekInspiration
           character={props.character}
           effects={props.effects}
+          onCloseAll={props.onCloseAll}
           onUpdateField={props.onUpdateField}
         />
       )
@@ -211,6 +213,7 @@ function ActivityDispatcher(props: DispatcherProps) {
       return (
         <TrainSkill
           character={props.character}
+          onCloseAll={props.onCloseAll}
           onUpdateField={props.onUpdateField}
         />
       )

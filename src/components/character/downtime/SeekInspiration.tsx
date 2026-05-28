@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import type { Character } from '~/lib/types/database'
 import type { AppliedPassiveEffects } from '~/lib/game-logic/passive-effects'
@@ -9,6 +8,7 @@ import { useDowntimeFooterTarget } from './DowntimeModal'
 interface Props {
   character: Character
   effects: AppliedPassiveEffects
+  onCloseAll: () => void
   onUpdateField: <K extends keyof Character>(
     key: K,
     value: Character[K],
@@ -17,19 +17,22 @@ interface Props {
 
 const EDGE_GRANT = 2
 
-export function SeekInspiration({ character, effects, onUpdateField }: Props) {
-  const [applied, setApplied] = useState(false)
+export function SeekInspiration({
+  character,
+  effects,
+  onCloseAll,
+  onUpdateField,
+}: Props) {
   const footerEl = useDowntimeFooterTarget()
   const maxEdge = effects.derived.edge
   const cap = seekInspirationEdgeCap(maxEdge)
   const current = character.edge_current
   const next = Math.min(cap, current + EDGE_GRANT)
-  const actualGain = next - current
   const atCap = current >= cap
 
   function apply() {
     onUpdateField('edge_current', next)
-    setApplied(true)
+    onCloseAll()
   }
 
   return (
@@ -46,23 +49,15 @@ export function SeekInspiration({ character, effects, onUpdateField }: Props) {
             {current} → {next} / {cap}
           </span>
         </div>
-        {maxEdge !== cap && (
-          <p className="mt-1 text-xs text-gray-700">
-            Normal limit {maxEdge}; surplus carries into the next adventure.
-          </p>
-        )}
       </div>
-      {applied && (
-        <p className="text-xs text-accent-900">✓ Gained {actualGain} edge</p>
-      )}
       {footerEl &&
         createPortal(
           <Button
             onClick={apply}
-            disabled={applied || atCap}
+            disabled={atCap}
             title={atCap ? 'Already at the +50% ceiling' : undefined}
           >
-            {applied ? 'Applied' : 'Apply inspiration'}
+            Apply inspiration
           </Button>,
           footerEl,
         )}

@@ -9,15 +9,15 @@ import { useDowntimeFooterTarget } from './DowntimeModal'
 
 interface Props {
   character: Character
+  onCloseAll: () => void
   onUpdateField: <K extends keyof Character>(
     key: K,
     value: Character[K],
   ) => void
 }
 
-export function TrainSkill({ character, onUpdateField }: Props) {
+export function TrainSkill({ character, onCloseAll, onUpdateField }: Props) {
   const [selected, setSelected] = useState<string | null>(null)
-  const [applied, setApplied] = useState(false)
   const footerEl = useDowntimeFooterTarget()
 
   const skillNameById = new Map(SKILLS.map((s) => [s.id, s.name]))
@@ -51,7 +51,7 @@ export function TrainSkill({ character, onUpdateField }: Props) {
     }).catch((e) => {
       console.error('Failed to record training progression', e)
     })
-    setApplied(true)
+    onCloseAll()
   }
 
   if (eligible.length === 0) {
@@ -59,16 +59,6 @@ export function TrainSkill({ character, onUpdateField }: Props) {
       <p className="text-sm text-gray-1000">
         You don't have any skills at level 3 or below — every skill is past the
         training cap.
-      </p>
-    )
-  }
-
-  if (applied && selected) {
-    return (
-      <p className="text-sm text-accent-900">
-        ✓ Trained {skillNameById.get(selected)} —{' '}
-        {character.skills[selected] ?? 0} now. Available again at level{' '}
-        {character.level + 1}.
       </p>
     )
   }
