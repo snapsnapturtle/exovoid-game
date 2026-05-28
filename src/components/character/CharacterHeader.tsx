@@ -22,6 +22,7 @@ interface CharacterHeaderProps {
   onPortraitChange: (file: File) => void
   onModeToggle: () => void
   onDelete: () => void
+  onDowntime: () => void
 }
 
 export function CharacterHeader({
@@ -42,6 +43,7 @@ export function CharacterHeader({
   onPortraitChange,
   onModeToggle,
   onDelete,
+  onDowntime,
 }: CharacterHeaderProps) {
   const { next: nextThreshold, percent: xpPercent } = xpProgress(experience)
 
@@ -150,7 +152,7 @@ export function CharacterHeader({
           </Button>
         )}
         {!isNpc && (
-          <Button variant="secondary" disabled title="Coming soon">
+          <Button variant="secondary" onClick={onDowntime}>
             Downtime
           </Button>
         )}

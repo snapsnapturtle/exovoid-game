@@ -1,0 +1,52 @@
+[
+  {
+    "id": "relax-and-rest",
+    "name": "Relax & Rest",
+    "description": "Focus on resting. Restore an additional 20% of your maximum health. While resting, you also gain +3 pool on your nightly rest — apply that at the table when it comes up.",
+    "oncePerLevel": false
+  },
+  {
+    "id": "seek-inspiration",
+    "name": "Seek Inspiration",
+    "description": "Gain 2 Edge Points, even beyond your usual limit — capped at 150% of your edge ceiling. Surplus carries into the next adventure.",
+    "oncePerLevel": false
+  },
+  {
+    "id": "train-skill",
+    "name": "Train Skill",
+    "description": "Spend time learning. Choose a skill with 3 or fewer levels; gain +1 in it. Available once per character level.",
+    "oncePerLevel": true
+  },
+  {
+    "id": "modify-gear",
+    "name": "Modify Gear",
+    "description": "Install a mod into a weapon or armor. Tech d2 check; on success, open the inventory tab to attach the mod. Requires access to a workshop.",
+    "oncePerLevel": false,
+    "check": { "skillId": "tech", "difficulty": 2 }
+  },
+  {
+    "id": "repair-gear",
+    "name": "Repair Gear",
+    "description": "Restore damaged equipment, vehicles, or drones. Tech d3 check, requires spare tech parts and a workshop. If failed, the parts and the time are wasted but it can be re-attempted.",
+    "oncePerLevel": false,
+    "check": { "skillId": "tech", "difficulty": 3 }
+  },
+  {
+    "id": "networking",
+    "name": "Networking",
+    "description": "Spend time building or strengthening connections. Choose the relevant skill and roll at difficulty 2; the outcome depends on the fiction you and the GM agree on.",
+    "oncePerLevel": false
+  },
+  {
+    "id": "forge-id",
+    "name": "Forge ID",
+    "description": "Create a fake ID. Roll Computers or Politics — you need successes on both equal to the desired quality. Only one of the two checks per downtime; accumulate across multiple downtimes.",
+    "oncePerLevel": false
+  },
+  {
+    "id": "install-cyberware",
+    "name": "Install Cyberware",
+    "description": "Install, remove, or replace one piece of cyberware in your body. Opens the Cyberware tab.",
+    "oncePerLevel": false
+  }
+]

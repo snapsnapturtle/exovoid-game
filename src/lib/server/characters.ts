@@ -166,6 +166,7 @@ export const updateCharacter = createServerFn({ method: 'POST' })
         favorite_skills?: string[]
         notes?: string
         portrait_url?: string | null
+        downtime_uses_used?: Record<string, number>
       }
     }) => d,
   )

@@ -51,6 +51,7 @@ export function useCharacter(initial: Character, canEdit: boolean) {
                 favorite_skills: updated.favorite_skills,
                 notes: updated.notes,
                 portrait_url: updated.portrait_url,
+                downtime_uses_used: updated.downtime_uses_used,
               },
             },
           })
