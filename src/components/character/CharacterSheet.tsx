@@ -13,6 +13,7 @@ import { LivePlayPanel } from './LivePlayPanel'
 import { SkillsPanel } from './SkillsPanel'
 import { EquipmentTabs } from './EquipmentTabs'
 import { SaveStatusToast } from './SaveStatusToast'
+import { DowntimeModal } from './downtime/DowntimeModal'
 import { NpcSheetControls } from '~/components/npcs/NpcSheetControls'
 import type { ApplyBonusInput } from '~/components/dice/RollResultView'
 
@@ -30,6 +31,7 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
   const [deleting, setDeleting] = useState(false)
   const [portraitUploading, setPortraitUploading] = useState(false)
   const [notesOpen, setNotesOpen] = useState(false)
+  const [downtimeOpen, setDowntimeOpen] = useState(false)
   const navigate = useNavigate()
   const { character, saveStatus, updateField, updateAttribute, updateSkill } =
     useCharacter(initial, canEdit)
@@ -168,6 +170,7 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
         onPortraitChange={handlePortraitChange}
         onModeToggle={() => setMode((m) => (m === 'play' ? 'edit' : 'play'))}
         onDelete={handleDelete}
+        onDowntime={() => setDowntimeOpen(true)}
       />
 
       <div className="grid gap-3 lg:grid-cols-12">
@@ -331,6 +334,17 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
       </div>
 
       <SaveStatusToast status={saveStatus} />
+
+      {downtimeOpen && (
+        <DowntimeModal
+          character={character}
+          effects={effects}
+          gameId={character.game_id}
+          characterId={character.id}
+          onClose={() => setDowntimeOpen(false)}
+          onUpdateField={updateField}
+        />
+      )}
     </div>
   )
 }

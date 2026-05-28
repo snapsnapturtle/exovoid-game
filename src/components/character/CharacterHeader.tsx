@@ -22,6 +22,7 @@ interface CharacterHeaderProps {
   onPortraitChange: (file: File) => void
   onModeToggle: () => void
   onDelete: () => void
+  onDowntime: () => void
 }
 
 export function CharacterHeader({
@@ -42,6 +43,7 @@ export function CharacterHeader({
   onPortraitChange,
   onModeToggle,
   onDelete,
+  onDowntime,
 }: CharacterHeaderProps) {
   const { next: nextThreshold, percent: xpPercent } = xpProgress(experience)
 
@@ -149,8 +151,13 @@ export function CharacterHeader({
             {isEditMode ? 'Done editing' : 'Edit'}
           </Button>
         )}
-        {!isNpc && (
-          <Button variant="secondary" disabled title="Coming soon">
+        {!isNpc && showModeToggle && (
+          // Gate on edit permission (showModeToggle is the root canEdit signal
+          // from CharacterSheet). Viewers without edit rights can't open the
+          // downtime modal — otherwise their Apply clicks would mutate local
+          // state, the save would silently drop, and Train Skill would fire a
+          // recordProgression call that RLS rejects.
+          <Button variant="secondary" onClick={onDowntime}>
             Downtime
           </Button>
         )}

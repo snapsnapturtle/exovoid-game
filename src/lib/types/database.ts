@@ -41,6 +41,44 @@ export type Database = {
   }
   public: {
     Tables: {
+      character_progression: {
+        Row: {
+          character_id: string
+          created_at: string
+          id: string
+          level: number
+          picks: Json
+          source: string
+          updated_at: string
+        }
+        Insert: {
+          character_id: string
+          created_at?: string
+          id?: string
+          level: number
+          picks?: Json
+          source: string
+          updated_at?: string
+        }
+        Update: {
+          character_id?: string
+          created_at?: string
+          id?: string
+          level?: number
+          picks?: Json
+          source?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'character_progression_character_id_fkey'
+            columns: ['character_id']
+            isOneToOne: false
+            referencedRelation: 'characters'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       characters: {
         Row: {
           age: number | null
@@ -53,6 +91,7 @@ export type Database = {
           credits: number
           cyberware: Json
           derived_stat_bonuses: Json
+          downtime_uses_used: Json
           edge_current: number
           experience: number
           favorite_skills: Json
@@ -87,6 +126,7 @@ export type Database = {
           credits?: number
           cyberware?: Json
           derived_stat_bonuses?: Json
+          downtime_uses_used?: Json
           edge_current?: number
           experience?: number
           favorite_skills?: Json
@@ -121,6 +161,7 @@ export type Database = {
           credits?: number
           cyberware?: Json
           derived_stat_bonuses?: Json
+          downtime_uses_used?: Json
           edge_current?: number
           experience?: number
           favorite_skills?: Json
@@ -522,6 +563,7 @@ export type Character = Omit<
   | 'pending_bonuses'
   | 'favorite_skills'
   | 'derived_stat_bonuses'
+  | 'downtime_uses_used'
 > & {
   attributes: CharacterAttributes
   skills: Record<string, number>
@@ -537,6 +579,9 @@ export type Character = Omit<
   /** Skill ids the owner has starred — sorted to the top of SkillsPanel. */
   favorite_skills: string[]
   derived_stat_bonuses: DerivedStatBonuses
+  /** 1x-per-level downtime counter. Maps activity id → character level at
+   * which it was last consumed; gated when value equals current level. */
+  downtime_uses_used: Record<string, number>
 }
 
 /**
@@ -599,6 +644,21 @@ export type PendingSupport = {
   /** ISO timestamp of when the support roll committed. */
   createdAt: string
 }
+
+/**
+ * One row in `character_progression`: a single pick (training bump, level-up
+ * choice, etc.) made for a character at a given level. The history view in
+ * #42 renders these grouped by level; writers tag rows via `source` so the
+ * UI can render the right summary per kind. `picks` shape is per-source:
+ *   - "downtime:train-skill" → { skillId: string }
+ *   - (future) "level-up:skill" → { skillId, delta } etc.
+ */
+type ProgressionRow =
+  Database['public']['Tables']['character_progression']['Row']
+
+// Mirrors the row shape directly. Per-source narrowing of `picks` lives at
+// the read site (the history view in #42 will discriminate via `source`).
+export type ProgressionEntry = ProgressionRow
 
 type GameStateRow = Database['public']['Tables']['game_state']['Row']
 
