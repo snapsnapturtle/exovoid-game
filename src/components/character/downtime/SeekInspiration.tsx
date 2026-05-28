@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import type { Character } from '~/lib/types/database'
 import type { AppliedPassiveEffects } from '~/lib/game-logic/passive-effects'
 import { seekInspirationEdgeCap } from '~/lib/game-logic/downtime'
 import { Button } from '~/components/ui/Button'
+import { useDowntimeFooterTarget } from './DowntimeModal'
 
 interface Props {
   character: Character
@@ -17,6 +19,7 @@ const EDGE_GRANT = 2
 
 export function SeekInspiration({ character, effects, onUpdateField }: Props) {
   const [applied, setApplied] = useState(false)
+  const footerEl = useDowntimeFooterTarget()
   const maxEdge = effects.derived.edge
   const cap = seekInspirationEdgeCap(maxEdge)
   const current = character.edge_current
@@ -49,20 +52,20 @@ export function SeekInspiration({ character, effects, onUpdateField }: Props) {
           </p>
         )}
       </div>
-      <div className="flex items-center justify-end gap-2">
-        {applied && (
-          <span className="text-xs text-accent-900">
-            ✓ Gained {actualGain} edge
-          </span>
+      {applied && (
+        <p className="text-xs text-accent-900">✓ Gained {actualGain} edge</p>
+      )}
+      {footerEl &&
+        createPortal(
+          <Button
+            onClick={apply}
+            disabled={applied || atCap}
+            title={atCap ? 'Already at the +50% ceiling' : undefined}
+          >
+            {applied ? 'Applied' : 'Apply inspiration'}
+          </Button>,
+          footerEl,
         )}
-        <Button
-          onClick={apply}
-          disabled={applied || atCap}
-          title={atCap ? 'Already at the +50% ceiling' : undefined}
-        >
-          {applied ? 'Applied' : 'Apply inspiration'}
-        </Button>
-      </div>
     </div>
   )
 }

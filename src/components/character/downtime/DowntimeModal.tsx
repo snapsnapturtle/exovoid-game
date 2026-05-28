@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import type { Character } from '~/lib/types/database'
 import type { AppliedPassiveEffects } from '~/lib/game-logic/passive-effects'
@@ -15,6 +15,15 @@ import { TrainSkill } from './TrainSkill'
 import { TechCheckActivity } from './TechCheckActivity'
 import { Networking } from './Networking'
 import { ForgeId } from './ForgeId'
+
+// Footer portal slot. Activity body components render inside the Modal body,
+// but their apply/confirm button needs to live in the Modal footer next to
+// the "Back" affordance. The portal target is the inner div ref below; an
+// activity calls `useDowntimeFooterTarget()` and `createPortal`s into it.
+const DowntimeFooterContext = createContext<HTMLElement | null>(null)
+export function useDowntimeFooterTarget() {
+  return useContext(DowntimeFooterContext)
+}
 
 interface DowntimeModalProps {
   character: Character
@@ -39,6 +48,7 @@ export function DowntimeModal({
   onUpdateField,
 }: DowntimeModalProps) {
   const [view, setView] = useState<View>({ kind: 'list' })
+  const [footerEl, setFooterEl] = useState<HTMLDivElement | null>(null)
   const navigate = useNavigate()
 
   function choose(activity: DowntimeActivity) {
@@ -74,9 +84,16 @@ export function DowntimeModal({
       }
       footer={
         view.kind === 'activity' ? (
-          <Button variant="ghost" onClick={() => setView({ kind: 'list' })}>
-            Back
-          </Button>
+          <>
+            <Button variant="ghost" onClick={() => setView({ kind: 'list' })}>
+              Back
+            </Button>
+            {/* Portal target — activity components render their apply button
+                into this slot via `useDowntimeFooterTarget()`. `display:
+                contents` so portaled children become direct flex children of
+                the Modal footer container. */}
+            <div ref={setFooterEl} className="contents" />
+          </>
         ) : (
           <Button variant="ghost" onClick={onClose}>
             Close
@@ -84,20 +101,22 @@ export function DowntimeModal({
         )
       }
     >
-      {view.kind === 'list' && (
-        <ActivityList character={character} onChoose={choose} />
-      )}
-      {view.kind === 'activity' && activeActivity && (
-        <ActivityDispatcher
-          activity={activeActivity}
-          character={character}
-          effects={effects}
-          gameId={gameId}
-          characterId={characterId}
-          onCloseAll={onClose}
-          onUpdateField={onUpdateField}
-        />
-      )}
+      <DowntimeFooterContext.Provider value={footerEl}>
+        {view.kind === 'list' && (
+          <ActivityList character={character} onChoose={choose} />
+        )}
+        {view.kind === 'activity' && activeActivity && (
+          <ActivityDispatcher
+            activity={activeActivity}
+            character={character}
+            effects={effects}
+            gameId={gameId}
+            characterId={characterId}
+            onCloseAll={onClose}
+            onUpdateField={onUpdateField}
+          />
+        )}
+      </DowntimeFooterContext.Provider>
     </Modal>
   )
 }

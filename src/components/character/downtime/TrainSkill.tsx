@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import type { Character } from '~/lib/types/database'
 import { SKILLS } from '~/lib/game-logic/skills'
 import { trainableSkillIds } from '~/lib/game-logic/downtime'
 import { recordProgression } from '~/lib/server/progression'
 import { Button } from '~/components/ui/Button'
+import { useDowntimeFooterTarget } from './DowntimeModal'
 
 interface Props {
   character: Character
@@ -16,6 +18,7 @@ interface Props {
 export function TrainSkill({ character, onUpdateField }: Props) {
   const [selected, setSelected] = useState<string | null>(null)
   const [applied, setApplied] = useState(false)
+  const footerEl = useDowntimeFooterTarget()
 
   const skillNameById = new Map(SKILLS.map((s) => [s.id, s.name]))
   const eligibleIds = trainableSkillIds(character.skills)
@@ -100,11 +103,13 @@ export function TrainSkill({ character, onUpdateField }: Props) {
           )
         })}
       </ul>
-      <div className="flex items-center justify-end">
-        <Button onClick={apply} disabled={!selected}>
-          Confirm training
-        </Button>
-      </div>
+      {footerEl &&
+        createPortal(
+          <Button onClick={apply} disabled={!selected}>
+            Confirm training
+          </Button>,
+          footerEl,
+        )}
     </div>
   )
 }

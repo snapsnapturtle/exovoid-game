@@ -5,6 +5,7 @@ import { SKILLS } from '~/lib/game-logic/skills'
 import { computeAttributeAverage, computeDicePool } from '~/lib/game-logic/dice'
 import { DiceRoller } from '~/components/dice/DiceRoller'
 import type { ApplyBonusInput } from '~/components/dice/RollResultView'
+import { SkillPicker } from './SkillPicker'
 
 interface Props {
   character: Character
@@ -94,36 +95,12 @@ export function ForgeId({
     )
   }
 
-  const options = FORGE_ID_SKILL_IDS.map((id) =>
-    SKILLS.find((s) => s.id === id),
-  ).filter((s): s is (typeof SKILLS)[number] => Boolean(s))
-
   return (
-    <div className="space-y-3">
-      <p className="text-sm text-gray-1000">
-        Roll Computers or Politics — each downtime advances one. Track total
-        successes in your notes; you need the quality level on both before the
-        ID is ready.
-      </p>
-      <ul className="space-y-1">
-        {options.map((s) => {
-          const level = character.skills[s.id] ?? 0
-          return (
-            <li key={s.id}>
-              <button
-                type="button"
-                onClick={() => setSelectedSkillId(s.id)}
-                className="flex w-full items-center justify-between rounded-lg border border-gray-400 bg-background-100 px-3 py-2 text-sm text-gray-1000 transition hover:border-accent-700 hover:bg-gray-100 hover:text-white"
-              >
-                <span className="font-medium">{s.name}</span>
-                <span className="tabular-nums text-gray-700">
-                  Level {level}
-                </span>
-              </button>
-            </li>
-          )
-        })}
-      </ul>
-    </div>
+    <SkillPicker
+      skillIds={FORGE_ID_SKILL_IDS}
+      skills={character.skills}
+      hint="Roll Computers or Politics — each downtime advances one. Track total successes in your notes; you need the quality level on both before the ID is ready."
+      onSelect={setSelectedSkillId}
+    />
   )
 }

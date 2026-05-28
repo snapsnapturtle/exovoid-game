@@ -1,10 +1,11 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useState } from 'react'
 import type { Character, PendingBonus } from '~/lib/types/database'
 import type { AppliedPassiveEffects } from '~/lib/game-logic/passive-effects'
 import { SKILLS } from '~/lib/game-logic/skills'
 import { computeAttributeAverage, computeDicePool } from '~/lib/game-logic/dice'
 import { DiceRoller } from '~/components/dice/DiceRoller'
 import type { ApplyBonusInput } from '~/components/dice/RollResultView'
+import { SkillPicker } from './SkillPicker'
 
 interface Props {
   character: Character
@@ -26,16 +27,7 @@ export function Networking({
   onCloseAll,
   onUpdateField,
 }: Props) {
-  const [filter, setFilter] = useState('')
   const [selectedSkillId, setSelectedSkillId] = useState<string | null>(null)
-
-  const filtered = useMemo(() => {
-    const q = filter.trim().toLowerCase()
-    const list = q
-      ? SKILLS.filter((s) => s.name.toLowerCase().includes(q))
-      : SKILLS
-    return [...list].sort((a, b) => a.name.localeCompare(b.name))
-  }, [filter])
 
   const skill = selectedSkillId
     ? (SKILLS.find((s) => s.id === selectedSkillId) ?? null)
@@ -102,35 +94,10 @@ export function Networking({
   }
 
   return (
-    <div className="space-y-3">
-      <p className="text-sm text-gray-1000">
-        Pick the skill that best matches what you're trying to achieve, then
-        roll at difficulty 2.
-      </p>
-      <input
-        type="text"
-        value={filter}
-        onChange={(e) => setFilter(e.target.value)}
-        placeholder="Filter skills..."
-        className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-1.5 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
-      />
-      <ul className="max-h-72 space-y-1 overflow-y-auto rounded-lg border border-gray-400 bg-background-100 p-2">
-        {filtered.map((s) => {
-          const level = character.skills[s.id] ?? 0
-          return (
-            <li key={s.id}>
-              <button
-                type="button"
-                onClick={() => setSelectedSkillId(s.id)}
-                className="flex w-full items-center justify-between rounded px-2 py-1.5 text-sm text-gray-1000 transition hover:bg-gray-100 hover:text-white"
-              >
-                <span>{s.name}</span>
-                <span className="tabular-nums text-gray-700">{level}</span>
-              </button>
-            </li>
-          )
-        })}
-      </ul>
-    </div>
+    <SkillPicker
+      skills={character.skills}
+      hint="Pick the skill that best matches what you're trying to achieve, then roll at difficulty 2."
+      onSelect={setSelectedSkillId}
+    />
   )
 }

@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import type { Character } from '~/lib/types/database'
 import type { AppliedPassiveEffects } from '~/lib/game-logic/passive-effects'
 import { relaxAndRestHealAmount } from '~/lib/game-logic/downtime'
 import { Button } from '~/components/ui/Button'
+import { useDowntimeFooterTarget } from './DowntimeModal'
 
 interface Props {
   character: Character
@@ -15,6 +17,7 @@ interface Props {
 
 export function RelaxAndRest({ character, effects, onUpdateField }: Props) {
   const [applied, setApplied] = useState(false)
+  const footerEl = useDowntimeFooterTarget()
   const maxHealth = effects.derived.health
   const current = character.health_current ?? maxHealth
   const bump = relaxAndRestHealAmount(maxHealth)
@@ -45,20 +48,22 @@ export function RelaxAndRest({ character, effects, onUpdateField }: Props) {
         Reminder: while resting, you also gain +3 pool on your nightly rest —
         apply that at the table when it comes up.
       </p>
-      <div className="flex items-center justify-end gap-2">
-        {applied && (
-          <span className="text-xs text-accent-900">
-            ✓ Restored {actualGain} health
-          </span>
+      {applied && (
+        <p className="text-xs text-accent-900">
+          ✓ Restored {actualGain} health
+        </p>
+      )}
+      {footerEl &&
+        createPortal(
+          <Button
+            onClick={apply}
+            disabled={applied || alreadyFull}
+            title={alreadyFull ? 'Already at full health' : undefined}
+          >
+            {applied ? 'Applied' : 'Apply rest'}
+          </Button>,
+          footerEl,
         )}
-        <Button
-          onClick={apply}
-          disabled={applied || alreadyFull}
-          title={alreadyFull ? 'Already at full health' : undefined}
-        >
-          {applied ? 'Applied' : 'Apply rest'}
-        </Button>
-      </div>
     </div>
   )
 }
