@@ -129,6 +129,14 @@ function AppLayout() {
               role="menu"
               className="elevation-float absolute right-0 top-full z-50 mt-2 w-44 rounded-md border border-gray-400 bg-background-200 py-1"
             >
+              <Link
+                to="/account"
+                role="menuitem"
+                onClick={() => setMenuOpen(false)}
+                className="block w-full px-3 py-2 text-left text-sm text-gray-1000 transition hover:bg-gray-100"
+              >
+                Account settings
+              </Link>
               <button
                 type="button"
                 role="menuitem"
