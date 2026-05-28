@@ -213,7 +213,9 @@ export function validateCreationSkillsWithBonus(
   for (const skill of SKILLS) {
     const v = finalAfterBonus[skill.id] ?? 0
     if (!Number.isInteger(v) || v < 0) {
-      errors.push(`${skill.name} (after bonuses) must be a non-negative integer.`)
+      errors.push(
+        `${skill.name} (after bonuses) must be a non-negative integer.`,
+      )
       continue
     }
     if (v > MAX_SKILL_LEVEL) {
@@ -267,7 +269,10 @@ export function validateCreation(
   }
   const baseline = careerSkillBaseline(career)
   const attrResult = input.baseAttributes
-    ? validateCreationAttributesWithBonus(input.baseAttributes, input.attributes)
+    ? validateCreationAttributesWithBonus(
+        input.baseAttributes,
+        input.attributes,
+      )
     : validateCreationAttributes(input.attributes)
   const skillResult = input.baseFinalSkills
     ? validateCreationSkillsWithBonus(
@@ -276,7 +281,11 @@ export function validateCreation(
         input.finalSkills,
         input.skillPointsBudget,
       )
-    : validateCreationSkills(input.finalSkills, baseline, input.skillPointsBudget)
+    : validateCreationSkills(
+        input.finalSkills,
+        baseline,
+        input.skillPointsBudget,
+      )
   return merge(
     attrResult,
     skillResult,

@@ -9,8 +9,17 @@ import {
 } from './character-creation'
 import type { CareerData } from './talents'
 
-const attrs = (overrides: Partial<CharacterAttributes> = {}): CharacterAttributes => ({
-  con: 4, str: 4, agi: 4, int: 4, edu: 4, per: 4, coo: 4, ...overrides,
+const attrs = (
+  overrides: Partial<CharacterAttributes> = {},
+): CharacterAttributes => ({
+  con: 4,
+  str: 4,
+  agi: 4,
+  int: 4,
+  edu: 4,
+  per: 4,
+  coo: 4,
+  ...overrides,
 })
 
 describe('validateCreationAttributes (unchanged path)', () => {
@@ -27,7 +36,15 @@ describe('validateCreationAttributes (unchanged path)', () => {
 describe('validateCreationAttributesWithBonus', () => {
   it('accepts a bumped attribute that pushes past the creation cap of 6', () => {
     // Base allocation: con=6 (high-cap), rest=22 across other 6 slots.
-    const base = attrs({ con: 6, str: 5, agi: 5, int: 3, edu: 3, per: 3, coo: 3 })
+    const base = attrs({
+      con: 6,
+      str: 5,
+      agi: 5,
+      int: 3,
+      edu: 3,
+      per: 3,
+      coo: 3,
+    })
     // Background bumps CON +1, total now exceeds 28 too — but that's expected.
     const final = { ...base, con: 7 }
     const r = validateCreationAttributesWithBonus(base, final)
@@ -40,7 +57,15 @@ describe('validateCreationAttributesWithBonus', () => {
     expect(r.ok).toBe(false)
   })
   it('rejects when the final exceeds the lifetime ceiling (8)', () => {
-    const base = attrs({ con: 6, str: 4, agi: 4, int: 4, edu: 2, per: 2, coo: 2 })
+    const base = attrs({
+      con: 6,
+      str: 4,
+      agi: 4,
+      int: 4,
+      edu: 2,
+      per: 2,
+      coo: 2,
+    })
     const final = { ...base, con: 9 } // forged
     const r = validateCreationAttributesWithBonus(base, final)
     expect(r.ok).toBe(false)
@@ -66,11 +91,7 @@ describe('validateCreationSkillsWithBonus', () => {
     // so this is the unavoidable forced over-cap case.
     const baseFinal = { medicine: 4 }
     const final = { medicine: 7 }
-    const r = validateCreationSkillsWithBonus(
-      baseFinal,
-      { medicine: 4 },
-      final,
-    )
+    const r = validateCreationSkillsWithBonus(baseFinal, { medicine: 4 }, final)
     expect(r.ok).toBe(true)
   })
   it('rejects when base exceeds the creation cap of 6', () => {
@@ -98,7 +119,13 @@ describe('validateCreationSkills (unchanged path)', () => {
     // melee 0→6 = 8 points; firearms 2→6 = 6 points; total = 14. Within budget.
     expect(r.ok).toBe(true)
     // Spend over-budget.
-    const over: Record<string, number> = { firearms: 6, melee: 6, survival: 6, command: 6, tech: 6 }
+    const over: Record<string, number> = {
+      firearms: 6,
+      melee: 6,
+      survival: 6,
+      command: 6,
+      tech: 6,
+    }
     expect(validateCreationSkills(over, baseline).ok).toBe(false)
   })
 })
@@ -120,12 +147,34 @@ describe('granted talents bypass talent checks', () => {
         attributes: attrs(),
         finalSkills: {},
         talents: [
-          { name: 'Impenetrable Shell', career: 'Space Marine', tier: 0, acquiredAt: 0 },
-          { name: 'Second Skin', career: 'Space Marine', tier: 0, acquiredAt: 0 },
+          {
+            name: 'Impenetrable Shell',
+            career: 'Space Marine',
+            tier: 0,
+            acquiredAt: 0,
+          },
+          {
+            name: 'Second Skin',
+            career: 'Space Marine',
+            tier: 0,
+            acquiredAt: 0,
+          },
           // Granted from a background bonus — must NOT count toward the limit
           // nor be checked against the Space Marine tree.
-          { name: 'Sprinter', career: '', tier: 0, acquiredAt: 0, granted: true },
-          { name: 'Danger Sense', career: '', tier: 0, acquiredAt: 0, granted: true },
+          {
+            name: 'Sprinter',
+            career: '',
+            tier: 0,
+            acquiredAt: 0,
+            granted: true,
+          },
+          {
+            name: 'Danger Sense',
+            career: '',
+            tier: 0,
+            acquiredAt: 0,
+            granted: true,
+          },
         ],
       },
       careers,
@@ -176,7 +225,12 @@ describe('skill-points budget threading', () => {
       command: 1,
     }
     const r = validateCreation(
-      { careerName: 'Field Medic', attributes: attrs(), finalSkills, talents: [] },
+      {
+        careerName: 'Field Medic',
+        attributes: attrs(),
+        finalSkills,
+        talents: [],
+      },
       careers,
     )
     expect(r.ok).toBe(false)
@@ -210,7 +264,15 @@ describe('validateCreation', () => {
   })
 
   it('accepts post-bonus attributes that push past the creation cap when base is valid', () => {
-    const base = attrs({ edu: 6, con: 5, str: 5, agi: 4, int: 2, per: 3, coo: 3 })
+    const base = attrs({
+      edu: 6,
+      con: 5,
+      str: 5,
+      agi: 4,
+      int: 2,
+      per: 3,
+      coo: 3,
+    })
     const final = { ...base, edu: 7 } // background bump
     const r = validateCreation(
       {
@@ -226,7 +288,15 @@ describe('validateCreation', () => {
   })
 
   it('rejects forged attributes that exceed the lifetime ceiling', () => {
-    const base = attrs({ edu: 6, con: 5, str: 5, agi: 4, int: 2, per: 3, coo: 3 })
+    const base = attrs({
+      edu: 6,
+      con: 5,
+      str: 5,
+      agi: 4,
+      int: 2,
+      per: 3,
+      coo: 3,
+    })
     const final = { ...base, edu: 99 }
     const r = validateCreation(
       {

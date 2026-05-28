@@ -51,14 +51,31 @@ interface BackgroundBonusModalProps {
  */
 type SlotState =
   | { kind: 'fixed'; resolved: ResolvedBonus }
-  | { kind: 'choose-talent'; selected: string | null; spec: Extract<BackgroundBonus, { kind: 'choose-talent' }> }
-  | { kind: 'attribute-choice'; selected: AttributeId | null; by: number; spec: Extract<BackgroundBonus, { kind: 'attribute-choice' }> }
-  | { kind: 'skill-choice'; selected: string | null; by: number; spec: Extract<BackgroundBonus, { kind: 'skill-choice' }> }
-  | { kind: 'one-of'; branch: number | null; sub: SlotState | null; spec: Extract<BackgroundBonus, { kind: 'one-of' }> }
+  | {
+      kind: 'choose-talent'
+      selected: string | null
+      spec: Extract<BackgroundBonus, { kind: 'choose-talent' }>
+    }
+  | {
+      kind: 'attribute-choice'
+      selected: AttributeId | null
+      by: number
+      spec: Extract<BackgroundBonus, { kind: 'attribute-choice' }>
+    }
+  | {
+      kind: 'skill-choice'
+      selected: string | null
+      by: number
+      spec: Extract<BackgroundBonus, { kind: 'skill-choice' }>
+    }
+  | {
+      kind: 'one-of'
+      branch: number | null
+      sub: SlotState | null
+      spec: Extract<BackgroundBonus, { kind: 'one-of' }>
+    }
 
-function initialSlotFor(
-  bonus: BackgroundBonus,
-): SlotState {
+function initialSlotFor(bonus: BackgroundBonus): SlotState {
   if (bonus.kind === 'one-of') {
     return { kind: 'one-of', branch: null, sub: null, spec: bonus }
   }
@@ -66,7 +83,12 @@ function initialSlotFor(
     return { kind: 'choose-talent', selected: null, spec: bonus }
   }
   if (bonus.kind === 'attribute-choice') {
-    return { kind: 'attribute-choice', selected: null, by: bonus.by, spec: bonus }
+    return {
+      kind: 'attribute-choice',
+      selected: null,
+      by: bonus.by,
+      spec: bonus,
+    }
   }
   if (bonus.kind === 'skill-choice') {
     return { kind: 'skill-choice', selected: null, by: bonus.by, spec: bonus }
@@ -94,9 +116,7 @@ function slotResolution(s: SlotState): ResolvedBonus | null {
     case 'fixed':
       return s.resolved
     case 'choose-talent':
-      return s.selected
-        ? { kind: 'choose-talent', talentId: s.selected }
-        : null
+      return s.selected ? { kind: 'choose-talent', talentId: s.selected } : null
     case 'attribute-choice':
       return s.selected
         ? { kind: 'attribute-choice', attribute: s.selected, by: s.by }
@@ -173,7 +193,10 @@ export function BackgroundBonusModal({
   )
 }
 
-function seedSlot(b: BackgroundBonus, init: ResolvedBonus | undefined): SlotState {
+function seedSlot(
+  b: BackgroundBonus,
+  init: ResolvedBonus | undefined,
+): SlotState {
   const fresh = initialSlotFor(b)
   if (!init) return fresh
   return hydrateSlot(fresh, init)

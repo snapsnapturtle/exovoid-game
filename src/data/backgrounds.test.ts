@@ -26,8 +26,12 @@ for (const t of TABLES) {
   }
 }
 
-const TALENT_NAMES = new Set((talentsData as { name: string }[]).map((t) => t.name))
-const CAREER_NAMES = new Set((careersData as { name: string }[]).map((c) => c.name))
+const TALENT_NAMES = new Set(
+  (talentsData as { name: string }[]).map((t) => t.name),
+)
+const CAREER_NAMES = new Set(
+  (careersData as { name: string }[]).map((c) => c.name),
+)
 const ATTRIBUTE_IDS = new Set(ATTRIBUTE_DEFINITIONS.map((a) => a.id))
 const SKILL_IDS = new Set(SKILLS.map((s) => s.id))
 

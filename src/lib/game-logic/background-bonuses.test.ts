@@ -42,7 +42,10 @@ const careers: CareerData[] = [
 describe('talentChoicesFor', () => {
   it('filters by tier and careers', () => {
     const got = talentChoicesFor(
-      { kind: 'choose-talent', from: { tier: 0, careers: ['Field Medic', 'Criminal'] } },
+      {
+        kind: 'choose-talent',
+        from: { tier: 0, careers: ['Field Medic', 'Criminal'] },
+      },
       null,
       careers,
     )
@@ -87,7 +90,11 @@ describe('talentChoicesFor', () => {
 describe('skillChoicesFor', () => {
   it('returns the explicit list when from is set', () => {
     expect(
-      skillChoicesFor({ kind: 'skill-choice', from: ['firearms', 'melee'], by: 2 }),
+      skillChoicesFor({
+        kind: 'skill-choice',
+        from: ['firearms', 'melee'],
+        by: 2,
+      }),
     ).toEqual(['firearms', 'melee'])
   })
   it('returns every skill when from is absent', () => {
@@ -100,7 +107,11 @@ describe('skillChoicesFor', () => {
 describe('attributeChoicesFor', () => {
   it('returns the explicit list when from is set', () => {
     expect(
-      attributeChoicesFor({ kind: 'attribute-choice', from: ['edu', 'per'], by: 1 }),
+      attributeChoicesFor({
+        kind: 'attribute-choice',
+        from: ['edu', 'per'],
+        by: 1,
+      }),
     ).toEqual(['edu', 'per'])
   })
   it('returns every attribute when from is absent', () => {

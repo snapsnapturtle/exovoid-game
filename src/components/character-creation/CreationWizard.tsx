@@ -231,10 +231,30 @@ export function CreationWizard({ gameId }: CreationWizardProps) {
     baseAttributes: { ...initialAttributes },
     bg: {
       origin: { mode: 'roll', rolls: [], chosen: null, resolvedBonuses: null },
-      childhood: { mode: 'roll', rolls: [], chosen: null, resolvedBonuses: null },
-      adolescence: { mode: 'roll', rolls: [], chosen: null, resolvedBonuses: null },
-      lifeEvent1: { mode: 'roll', rolls: [], chosen: null, resolvedBonuses: null },
-      lifeEvent2: { mode: 'roll', rolls: [], chosen: null, resolvedBonuses: null },
+      childhood: {
+        mode: 'roll',
+        rolls: [],
+        chosen: null,
+        resolvedBonuses: null,
+      },
+      adolescence: {
+        mode: 'roll',
+        rolls: [],
+        chosen: null,
+        resolvedBonuses: null,
+      },
+      lifeEvent1: {
+        mode: 'roll',
+        rolls: [],
+        chosen: null,
+        resolvedBonuses: null,
+      },
+      lifeEvent2: {
+        mode: 'roll',
+        rolls: [],
+        chosen: null,
+        resolvedBonuses: null,
+      },
     },
     extraRollsAppliedTo: null,
     bonusModalFor: null,
@@ -384,7 +404,9 @@ export function CreationWizard({ gameId }: CreationWizardProps) {
       }
 
       const finalAttrs: CharacterAttributes = { ...state.baseAttributes }
-      for (const [id, delta] of Object.entries(bonusProjection.attributeDeltas)) {
+      for (const [id, delta] of Object.entries(
+        bonusProjection.attributeDeltas,
+      )) {
         const a = id as AttributeId
         finalAttrs[a] = finalAttrs[a] + (delta ?? 0)
       }
@@ -417,7 +439,8 @@ export function CreationWizard({ gameId }: CreationWizardProps) {
 
       const derivedStatBonuses: DerivedStatBonuses = {}
       if (bonusProjection.derivedStatBonuses.maxHealth !== 0)
-        derivedStatBonuses.maxHealth = bonusProjection.derivedStatBonuses.maxHealth
+        derivedStatBonuses.maxHealth =
+          bonusProjection.derivedStatBonuses.maxHealth
       if (bonusProjection.derivedStatBonuses.maxEdge !== 0)
         derivedStatBonuses.maxEdge = bonusProjection.derivedStatBonuses.maxEdge
       if (bonusProjection.derivedStatBonuses.cyberImmunity !== 0)
@@ -944,7 +967,12 @@ function BackgroundStep({
       ...s,
       bg: {
         ...s.bg,
-        [key]: { mode: 'manual', rolls: [], chosen: null, resolvedBonuses: null },
+        [key]: {
+          mode: 'manual',
+          rolls: [],
+          chosen: null,
+          resolvedBonuses: null,
+        },
       },
       extraRollsAppliedTo:
         s.extraRollsAppliedTo === key ? null : s.extraRollsAppliedTo,
@@ -1029,8 +1057,8 @@ function BackgroundStep({
           Roll twice on each table and choose one. Once across this step, you
           may roll two extra dice on a single table for more options.
           Mechanisable bonuses (attribute / skill / talent / wallet / derived-
-          stat bumps) auto-apply on submission; narrative effects stay in
-          your character notes.
+          stat bumps) auto-apply on submission; narrative effects stay in your
+          character notes.
         </p>
       </header>
 
@@ -1093,8 +1121,7 @@ function BackgroundTablePicker({
     !isManual && pick.rolls.length === 2 && state.extraRollsAppliedTo === null
   const chosenEntry =
     pick.chosen != null ? table.find((e) => e.id === pick.chosen) : null
-  const needsBonusChoice =
-    chosenEntry?.bonuses?.some(bonusNeedsChoice) ?? false
+  const needsBonusChoice = chosenEntry?.bonuses?.some(bonusNeedsChoice) ?? false
   const bonusesResolved = pick.resolvedBonuses != null
   const showResolveButton = needsBonusChoice
 
@@ -1639,8 +1666,8 @@ function ResolvedBonusLine({ resolved }: { resolved: ResolvedBonus }) {
     case 'attribute-choice':
       return (
         <>
-          {(ATTRIBUTE_DEFINITIONS.find((a) => a.id === resolved.attribute)
-            ?.name ?? resolved.attribute)}{' '}
+          {ATTRIBUTE_DEFINITIONS.find((a) => a.id === resolved.attribute)
+            ?.name ?? resolved.attribute}{' '}
           {fmt(resolved.by)}
         </>
       )
