@@ -52,6 +52,7 @@ export type Database = {
           created_at: string
           credits: number
           cyberware: Json
+          derived_stat_bonuses: Json
           edge_current: number
           experience: number
           favorite_skills: Json
@@ -85,6 +86,7 @@ export type Database = {
           created_at?: string
           credits?: number
           cyberware?: Json
+          derived_stat_bonuses?: Json
           edge_current?: number
           experience?: number
           favorite_skills?: Json
@@ -118,6 +120,7 @@ export type Database = {
           created_at?: string
           credits?: number
           cyberware?: Json
+          derived_stat_bonuses?: Json
           edge_current?: number
           experience?: number
           favorite_skills?: Json
@@ -407,6 +410,19 @@ export type CharacterAttributes = {
   coo: number
 }
 
+/**
+ * Flat additions to derived-stat ceilings, sourced at character creation
+ * from structured background bonuses (e.g. Life Events "+1 max edge",
+ * Adolescence "+1 max health"). Read by `applyPassiveEffects` and
+ * attributed in the UI as "Creation bonuses" alongside talents/cyberware.
+ * Missing keys default to 0.
+ */
+export type DerivedStatBonuses = {
+  maxHealth?: number
+  maxEdge?: number
+  cyberImmunity?: number
+}
+
 export type TalentEntry = {
   name: string
   career: string
@@ -505,6 +521,7 @@ export type Character = Omit<
   | 'malfunction_allocations'
   | 'pending_bonuses'
   | 'favorite_skills'
+  | 'derived_stat_bonuses'
 > & {
   attributes: CharacterAttributes
   skills: Record<string, number>
@@ -519,6 +536,7 @@ export type Character = Omit<
   pending_bonuses: PendingBonus[]
   /** Skill ids the owner has starred — sorted to the top of SkillsPanel. */
   favorite_skills: string[]
+  derived_stat_bonuses: DerivedStatBonuses
 }
 
 /**

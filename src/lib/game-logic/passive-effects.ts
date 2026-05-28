@@ -1,6 +1,7 @@
 import type {
   CharacterAttributes,
   CyberwareEntry,
+  DerivedStatBonuses,
   InventoryItem,
   TalentEntry,
 } from '~/lib/types/database'
@@ -79,6 +80,7 @@ export function applyPassiveEffects(
   talents: TalentEntry[],
   cyberware: CyberwareEntry[],
   inventory: InventoryItem[] = [],
+  derivedStatBonuses: DerivedStatBonuses = {},
 ): AppliedPassiveEffects {
   const attributes: CharacterAttributes = { ...baseAttributes }
   const attributeContributions: Partial<Record<AttributeId, Contribution[]>> =
@@ -111,6 +113,22 @@ export function applyPassiveEffects(
       list.push({ source: source.name, value: eff.value })
       derivedContributions[eff.stat] = list
     }
+  }
+
+  // Background-creation bonuses (stored on character.derived_stat_bonuses)
+  // land here as flat additions, attributed as a "Creation bonuses" source
+  // so the breakdown UI shows them alongside talents/cyberware.
+  const creationBonusMap: Array<[DerivedStatId, number]> = [
+    ['health', derivedStatBonuses.maxHealth ?? 0],
+    ['edge', derivedStatBonuses.maxEdge ?? 0],
+    ['cyberImmunity', derivedStatBonuses.cyberImmunity ?? 0],
+  ]
+  for (const [stat, value] of creationBonusMap) {
+    if (value === 0) continue
+    derived[stat] = derived[stat] + value
+    const list = derivedContributions[stat] ?? []
+    list.push({ source: 'Creation bonuses', value })
+    derivedContributions[stat] = list
   }
 
   // Equipped armor closes the `soak: 0` hardcode in computeAllDerivedStats —

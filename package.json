@@ -8,7 +8,9 @@
     "preview": "vite preview",
     "start": "node .output/server/index.mjs",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "test": "vitest",
+    "test:run": "vitest run"
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.19",
@@ -30,6 +32,7 @@
     "prettier": "3.8.3",
     "tailwindcss": "^4.1.4",
     "typescript": "^6.0.3",
-    "vite": "^8.0.14"
+    "vite": "^8.0.14",
+    "vitest": "^4.1.7"
   }
 }

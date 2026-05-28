@@ -159,6 +159,7 @@ function GameLobbyPage() {
                     npc.talents,
                     npc.cyberware,
                     npc.inventory,
+                    npc.derived_stat_bonuses,
                   )
                   const healthMax = derived.health
                   const healthCurrent = npc.health_current ?? healthMax

@@ -4,9 +4,10 @@ import {
   CREATION_HIGH_CAP,
   CREATION_HIGH_COUNT,
   CREATION_LOW_CAP,
+  MAX_ATTRIBUTE_LEVEL,
   TOTAL_ATTRIBUTE_POINTS,
 } from './attributes'
-import { SKILLS } from './skills'
+import { MAX_SKILL_LEVEL, SKILLS } from './skills'
 import { isLegalTalentSet, type CareerData } from './talents'
 
 /**
@@ -93,6 +94,7 @@ export function validateCreationAttributes(
 export function validateCreationSkills(
   finalSkills: Record<string, number>,
   careerBaseline: Record<string, number>,
+  budget: number = CREATION_SKILL_POINTS,
 ): ValidationResult {
   const errors: string[] = []
   let pointsSpent = 0
@@ -113,10 +115,8 @@ export function validateCreationSkills(
     }
     pointsSpent += pointsForSkillLevel(final) - pointsForSkillLevel(base)
   }
-  if (pointsSpent > CREATION_SKILL_POINTS) {
-    errors.push(
-      `Spent ${pointsSpent} skill points; budget is ${CREATION_SKILL_POINTS}.`,
-    )
+  if (pointsSpent > budget) {
+    errors.push(`Spent ${pointsSpent} skill points; budget is ${budget}.`)
   }
   return errors.length === 0 ? valid() : invalid(...errors)
 }
@@ -136,13 +136,16 @@ export function validateCreationTalents(
     return invalid(`Career "${careerName}" not found in catalog.`)
   }
   const errors: string[] = []
-  if (talents.length > CREATION_TALENT_LIMIT) {
+  // Granted talents (background bonuses, etc.) bypass the limit and the
+  // career-tree / tier-prereq checks — same exemption `canRemove` makes.
+  const careerTalents = talents.filter((t) => !t.granted)
+  if (careerTalents.length > CREATION_TALENT_LIMIT) {
     errors.push(
-      `Picked ${talents.length} starting talents; limit is ${CREATION_TALENT_LIMIT}.`,
+      `Picked ${careerTalents.length} starting talents; limit is ${CREATION_TALENT_LIMIT}.`,
     )
   }
   const talentSet: { talent: string; tier: number }[] = []
-  for (const t of talents) {
+  for (const t of careerTalents) {
     const ref = careerData.talents.find((ct) => ct.talent === t.name)
     if (!ref) {
       errors.push(`Talent "${t.name}" is not part of the ${careerName} tree.`)
@@ -163,11 +166,94 @@ export function validateCreationTalents(
   return errors.length === 0 ? valid() : invalid(...errors)
 }
 
+/**
+ * When background bonuses bump an attribute past the creation cap of 6,
+ * we still need to validate the *base* allocation (28 points + 6/4 caps)
+ * separately from the final value. The final only needs to fit the
+ * lifetime ceiling (0 ≤ x ≤ 8) — bumps above 6 are legal per rulebook
+ * §Attributes ("after this step, the attributes may still increase
+ * through other parts of the creation process").
+ */
+export function validateCreationAttributesWithBonus(
+  base: CharacterAttributes,
+  final: CharacterAttributes,
+): ValidationResult {
+  const errors: string[] = []
+  // Base must respect the 28-point budget and per-attribute creation caps.
+  const baseResult = validateCreationAttributes(base)
+  errors.push(...baseResult.errors)
+  // Final must stay within the lifetime ceiling.
+  for (const a of ATTRIBUTE_DEFINITIONS) {
+    const v = final[a.id]
+    if (!Number.isInteger(v) || v < 0) {
+      errors.push(`${a.name} (after bonuses) must be a non-negative integer.`)
+    } else if (v > MAX_ATTRIBUTE_LEVEL) {
+      errors.push(
+        `${a.name} (after bonuses) is ${v}; lifetime ceiling is ${MAX_ATTRIBUTE_LEVEL}.`,
+      )
+    }
+  }
+  return errors.length === 0 ? valid() : invalid(...errors)
+}
+
+/**
+ * Same shape for skills: the base (career baseline + spent points) must
+ * fit the 30-point budget + ≤ 6 creation cap; the final (base + bonus
+ * bumps) only has to fit 0..MAX_SKILL_LEVEL.
+ */
+export function validateCreationSkillsWithBonus(
+  baseFinal: Record<string, number>,
+  careerBaseline: Record<string, number>,
+  finalAfterBonus: Record<string, number>,
+  budget: number = CREATION_SKILL_POINTS,
+): ValidationResult {
+  const errors: string[] = []
+  const baseResult = validateCreationSkills(baseFinal, careerBaseline, budget)
+  errors.push(...baseResult.errors)
+  for (const skill of SKILLS) {
+    const v = finalAfterBonus[skill.id] ?? 0
+    if (!Number.isInteger(v) || v < 0) {
+      errors.push(`${skill.name} (after bonuses) must be a non-negative integer.`)
+      continue
+    }
+    if (v > MAX_SKILL_LEVEL) {
+      errors.push(
+        `${skill.name} (after bonuses) is ${v}; lifetime ceiling is ${MAX_SKILL_LEVEL}.`,
+      )
+      continue
+    }
+    // The creation cap (6) applies to the final value, with one carve-out:
+    // a background can force the final past 6 if the *unavoidable* portion
+    // (career baseline + background bonus) is already past it. In that
+    // case the player must not have spent any points on top — that
+    // shorter rule catches both "no carve-out" and "carve-out exceeded".
+    if (v > CREATION_SKILL_MAX) {
+      const career = careerBaseline[skill.id] ?? 0
+      const spent = (baseFinal[skill.id] ?? 0) - career
+      if (spent > 0) {
+        errors.push(
+          `${skill.name} is ${v}; creation cap is ${CREATION_SKILL_MAX} when spending on top of background bonuses.`,
+        )
+      }
+    }
+  }
+  return errors.length === 0 ? valid() : invalid(...errors)
+}
+
 export interface CreationInput {
   careerName: string
   attributes: CharacterAttributes
   finalSkills: Record<string, number>
   talents: TalentEntry[]
+  /** Pre-bonus attributes — base 28-point allocation. Omit when no bonuses applied. */
+  baseAttributes?: CharacterAttributes
+  /** Pre-bonus final skills (career baseline + spent points). Omit when no bonuses applied. */
+  baseFinalSkills?: Record<string, number>
+  /**
+   * Effective skill-point budget, including background `skill-points-bonus`
+   * shifts. Defaults to `CREATION_SKILL_POINTS` for back-compat.
+   */
+  skillPointsBudget?: number
 }
 
 /** Compose every check for a single submit-time validation pass. */
@@ -180,9 +266,20 @@ export function validateCreation(
     return invalid(`Career "${input.careerName}" not found in catalog.`)
   }
   const baseline = careerSkillBaseline(career)
+  const attrResult = input.baseAttributes
+    ? validateCreationAttributesWithBonus(input.baseAttributes, input.attributes)
+    : validateCreationAttributes(input.attributes)
+  const skillResult = input.baseFinalSkills
+    ? validateCreationSkillsWithBonus(
+        input.baseFinalSkills,
+        baseline,
+        input.finalSkills,
+        input.skillPointsBudget,
+      )
+    : validateCreationSkills(input.finalSkills, baseline, input.skillPointsBudget)
   return merge(
-    validateCreationAttributes(input.attributes),
-    validateCreationSkills(input.finalSkills, baseline),
+    attrResult,
+    skillResult,
     validateCreationTalents(input.talents, input.careerName, career),
   )
 }
