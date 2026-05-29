@@ -4,11 +4,16 @@ import { RollResultView } from './RollResultView'
 import { Button } from '~/components/ui/Button'
 import { Modal } from '~/components/ui/Modal'
 import {
-  clearPendingSupport,
   removePendingSupport,
   type DiceRollEntry,
 } from '~/lib/server/dice'
-import type { PendingSupport } from '~/lib/types/database'
+import type { PendingBonus, PendingSupport } from '~/lib/types/database'
+
+export interface PendingBonusEntry {
+  characterId: string
+  characterName: string
+  bonus: PendingBonus
+}
 
 const TIME_TICK_MS = 15_000
 const HIGHLIGHT_MS = 1800
@@ -65,6 +70,8 @@ interface DiceFeedProps {
   gameId: string
   myCharacters: { id: string; name: string }[]
   pendingSupport: PendingSupport[]
+  pendingBonuses: PendingBonusEntry[]
+  onRemoveBonus: (characterId: string, bonusId: string) => void
 }
 
 export function DiceFeed({
@@ -72,6 +79,8 @@ export function DiceFeed({
   gameId,
   myCharacters,
   pendingSupport,
+  pendingBonuses,
+  onRemoveBonus,
 }: DiceFeedProps) {
   const [details, setDetails] = useState<DiceRollEntry | null>(null)
   const [highlighted, setHighlighted] = useState<Set<string>>(() => new Set())
@@ -145,6 +154,12 @@ export function DiceFeed({
           <PendingSupportStrip
             gameId={gameId}
             pendingSupport={pendingSupport}
+          />
+        )}
+        {pendingBonuses.length > 0 && (
+          <PendingBonusesStrip
+            pendingBonuses={pendingBonuses}
+            onRemoveBonus={onRemoveBonus}
           />
         )}
         {rolls.length === 0 ? (
@@ -308,31 +323,10 @@ function PendingSupportStrip({
     }
   }
 
-  async function handleClearAll() {
-    if (busy) return
-    setBusy(true)
-    try {
-      await clearPendingSupport({ data: { gameId } })
-    } finally {
-      setBusy(false)
-    }
-  }
-
   return (
-    <div className="shrink-0 border-b border-gray-400 bg-gradient-to-b from-accent-700/20 via-background-200 to-background-200 px-3 py-2">
+    <div className="shrink-0 border-b border-gray-400 bg-background-200 p-3">
       <div className="mb-1.5 flex items-center justify-between gap-2">
-        <span className="text-xs font-semibold text-white">
-          Pending supports ({pendingSupport.length})
-        </span>
-        <Button
-          variant="ghostDanger"
-          size="xs"
-          onClick={handleClearAll}
-          disabled={busy}
-          title="Discard all pending supports"
-        >
-          Clear all
-        </Button>
+        <span className="text-xs font-semibold text-white">Supports</span>
       </div>
       <ul className="flex flex-wrap gap-1">
         {pendingSupport.map((s) => (
@@ -357,6 +351,55 @@ function PendingSupportStrip({
             </button>
           </li>
         ))}
+      </ul>
+    </div>
+  )
+}
+
+function PendingBonusesStrip({
+  pendingBonuses,
+  onRemoveBonus,
+}: {
+  pendingBonuses: PendingBonusEntry[]
+  onRemoveBonus: (characterId: string, bonusId: string) => void
+}) {
+  return (
+    <div className="shrink-0 border-b border-gray-400 bg-background-200 p-3">
+      <div className="mb-1.5 flex items-center justify-between gap-2">
+        <span className="text-xs font-semibold text-white">Bonuses</span>
+      </div>
+      <ul className="flex flex-wrap gap-1">
+        {pendingBonuses.map(({ characterId, bonus }) => {
+          const tone =
+            bonus.modifier >= 0
+              ? 'border-accent-700/40 bg-accent-700/15 text-accent-900'
+              : 'border-danger-700/40 bg-danger-700/15 text-danger-900'
+          const removeHover =
+            bonus.modifier >= 0
+              ? 'not-disabled:hover:bg-accent-700/30'
+              : 'not-disabled:hover:bg-danger-700/30'
+          return (
+            <li
+              key={bonus.id}
+              className={`inline-flex items-center gap-1 rounded border py-0.5 pl-1.5 pr-0.5 text-[11px] ${tone}`}
+              title={`Persisted from ${bonus.source}. Removes on next roll.`}
+            >
+              <span className="font-semibold tabular-nums">
+                {bonus.modifier > 0 ? `+${bonus.modifier}` : bonus.modifier}
+              </span>
+              <span>{bonus.label}</span>
+              <button
+                type="button"
+                onClick={() => onRemoveBonus(characterId, bonus.id)}
+                aria-label={`Remove ${bonus.label}`}
+                title="Remove this bonus"
+                className={`inline-flex h-4 w-4 shrink-0 items-center justify-center rounded transition not-disabled:hover:text-white ${removeHover}`}
+              >
+                ×
+              </button>
+            </li>
+          )
+        })}
       </ul>
     </div>
   )

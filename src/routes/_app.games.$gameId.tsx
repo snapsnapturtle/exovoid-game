@@ -4,14 +4,18 @@ import {
   Outlet,
   useLocation,
 } from '@tanstack/react-router'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { getGame } from '~/lib/server/games'
 import { getRecentRolls } from '~/lib/server/dice'
 import { loadGameState } from '~/lib/server/inventory'
+import { updateCharacter } from '~/lib/server/characters'
 import { useDiceRollFeed } from '~/lib/hooks/useDiceRollFeed'
 import { useRealtimeGameState } from '~/lib/hooks/useRealtimeGameState'
+import { useRealtimeCharacters } from '~/lib/hooks/useRealtimeCharacters'
 import { DiceFeedContext } from '~/lib/hooks/diceFeedContext'
 import { DiceFeed } from '~/components/dice/DiceFeed'
+import type { PendingBonusEntry } from '~/components/dice/DiceFeed'
+import type { PendingBonus } from '~/lib/types/database'
 
 export const Route = createFileRoute('/_app/games/$gameId')({
   loader: async ({ params }) => {
@@ -32,6 +36,7 @@ function GameLayout() {
   const { game, rolls, currentUserId, characters, gameState } =
     Route.useLoaderData()
   const liveGameState = useRealtimeGameState(gameState)
+  const liveCharacters = useRealtimeCharacters(game.id, characters)
   const location = useLocation()
   const {
     rolls: liveRolls,
@@ -42,12 +47,41 @@ function GameLayout() {
     () => ({ refresh, broadcastNewRoll }),
     [refresh, broadcastNewRoll],
   )
+  const myFullCharacters = useMemo(
+    () => liveCharacters.filter((c) => c.user_id === currentUserId),
+    [liveCharacters, currentUserId],
+  )
   const myCharacters = useMemo(
+    () => myFullCharacters.map((c) => ({ id: c.id, name: c.name })),
+    [myFullCharacters],
+  )
+  const myPendingBonuses = useMemo<PendingBonusEntry[]>(
     () =>
-      characters
-        .filter((c) => c.user_id === currentUserId)
-        .map((c) => ({ id: c.id, name: c.name })),
-    [characters, currentUserId],
+      myFullCharacters.flatMap((c) => {
+        const bonuses = (c.pending_bonuses ?? []) as PendingBonus[]
+        return bonuses.map((bonus) => ({
+          characterId: c.id,
+          characterName: c.name,
+          bonus,
+        }))
+      }),
+    [myFullCharacters],
+  )
+  const handleRemoveBonus = useCallback(
+    async (characterId: string, bonusId: string) => {
+      const char = myFullCharacters.find((c) => c.id === characterId)
+      if (!char) return
+      const bonuses = (char.pending_bonuses ?? []) as PendingBonus[]
+      await updateCharacter({
+        data: {
+          characterId,
+          updates: {
+            pending_bonuses: bonuses.filter((b) => b.id !== bonusId),
+          },
+        },
+      })
+    },
+    [myFullCharacters],
   )
 
   const showCombatBanner =
@@ -83,6 +117,8 @@ function GameLayout() {
           gameId={game.id}
           myCharacters={myCharacters}
           pendingSupport={liveGameState.pending_support}
+          pendingBonuses={myPendingBonuses}
+          onRemoveBonus={handleRemoveBonus}
         />
       </div>
     </DiceFeedContext.Provider>

@@ -65,7 +65,7 @@ function StyleguidePage() {
 
         <Section
           title="Surfaces"
-          description="The default panel is bg-background-200 with a border-gray-400 hairline. For surfaces that need to read as “this is the relevant/active part right now” (active combat participant, the pending-supports strip in the dice feed), layer a top-fading accent gradient on top of background-200 and bump the border to accent. The gradient is bg-gradient-to-b from-accent-700/20 via-background-200 to-background-200."
+          description="The default panel is bg-background-200 with a border-gray-400 hairline. For surfaces that need to read as “this is the relevant/active part right now” (e.g. the active combat participant), layer a top-fading accent gradient on top of background-200 and bump the border to accent. The gradient is bg-gradient-to-b from-accent-700/20 via-background-200 to-background-200."
         >
           <Row label="Default">
             <div className="rounded-xl border border-gray-400 bg-background-200 p-4">

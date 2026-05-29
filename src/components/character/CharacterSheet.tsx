@@ -191,14 +191,12 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
             edgeMax={derivedStats.edge}
             edgeCurrent={character.edge_current}
             injuries={character.injuries}
-            pendingBonuses={character.pending_bonuses}
             canEdit={canEdit}
             isMinion={character.is_minion}
             defaultHidden={character.is_npc && !character.visible_to_players}
             onHealthChange={(v) => updateField('health_current', v)}
             onEdgeChange={(v) => updateField('edge_current', v)}
             onInjuriesChange={(v) => updateField('injuries', v)}
-            onRemoveBonus={removePendingBonus}
           />
         </div>
       </div>
