@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useRouter } from '@tanstack/react-router'
 import type { Character, ProgressionEntry } from '~/lib/types/database'
 import {
@@ -27,14 +27,8 @@ const TALENT_DESCRIPTIONS = new Map(
 
 interface Props {
   character: Character
-  /** The level being processed in this iteration of the wizard. The parent
-   * keeps re-deriving this from `pendingLevelUp(character, progression)`
-   * after each commit, so when the player has multiple unspent levels
-   * the modal's level prop ticks up and we re-initialize the draft. */
+  /** The level being processed in this iteration of the wizard. */
   level: number
-  /** Whether another level-up is still pending after this commit
-   * completes — drives the "Level X saved — leveling up to X+1" banner. */
-  hasMoreAfterThis: boolean
   onUpdateField: <K extends keyof Character>(
     key: K,
     value: Character[K],
@@ -53,7 +47,6 @@ interface Props {
 export function LevelUpModal({
   character,
   level,
-  hasMoreAfterThis,
   onUpdateField,
   flushSave,
   onCommitted,
@@ -64,22 +57,6 @@ export function LevelUpModal({
   const [talentPick, setTalentPick] = useState<LevelUpPicks['talent']>(null)
   const [committing, setCommitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  // Brief "Level N committed — moving on" toast when the modal auto-advances.
-  const [advanceFromLevel, setAdvanceFromLevel] = useState<number | null>(null)
-
-  // Reset draft state when the level prop changes (multi-level catch-up).
-  useEffect(() => {
-    setSkillDeltas({})
-    setTalentPick(null)
-    setError(null)
-  }, [level])
-
-  // Clear the advance banner after a beat.
-  useEffect(() => {
-    if (advanceFromLevel === null) return
-    const t = setTimeout(() => setAdvanceFromLevel(null), 1800)
-    return () => clearTimeout(t)
-  }, [advanceFromLevel])
 
   const legal = useMemo(() => {
     const careerNames = careersOfCharacter(character)
@@ -137,14 +114,11 @@ export function LevelUpModal({
       // snapshot until a full page reload.
       void router.invalidate()
       onCommitted(row)
-      if (hasMoreAfterThis) {
-        setAdvanceFromLevel(level)
-        // The level prop will tick up in the next render once the parent
-        // re-derives pendingLevelUp from the optimistic appendLocal; the
-        // [level] useEffect above clears the draft.
-      } else {
-        onClose()
-      }
+      // Close on every commit. Multi-level catch-up: the Level-up button
+      // stays visible because the parent recomputes pendingLevelUp from
+      // the appended row, and the player can re-open the wizard for the
+      // next level when they're ready. One commit = one closed dialog.
+      onClose()
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to commit level-up')
     } finally {
@@ -170,11 +144,6 @@ export function LevelUpModal({
       }
     >
       <div className="space-y-5">
-        {advanceFromLevel !== null && (
-          <Alert variant="success">
-            Level {advanceFromLevel} saved — leveling up to {level}.
-          </Alert>
-        )}
         {error && <Alert variant="danger">{error}</Alert>}
         <LevelUpSkillsSection
           baseSkills={character.skills}

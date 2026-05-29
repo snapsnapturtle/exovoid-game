@@ -80,13 +80,6 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
         : null,
     [character, progressionRows, canEdit, progressionLoaded],
   )
-  // For multi-level catch-up: when committing level N, "has more" means
-  // there's an uncommitted level beyond N. The wizard uses this to either
-  // re-init for level N+1 (banner shown) or close the modal.
-  const hasLevelsBeyondPending = useMemo(() => {
-    if (!pending) return false
-    return pending.level < character.level
-  }, [pending, character.level])
 
   async function handlePortraitChange(file: File) {
     setPortraitUploading(true)
@@ -332,7 +325,6 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
         <LevelUpModal
           character={character}
           level={pending.level}
-          hasMoreAfterThis={hasLevelsBeyondPending}
           onUpdateField={updateField}
           flushSave={flushSave}
           onCommitted={(row) => appendProgressionLocal(row)}
