@@ -42,7 +42,7 @@ function AppLayout() {
 
   return (
     <div className="flex h-screen flex-col overflow-hidden">
-      <header className="shrink-0 border-b border-gray-400 bg-background-200">
+      <header className="shrink-0 border-b border-gray-400 bg-background-100">
         <div className="flex">
           <div className="flex min-w-0 flex-1 justify-center">
             <div className="flex w-full max-w-[1280px] items-center justify-between gap-4 px-6 py-3">
