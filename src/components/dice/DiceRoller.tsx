@@ -391,7 +391,7 @@ export function DiceRoller({
               supportList.length > 0) && (
               <div className="mb-4">
                 <p className="mb-2 text-xs uppercase tracking-wide text-gray-700">
-                  Pending bonuses
+                  Bonuses
                 </p>
                 <div className="flex flex-wrap gap-1.5">
                   {edgeEnabled && (
