@@ -104,7 +104,7 @@ export function SkillsPanel({
           <span>Skill</span>
           <span className="w-16 text-center">Level</span>
           <span className="w-[90px] pl-2 text-left">Roll</span>
-          <span className="w-[64px] pl-1 text-left">Support</span>
+          <span className="w-[64px] pl-2 text-left">Support</span>
         </div>
         {sorted.map((skill) => {
           const level = skills[skill.id] ?? 0
