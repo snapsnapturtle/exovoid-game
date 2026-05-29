@@ -1,4 +1,4 @@
-import type { MouseEventHandler, ReactNode } from 'react'
+import { useEffect, type MouseEventHandler, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 
 /**
@@ -69,6 +69,14 @@ export function Modal({
   footer,
   children,
 }: ModalProps) {
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') onClose()
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [onClose])
+
   // SSR-safe: skip on the server. Modals only mount in response to user
   // interaction anyway, so the client-only path is fine.
   if (typeof document === 'undefined') return null
