@@ -399,6 +399,7 @@ export function DiceRoller({
                       type="button"
                       onClick={() => setEdgeBonusReserved((v) => !v)}
                       disabled={!canReserveEdge}
+                      aria-pressed={edgeBonusReserved}
                       title={
                         (edgeAvailable ?? 0) <= 0 && !edgeBonusReserved
                           ? 'No edge points available'
@@ -424,6 +425,7 @@ export function DiceRoller({
                             return next
                           })
                         }
+                        aria-pressed={applied}
                         title={
                           applied
                             ? `Click to skip this roll (${b.source})`
@@ -452,6 +454,7 @@ export function DiceRoller({
                             return next
                           })
                         }
+                        aria-pressed={picked}
                         title={
                           picked
                             ? `Click to skip ${s.supporterName}'s support`

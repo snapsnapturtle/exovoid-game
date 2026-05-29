@@ -72,14 +72,18 @@ function GameLayout() {
       const char = myFullCharacters.find((c) => c.id === characterId)
       if (!char) return
       const bonuses = (char.pending_bonuses ?? []) as PendingBonus[]
-      await updateCharacter({
-        data: {
-          characterId,
-          updates: {
-            pending_bonuses: bonuses.filter((b) => b.id !== bonusId),
+      try {
+        await updateCharacter({
+          data: {
+            characterId,
+            updates: {
+              pending_bonuses: bonuses.filter((b) => b.id !== bonusId),
+            },
           },
-        },
-      })
+        })
+      } catch (e) {
+        console.error('Failed to remove pending bonus', e)
+      }
     },
     [myFullCharacters],
   )

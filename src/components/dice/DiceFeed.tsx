@@ -366,7 +366,7 @@ function PendingBonusesStrip({
         <span className="text-xs font-semibold text-white">Bonuses</span>
       </div>
       <ul className="flex flex-wrap gap-1">
-        {pendingBonuses.map(({ characterId, bonus }) => {
+        {pendingBonuses.map(({ characterId, characterName, bonus }) => {
           const tone =
             bonus.modifier >= 0
               ? 'border-accent-700/40 bg-accent-700/15 text-accent-900'
@@ -379,7 +379,7 @@ function PendingBonusesStrip({
             <li
               key={bonus.id}
               className={`inline-flex items-center gap-1 rounded border py-0.5 pl-1.5 pr-0.5 text-[11px] ${tone}`}
-              title={`Persisted from ${bonus.source}. Removes on next roll.`}
+              title={`${characterName} — persisted from ${bonus.source}. Removes on next roll.`}
             >
               <span className="tabular-nums">
                 {bonus.modifier > 0 ? `+${bonus.modifier}` : bonus.modifier}
@@ -388,7 +388,7 @@ function PendingBonusesStrip({
               <button
                 type="button"
                 onClick={() => onRemoveBonus(characterId, bonus.id)}
-                aria-label={`Remove ${bonus.label}`}
+                aria-label={`Remove ${bonus.label} from ${characterName}`}
                 title="Remove this bonus"
                 className={`inline-flex h-4 w-4 shrink-0 items-center justify-center rounded transition not-disabled:hover:text-white ${removeHover}`}
               >

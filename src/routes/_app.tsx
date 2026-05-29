@@ -97,7 +97,6 @@ function AppLayout() {
                 <button
                   ref={accountMenu.refs.setReference}
                   type="button"
-                  aria-haspopup="menu"
                   className="flex items-center gap-3 rounded-md px-2 py-1 transition hover:bg-gray-100"
                   {...accountMenu.getReferenceProps()}
                 >
@@ -116,7 +115,6 @@ function AppLayout() {
                 <Popover popover={accountMenu} className="w-44 py-1">
                   <Link
                     to="/account"
-                    role="menuitem"
                     onClick={() => accountMenu.setOpen(false)}
                     className="block w-full px-3 py-2 text-left text-sm text-gray-1000 transition hover:bg-gray-100"
                   >
@@ -124,7 +122,6 @@ function AppLayout() {
                   </Link>
                   <button
                     type="button"
-                    role="menuitem"
                     onClick={handleLogout}
                     className="w-full px-3 py-2 text-left text-sm text-gray-1000 transition hover:bg-gray-100"
                   >
