@@ -9,6 +9,7 @@ import {
 import { RollResultView } from './RollResultView'
 import { Button } from '~/components/ui/Button'
 import { Modal } from '~/components/ui/Modal'
+import { Input, Select } from '~/components/ui/Input'
 
 const DICE: { type: DieType; label: string }[] = [
   { type: 'standard', label: 'Standard' },
@@ -135,13 +136,13 @@ export function CustomDiceRoller({
             >
               Name
             </label>
-            <input
+            <Input
               id="custom-roll-name"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Notice check"
-              className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-1.5 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+              className="w-full"
             />
           </div>
 
@@ -153,18 +154,18 @@ export function CustomDiceRoller({
               >
                 Rolling as
               </label>
-              <select
+              <Select
                 id="custom-roll-character"
                 value={characterId ?? ''}
                 onChange={(e) => setCharacterId(e.target.value || null)}
-                className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-1.5 text-sm text-white focus:border-accent-900 focus:outline-none"
+                className="w-full"
               >
                 {characters.map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.name}
                   </option>
                 ))}
-              </select>
+              </Select>
             </div>
           )}
 

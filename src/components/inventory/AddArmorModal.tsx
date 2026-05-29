@@ -8,6 +8,7 @@ import {
 import { QualityBadge } from './QualityBadge'
 import { Button } from '~/components/ui/Button'
 import { Modal } from '~/components/ui/Modal'
+import { Input } from '~/components/ui/Input'
 
 interface AddArmorModalProps {
   busy: boolean
@@ -80,34 +81,36 @@ export function AddArmorModal({ busy, onAdd, onClose }: AddArmorModalProps) {
       size="lg"
       stickyHeader={
         step === 'armor' ? (
-          <input
+          <Input
             autoFocus
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search by type, name, quality…"
-            className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+            className="w-full"
           />
         ) : undefined
       }
       footerLeft={
         <div className="flex flex-wrap items-center gap-2">
-          <input
+          <Input
             type="text"
+            size="sm"
             value={name}
             disabled={!armor}
             onChange={(e) => setName(e.target.value)}
             placeholder={armor ? 'Name' : 'Pick an armor first'}
             aria-label="Name"
-            className="w-48 rounded border border-gray-400 bg-gray-100 px-2 py-1 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none disabled:opacity-50"
+            className="w-48"
           />
-          <input
+          <Input
             type="text"
+            size="sm"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             placeholder="Location (e.g. locker)"
             aria-label="Location (optional)"
-            className="w-44 rounded border border-gray-400 bg-gray-100 px-2 py-1 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+            className="w-44"
           />
         </div>
       }

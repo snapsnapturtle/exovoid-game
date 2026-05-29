@@ -6,6 +6,7 @@ import { Alert } from '~/components/ui/Alert'
 import { Stepper } from '~/components/ui/Stepper'
 import { Drawer } from '~/components/ui/Drawer'
 import { Popover, usePopover } from '~/components/ui/Popover'
+import { Input, Select, Textarea } from '~/components/ui/Input'
 
 export const Route = createFileRoute('/_app/styleguide')({
   component: StyleguidePage,
@@ -24,6 +25,12 @@ function StyleguidePage() {
   const [edgeValue, setEdgeValue] = useState(4)
   const [apValue, setApValue] = useState(2)
   const [microValue, setMicroValue] = useState(2)
+  const [textValue, setTextValue] = useState('Kira Voss')
+  const [numberValue, setNumberValue] = useState(42)
+  const [selectValue, setSelectValue] = useState('agi')
+  const [textareaValue, setTextareaValue] = useState(
+    'Ex-corporate fixer with a soft spot for stray drones.',
+  )
 
   return (
     <div className="h-full overflow-auto">
@@ -191,6 +198,101 @@ function StyleguidePage() {
         </Section>
 
         <Section
+          title="Input / Textarea / Select"
+          description="Form primitives — black surface (bg-background-100), 1px gray-400 hairline, gray-500 on hover. Focus swaps the border to accent-700 and adds a 1px accent halo via box-shadow (total visual frame 2px, no box-model shift). Three sizes (sm / md / lg) — md is the default for in-page forms; sm fits modal footers and inline editors; lg matches the auth screens. Width is intentionally not set: pass w-full on form fields that should fill their column, or a specific width utility (w-20, w-48) on inline / sized controls. Native size attribute is shadowed in favor of the variant prop."
+        >
+          <Row label="Sizes">
+            <Input
+              size="lg"
+              value={textValue}
+              onChange={(e) => setTextValue(e.target.value)}
+              placeholder="Large input"
+              className="w-64"
+            />
+            <Input
+              value={textValue}
+              onChange={(e) => setTextValue(e.target.value)}
+              placeholder="Medium (default)"
+              className="w-64"
+            />
+            <Input
+              size="sm"
+              value={textValue}
+              onChange={(e) => setTextValue(e.target.value)}
+              placeholder="Small input"
+              className="w-64"
+            />
+          </Row>
+          <Row label="Types">
+            <Input
+              type="email"
+              defaultValue="kira@voidrunners.io"
+              placeholder="Email"
+              className="w-64"
+            />
+            <Input type="password" defaultValue="hunter2" className="w-64" />
+            <Input
+              type="number"
+              value={numberValue}
+              onChange={(e) => setNumberValue(parseInt(e.target.value) || 0)}
+              min={0}
+              className="w-32"
+            />
+            <Input type="search" placeholder="Search…" className="w-64" />
+          </Row>
+          <Row label="Widths (intrinsic vs utility)">
+            <Input defaultValue="No width — intrinsic (~20ch)" />
+            <Input defaultValue="w-48" className="w-48" />
+            <Input defaultValue="w-full inside a w-64 parent" className="w-64" />
+          </Row>
+          <Row label="States">
+            <Input placeholder="Placeholder only" className="w-48" />
+            <Input
+              disabled
+              defaultValue="Disabled value"
+              className="w-48"
+            />
+            <Input
+              disabled
+              placeholder="Disabled & empty (placeholder shows)"
+              className="w-64"
+            />
+          </Row>
+          <Row label="Textarea">
+            <Textarea
+              value={textareaValue}
+              onChange={(e) => setTextareaValue(e.target.value)}
+              rows={3}
+              placeholder="Background notes…"
+              className="w-full max-w-md"
+            />
+          </Row>
+          <Row label="Select">
+            <Select
+              value={selectValue}
+              onChange={(e) => setSelectValue(e.target.value)}
+              className="w-64"
+            >
+              <option value="con">CON</option>
+              <option value="str">STR</option>
+              <option value="agi">AGI</option>
+              <option value="int">INT</option>
+              <option value="edu">EDU</option>
+              <option value="per">PER</option>
+              <option value="coo">COO</option>
+            </Select>
+            <Select size="sm" defaultValue="" className="w-64">
+              <option value="">— Pick one —</option>
+              <option value="a">Option A</option>
+              <option value="b">Option B</option>
+            </Select>
+            <Select disabled defaultValue="a" className="w-64">
+              <option value="a">Disabled</option>
+            </Select>
+          </Row>
+        </Section>
+
+        <Section
           title="Modal"
           description="Standard dialog with a backdrop, header (title + required X close), optional footer for action buttons. Backdrop blurs subtly and the entrance animates. Optional stickyHeader slot pins content (search, filters, status) below the title while the body scrolls. Optional footerLeft slot pairs inline form fields with the right-aligned action buttons."
         >
@@ -227,21 +329,22 @@ function StyleguidePage() {
               title="Modal with sticky header + footer form"
               subtitle="Search stays pinned at the top, inline fields share the footer with action buttons."
               stickyHeader={
-                <input
+                <Input
                   type="search"
                   value={stickyQuery}
                   onChange={(e) => setStickyQuery(e.target.value)}
                   placeholder="Search…"
-                  className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+                  className="w-full"
                 />
               }
               footerLeft={
                 <label className="block text-xs text-gray-900">
                   <span className="block">Quantity</span>
-                  <input
+                  <Input
                     type="number"
                     defaultValue={1}
-                    className="mt-1 w-20 rounded border border-gray-400 bg-gray-100 px-2 py-1 text-sm text-white focus:border-accent-900 focus:outline-none"
+                    size="sm"
+                    className="mt-1 w-20"
                   />
                 </label>
               }

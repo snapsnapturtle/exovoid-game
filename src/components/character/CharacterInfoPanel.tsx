@@ -1,3 +1,5 @@
+import { Input, Textarea } from '~/components/ui/Input'
+
 interface CharacterInfoPanelProps {
   gender: string
   age: number | null
@@ -24,12 +26,12 @@ export function CharacterInfoPanel({
         <div>
           <label className="mb-1 block text-sm text-gray-900">Gender</label>
           {canEdit ? (
-            <input
+            <Input
               type="text"
               value={gender}
               onChange={(e) => onGenderChange(e.target.value)}
-              className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
               placeholder="Gender"
+              className="w-full"
             />
           ) : (
             <p className="text-sm text-gray-1000">{gender || '-'}</p>
@@ -38,15 +40,15 @@ export function CharacterInfoPanel({
         <div>
           <label className="mb-1 block text-sm text-gray-900">Age</label>
           {canEdit ? (
-            <input
+            <Input
               type="number"
               value={age ?? ''}
               onChange={(e) =>
                 onAgeChange(e.target.value ? parseInt(e.target.value) : null)
               }
-              className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
               placeholder="Age"
               min={0}
+              className="w-full"
             />
           ) : (
             <p className="text-sm text-gray-1000">{age ?? '-'}</p>
@@ -57,12 +59,12 @@ export function CharacterInfoPanel({
             Background Notes
           </label>
           {canEdit ? (
-            <textarea
+            <Textarea
               value={backgroundNotes}
               onChange={(e) => onBackgroundNotesChange(e.target.value)}
               rows={3}
-              className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
               placeholder="Character background, motivation, personality..."
+              className="w-full"
             />
           ) : (
             <p className="whitespace-pre-wrap text-sm text-gray-1000">

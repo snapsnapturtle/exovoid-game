@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { SKILLS, type SkillDefinition } from '~/lib/game-logic/skills'
+import { Input } from '~/components/ui/Input'
 
 interface SkillPickerProps {
   /** Skill ids to surface. Defaults to all 24 skills. */
@@ -39,12 +40,12 @@ export function SkillPicker({
     <div className="space-y-3">
       {hint && <p className="text-sm text-gray-1000">{hint}</p>}
       {showFilter && (
-        <input
+        <Input
           type="text"
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
           placeholder="Filter skills..."
-          className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-1.5 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+          className="w-full"
         />
       )}
       <ul className="max-h-72 space-y-1 overflow-y-auto rounded-lg border border-gray-400 bg-background-100 p-2">

@@ -6,6 +6,7 @@ import type {
 } from '~/lib/game-logic/passive-effects'
 import type { DicePool } from '~/lib/game-logic/dice'
 import { Button } from '~/components/ui/Button'
+import { Textarea } from '~/components/ui/Input'
 import { DiceRoller } from '~/components/dice/DiceRoller'
 import type { ApplyBonusInput } from '~/components/dice/RollResultView'
 import type { PendingBonus } from '~/lib/types/database'
@@ -144,11 +145,11 @@ export function DerivedStatsPanel({
           )}
           {tab === 'notes' &&
             (canEditNotes ? (
-              <textarea
+              <Textarea
                 value={notes}
                 onChange={(e) => onNotesChange(e.target.value)}
                 placeholder="Quick notes during play…"
-                className="w-full flex-1 resize-none rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+                className="w-full flex-1 resize-none"
               />
             ) : (
               <p className="whitespace-pre-wrap text-sm text-gray-1000">

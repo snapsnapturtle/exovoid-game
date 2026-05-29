@@ -16,6 +16,7 @@ import {
 import { MalfunctionTableModal } from './MalfunctionTableModal'
 import { Alert } from '~/components/ui/Alert'
 import { Button } from '~/components/ui/Button'
+import { Input } from '~/components/ui/Input'
 
 interface CyberwarePageProps {
   initial: Character
@@ -253,12 +254,12 @@ function SearchBox({
   onChange: (v: string) => void
 }) {
   return (
-    <input
+    <Input
       type="search"
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder="Search cyberware — by category, name, tier, or description"
-      className="w-full rounded-lg border border-gray-400 bg-background-200 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+      className="w-full"
     />
   )
 }

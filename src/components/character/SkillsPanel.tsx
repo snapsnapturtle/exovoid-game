@@ -13,6 +13,7 @@ import {
 } from '~/lib/game-logic/dice'
 import { DiceRoller } from '~/components/dice/DiceRoller'
 import { InlineStepper } from '~/components/ui/InlineStepper'
+import { Input } from '~/components/ui/Input'
 import type { ApplyBonusInput } from '~/components/dice/RollResultView'
 
 interface SkillsPanelProps {
@@ -91,12 +92,12 @@ export function SkillsPanel({
     <div className="rounded-xl border border-gray-400 bg-background-200 p-6">
       <div className="mb-4 flex items-center justify-between gap-4">
         <h3 className="text-lg font-semibold text-white">Skills</h3>
-        <input
+        <Input
           type="text"
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
           placeholder="Filter skills..."
-          className="w-48 rounded-lg border border-gray-400 bg-gray-100 px-3 py-1.5 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+          className="w-48"
         />
       </div>
       <div className="space-y-1">

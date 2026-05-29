@@ -10,6 +10,7 @@ import type { CharacterAttributes } from '~/lib/types/database'
 import { Button } from '~/components/ui/Button'
 import { Alert } from '~/components/ui/Alert'
 import { InlineStepper } from '~/components/ui/InlineStepper'
+import { Input, Select } from '~/components/ui/Input'
 
 interface NpcCreationFormProps {
   gameId: string
@@ -121,22 +122,22 @@ export function NpcCreationForm({
         <div className="grid gap-3 sm:grid-cols-2">
           <label className="block">
             <span className="mb-1 block text-xs text-gray-900">Name</span>
-            <input
+            <Input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               autoFocus
               autoComplete="off"
               placeholder="e.g. Vex the Quick"
-              className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+              className="w-full"
             />
           </label>
           <label className="block">
             <span className="mb-1 block text-xs text-gray-900">Controller</span>
-            <select
+            <Select
               value={controllerUserId ?? ''}
               onChange={(e) => setControllerUserId(e.target.value || null)}
-              className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white focus:border-accent-900 focus:outline-none"
+              className="w-full"
             >
               {(() => {
                 const gm = members.find((m) => m.role === 'gm')
@@ -150,7 +151,7 @@ export function NpcCreationForm({
                     {m.profiles?.display_name || 'Unknown'}
                   </option>
                 ))}
-            </select>
+            </Select>
           </label>
         </div>
 

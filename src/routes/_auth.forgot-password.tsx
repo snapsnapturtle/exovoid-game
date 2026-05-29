@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { getSupabaseBrowserClient } from '~/lib/supabase/client'
 import { Button } from '~/components/ui/Button'
 import { Alert } from '~/components/ui/Alert'
+import { Input } from '~/components/ui/Input'
 
 export const Route = createFileRoute('/_auth/forgot-password')({
   head: () => ({ meta: [{ title: 'Forgot password — Exovoid' }] }),
@@ -47,14 +48,15 @@ function ForgotPasswordPage() {
             <label htmlFor="email" className="mb-1 block text-sm text-gray-900">
               Email
             </label>
-            <input
+            <Input
               id="email"
               type="email"
               required
+              size="lg"
+              className="w-full"
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-gray-400 bg-gray-100 px-4 py-2 text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
               placeholder="you@example.com"
             />
           </div>

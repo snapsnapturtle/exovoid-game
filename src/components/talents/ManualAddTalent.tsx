@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import talentsData from '~/data/talents.json'
 import { Modal } from '~/components/ui/Modal'
+import { Input } from '~/components/ui/Input'
 
 interface TalentMeta {
   name: string
@@ -42,13 +43,13 @@ export function ManualAddTalent({
       subtitle="Adds any talent outside the normal career tree (e.g. background grants). Does not consume a talent point."
       size="md"
       stickyHeader={
-        <input
+        <Input
           autoFocus
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search talents..."
-          className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+          className="w-full"
         />
       }
     >

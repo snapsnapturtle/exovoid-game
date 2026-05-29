@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { getSupabaseBrowserClient } from '~/lib/supabase/client'
 import { Button } from '~/components/ui/Button'
 import { Alert } from '~/components/ui/Alert'
+import { Input } from '~/components/ui/Input'
 
 export const Route = createFileRoute('/_app/account')({
   head: () => ({ meta: [{ title: 'Account settings — Exovoid' }] }),
@@ -83,14 +84,15 @@ function AccountPage() {
             >
               Current password
             </label>
-            <input
+            <Input
               id="currentPassword"
               type="password"
               required
+              size="lg"
+              className="w-full"
               autoComplete="current-password"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
-              className="w-full rounded-lg border border-gray-400 bg-gray-100 px-4 py-2 text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
             />
           </div>
           <div>
@@ -100,15 +102,16 @@ function AccountPage() {
             >
               New password
             </label>
-            <input
+            <Input
               id="newPassword"
               type="password"
               required
               minLength={6}
+              size="lg"
+              className="w-full"
               autoComplete="new-password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              className="w-full rounded-lg border border-gray-400 bg-gray-100 px-4 py-2 text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
               placeholder="At least 6 characters"
             />
           </div>
@@ -119,15 +122,16 @@ function AccountPage() {
             >
               Confirm new password
             </label>
-            <input
+            <Input
               id="confirmPassword"
               type="password"
               required
               minLength={6}
+              size="lg"
+              className="w-full"
               autoComplete="new-password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full rounded-lg border border-gray-400 bg-gray-100 px-4 py-2 text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
             />
           </div>
           {error && <Alert variant="danger">{error}</Alert>}

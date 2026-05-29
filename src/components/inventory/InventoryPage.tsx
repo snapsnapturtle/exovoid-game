@@ -39,6 +39,7 @@ import { ManageArmorModsModal } from './ManageArmorModsModal'
 import { ManageWeaponModsModal } from './ManageWeaponModsModal'
 import { Alert } from '~/components/ui/Alert'
 import { Button } from '~/components/ui/Button'
+import { Input } from '~/components/ui/Input'
 import { QualityBadge } from './QualityBadge'
 
 type Owner =
@@ -567,9 +568,10 @@ function NumberField({
     return (
       <label className="flex items-baseline gap-1 text-xs text-gray-900">
         <span>{label}</span>
-        <input
+        <Input
           autoFocus
           type="number"
+          size="sm"
           min={0}
           value={draft}
           disabled={busy}
@@ -582,7 +584,7 @@ function NumberField({
               setEditing(false)
             }
           }}
-          className="w-20 rounded border border-accent-700 bg-gray-100 px-1.5 py-0.5 text-sm text-white focus:outline-none"
+          className="w-20"
         />
         <span className="text-gray-700">{suffix}</span>
       </label>
@@ -850,8 +852,9 @@ function ItemRow({
           {canEdit && (renameAllowed || (isEquipment && onToggleEquipped)) && (
             <div className="flex flex-wrap items-center gap-2">
               {renameAllowed && (
-                <input
+                <Input
                   type="text"
+                  size="sm"
                   value={nameDraft}
                   onChange={(e) => setNameDraft(e.target.value)}
                   onBlur={commitName}
@@ -864,7 +867,7 @@ function ItemRow({
                     }
                   }}
                   placeholder="Name"
-                  className="rounded border border-gray-400 bg-gray-100 px-2 py-1 text-sm font-medium text-white focus:border-accent-700 focus:outline-none"
+                  className="w-auto font-medium"
                 />
               )}
               {isEquipment && onToggleEquipped && (
@@ -914,8 +917,9 @@ function ItemRow({
                   onCommit={onQuantityChange}
                 />
               )}
-              <input
+              <Input
                 type="text"
+                size="sm"
                 value={locationDraft}
                 onChange={(e) => setLocationDraft(e.target.value)}
                 onBlur={commitLocation}
@@ -928,7 +932,7 @@ function ItemRow({
                   }
                 }}
                 placeholder="Location (e.g. backpack)"
-                className="min-w-0 flex-1 rounded border border-gray-400 bg-gray-100 px-2 py-1 text-xs text-gray-1000 focus:border-accent-700 focus:outline-none"
+                className="min-w-0 flex-1 text-xs"
               />
               <Button
                 variant="ghost"

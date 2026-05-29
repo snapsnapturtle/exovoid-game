@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Button } from '~/components/ui/Button'
 import { Modal } from '~/components/ui/Modal'
+import { Input, Textarea } from '~/components/ui/Input'
 
 interface AddCustomItemModalProps {
   busy: boolean
@@ -43,23 +44,25 @@ export function AddCustomItemModal({
       size="lg"
       footerLeft={
         <div className="flex flex-wrap items-center gap-2">
-          <input
+          <Input
             type="number"
+            size="sm"
             min={1}
             value={quantity}
             onChange={(e) =>
               setQuantity(Math.max(1, parseInt(e.target.value, 10) || 1))
             }
             aria-label="Quantity"
-            className="w-20 rounded border border-gray-400 bg-gray-100 px-2 py-1 text-sm text-white focus:border-accent-900 focus:outline-none"
+            className="w-20"
           />
-          <input
+          <Input
             type="text"
+            size="sm"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             placeholder="Location (e.g. backpack)"
             aria-label="Location (optional)"
-            className="w-44 rounded border border-gray-400 bg-gray-100 px-2 py-1 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+            className="w-44"
           />
         </div>
       }
@@ -77,23 +80,25 @@ export function AddCustomItemModal({
       <div className="space-y-3">
         <label className="block text-xs text-gray-900">
           Name
-          <input
+          <Input
             autoFocus
             type="text"
+            size="sm"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="e.g. cursed amulet"
-            className="mt-1 w-full rounded border border-gray-400 bg-gray-100 px-2 py-1.5 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+            className="mt-1 w-full"
           />
         </label>
         <label className="block text-xs text-gray-900">
           Description (optional)
-          <textarea
+          <Textarea
+            size="sm"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={3}
             placeholder="What is it, where did it come from…"
-            className="mt-1 w-full rounded border border-gray-400 bg-gray-100 px-2 py-1.5 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+            className="mt-1 w-full"
           />
         </label>
       </div>
