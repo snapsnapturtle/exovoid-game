@@ -321,18 +321,18 @@ function PendingSupportStrip({
   return (
     <div className="shrink-0 border-b border-gray-400 bg-background-200 px-3 py-2">
       <div className="mb-1.5 flex items-center justify-between gap-2">
-        <span className="text-[10px] font-semibold uppercase tracking-wide text-accent-900">
+        <span className="text-xs font-semibold text-accent-900">
           Pending supports ({pendingSupport.length})
         </span>
-        <button
-          type="button"
+        <Button
+          variant="ghostDanger"
+          size="xs"
           onClick={handleClearAll}
           disabled={busy}
-          className="text-[10px] uppercase tracking-wide text-gray-700 transition not-disabled:hover:text-danger-900 disabled:cursor-not-allowed"
           title="Discard all pending supports"
         >
           Clear all
-        </button>
+        </Button>
       </div>
       <ul className="flex flex-wrap gap-1">
         {pendingSupport.map((s) => (

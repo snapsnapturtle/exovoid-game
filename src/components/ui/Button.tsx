@@ -19,7 +19,7 @@ const VARIANT: Record<ButtonVariant, string> = {
   ghost:
     'text-gray-1000 not-disabled:hover:bg-gray-100 not-disabled:hover:text-white disabled:opacity-50',
   ghostDanger:
-    'text-danger-900 not-disabled:hover:bg-danger-100 not-disabled:hover:text-white disabled:opacity-50',
+    'text-danger-900 not-disabled:hover:bg-danger-100 disabled:opacity-50',
   danger:
     'bg-danger-700 text-white not-disabled:hover:bg-danger-800 disabled:opacity-50',
 }
