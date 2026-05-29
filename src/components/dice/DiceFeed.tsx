@@ -257,8 +257,8 @@ function RollCard({
       <div className="mt-0.5 flex flex-wrap items-center gap-x-1.5">
         <span className="font-medium text-white">{skill}</span>
         {isSupport && (
-          <span className="rounded bg-accent-700/20 px-1.5 py-0.5 text-[10px] leading-none text-accent-900">
-            AS SUPPORT
+          <span className="rounded bg-gray-200 px-1.5 py-0.5 text-[10px] leading-none text-gray-900">
+            SUPPORT
           </span>
         )}
         {absorbedCount > 0 && (
@@ -337,7 +337,7 @@ function PendingSupportStrip({
           >
             <span className="truncate">
               <span className="font-medium">{s.supporterName}</span>
-              <span> · {s.skillName}</span>
+              <span> ({s.skillName})</span>
             </span>
             <button
               type="button"
@@ -384,7 +384,7 @@ function PendingBonusesStrip({
               className={`inline-flex items-center gap-1 rounded border py-0.5 pl-1.5 pr-0.5 text-[11px] ${tone}`}
               title={`Persisted from ${bonus.source}. Removes on next roll.`}
             >
-              <span className="font-semibold tabular-nums">
+              <span className="tabular-nums">
                 {bonus.modifier > 0 ? `+${bonus.modifier}` : bonus.modifier}
               </span>
               <span>{bonus.label}</span>
