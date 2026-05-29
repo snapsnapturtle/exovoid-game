@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRealtimeSubscription } from './useRealtimeSubscription'
 import { listProgression } from '~/lib/server/progression'
 import type { ProgressionEntry } from '~/lib/types/database'
@@ -38,10 +38,16 @@ export function useCharacterProgression(
 ): UseCharacterProgressionResult {
   const [rows, setRows] = useState<ProgressionEntry[]>(initial ?? [])
   const [loaded, setLoaded] = useState(initial !== undefined)
+  // Capture once: did the caller hand us initial rows? Reading the prop
+  // directly inside the effect below would either trip
+  // react-hooks/exhaustive-deps or force a re-fetch every time the array
+  // identity changes upstream (realtime, appendLocal). Stashing the
+  // "had-initial" bit in a ref keeps the effect dependent only on
+  // characterId.
+  const hasInitialRef = useRef(initial !== undefined)
 
   useEffect(() => {
-    // Caller provided initial rows (loader-driven): no need to fetch.
-    if (initial !== undefined) return
+    if (hasInitialRef.current) return
     let cancelled = false
     setLoaded(false)
     void (async () => {
@@ -59,11 +65,6 @@ export function useCharacterProgression(
     return () => {
       cancelled = true
     }
-    // `initial` participates in the gate above but we only care about
-    // its identity at mount; re-running on changes would clobber state
-    // accrued via realtime + appendLocal. The characterId switch is the
-    // only legitimate reason to reset.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [characterId])
 
   useRealtimeSubscription<ProgressionEntry>({
