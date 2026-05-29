@@ -319,7 +319,7 @@ function PendingSupportStrip({
   }
 
   return (
-    <div className="shrink-0 border-b border-gray-400 bg-background-200 px-3 py-2">
+    <div className="shrink-0 border-b border-gray-400 bg-gradient-to-b from-accent-700/20 via-background-200 to-background-200 px-3 py-2">
       <div className="mb-1.5 flex items-center justify-between gap-2">
         <span className="text-xs font-semibold text-white">
           Pending supports ({pendingSupport.length})
