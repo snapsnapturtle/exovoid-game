@@ -1,4 +1,3 @@
-import { Link } from '@tanstack/react-router'
 import type { InventoryItem } from '~/lib/types/database'
 import { lookupWeapon } from '~/lib/game-logic/weapons'
 import { equippedArmor } from '~/lib/game-logic/armors'
@@ -35,24 +34,9 @@ export function ActionsTab({
 
   if (weapons.length === 0 && !worn) {
     return (
-      <div className="space-y-3">
-        <p className="py-6 text-center text-sm text-gray-700">
-          Nothing equipped.
-        </p>
-        {canEdit && !isNpc && (
-          <p className="text-center text-xs text-gray-700">
-            Pick up gear in your{' '}
-            <Link
-              to="/games/$gameId/characters/$characterId/inventory"
-              params={{ gameId, characterId }}
-              className="text-accent-900 transition hover:text-accent-900"
-            >
-              inventory
-            </Link>
-            , then toggle Equip on a weapon or armor.
-          </p>
-        )}
-      </div>
+      <p className="py-6 text-center text-sm text-gray-700">
+        Nothing equipped.
+      </p>
     )
   }
 

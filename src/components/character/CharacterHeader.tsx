@@ -14,15 +14,19 @@ interface CharacterHeaderProps {
   /** NPCs hide XP, level pill, career, and the Downtime button — none of
    * those concepts apply to GM-managed adversaries / allies. */
   isNpc: boolean
+  /** Set when there's an uncommitted level-up (`pendingLevelUp(...)`).
+   * Drives the "Level up" CTA and the XP-bar pulse. Null when nothing
+   * is pending or the viewer isn't the owner. */
+  pendingLevelUp: { level: number } | null
   deleting: boolean
   portraitUploading: boolean
   onNameChange: (name: string) => void
-  onCareerChange: (career: string) => void
   onExperienceChange: (value: number) => void
   onPortraitChange: (file: File) => void
   onModeToggle: () => void
   onDelete: () => void
   onDowntime: () => void
+  onLevelUp: () => void
 }
 
 export function CharacterHeader({
@@ -35,15 +39,16 @@ export function CharacterHeader({
   showModeToggle,
   isEditMode,
   isNpc,
+  pendingLevelUp,
   deleting,
   portraitUploading,
   onNameChange,
-  onCareerChange,
   onExperienceChange,
   onPortraitChange,
   onModeToggle,
   onDelete,
   onDowntime,
+  onLevelUp,
 }: CharacterHeaderProps) {
   const { next: nextThreshold, percent: xpPercent } = xpProgress(experience)
 
@@ -80,18 +85,13 @@ export function CharacterHeader({
         {!isNpc && (
           <div className="flex items-center gap-2">
             <span className="text-sm text-gray-900">Career:</span>
-            {canEdit ? (
-              <input
-                type="text"
-                value={career}
-                onChange={(e) => onCareerChange(e.target.value)}
-                size={Math.max(career.length || 0, 14)}
-                className="min-w-[14ch] rounded border border-transparent bg-transparent text-sm text-gray-1000 field-sizing-content hover:border-gray-400 focus:border-accent-900 focus:outline-none"
-                placeholder="Choose a career"
-              />
-            ) : (
-              <span className="text-sm text-gray-1000">{career || 'None'}</span>
-            )}
+            {/* Career is read-only post-creation: the talent tree and
+                level-up legality are derived from this field, so a
+                free-text edit could leave the player with a level-up
+                button that surfaces zero valid talents. Creation owns
+                career selection; if a swap is genuinely needed, that's
+                a GM data fix outside this UI for now. */}
+            <span className="text-sm text-gray-1000">{career || 'None'}</span>
           </div>
         )}
         {!isNpc && (
@@ -150,6 +150,15 @@ export function CharacterHeader({
             className="min-w-[7.5rem]"
           >
             {isEditMode ? 'Done editing' : 'Edit'}
+          </Button>
+        )}
+        {!isNpc && showModeToggle && pendingLevelUp && (
+          // Only the owner sees this (showModeToggle is the root canEdit
+          // signal). Appears only when there's an uncommitted level-up; the
+          // wizard writes a `level-up` row in character_progression on
+          // commit, which makes `pendingLevelUp` null and hides the button.
+          <Button variant="primary" onClick={onLevelUp}>
+            Level up to {pendingLevelUp.level}
           </Button>
         )}
         {!isNpc && showModeToggle && (

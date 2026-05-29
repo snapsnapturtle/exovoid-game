@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
+import { useRouter } from '@tanstack/react-router'
 import type { Character } from '~/lib/types/database'
 import { SKILLS } from '~/lib/game-logic/skills'
 import { trainableSkillIds } from '~/lib/game-logic/downtime'
@@ -19,6 +20,7 @@ interface Props {
 export function TrainSkill({ character, onCloseAll, onUpdateField }: Props) {
   const [selected, setSelected] = useState<string | null>(null)
   const footerEl = useDowntimeFooterTarget()
+  const router = useRouter()
 
   const skillNameById = new Map(SKILLS.map((s) => [s.id, s.name]))
   const eligibleIds = trainableSkillIds(character.skills)
@@ -34,10 +36,12 @@ export function TrainSkill({ character, onCloseAll, onUpdateField }: Props) {
       ...character.skills,
       [selected]: currentLevel + 1,
     })
-    onUpdateField('downtime_uses_used', {
-      ...character.downtime_uses_used,
-      'train-skill': character.level,
-    })
+    // No longer touching downtime_uses_used: Train Skill's gate is the
+    // lifetime cumulative cap (trainings used ≤ character.level) read
+    // off the progression log, not the per-level marker other downtime
+    // activities use. See trainSkillUsesRemaining() and the migration
+    // note in DowntimeModal.tsx.
+    //
     // Fire-and-forget the progression entry. The skill bump is the player's
     // intent — we won't surface a hard error if the audit-log write fails,
     // just log it. #42's history view reads these rows.
@@ -51,6 +55,9 @@ export function TrainSkill({ character, onCloseAll, onUpdateField }: Props) {
     }).catch((e) => {
       console.error('Failed to record training progression', e)
     })
+    // Mark route loaders stale so navigating away and back picks up the
+    // new skill level instead of returning the cached pre-training snapshot.
+    void router.invalidate()
     onCloseAll()
   }
 

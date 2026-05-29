@@ -646,12 +646,15 @@ export type PendingSupport = {
 }
 
 /**
- * One row in `character_progression`: a single pick (training bump, level-up
- * choice, etc.) made for a character at a given level. The history view in
- * #42 renders these grouped by level; writers tag rows via `source` so the
- * UI can render the right summary per kind. `picks` shape is per-source:
+ * One row in `character_progression`: one entry in a character's
+ * progression log. The history view (#42) renders these grouped by level;
+ * writers tag rows via `source` so the UI can render the right summary
+ * per kind. `picks` shape is per-source:
  *   - "downtime:train-skill" → { skillId: string }
- *   - (future) "level-up:skill" → { skillId, delta } etc.
+ *   - "level-up" → { skills: Record<skillId, deltaLevels>, talent:
+ *      { name, career, tier } | null } (one row per level; `talent: null`
+ *      means the talent point was banked. See LevelUpPicks in
+ *      ~/lib/game-logic/level-up.ts.)
  */
 type ProgressionRow =
   Database['public']['Tables']['character_progression']['Row']

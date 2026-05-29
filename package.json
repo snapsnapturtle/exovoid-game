@@ -24,10 +24,12 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.0",
+    "@testing-library/react": "^16.3.2",
     "@types/node": "^25.9.1",
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^6.0.2",
+    "happy-dom": "^20.9.0",
     "nitro": "npm:nitro-nightly@^3.0.260522-beta",
     "prettier": "3.8.3",
     "tailwindcss": "^4.1.4",

@@ -49,11 +49,11 @@ export function TalentsTab({
           </span>
         </div>
         <Link
-          to="/games/$gameId/characters/$characterId/talents"
+          to="/games/$gameId/characters/$characterId/progression"
           params={{ gameId, characterId }}
           className={buttonClasses('secondary', 'sm')}
         >
-          Manage talents
+          Progression history
         </Link>
       </div>
 

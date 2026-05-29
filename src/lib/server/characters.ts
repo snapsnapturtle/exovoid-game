@@ -8,12 +8,7 @@ import type {
   PendingBonus,
   TalentEntry,
 } from '~/lib/types/database'
-import {
-  canRemove,
-  canUnlock,
-  makeTalentEntry,
-  type CareerData,
-} from '~/lib/game-logic/talents'
+import type { CareerData } from '~/lib/game-logic/talents'
 import { validateCreation } from '~/lib/game-logic/character-creation'
 import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
 import {
@@ -188,49 +183,6 @@ export const updateCharacter = createServerFn({ method: 'POST' })
     return character as unknown as Character
   })
 
-export const unlockTalent = createServerFn({ method: 'POST' })
-  .inputValidator(
-    (d: { characterId: string; talentName: string; career: string }) => d,
-  )
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
-
-    const { data: row, error: readErr } = await supabase
-      .from('characters')
-      .select('*')
-      .eq('id', data.characterId)
-      .single()
-    if (readErr || !row) throw new Error('Character not found')
-
-    const character = row as unknown as Character
-    const check = canUnlock(character, data.career, data.talentName, careers)
-    if (!check.ok) throw new Error(check.reason ?? 'Cannot unlock talent')
-
-    const career = careers.find((c) => c.name === data.career)
-    const tier =
-      career?.talents.find((t) => t.talent === data.talentName)?.tier ?? 0
-    const entry = makeTalentEntry(
-      data.talentName,
-      data.career,
-      tier,
-      character.level,
-    )
-    const nextTalents = [...character.talents, entry]
-
-    const { data: updated, error } = await supabase
-      .from('characters')
-      .update({ talents: nextTalents } as never)
-      .eq('id', data.characterId)
-      .select()
-      .single()
-    if (error) throw new Error(error.message)
-    return updated as unknown as Character
-  })
-
 export const grantTalent = createServerFn({ method: 'POST' })
   .inputValidator((d: { characterId: string; talentName: string }) => d)
   .handler(async ({ data }) => {
@@ -260,50 +212,6 @@ export const grantTalent = createServerFn({ method: 'POST' })
       granted: true,
     }
     const nextTalents = [...character.talents, entry]
-
-    const { data: updated, error } = await supabase
-      .from('characters')
-      .update({ talents: nextTalents } as never)
-      .eq('id', data.characterId)
-      .select()
-      .single()
-    if (error) throw new Error(error.message)
-    return updated as unknown as Character
-  })
-
-export const removeTalent = createServerFn({ method: 'POST' })
-  .inputValidator((d: { characterId: string; talentName: string }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
-
-    const { data: row, error: readErr } = await supabase
-      .from('characters')
-      .select('*')
-      .eq('id', data.characterId)
-      .single()
-    if (readErr || !row) throw new Error('Character not found')
-
-    const character = row as unknown as Character
-
-    const { data: game } = await supabase
-      .from('games')
-      .select('gm_id')
-      .eq('id', character.game_id)
-      .single()
-    const isGm = game?.gm_id === user.id
-
-    if (!isGm) {
-      const check = canRemove(character, data.talentName)
-      if (!check.ok) throw new Error(check.reason ?? 'Cannot remove talent')
-    }
-
-    const nextTalents = character.talents.filter(
-      (t) => t.name !== data.talentName,
-    )
 
     const { data: updated, error } = await supabase
       .from('characters')
