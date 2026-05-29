@@ -168,13 +168,18 @@ export function LevelUpEntryEdit({
         pick={talentPick}
         onPick={setTalentPick}
       />
-      {legal.length === 0 && talentPick && (
-        <Alert variant="warning">
-          The talent currently picked may no longer be legal under the base.
-          Saving will leave it as-is — clear the selection to bank this level's
-          talent point.
-        </Alert>
-      )}
+      {talentPick &&
+        !legal.some(
+          (t) => t.name === talentPick.name && t.career === talentPick.career,
+        ) && (
+          <Alert variant="warning">
+            The talent currently picked isn't legal under the reconstructed base
+            — usually because another edit moved a tier prereq, or because the
+            same talent was already unlocked elsewhere. Saving will leave it in
+            place; clear the selection to bank this level's talent point
+            instead.
+          </Alert>
+        )}
       <div className="flex justify-end gap-2">
         <Button variant="ghost" onClick={onCancel} disabled={saving}>
           Cancel

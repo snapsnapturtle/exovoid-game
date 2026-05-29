@@ -64,9 +64,16 @@ export function useCharacter(initial: Character, canEdit: boolean) {
       setSaveStatus('saved')
       pendingRef.current = false
       setTimeout(() => setSaveStatus('idle'), 2000)
-    } catch {
+    } catch (err) {
+      // Show the failed state in the UI and clear pendingRef so the next
+      // mutation can schedule a fresh save. Re-throw so awaited callers
+      // (notably `flushSave`, used by the level-up wizard) can branch on
+      // the failure — without this, the wizard would happily
+      // `recordProgression(...)` a row whose picks were never actually
+      // persisted to the character row, creating permanent log drift.
       setSaveStatus('error')
       pendingRef.current = false
+      throw err
     }
   }, [])
 
@@ -85,18 +92,20 @@ export function useCharacter(initial: Character, canEdit: boolean) {
     if (timerRef.current) clearTimeout(timerRef.current)
     timerRef.current = setTimeout(() => {
       timerRef.current = null
-      void performSave()
+      // Fire-and-forget — performSave already set saveStatus='error' on
+      // failure. The catch keeps the rejection out of the
+      // unhandled-promise channel; awaited callers (flushSave) still
+      // see the rejection because they don't go through this path.
+      performSave().catch(() => {})
     }, SAVE_DEBOUNCE_MS)
   }
 
   /**
    * Cancel the pending debounce timer and persist `latestRef.current`
-   * immediately. Returns a promise that resolves once the write
-   * completes (or rejects on save error, but we currently swallow it
-   * inside performSave to match the existing debounced behaviour —
-   * resolve-only here). No-op when nothing is pending. Call this before
-   * any UI flow that could navigate away or read back the character
-   * row from the server (e.g. the level-up wizard's commit).
+   * immediately. Rejects on save failure — callers that gate follow-up
+   * work on persistence (e.g. the level-up wizard, which only writes
+   * the progression row once the character save succeeds) must catch
+   * this rejection. No-op when nothing is pending.
    */
   const flushSave = useCallback(async () => {
     if (timerRef.current) {
@@ -117,7 +126,10 @@ export function useCharacter(initial: Character, canEdit: boolean) {
         clearTimeout(timerRef.current)
         timerRef.current = null
         if (pendingRef.current) {
-          void performSave()
+          // Same fire-and-forget pattern as the debounce timer above —
+          // the failure surfaces via saveStatus, not via an unhandled
+          // rejection.
+          performSave().catch(() => {})
         }
       }
     }

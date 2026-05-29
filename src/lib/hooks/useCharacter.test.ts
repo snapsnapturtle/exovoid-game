@@ -120,4 +120,23 @@ describe('useCharacter', () => {
     // Level should derive from XP (10 = level 2 per XP_THRESHOLDS).
     expect(payload.level).toBe(2)
   })
+
+  // Regression: pre-fix, performSave caught errors and only set
+  // saveStatus='error', so `await flushSave()` always resolved
+  // successfully even when updateCharacter rejected. The level-up
+  // wizard then proceeded to recordProgression, committing a row
+  // whose picks were never actually applied to the character — a
+  // permanent drift between the log and the sheet. flushSave must
+  // propagate the rejection so awaited callers can branch on it.
+  it('flushSave rejects when the underlying save fails', async () => {
+    updateCharacterMock.mockRejectedValueOnce(new Error('network down'))
+    const initial = makeCharacter()
+    const { result } = renderHook(() => useCharacter(initial, true))
+
+    await act(async () => {
+      result.current.updateField('name', 'Alice')
+    })
+    await expect(result.current.flushSave()).rejects.toThrow('network down')
+    expect(updateCharacterMock).toHaveBeenCalledTimes(1)
+  })
 })

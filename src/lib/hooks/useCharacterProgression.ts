@@ -38,16 +38,21 @@ export function useCharacterProgression(
 ): UseCharacterProgressionResult {
   const [rows, setRows] = useState<ProgressionEntry[]>(initial ?? [])
   const [loaded, setLoaded] = useState(initial !== undefined)
-  // Capture once: did the caller hand us initial rows? Reading the prop
-  // directly inside the effect below would either trip
-  // react-hooks/exhaustive-deps or force a re-fetch every time the array
-  // identity changes upstream (realtime, appendLocal). Stashing the
-  // "had-initial" bit in a ref keeps the effect dependent only on
-  // characterId.
-  const hasInitialRef = useRef(initial !== undefined)
+  // Only the very first effect run respects `initial` — that's when the
+  // caller is bootstrapping the hook with a loader-supplied snapshot.
+  // Any subsequent `characterId` change must trigger a fresh fetch even
+  // if `initial` is still set (it'd be stale data for the previous
+  // character). Tracking "first run" in a ref lets us keep `initial`
+  // out of the effect's dep list (it'd otherwise trigger refetches on
+  // every realtime / appendLocal change) without skipping a legitimate
+  // characterId switch within one hook instance.
+  const skipFirstFetchRef = useRef(initial !== undefined)
 
   useEffect(() => {
-    if (hasInitialRef.current) return
+    if (skipFirstFetchRef.current) {
+      skipFirstFetchRef.current = false
+      return
+    }
     let cancelled = false
     setLoaded(false)
     void (async () => {
