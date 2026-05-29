@@ -107,7 +107,7 @@ export function Modal({
         <div className="flex-1 overflow-y-auto px-5 py-4">{children}</div>
         {(footer || footerLeft) &&
           (footerLeft ? (
-            <div className="flex flex-wrap items-end justify-between gap-3 border-t border-gray-400 px-5 py-3">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-gray-400 px-5 py-3">
               {footerLeft}
               {footer && <div className="flex gap-2">{footer}</div>}
             </div>

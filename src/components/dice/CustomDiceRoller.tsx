@@ -99,6 +99,22 @@ export function CustomDiceRoller({
           )}
         </>
       }
+      footerLeft={
+        showConfig ? (
+          <label
+            className="flex items-center gap-2 text-sm text-gray-1000"
+            title="Only you and the GM see the result"
+          >
+            <input
+              type="checkbox"
+              checked={hidden}
+              onChange={(e) => setHidden(e.target.checked)}
+              className="h-4 w-4"
+            />
+            Hidden roll
+          </label>
+        ) : undefined
+      }
       footer={
         <>
           <Button variant="ghost" onClick={onClose} disabled={rolling}>
@@ -186,15 +202,6 @@ export function CustomDiceRoller({
             </div>
           </div>
 
-          <label className="mb-4 flex items-center gap-2 text-sm text-gray-1000">
-            <input
-              type="checkbox"
-              checked={hidden}
-              onChange={(e) => setHidden(e.target.checked)}
-              className="h-4 w-4"
-            />
-            Hidden roll (only you and the GM see the result)
-          </label>
         </>
       )}
 
