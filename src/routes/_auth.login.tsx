@@ -60,6 +60,7 @@ function LoginPage() {
             </label>
             <a
               href="/forgot-password"
+              tabIndex={-1}
               className="text-xs text-accent-900 hover:underline"
             >
               Forgot password?
