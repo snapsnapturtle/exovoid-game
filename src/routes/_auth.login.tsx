@@ -54,17 +54,12 @@ function LoginPage() {
           />
         </div>
         <div>
-          <div className="mb-1 flex items-baseline justify-between">
-            <label htmlFor="password" className="text-sm text-gray-900">
-              Password
-            </label>
-            <a
-              href="/forgot-password"
-              className="text-xs text-accent-900 hover:underline"
-            >
-              Forgot password?
-            </a>
-          </div>
+          <label
+            htmlFor="password"
+            className="mb-1 block text-sm text-gray-900"
+          >
+            Password
+          </label>
           <input
             id="password"
             type="password"
@@ -79,6 +74,14 @@ function LoginPage() {
         <Button type="submit" disabled={loading} className="w-full">
           {loading ? 'Logging in...' : 'Log In'}
         </Button>
+        <p className="text-center text-sm">
+          <a
+            href="/forgot-password"
+            className="text-accent-900 hover:underline"
+          >
+            Forgot password?
+          </a>
+        </p>
       </form>
       <p className="mt-4 text-center text-sm text-gray-900">
         Don't have an account?{' '}

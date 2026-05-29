@@ -59,7 +59,7 @@ function GameLobbyPage() {
                   {(member as any).profiles?.display_name || 'Unknown'}
                 </span>
                 {member.role === 'gm' && (
-                  <span className="rounded-full bg-warning-700/20 px-2 py-0.5 text-xs text-warning-900">
+                  <span className="rounded-full bg-blue-700/20 px-2 py-0.5 text-xs text-blue-900">
                     GM
                   </span>
                 )}

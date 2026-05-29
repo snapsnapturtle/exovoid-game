@@ -113,7 +113,9 @@ export const getGame = createServerFn()
 
     const { data: characters } = await supabase
       .from('characters')
-      .select('id, name, career, level, user_id, portrait_url, is_npc')
+      .select(
+        'id, name, career, level, user_id, portrait_url, is_npc, pending_bonuses',
+      )
       .eq('game_id', data.gameId)
       .eq('is_npc', false)
 

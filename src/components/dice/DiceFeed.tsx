@@ -3,12 +3,14 @@ import { CustomDiceRoller } from './CustomDiceRoller'
 import { RollResultView } from './RollResultView'
 import { Button } from '~/components/ui/Button'
 import { Modal } from '~/components/ui/Modal'
-import {
-  clearPendingSupport,
-  removePendingSupport,
-  type DiceRollEntry,
-} from '~/lib/server/dice'
-import type { PendingSupport } from '~/lib/types/database'
+import { removePendingSupport, type DiceRollEntry } from '~/lib/server/dice'
+import type { PendingBonus, PendingSupport } from '~/lib/types/database'
+
+export interface PendingBonusEntry {
+  characterId: string
+  characterName: string
+  bonus: PendingBonus
+}
 
 const TIME_TICK_MS = 15_000
 const HIGHLIGHT_MS = 1800
@@ -62,18 +64,20 @@ function useNow(intervalMs: number): number {
 
 interface DiceFeedProps {
   rolls: DiceRollEntry[]
-  currentUserId: string
   gameId: string
   myCharacters: { id: string; name: string }[]
   pendingSupport: PendingSupport[]
+  pendingBonuses: PendingBonusEntry[]
+  onRemoveBonus: (characterId: string, bonusId: string) => void
 }
 
 export function DiceFeed({
   rolls,
-  currentUserId,
   gameId,
   myCharacters,
   pendingSupport,
+  pendingBonuses,
+  onRemoveBonus,
 }: DiceFeedProps) {
   const [details, setDetails] = useState<DiceRollEntry | null>(null)
   const [highlighted, setHighlighted] = useState<Set<string>>(() => new Set())
@@ -135,7 +139,7 @@ export function DiceFeed({
         <div className="flex shrink-0 items-center justify-between border-b border-gray-400 px-4 py-3">
           <h3 className="text-sm font-semibold text-white">Dice Feed</h3>
           <Button
-            variant="secondary"
+            variant="subtle"
             size="sm"
             onClick={() => setCustomOpen(true)}
             title="Custom roll"
@@ -147,6 +151,12 @@ export function DiceFeed({
           <PendingSupportStrip
             gameId={gameId}
             pendingSupport={pendingSupport}
+          />
+        )}
+        {pendingBonuses.length > 0 && (
+          <PendingBonusesStrip
+            pendingBonuses={pendingBonuses}
+            onRemoveBonus={onRemoveBonus}
           />
         )}
         {rolls.length === 0 ? (
@@ -164,7 +174,6 @@ export function DiceFeed({
                 roll={roll}
                 now={now}
                 highlighted={highlighted.has(roll.id)}
-                isOwn={roll.user_id === currentUserId}
                 onClick={() => setDetails(roll)}
               />
             ))}
@@ -213,13 +222,11 @@ function RollCard({
   roll,
   now,
   highlighted,
-  isOwn,
   onClick,
 }: {
   roll: DiceRollEntry
   now: number
   highlighted: boolean
-  isOwn: boolean
   onClick: () => void
 }) {
   const summary = roll.data.summary ?? {}
@@ -233,7 +240,7 @@ function RollCard({
   return (
     <button
       onClick={onClick}
-      className={`w-full rounded-lg border border-gray-400 bg-background-200 p-3 text-left transition hover:border-accent-700 ${isOwn ? 'border-l-4 border-l-accent-700' : ''} ${highlighted ? 'roll-flash' : ''}`}
+      className={`w-full rounded-lg border border-gray-400 bg-background-200 p-3 text-left transition hover:border-accent-700 ${highlighted ? 'roll-flash' : ''}`}
     >
       <div className="flex items-baseline justify-between gap-2 text-xs text-gray-900">
         <span className="min-w-0 flex-1 truncate">{label}</span>
@@ -247,8 +254,8 @@ function RollCard({
       <div className="mt-0.5 flex flex-wrap items-center gap-x-1.5">
         <span className="font-medium text-white">{skill}</span>
         {isSupport && (
-          <span className="rounded bg-accent-700/20 px-1.5 py-0.5 text-[10px] leading-none text-accent-900">
-            AS SUPPORT
+          <span className="rounded bg-gray-200 px-1.5 py-0.5 text-[10px] leading-none text-gray-900">
+            SUPPORT
           </span>
         )}
         {absorbedCount > 0 && (
@@ -271,7 +278,7 @@ function RollCard({
 
       <div className="mt-2 flex flex-wrap items-center gap-2">
         {ordered.length === 0 ? (
-          <span className="text-xs text-gray-700">No symbols</span>
+          <span className="text-xs italic text-gray-700">Nothing</span>
         ) : (
           ordered.map((s) => (
             <span
@@ -313,31 +320,10 @@ function PendingSupportStrip({
     }
   }
 
-  async function handleClearAll() {
-    if (busy) return
-    setBusy(true)
-    try {
-      await clearPendingSupport({ data: { gameId } })
-    } finally {
-      setBusy(false)
-    }
-  }
-
   return (
-    <div className="shrink-0 border-b border-gray-400 bg-background-200 px-3 py-2">
+    <div className="shrink-0 border-b border-gray-400 bg-background-200 p-3">
       <div className="mb-1.5 flex items-center justify-between gap-2">
-        <span className="text-[10px] font-semibold uppercase tracking-wide text-accent-900">
-          Pending supports ({pendingSupport.length})
-        </span>
-        <button
-          type="button"
-          onClick={handleClearAll}
-          disabled={busy}
-          className="text-[10px] uppercase tracking-wide text-gray-700 transition not-disabled:hover:text-danger-900 disabled:cursor-not-allowed"
-          title="Discard all pending supports"
-        >
-          Clear all
-        </button>
+        <span className="text-xs font-semibold text-white">Supports</span>
       </div>
       <ul className="flex flex-wrap gap-1">
         {pendingSupport.map((s) => (
@@ -348,7 +334,7 @@ function PendingSupportStrip({
           >
             <span className="truncate">
               <span className="font-medium">{s.supporterName}</span>
-              <span className="text-gray-700"> · {s.skillName}</span>
+              <span> ({s.skillName})</span>
             </span>
             <button
               type="button"
@@ -362,6 +348,55 @@ function PendingSupportStrip({
             </button>
           </li>
         ))}
+      </ul>
+    </div>
+  )
+}
+
+function PendingBonusesStrip({
+  pendingBonuses,
+  onRemoveBonus,
+}: {
+  pendingBonuses: PendingBonusEntry[]
+  onRemoveBonus: (characterId: string, bonusId: string) => void
+}) {
+  return (
+    <div className="shrink-0 border-b border-gray-400 bg-background-200 p-3">
+      <div className="mb-1.5 flex items-center justify-between gap-2">
+        <span className="text-xs font-semibold text-white">Bonuses</span>
+      </div>
+      <ul className="flex flex-wrap gap-1">
+        {pendingBonuses.map(({ characterId, characterName, bonus }) => {
+          const tone =
+            bonus.modifier >= 0
+              ? 'border-accent-700/40 bg-accent-700/15 text-accent-900'
+              : 'border-danger-700/40 bg-danger-700/15 text-danger-900'
+          const removeHover =
+            bonus.modifier >= 0
+              ? 'not-disabled:hover:bg-accent-700/30'
+              : 'not-disabled:hover:bg-danger-700/30'
+          return (
+            <li
+              key={bonus.id}
+              className={`inline-flex items-center gap-1 rounded border py-0.5 pl-1.5 pr-0.5 text-[11px] ${tone}`}
+              title={`${characterName} — persisted from ${bonus.source}. Removes on next roll.`}
+            >
+              <span className="tabular-nums">
+                {bonus.modifier > 0 ? `+${bonus.modifier}` : bonus.modifier}
+              </span>
+              <span>{bonus.label}</span>
+              <button
+                type="button"
+                onClick={() => onRemoveBonus(characterId, bonus.id)}
+                aria-label={`Remove ${bonus.label} from ${characterName}`}
+                title="Remove this bonus"
+                className={`inline-flex h-4 w-4 shrink-0 items-center justify-center rounded transition not-disabled:hover:text-white ${removeHover}`}
+              >
+                ×
+              </button>
+            </li>
+          )
+        })}
       </ul>
     </div>
   )

@@ -30,7 +30,6 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
   const [mode, setMode] = useState<SheetMode>('play')
   const [deleting, setDeleting] = useState(false)
   const [portraitUploading, setPortraitUploading] = useState(false)
-  const [notesOpen, setNotesOpen] = useState(false)
   const [downtimeOpen, setDowntimeOpen] = useState(false)
   const navigate = useNavigate()
   const { character, saveStatus, updateField, updateAttribute, updateSkill } =
@@ -192,14 +191,12 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
             edgeMax={derivedStats.edge}
             edgeCurrent={character.edge_current}
             injuries={character.injuries}
-            pendingBonuses={character.pending_bonuses}
             canEdit={canEdit}
             isMinion={character.is_minion}
             defaultHidden={character.is_npc && !character.visible_to_players}
             onHealthChange={(v) => updateField('health_current', v)}
             onEdgeChange={(v) => updateField('edge_current', v)}
             onInjuriesChange={(v) => updateField('injuries', v)}
-            onRemoveBonus={removePendingBonus}
           />
         </div>
       </div>
@@ -245,6 +242,9 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
             onConsumeBonuses={consumePendingBonuses}
             onRemoveBonus={removePendingBonus}
             defaultHidden={character.is_npc && !character.visible_to_players}
+            notes={character.notes}
+            onNotesChange={(v) => updateField('notes', v)}
+            canEditNotes={canEdit}
           />
           <EquipmentTabs
             gender={character.gender}
@@ -266,70 +266,6 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
             onAgeChange={(v) => updateField('age', v)}
             onBackgroundNotesChange={(v) => updateField('background_notes', v)}
           />
-        </div>
-      </div>
-
-      <button
-        type="button"
-        onClick={() => setNotesOpen((o) => !o)}
-        aria-label={notesOpen ? 'Close play notes' : 'Open play notes'}
-        aria-expanded={notesOpen}
-        className={`fixed right-[21rem] top-4 z-40 inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-medium transition ${
-          notesOpen
-            ? 'border-accent-700 bg-accent-700/15 text-accent-900'
-            : 'border-gray-400 bg-background-200 text-gray-1000 hover:border-accent-700 hover:text-white'
-        }`}
-      >
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden
-        >
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-          <polyline points="14 2 14 8 20 8" />
-          <line x1="9" x2="15" y1="13" y2="13" />
-          <line x1="9" x2="15" y1="17" y2="17" />
-        </svg>
-        Notes
-      </button>
-
-      <div
-        aria-hidden={!notesOpen}
-        role="dialog"
-        aria-label="Play notes"
-        className={`fixed right-[21rem] top-12 z-30 flex w-[24rem] origin-top-right flex-col rounded-xl border border-gray-400 bg-background-200 transition-all duration-150 ${
-          notesOpen
-            ? 'translate-y-0 opacity-100'
-            : 'pointer-events-none -translate-y-2 opacity-0'
-        }`}
-      >
-        <header className="flex shrink-0 items-center justify-between gap-2 border-b border-gray-400 px-3 py-2">
-          <span className="text-xs font-semibold uppercase tracking-wide text-gray-900">
-            Play notes
-          </span>
-        </header>
-        <div className="p-3">
-          {canEdit ? (
-            <textarea
-              value={character.notes}
-              onChange={(e) => updateField('notes', e.target.value)}
-              placeholder="Quick notes during play…"
-              rows={10}
-              className="w-full resize-none rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
-            />
-          ) : (
-            <p className="whitespace-pre-wrap text-sm text-gray-1000">
-              {character.notes || (
-                <span className="text-gray-700">No notes yet.</span>
-              )}
-            </p>
-          )}
         </div>
       </div>
 

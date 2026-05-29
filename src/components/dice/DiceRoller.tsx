@@ -69,6 +69,17 @@ const SUPPORT_SYMBOL_ORDER = [
   'xp',
 ] as const
 
+const CHIP_BASE =
+  'inline-flex items-center gap-1 rounded border px-1.5 py-0.5 text-[11px] transition disabled:cursor-not-allowed disabled:opacity-50'
+const CHIP_SELECTED =
+  'border-accent-700/60 bg-accent-700/15 text-accent-900 not-disabled:hover:bg-accent-700/25'
+const CHIP_UNSELECTED =
+  'border-gray-400 bg-transparent text-gray-1000 not-disabled:hover:bg-gray-100'
+
+function chipClasses(selected: boolean): string {
+  return `${CHIP_BASE} ${selected ? CHIP_SELECTED : CHIP_UNSELECTED}`
+}
+
 function formatSupportSummary(summary: Record<string, number>): string {
   const parts: string[] = []
   for (const s of SUPPORT_SYMBOL_ORDER) {
@@ -80,7 +91,7 @@ function formatSupportSummary(summary: Record<string, number>): string {
     if (n > 0 && !SUPPORT_SYMBOL_ORDER.includes(s as never))
       parts.push(`${n} ${s}`)
   }
-  return parts.length === 0 ? 'no symbols' : parts.join(', ')
+  return parts.length === 0 ? 'nothing' : parts.join(', ')
 }
 
 export function DiceRoller({
@@ -292,6 +303,22 @@ export function DiceRoller({
           )}
         </>
       }
+      footerLeft={
+        showConfig && !isSupport ? (
+          <label
+            className="flex items-center gap-2 text-sm text-gray-1000"
+            title="Only you and the GM see the result"
+          >
+            <input
+              type="checkbox"
+              checked={hidden}
+              onChange={(e) => setHidden(e.target.checked)}
+              className="h-4 w-4"
+            />
+            Hidden roll
+          </label>
+        ) : undefined
+      }
       footer={
         <>
           <Button variant="ghost" onClick={onClose} disabled={rolling}>
@@ -358,6 +385,92 @@ export function DiceRoller({
             </div>
           </div>
 
+          {!isSupport &&
+            (edgeEnabled ||
+              appliedBonuses.length > 0 ||
+              supportList.length > 0) && (
+              <div className="mb-4">
+                <p className="mb-2 text-xs uppercase tracking-wide text-gray-700">
+                  Bonuses
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {edgeEnabled && (
+                    <button
+                      type="button"
+                      onClick={() => setEdgeBonusReserved((v) => !v)}
+                      disabled={!canReserveEdge}
+                      aria-pressed={edgeBonusReserved}
+                      title={
+                        (edgeAvailable ?? 0) <= 0 && !edgeBonusReserved
+                          ? 'No edge points available'
+                          : 'Spend 1 Edge to add +3 to your pool for this roll'
+                      }
+                      className={chipClasses(edgeBonusReserved)}
+                    >
+                      <span className="tabular-nums">+3</span>
+                      <span>Spend Edge</span>
+                    </button>
+                  )}
+                  {appliedBonuses.map((b) => {
+                    const applied = !skippedBonusIds.has(b.id)
+                    return (
+                      <button
+                        key={b.id}
+                        type="button"
+                        onClick={() =>
+                          setSkippedBonusIds((prev) => {
+                            const next = new Set(prev)
+                            if (next.has(b.id)) next.delete(b.id)
+                            else next.add(b.id)
+                            return next
+                          })
+                        }
+                        aria-pressed={applied}
+                        title={
+                          applied
+                            ? `Click to skip this roll (${b.source})`
+                            : `Click to apply (${b.source})`
+                        }
+                        className={chipClasses(applied)}
+                      >
+                        <span className="tabular-nums">
+                          {b.modifier > 0 ? `+${b.modifier}` : b.modifier}
+                        </span>
+                        <span>{b.label}</span>
+                      </button>
+                    )
+                  })}
+                  {supportList.map((s) => {
+                    const picked = absorbedIds.has(s.id)
+                    return (
+                      <button
+                        key={s.id}
+                        type="button"
+                        onClick={() =>
+                          setAbsorbedIds((prev) => {
+                            const next = new Set(prev)
+                            if (next.has(s.id)) next.delete(s.id)
+                            else next.add(s.id)
+                            return next
+                          })
+                        }
+                        aria-pressed={picked}
+                        title={
+                          picked
+                            ? `Click to skip ${s.supporterName}'s support`
+                            : `Click to absorb ${s.supporterName}'s support`
+                        }
+                        className={chipClasses(picked)}
+                      >
+                        <span className="font-medium">{s.supporterName}</span>
+                        <span> ({formatSupportSummary(s.summary)})</span>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+
           {!isSupport && (
             <div className="mb-4">
               <p className="mb-2 text-xs uppercase tracking-wide text-gray-700">
@@ -394,134 +507,7 @@ export function DiceRoller({
                   </Button>
                 )}
               </div>
-              <p className="mt-1.5 text-xs text-gray-700">
-                Negative reduces aptitude first, then expertise. Standard die is
-                never modified.
-              </p>
             </div>
-          )}
-
-          {!isSupport && appliedBonuses.length > 0 && (
-            <div className="mb-4">
-              <p className="mb-2 text-xs uppercase tracking-wide text-gray-700">
-                Pending bonuses
-              </p>
-              <div className="flex flex-wrap gap-1.5">
-                {appliedBonuses.map((b) => {
-                  const skipped = skippedBonusIds.has(b.id)
-                  return (
-                    <button
-                      key={b.id}
-                      type="button"
-                      onClick={() =>
-                        setSkippedBonusIds((prev) => {
-                          const next = new Set(prev)
-                          if (next.has(b.id)) next.delete(b.id)
-                          else next.add(b.id)
-                          return next
-                        })
-                      }
-                      title={
-                        skipped
-                          ? `Click to apply (${b.source})`
-                          : `Click to skip this roll (${b.source})`
-                      }
-                      className={`inline-flex items-center gap-1 rounded border px-1.5 py-0.5 text-[11px] transition ${
-                        skipped
-                          ? 'border-gray-400 bg-transparent text-gray-700'
-                          : 'border-accent-700/60 bg-accent-700/15 text-accent-900 hover:bg-accent-700/25'
-                      }`}
-                    >
-                      <span className="font-semibold tabular-nums">
-                        {b.modifier > 0 ? `+${b.modifier}` : b.modifier}
-                      </span>
-                      <span>{b.label}</span>
-                    </button>
-                  )
-                })}
-              </div>
-              <p className="mt-1.5 text-xs text-gray-700">
-                Applied bonuses are consumed when this roll commits. Click a
-                chip to skip it for this roll — it stays on your character.
-              </p>
-            </div>
-          )}
-
-          {!isSupport && supportList.length > 0 && (
-            <div className="mb-4">
-              <p className="mb-2 text-xs uppercase tracking-wide text-gray-700">
-                Available support
-              </p>
-              <div className="flex flex-wrap gap-1.5">
-                {supportList.map((s) => {
-                  const picked = absorbedIds.has(s.id)
-                  return (
-                    <button
-                      key={s.id}
-                      type="button"
-                      onClick={() =>
-                        setAbsorbedIds((prev) => {
-                          const next = new Set(prev)
-                          if (next.has(s.id)) next.delete(s.id)
-                          else next.add(s.id)
-                          return next
-                        })
-                      }
-                      title={
-                        picked
-                          ? `Click to skip ${s.supporterName}'s support`
-                          : `Click to absorb ${s.supporterName}'s support`
-                      }
-                      className={`inline-flex items-center gap-1 rounded border px-1.5 py-0.5 text-[11px] transition ${
-                        picked
-                          ? 'border-accent-700/60 bg-accent-700/15 text-accent-900 hover:bg-accent-700/25'
-                          : 'border-gray-400 bg-transparent text-gray-1000 hover:bg-gray-100'
-                      }`}
-                    >
-                      <span className="font-semibold">{s.supporterName}</span>
-                      <span className="text-gray-700">
-                        ({formatSupportSummary(s.summary)})
-                      </span>
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
-          )}
-
-          {edgeEnabled && (
-            <div className="mb-4 flex items-center gap-2">
-              <Button
-                variant={edgeBonusReserved ? 'secondary' : 'subtle'}
-                size="sm"
-                onClick={() => setEdgeBonusReserved((v) => !v)}
-                disabled={!canReserveEdge}
-                title={
-                  (edgeAvailable ?? 0) <= 0 && !edgeBonusReserved
-                    ? 'No edge points available'
-                    : 'Spend 1 Edge to add +3 to your pool for this roll'
-                }
-              >
-                {edgeBonusReserved
-                  ? '✓ Edge spent: +3 pool'
-                  : 'Spend edge: +3 pool'}
-              </Button>
-              <span className="text-xs text-gray-700">
-                Edge available: {edgeAvailable}
-              </span>
-            </div>
-          )}
-
-          {!isSupport && (
-            <label className="mb-4 flex items-center gap-2 text-sm text-gray-1000">
-              <input
-                type="checkbox"
-                checked={hidden}
-                onChange={(e) => setHidden(e.target.checked)}
-                className="h-4 w-4"
-              />
-              Hidden roll (only you and the GM see the result)
-            </label>
           )}
         </>
       )}

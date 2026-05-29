@@ -247,22 +247,6 @@ export const removePendingSupport = createServerFn({ method: 'POST' })
     return { removed: true }
   })
 
-export const clearPendingSupport = createServerFn({ method: 'POST' })
-  .inputValidator((d: { gameId: string }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
-
-    const { error } = await supabase
-      .from('game_state')
-      .update({ pending_support: [] } as never)
-      .eq('game_id', data.gameId)
-    if (error) throw new Error(error.message)
-  })
-
 export const getRecentRolls = createServerFn()
   .inputValidator((d: { gameId: string }) => d)
   .handler(async ({ data }) => {

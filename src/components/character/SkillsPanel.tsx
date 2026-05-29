@@ -100,11 +100,11 @@ export function SkillsPanel({
         />
       </div>
       <div className="space-y-1">
-        <div className="grid grid-cols-[1fr_auto_auto_auto] gap-2 px-2 text-xs text-gray-700">
+        <div className="grid grid-cols-[1fr_auto_auto_auto] gap-2 text-xs text-gray-700">
           <span>Skill</span>
           <span className="w-16 text-center">Level</span>
           <span className="w-[90px] pl-2 text-left">Roll</span>
-          <span className="w-[64px] pl-1 text-left">Support</span>
+          <span className="w-[64px] pl-2 text-left">Support</span>
         </div>
         {sorted.map((skill) => {
           const level = skills[skill.id] ?? 0
@@ -116,7 +116,7 @@ export function SkillsPanel({
           return (
             <div
               key={skill.id}
-              className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-gray-100"
+              className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-2 rounded-lg py-1.5 hover:bg-gray-100"
             >
               <div className="flex items-center gap-2">
                 {(canFavorite || isFavorite) && (

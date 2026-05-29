@@ -41,7 +41,7 @@ export function AttributesPanel({
           return (
             <div
               key={attr.id}
-              className="flex flex-col items-center rounded-lg border border-gray-400 bg-gray-100 px-1 py-2"
+              className="flex flex-col items-center rounded-lg border border-gray-400 px-1 py-2"
               title={tooltip}
             >
               <span className="text-[10px] font-medium uppercase tracking-wide text-gray-900">

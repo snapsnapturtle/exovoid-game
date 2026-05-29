@@ -64,6 +64,29 @@ function StyleguidePage() {
         </Section>
 
         <Section
+          title="Surfaces"
+          description="The default panel is bg-background-200 with a border-gray-400 hairline. For surfaces that need to read as “this is the relevant/active part right now” (e.g. the active combat participant), layer a top-fading accent gradient on top of background-200 and bump the border to accent. The gradient is bg-gradient-to-b from-accent-700/20 via-background-200 to-background-200."
+        >
+          <Row label="Default">
+            <div className="rounded-xl border border-gray-400 bg-background-200 p-4">
+              <p className="text-sm text-white">Default surface</p>
+              <p className="text-xs text-gray-900">
+                bg-background-200 · border-gray-400
+              </p>
+            </div>
+          </Row>
+          <Row label="Active">
+            <div className="rounded-xl border border-accent-700 bg-gradient-to-b from-accent-700/20 via-background-200 to-background-200 p-4">
+              <p className="text-sm text-white">Active surface</p>
+              <p className="text-xs text-gray-900">
+                bg-gradient-to-b from-accent-700/20 via-background-200
+                to-background-200 · border-accent-700
+              </p>
+            </div>
+          </Row>
+        </Section>
+
+        <Section
           title="Button"
           description="Six variants × three sizes. Primary is the single main action on a surface; secondary is an alternate action with similar weight; subtle is the in-play chip (steppers, inline +/-) — more present than ghost, less loud than secondary; ghost is the canonical Cancel; ghostDanger is the danger flavour of ghost (inline destructive actions in lists, e.g. row-level ✕); danger is reserved for the loud destructive primary."
         >
@@ -160,6 +183,11 @@ function StyleguidePage() {
             No wound symbols rolled — no injury suffered.
           </Alert>
           <Alert variant="pink">+2 Edge from adrenaline symbols.</Alert>
+          <Alert variant="neutral">
+            Quiet contextual note — black panel bg, gray hairline, gray text.
+            Use for soft explanations that shouldn't compete with the
+            surrounding content.
+          </Alert>
         </Section>
 
         <Section

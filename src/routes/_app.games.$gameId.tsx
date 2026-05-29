@@ -4,14 +4,18 @@ import {
   Outlet,
   useLocation,
 } from '@tanstack/react-router'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { getGame } from '~/lib/server/games'
 import { getRecentRolls } from '~/lib/server/dice'
 import { loadGameState } from '~/lib/server/inventory'
+import { updateCharacter } from '~/lib/server/characters'
 import { useDiceRollFeed } from '~/lib/hooks/useDiceRollFeed'
 import { useRealtimeGameState } from '~/lib/hooks/useRealtimeGameState'
+import { useRealtimeCharacters } from '~/lib/hooks/useRealtimeCharacters'
 import { DiceFeedContext } from '~/lib/hooks/diceFeedContext'
 import { DiceFeed } from '~/components/dice/DiceFeed'
+import type { PendingBonusEntry } from '~/components/dice/DiceFeed'
+import type { PendingBonus } from '~/lib/types/database'
 
 export const Route = createFileRoute('/_app/games/$gameId')({
   loader: async ({ params }) => {
@@ -32,6 +36,7 @@ function GameLayout() {
   const { game, rolls, currentUserId, characters, gameState } =
     Route.useLoaderData()
   const liveGameState = useRealtimeGameState(gameState)
+  const liveCharacters = useRealtimeCharacters(game.id, characters)
   const location = useLocation()
   const {
     rolls: liveRolls,
@@ -42,12 +47,45 @@ function GameLayout() {
     () => ({ refresh, broadcastNewRoll }),
     [refresh, broadcastNewRoll],
   )
+  const myFullCharacters = useMemo(
+    () => liveCharacters.filter((c) => c.user_id === currentUserId),
+    [liveCharacters, currentUserId],
+  )
   const myCharacters = useMemo(
+    () => myFullCharacters.map((c) => ({ id: c.id, name: c.name })),
+    [myFullCharacters],
+  )
+  const myPendingBonuses = useMemo<PendingBonusEntry[]>(
     () =>
-      characters
-        .filter((c) => c.user_id === currentUserId)
-        .map((c) => ({ id: c.id, name: c.name })),
-    [characters, currentUserId],
+      myFullCharacters.flatMap((c) => {
+        const bonuses = (c.pending_bonuses ?? []) as PendingBonus[]
+        return bonuses.map((bonus) => ({
+          characterId: c.id,
+          characterName: c.name,
+          bonus,
+        }))
+      }),
+    [myFullCharacters],
+  )
+  const handleRemoveBonus = useCallback(
+    async (characterId: string, bonusId: string) => {
+      const char = myFullCharacters.find((c) => c.id === characterId)
+      if (!char) return
+      const bonuses = (char.pending_bonuses ?? []) as PendingBonus[]
+      try {
+        await updateCharacter({
+          data: {
+            characterId,
+            updates: {
+              pending_bonuses: bonuses.filter((b) => b.id !== bonusId),
+            },
+          },
+        })
+      } catch (e) {
+        console.error('Failed to remove pending bonus', e)
+      }
+    },
+    [myFullCharacters],
   )
 
   const showCombatBanner =
@@ -61,23 +99,30 @@ function GameLayout() {
             <Link
               to="/games/$gameId/combat"
               params={{ gameId: game.id }}
-              className="block border-b border-warning-700/40 bg-warning-700/10 px-4 py-2 text-sm text-warning-900 transition hover:bg-warning-700/20"
+              className="block border-b border-warning-700/40 bg-warning-700/10 text-sm text-warning-900 transition hover:bg-warning-700/20"
             >
-              <span className="mr-2">⚔</span>
-              <span className="font-semibold">
-                Combat active — Round {liveGameState.combat.round}
-              </span>
-              <span className="ml-2 text-warning-900/80">Go to tracker →</span>
+              <div className="mx-auto flex min-h-12 w-full max-w-[1280px] items-center px-6">
+                <span className="mr-2">⚔</span>
+                <span className="font-semibold">
+                  Combat active — Round {liveGameState.combat.round}
+                </span>
+                <span className="ml-2 text-warning-900/80">
+                  Go to tracker →
+                </span>
+              </div>
             </Link>
           )}
-          <Outlet />
+          <div className="mx-auto w-full max-w-[1280px]">
+            <Outlet />
+          </div>
         </div>
         <DiceFeed
           rolls={liveRolls}
-          currentUserId={currentUserId}
           gameId={game.id}
           myCharacters={myCharacters}
           pendingSupport={liveGameState.pending_support}
+          pendingBonuses={myPendingBonuses}
+          onRemoveBonus={handleRemoveBonus}
         />
       </div>
     </DiceFeedContext.Provider>
