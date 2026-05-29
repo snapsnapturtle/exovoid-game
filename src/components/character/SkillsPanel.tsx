@@ -94,6 +94,7 @@ export function SkillsPanel({
         <h3 className="text-lg font-semibold text-white">Skills</h3>
         <Input
           type="text"
+          size="sm"
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
           placeholder="Filter skills..."
