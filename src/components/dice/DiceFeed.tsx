@@ -62,7 +62,6 @@ function useNow(intervalMs: number): number {
 
 interface DiceFeedProps {
   rolls: DiceRollEntry[]
-  currentUserId: string
   gameId: string
   myCharacters: { id: string; name: string }[]
   pendingSupport: PendingSupport[]
@@ -70,7 +69,6 @@ interface DiceFeedProps {
 
 export function DiceFeed({
   rolls,
-  currentUserId,
   gameId,
   myCharacters,
   pendingSupport,
@@ -164,7 +162,6 @@ export function DiceFeed({
                 roll={roll}
                 now={now}
                 highlighted={highlighted.has(roll.id)}
-                isOwn={roll.user_id === currentUserId}
                 onClick={() => setDetails(roll)}
               />
             ))}
@@ -213,13 +210,11 @@ function RollCard({
   roll,
   now,
   highlighted,
-  isOwn,
   onClick,
 }: {
   roll: DiceRollEntry
   now: number
   highlighted: boolean
-  isOwn: boolean
   onClick: () => void
 }) {
   const summary = roll.data.summary ?? {}
@@ -233,7 +228,7 @@ function RollCard({
   return (
     <button
       onClick={onClick}
-      className={`w-full rounded-lg border border-gray-400 bg-background-200 p-3 text-left transition hover:border-accent-700 ${isOwn ? 'border-l-4 border-l-accent-700' : ''} ${highlighted ? 'roll-flash' : ''}`}
+      className={`w-full rounded-lg border border-gray-400 bg-background-200 p-3 text-left transition hover:border-accent-700 ${highlighted ? 'roll-flash' : ''}`}
     >
       <div className="flex items-baseline justify-between gap-2 text-xs text-gray-900">
         <span className="min-w-0 flex-1 truncate">{label}</span>

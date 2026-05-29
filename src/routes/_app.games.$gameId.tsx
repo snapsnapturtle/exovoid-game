@@ -80,7 +80,6 @@ function GameLayout() {
         </div>
         <DiceFeed
           rolls={liveRolls}
-          currentUserId={currentUserId}
           gameId={game.id}
           myCharacters={myCharacters}
           pendingSupport={liveGameState.pending_support}
