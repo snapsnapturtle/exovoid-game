@@ -89,7 +89,7 @@ export function SkillsPanel({
   })
 
   return (
-    <div className="rounded-xl border border-gray-400 bg-background-200 p-6">
+    <div className="rounded-xl border border-gray-400 bg-background-200 p-3">
       <div className="mb-4 flex items-center justify-between gap-4">
         <h3 className="text-lg font-semibold text-white">Skills</h3>
         <Input
@@ -118,7 +118,7 @@ export function SkillsPanel({
           return (
             <div
               key={skill.id}
-              className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-2 rounded-lg py-1.5 hover:bg-gray-100"
+              className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-2 rounded-lg p-1.5 hover:bg-gray-100"
             >
               <div className="flex items-center gap-2">
                 {(canFavorite || isFavorite) && (
