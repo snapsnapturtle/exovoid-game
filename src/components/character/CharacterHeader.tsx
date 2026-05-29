@@ -65,6 +65,7 @@ export function CharacterHeader({
               value={name}
               onChange={(e) => onNameChange(e.target.value)}
               size={Math.max(name.length || 0, 8)}
+              autoComplete="off"
               className="min-w-[8ch] rounded border border-transparent bg-transparent text-2xl font-bold text-white field-sizing-content hover:border-gray-400 focus:border-accent-900 focus:outline-none"
             />
           ) : (

@@ -1423,6 +1423,7 @@ function FinalStep({
             value={state.name}
             onChange={(e) => setState((s) => ({ ...s, name: e.target.value }))}
             placeholder="Kira Voss"
+            autoComplete="off"
             className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
           />
         </div>
