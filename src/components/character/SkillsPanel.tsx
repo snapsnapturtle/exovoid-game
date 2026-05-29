@@ -118,7 +118,7 @@ export function SkillsPanel({
           return (
             <div
               key={skill.id}
-              className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-2 rounded-lg p-1.5 hover:bg-gray-100"
+              className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-2 rounded-lg p-1.5 even:bg-background-100 hover:bg-gray-100"
             >
               <div className="flex items-center gap-2">
                 {(canFavorite || isFavorite) && (
