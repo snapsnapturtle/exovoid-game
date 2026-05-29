@@ -200,7 +200,6 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
         deleting={deleting}
         portraitUploading={portraitUploading}
         onNameChange={(v) => updateField('name', v)}
-        onCareerChange={(v) => updateField('career', v)}
         onExperienceChange={(v) => updateField('experience', v)}
         onPortraitChange={handlePortraitChange}
         onModeToggle={() => setMode((m) => (m === 'play' ? 'edit' : 'play'))}

@@ -21,7 +21,6 @@ interface CharacterHeaderProps {
   deleting: boolean
   portraitUploading: boolean
   onNameChange: (name: string) => void
-  onCareerChange: (career: string) => void
   onExperienceChange: (value: number) => void
   onPortraitChange: (file: File) => void
   onModeToggle: () => void
@@ -44,7 +43,6 @@ export function CharacterHeader({
   deleting,
   portraitUploading,
   onNameChange,
-  onCareerChange,
   onExperienceChange,
   onPortraitChange,
   onModeToggle,
@@ -87,18 +85,13 @@ export function CharacterHeader({
         {!isNpc && (
           <div className="flex items-center gap-2">
             <span className="text-sm text-gray-900">Career:</span>
-            {canEdit ? (
-              <input
-                type="text"
-                value={career}
-                onChange={(e) => onCareerChange(e.target.value)}
-                size={Math.max(career.length || 0, 14)}
-                className="min-w-[14ch] rounded border border-transparent bg-transparent text-sm text-gray-1000 field-sizing-content hover:border-gray-400 focus:border-accent-900 focus:outline-none"
-                placeholder="Choose a career"
-              />
-            ) : (
-              <span className="text-sm text-gray-1000">{career || 'None'}</span>
-            )}
+            {/* Career is read-only post-creation: the talent tree and
+                level-up legality are derived from this field, so a
+                free-text edit could leave the player with a level-up
+                button that surfaces zero valid talents. Creation owns
+                career selection; if a swap is genuinely needed, that's
+                a GM data fix outside this UI for now. */}
+            <span className="text-sm text-gray-1000">{career || 'None'}</span>
           </div>
         )}
         {!isNpc && (
