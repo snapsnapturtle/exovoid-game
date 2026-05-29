@@ -9,6 +9,7 @@ import {
 import { COMBAT_TRIGGER_OPTIONS } from '~/data/combat-triggers'
 import { parseQuality } from '~/lib/game-logic/weapons'
 import { lookupQuality } from '~/lib/game-logic/item-qualities'
+import { Alert } from '~/components/ui/Alert'
 import { Button } from '~/components/ui/Button'
 import type { PendingBonus } from '~/lib/types/database'
 
@@ -60,7 +61,7 @@ function formatAbsorbedSummary(summary: Record<string, number>): string {
     if (n > 0 && !ABSORBED_SYMBOL_ORDER.includes(s as never))
       parts.push(`+${n} ${s}`)
   }
-  return parts.length === 0 ? 'no symbols' : parts.join(', ')
+  return parts.length === 0 ? 'nothing' : parts.join(', ')
 }
 
 interface RollResultViewProps {
@@ -106,12 +107,6 @@ export function RollResultView({
 
   return (
     <div>
-      {isSupport && (
-        <p className="mb-3 rounded border border-accent-700/40 bg-accent-700/15 px-2.5 py-1.5 text-xs text-accent-900">
-          Support contribution — these symbols will be added to the main
-          roller's check when they absorb this support.
-        </p>
-      )}
       {absorbedSupports.length > 0 && (
         <div className="mb-4 rounded border border-accent-700/40 bg-accent-700/15 px-2.5 py-2 text-xs text-gray-1000">
           <p className="mb-1 font-medium text-accent-900">Including support</p>
@@ -132,7 +127,7 @@ export function RollResultView({
           Result
         </p>
         {ordered.length === 0 ? (
-          <p className="text-sm text-gray-700">No symbols</p>
+          <p className="text-sm italic text-gray-700">Nothing</p>
         ) : (
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
             {ordered.map((s) => (
@@ -205,6 +200,12 @@ export function RollResultView({
             currentBonuses={currentBonuses}
           />
         </div>
+      )}
+      {isSupport && (
+        <Alert variant="neutral" className="mt-4">
+          Support contribution — these symbols will be added to the main
+          roller's check when they absorb this support.
+        </Alert>
       )}
     </div>
   )

@@ -91,7 +91,7 @@ function formatSupportSummary(summary: Record<string, number>): string {
     if (n > 0 && !SUPPORT_SYMBOL_ORDER.includes(s as never))
       parts.push(`${n} ${s}`)
   }
-  return parts.length === 0 ? 'no symbols' : parts.join(', ')
+  return parts.length === 0 ? 'nothing' : parts.join(', ')
 }
 
 export function DiceRoller({

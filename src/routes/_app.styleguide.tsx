@@ -183,6 +183,11 @@ function StyleguidePage() {
             No wound symbols rolled — no injury suffered.
           </Alert>
           <Alert variant="pink">+2 Edge from adrenaline symbols.</Alert>
+          <Alert variant="neutral">
+            Quiet contextual note — black panel bg, gray hairline, gray text.
+            Use for soft explanations that shouldn't compete with the
+            surrounding content.
+          </Alert>
         </Section>
 
         <Section

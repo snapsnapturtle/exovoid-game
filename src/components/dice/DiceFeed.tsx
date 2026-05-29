@@ -281,7 +281,7 @@ function RollCard({
 
       <div className="mt-2 flex flex-wrap items-center gap-2">
         {ordered.length === 0 ? (
-          <span className="text-xs text-gray-700">No symbols</span>
+          <span className="text-xs italic text-gray-700">Nothing</span>
         ) : (
           ordered.map((s) => (
             <span
