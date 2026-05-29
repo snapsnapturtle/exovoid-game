@@ -152,9 +152,7 @@ export function DerivedStatsPanel({
               />
             ) : (
               <p className="whitespace-pre-wrap text-sm text-gray-1000">
-                {notes || (
-                  <span className="text-gray-700">No notes yet.</span>
-                )}
+                {notes || <span className="text-gray-700">No notes yet.</span>}
               </p>
             ))}
         </div>

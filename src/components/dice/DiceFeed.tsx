@@ -3,10 +3,7 @@ import { CustomDiceRoller } from './CustomDiceRoller'
 import { RollResultView } from './RollResultView'
 import { Button } from '~/components/ui/Button'
 import { Modal } from '~/components/ui/Modal'
-import {
-  removePendingSupport,
-  type DiceRollEntry,
-} from '~/lib/server/dice'
+import { removePendingSupport, type DiceRollEntry } from '~/lib/server/dice'
 import type { PendingBonus, PendingSupport } from '~/lib/types/database'
 
 export interface PendingBonusEntry {

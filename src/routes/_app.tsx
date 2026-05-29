@@ -108,7 +108,9 @@ function AppLayout() {
                     <p className="text-xs text-gray-900">{user.email}</p>
                   </div>
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-700 text-sm font-medium text-white">
-                    {(profile?.display_name || user.email || '?')[0].toUpperCase()}
+                    {(profile?.display_name ||
+                      user.email ||
+                      '?')[0].toUpperCase()}
                   </div>
                 </button>
                 <Popover popover={accountMenu} className="w-44 py-1">
