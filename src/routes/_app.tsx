@@ -73,7 +73,7 @@ function AppLayout() {
                       {game.name}
                     </Link>
                     {isGm && (
-                      <span className="shrink-0 rounded-full bg-warning-700/20 px-2 py-0.5 text-xs font-medium text-warning-900">
+                      <span className="shrink-0 rounded-full bg-blue-700/20 px-2 py-0.5 text-xs font-medium text-blue-900">
                         GM
                       </span>
                     )}

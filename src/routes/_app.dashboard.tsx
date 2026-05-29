@@ -48,7 +48,7 @@ function DashboardPage() {
               <span
                 className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${
                   game.role === 'gm'
-                    ? 'bg-warning-700/20 text-warning-900'
+                    ? 'bg-blue-700/20 text-blue-900'
                     : 'bg-accent-700/20 text-accent-900'
                 }`}
               >
