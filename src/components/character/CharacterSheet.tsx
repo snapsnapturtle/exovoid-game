@@ -215,7 +215,11 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
             attributes={character.attributes}
             effectiveAttributes={effects.attributes}
             contributions={effects.attributeContributions}
-            canEdit={editScopeCanEdit}
+            // Attribute steppers are locked post-creation: attribute
+            // increases only happen via Training: <Attribute> talents
+            // (picked through the level-up wizard). Direct edits would
+            // bypass the progression log and silently desync history.
+            canEdit={false}
             onAttributeChange={updateAttribute}
           />
         </div>
@@ -242,7 +246,12 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
         <SkillsPanel
           attributes={effects.attributes}
           skills={character.skills}
-          canEdit={editScopeCanEdit}
+          // Skill steppers are locked post-creation: bumps happen through
+          // the level-up wizard (skill points) and the Train Skill
+          // downtime activity (lifetime cap ≤ level). Anything else
+          // would bypass the progression log. Players who think they
+          // need a direct edit should go to the GM.
+          canEdit={false}
           onSkillChange={updateSkill}
           favoriteSkills={character.favorite_skills}
           canFavorite={canEdit}
