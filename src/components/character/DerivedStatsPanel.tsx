@@ -25,7 +25,20 @@ interface DerivedStatsPanelProps {
   /** Initial state for the roll modal's "Hidden roll" checkbox. True for
    * hidden NPCs so the GM doesn't have to remember to tick it. */
   defaultHidden?: boolean
+  notes: string
+  onNotesChange: (value: string) => void
+  /** Whether the notes tab is editable. Notes are editable outside of edit
+   * mode by design (mirrors the play-notes scratchpad), so callers pass the
+   * sheet-wide `canEdit` rather than the edit-scope flag. */
+  canEditNotes: boolean
 }
+
+type Tab = 'derived' | 'notes'
+
+const TABS: { id: Tab; label: string }[] = [
+  { id: 'derived', label: 'Derived stats' },
+  { id: 'notes', label: 'Notes' },
+]
 
 const STAT_DISPLAY: { key: DerivedStatId; label: string }[] = [
   { key: 'health', label: 'Health' },
@@ -50,11 +63,15 @@ export function DerivedStatsPanel({
   onConsumeBonuses,
   onRemoveBonus,
   defaultHidden,
+  notes,
+  onNotesChange,
+  canEditNotes,
 }: DerivedStatsPanelProps) {
   const [rolling, setRolling] = useState<{
     name: string
     pool: DicePool
   } | null>(null)
+  const [tab, setTab] = useState<Tab>('derived')
 
   const vigilancePool: DicePool = {
     standard: 1,
@@ -65,45 +82,81 @@ export function DerivedStatsPanel({
 
   return (
     <>
-      <div className="rounded-xl border border-gray-400 bg-background-200 p-4">
-        <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-900">
-          Derived Stats
-        </h3>
-        <div className="grid grid-cols-2 gap-2">
-          {STAT_DISPLAY.map(({ key, label }) => {
-            const bonuses = contributions?.[key] ?? []
-            const total = stats[key]
-            const sumBonus = bonuses.reduce((acc, b) => acc + b.value, 0)
-            const base = total - sumBonus
-            const tooltip =
-              bonuses.length > 0
-                ? `${label}: base ${base}${bonuses.map((b) => ` ${b.value >= 0 ? '+' : ''}${b.value} ${b.source}`).join('')} = ${total}`
-                : label
-            return (
-              <div
-                key={key}
-                className="flex items-center justify-between rounded-lg border border-gray-400 bg-gray-100 px-3 py-2"
-                title={tooltip}
-              >
-                <span className="text-xs text-gray-900">{label}</span>
-                <div className="flex items-center gap-2">
-                  <span className="text-lg font-bold text-white">{total}</span>
-                  {key === 'vigilance' && (
-                    <Button
-                      variant="subtle"
-                      size="sm"
-                      onClick={() =>
-                        setRolling({ name: 'Vigilance', pool: vigilancePool })
-                      }
-                      title="Roll Vigilance"
-                    >
-                      Roll
-                    </Button>
-                  )}
-                </div>
-              </div>
-            )
-          })}
+      <div className="rounded-xl border border-gray-400 bg-background-200">
+        <div className="flex flex-wrap gap-1 border-b border-gray-400 p-3">
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              onClick={() => setTab(t.id)}
+              className={`rounded px-3 py-1.5 text-sm font-medium transition ${
+                tab === t.id
+                  ? 'bg-accent-700/20 text-accent-900'
+                  : 'text-gray-900 hover:bg-gray-100 hover:text-white'
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+        <div className="flex min-h-[14rem] flex-col p-3">
+          {tab === 'derived' && (
+            <div className="grid grid-cols-2 gap-2">
+              {STAT_DISPLAY.map(({ key, label }) => {
+                const bonuses = contributions?.[key] ?? []
+                const total = stats[key]
+                const sumBonus = bonuses.reduce((acc, b) => acc + b.value, 0)
+                const base = total - sumBonus
+                const tooltip =
+                  bonuses.length > 0
+                    ? `${label}: base ${base}${bonuses.map((b) => ` ${b.value >= 0 ? '+' : ''}${b.value} ${b.source}`).join('')} = ${total}`
+                    : label
+                return (
+                  <div
+                    key={key}
+                    className="flex items-center justify-between rounded-lg border border-gray-400 bg-gray-100 px-3 py-2"
+                    title={tooltip}
+                  >
+                    <span className="text-xs text-gray-900">{label}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg font-bold text-white">
+                        {total}
+                      </span>
+                      {key === 'vigilance' && (
+                        <Button
+                          variant="subtle"
+                          size="sm"
+                          onClick={() =>
+                            setRolling({
+                              name: 'Vigilance',
+                              pool: vigilancePool,
+                            })
+                          }
+                          title="Roll Vigilance"
+                        >
+                          Roll
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          )}
+          {tab === 'notes' &&
+            (canEditNotes ? (
+              <textarea
+                value={notes}
+                onChange={(e) => onNotesChange(e.target.value)}
+                placeholder="Quick notes during play…"
+                className="w-full flex-1 resize-none rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+              />
+            ) : (
+              <p className="whitespace-pre-wrap text-sm text-gray-1000">
+                {notes || (
+                  <span className="text-gray-700">No notes yet.</span>
+                )}
+              </p>
+            ))}
         </div>
       </div>
       {rolling && (

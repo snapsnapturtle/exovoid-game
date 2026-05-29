@@ -70,7 +70,7 @@ export function EquipmentTabs({
 
   return (
     <div className="rounded-xl border border-gray-400 bg-background-200">
-      <div className="flex flex-wrap gap-1 border-b border-gray-400 px-3 py-2">
+      <div className="flex flex-wrap gap-1 border-b border-gray-400 p-3">
         {TABS.map((t) => (
           <button
             key={t.id}
@@ -85,7 +85,7 @@ export function EquipmentTabs({
           </button>
         ))}
       </div>
-      <div className="p-4">
+      <div className="p-3">
         {tab === 'actions' && (
           <ActionsTab
             inventory={inventory}
