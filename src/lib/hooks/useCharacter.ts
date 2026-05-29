@@ -12,9 +12,10 @@ export function useCharacter(initial: Character, canEdit: boolean) {
   const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle')
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const pendingRef = useRef(false)
-  // Latest snapshot the debounced save needs to persist. Updated on every
-  // `updateField`/`updateAttribute`/`updateSkill` so `flushSave()` can read
-  // the current intent without re-deriving from a closure.
+  // Snapshot the debounced save needs to persist. Kept in lockstep with
+  // `character` via synchronous writes in every mutator below — flushSave
+  // and the unmount cleanup both read this without going through a
+  // setState updater (which React may defer until after the next await).
   const latestRef = useRef<Character>(initial)
   const canEditRef = useRef(canEdit)
   canEditRef.current = canEdit
@@ -69,19 +70,24 @@ export function useCharacter(initial: Character, canEdit: boolean) {
     }
   }, [])
 
-  const scheduleSave = useCallback(
-    (updated: Character) => {
-      if (!canEditRef.current) return
-      latestRef.current = updated
-      pendingRef.current = true
-      if (timerRef.current) clearTimeout(timerRef.current)
-      timerRef.current = setTimeout(() => {
-        timerRef.current = null
-        void performSave()
-      }, SAVE_DEBOUNCE_MS)
-    },
-    [performSave],
-  )
+  /**
+   * Sync portion of every mutator: writes `latestRef`, flips
+   * `pendingRef`, and arms the debounce timer. Called BEFORE setCharacter
+   * so refs are valid the instant the mutator returns — the level-up
+   * wizard does `onUpdateField(...); await flushSave()` and the second
+   * call would see stale refs if the work happened inside a setState
+   * updater that React defers across the await boundary.
+   */
+  function markPending(next: Character) {
+    latestRef.current = next
+    if (!canEditRef.current) return
+    pendingRef.current = true
+    if (timerRef.current) clearTimeout(timerRef.current)
+    timerRef.current = setTimeout(() => {
+      timerRef.current = null
+      void performSave()
+    }, SAVE_DEBOUNCE_MS)
+  }
 
   /**
    * Cancel the pending debounce timer and persist `latestRef.current`
@@ -118,36 +124,30 @@ export function useCharacter(initial: Character, canEdit: boolean) {
   }, [performSave])
 
   function updateField<K extends keyof Character>(key: K, value: Character[K]) {
-    setCharacter((prev) => {
-      let next: Character = { ...prev, [key]: value }
-      if (key === 'experience') {
-        next = { ...next, level: levelFromXp(next.experience) }
-      }
-      scheduleSave(next)
-      return next
-    })
+    let next: Character = { ...latestRef.current, [key]: value }
+    if (key === 'experience') {
+      next = { ...next, level: levelFromXp(next.experience) }
+    }
+    markPending(next)
+    setCharacter(next)
   }
 
   function updateAttribute(attrId: keyof CharacterAttributes, value: number) {
-    setCharacter((prev) => {
-      const next = {
-        ...prev,
-        attributes: { ...prev.attributes, [attrId]: value },
-      }
-      scheduleSave(next)
-      return next
-    })
+    const next: Character = {
+      ...latestRef.current,
+      attributes: { ...latestRef.current.attributes, [attrId]: value },
+    }
+    markPending(next)
+    setCharacter(next)
   }
 
   function updateSkill(skillId: string, value: number) {
-    setCharacter((prev) => {
-      const next = {
-        ...prev,
-        skills: { ...prev.skills, [skillId]: value },
-      }
-      scheduleSave(next)
-      return next
-    })
+    const next: Character = {
+      ...latestRef.current,
+      skills: { ...latestRef.current.skills, [skillId]: value },
+    }
+    markPending(next)
+    setCharacter(next)
   }
 
   return {
