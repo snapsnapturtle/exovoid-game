@@ -6,7 +6,7 @@ import {
   useMatch,
   useNavigate,
 } from '@tanstack/react-router'
-import { useEffect, useRef, useState } from 'react'
+import { Popover, usePopover } from '~/components/ui/Popover'
 import { getAuthUser } from '~/lib/server/auth'
 import { getSupabaseBrowserClient } from '~/lib/supabase/client'
 
@@ -31,31 +31,12 @@ function AppLayout() {
   const game = gameMatch?.loaderData?.game
   const isGm = gameMatch?.loaderData?.isGm
   const combat = gameMatch?.loaderData?.gameState?.combat
-  const [menuOpen, setMenuOpen] = useState(false)
-  const menuRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (!menuOpen) return
-    function onDocClick(e: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setMenuOpen(false)
-      }
-    }
-    function onKey(e: KeyboardEvent) {
-      if (e.key === 'Escape') setMenuOpen(false)
-    }
-    document.addEventListener('mousedown', onDocClick)
-    document.addEventListener('keydown', onKey)
-    return () => {
-      document.removeEventListener('mousedown', onDocClick)
-      document.removeEventListener('keydown', onKey)
-    }
-  }, [menuOpen])
+  const accountMenu = usePopover({ placement: 'bottom-end' })
 
   async function handleLogout() {
     const supabase = getSupabaseBrowserClient()
     await supabase.auth.signOut()
-    setMenuOpen(false)
+    accountMenu.setOpen(false)
     navigate({ to: '/login' })
   }
 
@@ -106,13 +87,13 @@ function AppLayout() {
             </>
           )}
         </div>
-        <div ref={menuRef} className="relative flex shrink-0 items-center">
+        <div className="flex shrink-0 items-center">
           <button
+            ref={accountMenu.refs.setReference}
             type="button"
-            onClick={() => setMenuOpen((o) => !o)}
             aria-haspopup="menu"
-            aria-expanded={menuOpen}
             className="flex items-center gap-3 rounded-md px-2 py-1 transition hover:bg-gray-100"
+            {...accountMenu.getReferenceProps()}
           >
             <div className="text-right">
               <p className="text-sm font-medium text-white">
@@ -124,29 +105,24 @@ function AppLayout() {
               {(profile?.display_name || user.email || '?')[0].toUpperCase()}
             </div>
           </button>
-          {menuOpen && (
-            <div
-              role="menu"
-              className="elevation-float absolute right-0 top-full z-50 mt-2 w-44 rounded-md border border-gray-400 bg-background-200 py-1"
+          <Popover popover={accountMenu} className="w-44 py-1">
+            <Link
+              to="/account"
+              role="menuitem"
+              onClick={() => accountMenu.setOpen(false)}
+              className="block w-full px-3 py-2 text-left text-sm text-gray-1000 transition hover:bg-gray-100"
             >
-              <Link
-                to="/account"
-                role="menuitem"
-                onClick={() => setMenuOpen(false)}
-                className="block w-full px-3 py-2 text-left text-sm text-gray-1000 transition hover:bg-gray-100"
-              >
-                Account settings
-              </Link>
-              <button
-                type="button"
-                role="menuitem"
-                onClick={handleLogout}
-                className="w-full px-3 py-2 text-left text-sm text-gray-1000 transition hover:bg-gray-100"
-              >
-                Log out
-              </button>
-            </div>
-          )}
+              Account settings
+            </Link>
+            <button
+              type="button"
+              role="menuitem"
+              onClick={handleLogout}
+              className="w-full px-3 py-2 text-left text-sm text-gray-1000 transition hover:bg-gray-100"
+            >
+              Log out
+            </button>
+          </Popover>
         </div>
       </header>
       <main className="min-h-0 flex-1 overflow-hidden">
