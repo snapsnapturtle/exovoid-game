@@ -63,7 +63,7 @@ function GameLayout() {
               params={{ gameId: game.id }}
               className="block border-b border-warning-700/40 bg-warning-700/10 text-sm text-warning-900 transition hover:bg-warning-700/20"
             >
-              <div className="mx-auto w-full max-w-[1280px] px-6 py-2">
+              <div className="mx-auto flex min-h-[50px] w-full max-w-[1280px] items-center px-6">
                 <span className="mr-2">⚔</span>
                 <span className="font-semibold">
                   Combat active — Round {liveGameState.combat.round}
