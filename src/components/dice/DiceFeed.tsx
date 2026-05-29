@@ -133,7 +133,7 @@ export function DiceFeed({
         <div className="flex shrink-0 items-center justify-between border-b border-gray-400 px-4 py-3">
           <h3 className="text-sm font-semibold text-white">Dice Feed</h3>
           <Button
-            variant="ghost"
+            variant="subtle"
             size="sm"
             onClick={() => setCustomOpen(true)}
             title="Custom roll"
