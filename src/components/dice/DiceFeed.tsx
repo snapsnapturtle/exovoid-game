@@ -321,7 +321,7 @@ function PendingSupportStrip({
   return (
     <div className="shrink-0 border-b border-gray-400 bg-background-200 px-3 py-2">
       <div className="mb-1.5 flex items-center justify-between gap-2">
-        <span className="text-xs font-semibold text-accent-900">
+        <span className="text-xs font-semibold text-white">
           Pending supports ({pendingSupport.length})
         </span>
         <Button
@@ -343,7 +343,7 @@ function PendingSupportStrip({
           >
             <span className="truncate">
               <span className="font-medium">{s.supporterName}</span>
-              <span className="text-gray-700"> · {s.skillName}</span>
+              <span> · {s.skillName}</span>
             </span>
             <button
               type="button"
