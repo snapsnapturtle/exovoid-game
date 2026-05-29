@@ -61,16 +61,22 @@ function GameLayout() {
             <Link
               to="/games/$gameId/combat"
               params={{ gameId: game.id }}
-              className="block border-b border-warning-700/40 bg-warning-700/10 px-4 py-2 text-sm text-warning-900 transition hover:bg-warning-700/20"
+              className="block border-b border-warning-700/40 bg-warning-700/10 text-sm text-warning-900 transition hover:bg-warning-700/20"
             >
-              <span className="mr-2">⚔</span>
-              <span className="font-semibold">
-                Combat active — Round {liveGameState.combat.round}
-              </span>
-              <span className="ml-2 text-warning-900/80">Go to tracker →</span>
+              <div className="mx-auto w-full max-w-[1280px] px-6 py-2">
+                <span className="mr-2">⚔</span>
+                <span className="font-semibold">
+                  Combat active — Round {liveGameState.combat.round}
+                </span>
+                <span className="ml-2 text-warning-900/80">
+                  Go to tracker →
+                </span>
+              </div>
             </Link>
           )}
-          <Outlet />
+          <div className="mx-auto w-full max-w-[1280px]">
+            <Outlet />
+          </div>
         </div>
         <DiceFeed
           rolls={liveRolls}

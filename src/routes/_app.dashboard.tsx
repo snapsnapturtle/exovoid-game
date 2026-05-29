@@ -12,7 +12,7 @@ function DashboardPage() {
   const games = Route.useLoaderData()
 
   return (
-    <div className="p-8">
+    <div className="mx-auto w-full max-w-[1600px] p-8">
       <div className="mb-8 flex items-center justify-between">
         <h2 className="text-2xl font-bold text-white">Your Games</h2>
         <div className="flex gap-3">
