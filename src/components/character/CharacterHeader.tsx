@@ -14,6 +14,10 @@ interface CharacterHeaderProps {
   /** NPCs hide XP, level pill, career, and the Downtime button — none of
    * those concepts apply to GM-managed adversaries / allies. */
   isNpc: boolean
+  /** Set when there's an uncommitted level-up (`pendingLevelUp(...)`).
+   * Drives the "Level up" CTA and the XP-bar pulse. Null when nothing
+   * is pending or the viewer isn't the owner. */
+  pendingLevelUp: { level: number } | null
   deleting: boolean
   portraitUploading: boolean
   onNameChange: (name: string) => void
@@ -23,6 +27,7 @@ interface CharacterHeaderProps {
   onModeToggle: () => void
   onDelete: () => void
   onDowntime: () => void
+  onLevelUp: () => void
 }
 
 export function CharacterHeader({
@@ -35,6 +40,7 @@ export function CharacterHeader({
   showModeToggle,
   isEditMode,
   isNpc,
+  pendingLevelUp,
   deleting,
   portraitUploading,
   onNameChange,
@@ -44,6 +50,7 @@ export function CharacterHeader({
   onModeToggle,
   onDelete,
   onDowntime,
+  onLevelUp,
 }: CharacterHeaderProps) {
   const { next: nextThreshold, percent: xpPercent } = xpProgress(experience)
 
@@ -150,6 +157,15 @@ export function CharacterHeader({
             className="min-w-[7.5rem]"
           >
             {isEditMode ? 'Done editing' : 'Edit'}
+          </Button>
+        )}
+        {!isNpc && showModeToggle && pendingLevelUp && (
+          // Only the owner sees this (showModeToggle is the root canEdit
+          // signal). Appears only when there's an uncommitted level-up; the
+          // wizard writes a `level-up` row in character_progression on
+          // commit, which makes `pendingLevelUp` null and hides the button.
+          <Button variant="primary" onClick={onLevelUp}>
+            Level up to {pendingLevelUp.level}
           </Button>
         )}
         {!isNpc && showModeToggle && (

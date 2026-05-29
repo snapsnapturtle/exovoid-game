@@ -1,10 +1,11 @@
 import { createContext, useContext, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import type { Character } from '~/lib/types/database'
+import type { Character, ProgressionEntry } from '~/lib/types/database'
 import type { AppliedPassiveEffects } from '~/lib/game-logic/passive-effects'
 import {
   DOWNTIME_ACTIVITIES,
   isActivityAvailable,
+  trainSkillUsesRemaining,
   type DowntimeActivity,
 } from '~/lib/game-logic/downtime'
 import { Modal } from '~/components/ui/Modal'
@@ -30,6 +31,9 @@ interface DowntimeModalProps {
   effects: AppliedPassiveEffects
   gameId: string
   characterId: string
+  /** Progression log rows — used to gate Train Skill via the lifetime
+   * cumulative cap (trainings used ≤ character.level). */
+  progression: ProgressionEntry[]
   onClose: () => void
   onUpdateField: <K extends keyof Character>(
     key: K,
@@ -44,6 +48,7 @@ export function DowntimeModal({
   effects,
   gameId,
   characterId,
+  progression,
   onClose,
   onUpdateField,
 }: DowntimeModalProps) {
@@ -103,7 +108,11 @@ export function DowntimeModal({
     >
       <DowntimeFooterContext.Provider value={footerEl}>
         {view.kind === 'list' && (
-          <ActivityList character={character} onChoose={choose} />
+          <ActivityList
+            character={character}
+            progression={progression}
+            onChoose={choose}
+          />
         )}
         {view.kind === 'activity' && activeActivity && (
           <ActivityDispatcher
@@ -123,16 +132,23 @@ export function DowntimeModal({
 
 function ActivityList({
   character,
+  progression,
   onChoose,
 }: {
   character: Character
+  progression: ProgressionEntry[]
   onChoose: (a: DowntimeActivity) => void
 }) {
+  const trainSkillRemaining = trainSkillUsesRemaining(
+    character.level,
+    progression,
+  )
   return (
     <ul className="space-y-2">
       {DOWNTIME_ACTIVITIES.map((activity) => {
-        const available = isActivityAvailable(activity, character)
+        const available = isActivityAvailable(activity, character, progression)
         const lastUsedAt = character.downtime_uses_used[activity.id]
+        const isTrainSkill = activity.id === 'train-skill'
         return (
           <li
             key={activity.id}
@@ -141,12 +157,17 @@ function ActivityList({
             <div className="min-w-0">
               <div className="flex items-center gap-2">
                 <h4 className="font-medium text-white">{activity.name}</h4>
+                {isTrainSkill && (
+                  <span className="rounded-md border border-gray-400 bg-gray-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-gray-1000">
+                    {trainSkillRemaining} / {character.level} left
+                  </span>
+                )}
                 {activity.oncePerLevel && (
                   <span className="rounded-md border border-gray-400 bg-gray-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-gray-1000">
                     1× per level
                   </span>
                 )}
-                {!available && lastUsedAt != null && (
+                {!available && !isTrainSkill && lastUsedAt != null && (
                   <span className="text-[10px] uppercase tracking-wide text-gray-700">
                     Used at level {lastUsedAt}
                   </span>
@@ -164,7 +185,9 @@ function ActivityList({
               title={
                 available
                   ? `Start ${activity.name}`
-                  : `Already used at level ${lastUsedAt}`
+                  : isTrainSkill
+                    ? 'Lifetime training cap reached at this level.'
+                    : `Already used at level ${lastUsedAt}`
               }
             >
               Choose

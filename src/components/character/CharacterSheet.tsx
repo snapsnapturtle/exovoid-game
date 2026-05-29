@@ -1,9 +1,11 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { getRouteApi, useNavigate } from '@tanstack/react-router'
 import type { Character, PendingBonus } from '~/lib/types/database'
 import { useCharacter } from '~/lib/hooks/useCharacter'
+import { useCharacterProgression } from '~/lib/hooks/useCharacterProgression'
 import { useRealtimeGameState } from '~/lib/hooks/useRealtimeGameState'
 import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
+import { pendingLevelUp } from '~/lib/game-logic/level-up'
 import { deleteCharacter, updatePortraitUrl } from '~/lib/server/characters'
 import { uploadPortrait, PortraitError } from '~/lib/portrait'
 import { CharacterHeader } from './CharacterHeader'
@@ -14,6 +16,7 @@ import { SkillsPanel } from './SkillsPanel'
 import { EquipmentTabs } from './EquipmentTabs'
 import { SaveStatusToast } from './SaveStatusToast'
 import { DowntimeModal } from './downtime/DowntimeModal'
+import { LevelUpModal } from './level-up/LevelUpModal'
 import { NpcSheetControls } from '~/components/npcs/NpcSheetControls'
 import type { ApplyBonusInput } from '~/components/dice/RollResultView'
 
@@ -31,9 +34,21 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
   const [deleting, setDeleting] = useState(false)
   const [portraitUploading, setPortraitUploading] = useState(false)
   const [downtimeOpen, setDowntimeOpen] = useState(false)
+  const [levelUpOpen, setLevelUpOpen] = useState(false)
   const navigate = useNavigate()
-  const { character, saveStatus, updateField, updateAttribute, updateSkill } =
-    useCharacter(initial, canEdit)
+  const {
+    character,
+    saveStatus,
+    updateField,
+    updateAttribute,
+    updateSkill,
+    flushSave,
+  } = useCharacter(initial, canEdit)
+  const {
+    rows: progressionRows,
+    loaded: progressionLoaded,
+    appendLocal: appendProgressionLocal,
+  } = useCharacterProgression(character.id)
   const { members, currentUserId, isGm, gameState } = gameRoute.useLoaderData()
   const liveGameState = useRealtimeGameState(gameState)
   // Single role: GM (always allowed in their own game) or the current
@@ -52,6 +67,26 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
   const derivedStats = effects.derived
   const isEditMode = mode === 'edit'
   const editScopeCanEdit = canEdit && isEditMode
+
+  // PCs only — NPCs have no XP / level concept. Owner-only — the wizard
+  // writes a `level-up` row that's gated by RLS to the character owner.
+  // Gate on `progressionLoaded`: without it, the initial empty-rows state
+  // makes pendingLevelUp briefly return `{ level: 2 }` for any level-2+
+  // character, flashing the Level-up button on every page load.
+  const pending = useMemo(
+    () =>
+      progressionLoaded && !character.is_npc && canEdit
+        ? pendingLevelUp(character, progressionRows)
+        : null,
+    [character, progressionRows, canEdit, progressionLoaded],
+  )
+  // For multi-level catch-up: when committing level N, "has more" means
+  // there's an uncommitted level beyond N. The wizard uses this to either
+  // re-init for level N+1 (banner shown) or close the modal.
+  const hasLevelsBeyondPending = useMemo(() => {
+    if (!pending) return false
+    return pending.level < character.level
+  }, [pending, character.level])
 
   async function handlePortraitChange(file: File) {
     setPortraitUploading(true)
@@ -161,6 +196,7 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
         showModeToggle={canEdit}
         isEditMode={isEditMode}
         isNpc={character.is_npc}
+        pendingLevelUp={pending}
         deleting={deleting}
         portraitUploading={portraitUploading}
         onNameChange={(v) => updateField('name', v)}
@@ -170,6 +206,7 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
         onModeToggle={() => setMode((m) => (m === 'play' ? 'edit' : 'play'))}
         onDelete={handleDelete}
         onDowntime={() => setDowntimeOpen(true)}
+        onLevelUp={() => setLevelUpOpen(true)}
       />
 
       <div className="grid gap-3 lg:grid-cols-12">
@@ -277,8 +314,21 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
           effects={effects}
           gameId={character.game_id}
           characterId={character.id}
+          progression={progressionRows}
           onClose={() => setDowntimeOpen(false)}
           onUpdateField={updateField}
+        />
+      )}
+
+      {levelUpOpen && pending && (
+        <LevelUpModal
+          character={character}
+          level={pending.level}
+          hasMoreAfterThis={hasLevelsBeyondPending}
+          onUpdateField={updateField}
+          flushSave={flushSave}
+          onCommitted={(row) => appendProgressionLocal(row)}
+          onClose={() => setLevelUpOpen(false)}
         />
       )}
     </div>

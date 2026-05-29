@@ -14,8 +14,8 @@
   {
     "id": "train-skill",
     "name": "Train Skill",
-    "description": "Spend time learning. Choose a skill with 3 or fewer levels; gain +1 in it. Available once per character level.",
-    "oncePerLevel": true
+    "description": "Spend time learning. Choose a skill with 3 or fewer levels; gain +1 in it. Lifetime cap: total trainings can't exceed your character level.",
+    "oncePerLevel": false
   },
   {
     "id": "modify-gear",

@@ -1,11 +1,28 @@
 import { describe, expect, it } from 'vitest'
+import type { ProgressionEntry } from '~/lib/types/database'
 import {
   DOWNTIME_ACTIVITIES,
   isActivityAvailable,
   relaxAndRestHealAmount,
   seekInspirationEdgeCap,
+  trainSkillUsesRemaining,
   trainableSkillIds,
 } from './downtime'
+
+function trainSkillRow(
+  level: number,
+  id = `r${Math.random()}`,
+): ProgressionEntry {
+  return {
+    id,
+    character_id: 'c1',
+    level,
+    source: 'downtime:train-skill',
+    picks: { skillId: 'firearms' },
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  }
+}
 
 describe('DOWNTIME_ACTIVITIES catalog', () => {
   it('contains the seven activities plus install-cyberware', () => {
@@ -22,17 +39,17 @@ describe('DOWNTIME_ACTIVITIES catalog', () => {
     ])
   })
 
-  it('only marks train-skill as oncePerLevel', () => {
+  it('has no oncePerLevel activities — train-skill uses the lifetime cap instead', () => {
     const gated = DOWNTIME_ACTIVITIES.filter((a) => a.oncePerLevel).map(
       (a) => a.id,
     )
-    expect(gated).toEqual(['train-skill'])
+    expect(gated).toEqual([])
   })
 })
 
 describe('isActivityAvailable', () => {
   const unlimited = DOWNTIME_ACTIVITIES.find((a) => a.id === 'relax-and-rest')!
-  const gated = DOWNTIME_ACTIVITIES.find((a) => a.id === 'train-skill')!
+  const trainSkill = DOWNTIME_ACTIVITIES.find((a) => a.id === 'train-skill')!
 
   it('always returns true for non-gated activities', () => {
     expect(
@@ -43,28 +60,74 @@ describe('isActivityAvailable', () => {
     ).toBe(true)
   })
 
-  it('returns true when the activity has never been used', () => {
+  it('returns true for train-skill when no trainings have been recorded', () => {
     expect(
-      isActivityAvailable(gated, { level: 3, downtime_uses_used: {} }),
+      isActivityAvailable(trainSkill, { level: 3, downtime_uses_used: {} }, []),
     ).toBe(true)
   })
 
-  it('returns false when used at the current level', () => {
+  it('returns true for train-skill when used fewer times than the level cap', () => {
     expect(
-      isActivityAvailable(gated, {
-        level: 3,
-        downtime_uses_used: { 'train-skill': 3 },
-      }),
+      isActivityAvailable(trainSkill, { level: 3, downtime_uses_used: {} }, [
+        trainSkillRow(2),
+        trainSkillRow(3),
+      ]),
+    ).toBe(true)
+  })
+
+  it('returns false for train-skill once the lifetime cap is hit', () => {
+    expect(
+      isActivityAvailable(trainSkill, { level: 3, downtime_uses_used: {} }, [
+        trainSkillRow(2),
+        trainSkillRow(2),
+        trainSkillRow(3),
+      ]),
     ).toBe(false)
   })
 
-  it('re-opens once level ticks past the stored value', () => {
+  it('re-opens train-skill once the character levels up past the used count', () => {
     expect(
-      isActivityAvailable(gated, {
-        level: 4,
-        downtime_uses_used: { 'train-skill': 3 },
-      }),
+      isActivityAvailable(trainSkill, { level: 4, downtime_uses_used: {} }, [
+        trainSkillRow(2),
+        trainSkillRow(3),
+        trainSkillRow(3),
+      ]),
     ).toBe(true)
+  })
+})
+
+describe('trainSkillUsesRemaining', () => {
+  it('returns the character level when nothing has been trained yet', () => {
+    expect(trainSkillUsesRemaining(3, [])).toBe(3)
+  })
+
+  it('subtracts every train-skill row regardless of which level it was used at', () => {
+    expect(
+      trainSkillUsesRemaining(4, [
+        trainSkillRow(1),
+        trainSkillRow(2),
+        trainSkillRow(2),
+      ]),
+    ).toBe(1)
+  })
+
+  it('clamps at zero when the cap has been exceeded (data drift)', () => {
+    expect(
+      trainSkillUsesRemaining(1, [trainSkillRow(1), trainSkillRow(1)]),
+    ).toBe(0)
+  })
+
+  it('ignores other progression sources', () => {
+    const otherRow: ProgressionEntry = {
+      id: 'lu',
+      character_id: 'c1',
+      level: 2,
+      source: 'level-up',
+      picks: { skills: { firearms: 1 }, talent: null },
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    }
+    expect(trainSkillUsesRemaining(2, [otherRow])).toBe(2)
   })
 })
 
