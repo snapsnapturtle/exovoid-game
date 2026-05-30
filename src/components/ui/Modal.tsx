@@ -88,7 +88,7 @@ export function Modal({
     // `space-y` allocation in the parent, nudging siblings by a few px
     // even though the modal itself is `position: fixed`.
     <div
-      className={`modal-backdrop-in fixed backdrop-blur-sm inset-0 z-50 flex ${alignClass} justify-center bg-black/60 p-4 sm:p-8`}
+      className={`modal-backdrop-in fixed inset-0 z-50 flex ${alignClass} justify-center bg-background-100/80 p-4 sm:p-8`}
       onClick={onClose}
     >
       <div
