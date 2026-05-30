@@ -1,4 +1,5 @@
 import { Link } from '@tanstack/react-router'
+import { IconCash, IconCurrencyDollar } from '@tabler/icons-react'
 import type { InventoryItem } from '~/lib/types/database'
 import { inventoryByLocation, lookupItem } from '~/lib/game-logic/items'
 import { buttonClasses } from '~/components/ui/Button'
@@ -22,14 +23,20 @@ export function InventoryTab({
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-baseline gap-3 text-sm">
-          <span className="font-semibold text-white">
+        <div className="flex items-center gap-3 text-sm">
+          <span
+            className="inline-flex items-center gap-1 font-semibold text-white"
+            title="Credits"
+          >
+            <IconCurrencyDollar size={14} className="text-gray-700" />
             {credits.toLocaleString()}
-            <span className="ml-0.5 text-xs text-gray-700">¢</span>
           </span>
-          <span className="font-semibold text-white">
+          <span
+            className="inline-flex items-center gap-1 font-semibold text-white"
+            title="Assets"
+          >
+            <IconCash size={14} className="text-gray-700" />
             {assets.toLocaleString()}
-            <span className="ml-0.5 text-xs text-gray-700">⬡</span>
           </span>
         </div>
         <Link

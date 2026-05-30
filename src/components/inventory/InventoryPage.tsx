@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { Link, useRouter } from '@tanstack/react-router'
+import { IconCash, IconCurrencyDollar } from '@tabler/icons-react'
 import { EffectTooltip } from './EffectTooltip'
 import type { Character, GameState, InventoryItem } from '~/lib/types/database'
 import { inventoryByLocation, lookupItem } from '~/lib/game-logic/items'
@@ -513,7 +514,7 @@ function CurrencyGroup({
       <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
         <NumberField
           label="Credits"
-          suffix="¢"
+          suffix={<IconCurrencyDollar size={14} />}
           value={credits}
           canEdit={canEdit}
           busy={busy}
@@ -521,7 +522,7 @@ function CurrencyGroup({
         />
         <NumberField
           label="Assets"
-          suffix="⬡"
+          suffix={<IconCash size={14} />}
           value={assets}
           canEdit={canEdit}
           busy={busy}
@@ -541,18 +542,21 @@ function NumberField({
   onCommit,
 }: {
   label: string
-  suffix: string
+  suffix: ReactNode
   value: number
   canEdit: boolean
   busy: boolean
   onCommit: (v: number) => void
 }) {
-  const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState(String(value))
+  const [focused, setFocused] = useState(false)
 
+  // Re-sync from the server when the input isn't focused — protects an
+  // in-progress edit from being clobbered by a concurrent realtime
+  // update from another client.
   useEffect(() => {
-    if (!editing) setDraft(String(value))
-  }, [value, editing])
+    if (!focused) setDraft(String(value))
+  }, [value, focused])
 
   function commit() {
     const parsed = parseInt(draft, 10)
@@ -561,49 +565,35 @@ function NumberField({
     } else {
       setDraft(String(value))
     }
-    setEditing(false)
-  }
-
-  if (editing) {
-    return (
-      <label className="flex items-baseline gap-1 text-xs text-gray-900">
-        <span>{label}</span>
-        <Input
-          autoFocus
-          type="number"
-          size="sm"
-          min={0}
-          value={draft}
-          disabled={busy}
-          onChange={(e) => setDraft(e.target.value)}
-          onBlur={commit}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') commit()
-            else if (e.key === 'Escape') {
-              setDraft(String(value))
-              setEditing(false)
-            }
-          }}
-          className="w-20"
-        />
-        <span className="text-gray-700">{suffix}</span>
-      </label>
-    )
   }
 
   return (
-    <button
-      type="button"
-      onClick={() => canEdit && setEditing(true)}
-      disabled={!canEdit}
-      className="flex items-baseline gap-1 text-left disabled:cursor-default"
-    >
-      <span className="text-xs text-gray-900">{label}</span>
-      <span className="text-base font-semibold text-white">
-        {value.toLocaleString()}
-      </span>
-      <span className="text-xs text-gray-700">{suffix}</span>
-    </button>
+    <label className="flex items-center gap-2 text-xs text-gray-900">
+      <span>{label}</span>
+      <Input
+        type="number"
+        size="sm"
+        min={0}
+        value={draft}
+        disabled={busy || !canEdit}
+        onChange={(e) => setDraft(e.target.value)}
+        onFocus={() => setFocused(true)}
+        onBlur={() => {
+          setFocused(false)
+          commit()
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter')
+            (e.currentTarget as HTMLInputElement).blur()
+          else if (e.key === 'Escape') {
+            setDraft(String(value))
+            ;(e.currentTarget as HTMLInputElement).blur()
+          }
+        }}
+        className="w-24"
+      />
+      <span className="text-gray-700">{suffix}</span>
+    </label>
   )
 }
 
