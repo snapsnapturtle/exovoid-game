@@ -26,17 +26,13 @@ interface CharacterSheetProps {
   canEdit: boolean
 }
 
-type SheetMode = 'play' | 'edit'
-
 export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
-  const [mode, setMode] = useState<SheetMode>('play')
   const [deleting, setDeleting] = useState(false)
   const [portraitUploading, setPortraitUploading] = useState(false)
   const [downtimeOpen, setDowntimeOpen] = useState(false)
   const [levelUpOpen, setLevelUpOpen] = useState(false)
   const navigate = useNavigate()
-  const { character, updateField, updateAttribute, updateSkill, flushSave } =
-    useCharacter(initial, canEdit)
+  const { character, updateField, flushSave } = useCharacter(initial, canEdit)
   const {
     rows: progressionRows,
     loaded: progressionLoaded,
@@ -58,8 +54,6 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
     character.derived_stat_bonuses,
   )
   const derivedStats = effects.derived
-  const isEditMode = mode === 'edit'
-  const editScopeCanEdit = canEdit && isEditMode
 
   // PCs only — NPCs have no XP / level concept. Owner-only — the wizard
   // writes a `level-up` row that's gated by RLS to the character owner.
@@ -174,22 +168,15 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
       )}
       <CharacterHeader
         name={character.name}
-        career={character.career}
         level={character.level}
         experience={character.experience}
         portraitUrl={character.portrait_url}
-        canEdit={editScopeCanEdit}
-        showModeToggle={canEdit}
-        isEditMode={isEditMode}
+        canEdit={canEdit}
         isNpc={character.is_npc}
         pendingLevelUp={pending}
-        deleting={deleting}
         portraitUploading={portraitUploading}
-        onNameChange={(v) => updateField('name', v)}
         onExperienceChange={(v) => updateField('experience', v)}
         onPortraitChange={handlePortraitChange}
-        onModeToggle={() => setMode((m) => (m === 'play' ? 'edit' : 'play'))}
-        onDelete={handleDelete}
         onDowntime={() => setDowntimeOpen(true)}
         onLevelUp={() => setLevelUpOpen(true)}
       />
@@ -200,12 +187,6 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
             attributes={character.attributes}
             effectiveAttributes={effects.attributes}
             contributions={effects.attributeContributions}
-            // Attribute steppers are locked post-creation: attribute
-            // increases only happen via Training: <Attribute> talents
-            // (picked through the level-up wizard). Direct edits would
-            // bypass the progression log and silently desync history.
-            canEdit={false}
-            onAttributeChange={updateAttribute}
           />
         </div>
         <div className="lg:col-span-4">
@@ -231,13 +212,6 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
         <SkillsPanel
           attributes={effects.attributes}
           skills={character.skills}
-          // Skill steppers are locked post-creation: bumps happen through
-          // the level-up wizard (skill points) and the Train Skill
-          // downtime activity (lifetime cap ≤ level). Anything else
-          // would bypass the progression log. Players who think they
-          // need a direct edit should go to the GM.
-          canEdit={false}
-          onSkillChange={updateSkill}
           favoriteSkills={character.favorite_skills}
           canFavorite={canEdit}
           onToggleFavorite={toggleFavoriteSkill}
@@ -278,10 +252,11 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
             canEditNotes={canEdit}
           />
           <EquipmentTabs
+            name={character.name}
             gender={character.gender}
             age={character.age}
             backgroundNotes={character.background_notes}
-            canEdit={editScopeCanEdit}
+            canEdit={canEdit}
             talents={character.talents}
             cyberware={character.cyberware}
             cyberImmunityCapacity={derivedStats.cyberImmunity}
@@ -293,9 +268,12 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
             gameId={character.game_id}
             characterId={character.id}
             isNpc={character.is_npc}
+            deleting={deleting}
+            onNameChange={(v) => updateField('name', v)}
             onGenderChange={(v) => updateField('gender', v)}
             onAgeChange={(v) => updateField('age', v)}
             onBackgroundNotesChange={(v) => updateField('background_notes', v)}
+            onDelete={handleDelete}
           />
         </div>
       </div>

@@ -4,7 +4,7 @@ import type {
   PendingBonus,
   PendingSupport,
 } from '~/lib/types/database'
-import { SKILLS, MAX_SKILL_LEVEL } from '~/lib/game-logic/skills'
+import { SKILLS } from '~/lib/game-logic/skills'
 import {
   computeAttributeAverage,
   computeDicePool,
@@ -12,7 +12,6 @@ import {
   type DicePool,
 } from '~/lib/game-logic/dice'
 import { DiceRoller } from '~/components/dice/DiceRoller'
-import { InlineStepper } from '~/components/ui/InlineStepper'
 import { Input } from '~/components/ui/Input'
 import { IconStar, IconStarFilled } from '@tabler/icons-react'
 import type { ApplyBonusInput } from '~/components/dice/RollResultView'
@@ -20,8 +19,6 @@ import type { ApplyBonusInput } from '~/components/dice/RollResultView'
 interface SkillsPanelProps {
   attributes: CharacterAttributes
   skills: Record<string, number>
-  canEdit: boolean
-  onSkillChange: (skillId: string, value: number) => void
   favoriteSkills: string[]
   /** Owner-toggled star. True whenever the viewer has stat-edit rights
    * regardless of the sheet's play/edit mode — star toggles work outside
@@ -52,8 +49,6 @@ interface SkillsPanelProps {
 export function SkillsPanel({
   attributes,
   skills,
-  canEdit,
-  onSkillChange,
   favoriteSkills,
   canFavorite,
   onToggleFavorite,
@@ -154,24 +149,7 @@ export function SkillsPanel({
                 </span>
               </div>
               <div className="flex h-6 w-16 items-center justify-center gap-1">
-                {canEdit ? (
-                  <InlineStepper
-                    ariaLabel={skill.name}
-                    value={level}
-                    min={0}
-                    max={MAX_SKILL_LEVEL}
-                    onAdjust={(delta) =>
-                      onSkillChange(
-                        skill.id,
-                        Math.max(0, Math.min(MAX_SKILL_LEVEL, level + delta)),
-                      )
-                    }
-                  />
-                ) : (
-                  <span className="text-sm font-medium text-white">
-                    {level}
-                  </span>
-                )}
+                <span className="text-sm font-medium text-white">{level}</span>
               </div>
               <button
                 onClick={() =>

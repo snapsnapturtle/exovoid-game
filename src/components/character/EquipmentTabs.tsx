@@ -21,6 +21,7 @@ const TABS: { id: Tab; label: string }[] = [
 ]
 
 interface EquipmentTabsProps {
+  name: string
   gender: string
   age: number | null
   backgroundNotes: string
@@ -36,9 +37,12 @@ interface EquipmentTabsProps {
   gameId: string
   characterId: string
   isNpc: boolean
+  deleting: boolean
+  onNameChange: (value: string) => void
   onGenderChange: (value: string) => void
   onAgeChange: (value: number | null) => void
   onBackgroundNotesChange: (value: string) => void
+  onDelete: () => void
 }
 
 /**
@@ -47,6 +51,7 @@ interface EquipmentTabsProps {
  * sheet level so it stays one click away during play.
  */
 export function EquipmentTabs({
+  name,
   gender,
   age,
   backgroundNotes,
@@ -62,9 +67,12 @@ export function EquipmentTabs({
   gameId,
   characterId,
   isNpc,
+  deleting,
+  onNameChange,
   onGenderChange,
   onAgeChange,
   onBackgroundNotesChange,
+  onDelete,
 }: EquipmentTabsProps) {
   const [tab, setTab] = useState<Tab>('actions')
 
@@ -124,13 +132,18 @@ export function EquipmentTabs({
         )}
         {tab === 'background' && (
           <BackgroundTab
+            name={name}
+            career={career}
             gender={gender}
             age={age}
             backgroundNotes={backgroundNotes}
             canEdit={canEdit}
+            deleting={deleting}
+            onNameChange={onNameChange}
             onGenderChange={onGenderChange}
             onAgeChange={onAgeChange}
             onBackgroundNotesChange={onBackgroundNotesChange}
+            onDelete={onDelete}
           />
         )}
       </div>
@@ -147,33 +160,48 @@ function PlaceholderTab({ name }: { name: string }) {
 }
 
 interface BackgroundTabProps {
+  name: string
+  career: string
   gender: string
   age: number | null
   backgroundNotes: string
   canEdit: boolean
+  deleting: boolean
+  onNameChange: (value: string) => void
   onGenderChange: (value: string) => void
   onAgeChange: (value: number | null) => void
   onBackgroundNotesChange: (value: string) => void
+  onDelete: () => void
 }
 
 function BackgroundTab({
+  name,
+  career,
   gender,
   age,
   backgroundNotes,
   canEdit,
+  deleting,
+  onNameChange,
   onGenderChange,
   onAgeChange,
   onBackgroundNotesChange,
+  onDelete,
 }: BackgroundTabProps) {
   return (
     <CharacterInfoPanel
+      name={name}
+      career={career}
       gender={gender}
       age={age}
       backgroundNotes={backgroundNotes}
       canEdit={canEdit}
+      deleting={deleting}
+      onNameChange={onNameChange}
       onGenderChange={onGenderChange}
       onAgeChange={onAgeChange}
       onBackgroundNotesChange={onBackgroundNotesChange}
+      onDelete={onDelete}
     />
   )
 }

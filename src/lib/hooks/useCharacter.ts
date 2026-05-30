@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import type { Character, CharacterAttributes } from '~/lib/types/database'
+import type { Character } from '~/lib/types/database'
 import { updateCharacter } from '~/lib/server/characters'
 import { levelFromXp } from '~/lib/game-logic/leveling'
 import { useReportSave } from '~/lib/hooks/saveStatusContext'
@@ -148,29 +148,9 @@ export function useCharacter(initial: Character, canEdit: boolean) {
     setCharacter(next)
   }
 
-  function updateAttribute(attrId: keyof CharacterAttributes, value: number) {
-    const next: Character = {
-      ...latestRef.current,
-      attributes: { ...latestRef.current.attributes, [attrId]: value },
-    }
-    markPending(next)
-    setCharacter(next)
-  }
-
-  function updateSkill(skillId: string, value: number) {
-    const next: Character = {
-      ...latestRef.current,
-      skills: { ...latestRef.current.skills, [skillId]: value },
-    }
-    markPending(next)
-    setCharacter(next)
-  }
-
   return {
     character,
     updateField,
-    updateAttribute,
-    updateSkill,
     flushSave,
   }
 }
