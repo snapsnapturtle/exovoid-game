@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { Modal } from '~/components/ui/Modal'
 import { Button } from '~/components/ui/Button'
 import { Alert } from '~/components/ui/Alert'
+import { Input } from '~/components/ui/Input'
 import { RollResultView } from '~/components/dice/RollResultView'
 import { rollDice, type DiceRollData } from '~/lib/server/dice'
 import {
@@ -145,7 +146,7 @@ export function RollForInjuryModal({
             >
               Damage past zero
             </label>
-            <input
+            <Input
               id="injury-damage"
               type="number"
               min={1}
@@ -153,7 +154,7 @@ export function RollForInjuryModal({
               onChange={(e) =>
                 setDamage(Math.max(1, parseInt(e.target.value, 10) || 1))
               }
-              className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white focus:border-accent-900 focus:outline-none"
+              className="w-full"
             />
             <p className="mt-1.5 text-xs text-gray-700">
               Damage that overflows below 0 health. Roll this many injury dice.

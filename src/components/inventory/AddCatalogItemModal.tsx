@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { allItems, type ItemData } from '~/lib/game-logic/items'
 import { Button } from '~/components/ui/Button'
 import { Modal } from '~/components/ui/Modal'
+import { Input } from '~/components/ui/Input'
 
 interface AddCatalogItemModalProps {
   busy: boolean
@@ -48,34 +49,36 @@ export function AddCatalogItemModal({
       subtitle="Pick an item from the rulebook catalog. Custom items have their own form."
       size="lg"
       stickyHeader={
-        <input
+        <Input
           autoFocus
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search by name, category, description…"
-          className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+          className="w-full"
         />
       }
       footerLeft={
         <div className="flex flex-wrap items-center gap-2">
-          <input
+          <Input
             type="number"
+            size="sm"
             min={1}
             value={quantity}
             onChange={(e) =>
               setQuantity(Math.max(1, parseInt(e.target.value, 10) || 1))
             }
             aria-label="Quantity"
-            className="w-20 rounded border border-gray-400 bg-gray-100 px-2 py-1 text-sm text-white focus:border-accent-900 focus:outline-none"
+            className="w-20"
           />
-          <input
+          <Input
             type="text"
+            size="sm"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             placeholder="Location (e.g. backpack)"
             aria-label="Location (optional)"
-            className="w-44 rounded border border-gray-400 bg-gray-100 px-2 py-1 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+            className="w-44"
           />
         </div>
       }

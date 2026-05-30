@@ -2,16 +2,16 @@ import type { DieType, DieSymbol } from '~/lib/game-logic/dice'
 import { DieShape } from './DieShape'
 
 // The die body fills the silhouette in the type's primary color; the
-// wireframe edges sit on top in a lighter shade for 3D definition.
-// Body fills the silhouette with the type's main hue; wire is the
-// brighter highlight on top. Sticking to project ramps so the dice match
-// the rest of the palette. Warning (amber) is non-monotonic across
-// 600–900, so it gets the darker 500 body with a 700 wire — the rest use
-// 700 / 900.
+// wireframe edges sit on top in a lighter shade for the highlight that
+// gives the 3D effect. blue / success / danger satisfy "wire lighter
+// than body" with the 700 / 900 ramp positions; warning's ramp is
+// non-monotonic — 600 dips back to a deeper amber while 700 is the
+// brightest shade — so the expertise die uses 600 body / 700 wire to
+// preserve the same darker-body / brighter-wire relationship.
 const DIE_BODY: Record<DieType, string> = {
   standard: 'text-blue-700',
   aptitude: 'text-success-700',
-  expertise: 'text-warning-500',
+  expertise: 'text-warning-600',
   injury: 'text-danger-700',
 }
 

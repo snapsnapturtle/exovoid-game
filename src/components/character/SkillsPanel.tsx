@@ -4,7 +4,7 @@ import type {
   PendingBonus,
   PendingSupport,
 } from '~/lib/types/database'
-import { SKILLS, MAX_SKILL_LEVEL } from '~/lib/game-logic/skills'
+import { SKILLS } from '~/lib/game-logic/skills'
 import {
   computeAttributeAverage,
   computeDicePool,
@@ -12,14 +12,13 @@ import {
   type DicePool,
 } from '~/lib/game-logic/dice'
 import { DiceRoller } from '~/components/dice/DiceRoller'
-import { InlineStepper } from '~/components/ui/InlineStepper'
+import { Input } from '~/components/ui/Input'
+import { IconStar, IconStarFilled } from '@tabler/icons-react'
 import type { ApplyBonusInput } from '~/components/dice/RollResultView'
 
 interface SkillsPanelProps {
   attributes: CharacterAttributes
   skills: Record<string, number>
-  canEdit: boolean
-  onSkillChange: (skillId: string, value: number) => void
   favoriteSkills: string[]
   /** Owner-toggled star. True whenever the viewer has stat-edit rights
    * regardless of the sheet's play/edit mode — star toggles work outside
@@ -50,8 +49,6 @@ interface SkillsPanelProps {
 export function SkillsPanel({
   attributes,
   skills,
-  canEdit,
-  onSkillChange,
   favoriteSkills,
   canFavorite,
   onToggleFavorite,
@@ -88,15 +85,16 @@ export function SkillsPanel({
   })
 
   return (
-    <div className="rounded-xl border border-gray-400 bg-background-200 p-6">
+    <div className="rounded-xl border border-gray-400 bg-background-200 p-3">
       <div className="mb-4 flex items-center justify-between gap-4">
         <h3 className="text-lg font-semibold text-white">Skills</h3>
-        <input
+        <Input
           type="text"
+          size="sm"
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
           placeholder="Filter skills..."
-          className="w-48 rounded-lg border border-gray-400 bg-gray-100 px-3 py-1.5 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+          className="w-48"
         />
       </div>
       <div className="space-y-1">
@@ -116,7 +114,7 @@ export function SkillsPanel({
           return (
             <div
               key={skill.id}
-              className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-2 rounded-lg py-1.5 hover:bg-gray-100"
+              className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-2 rounded-lg p-1.5 even:bg-background-100 hover:bg-gray-100"
             >
               <div className="flex items-center gap-2">
                 {(canFavorite || isFavorite) && (
@@ -139,19 +137,11 @@ export function SkillsPanel({
                         : 'text-gray-700 not-disabled:hover:text-warning-900'
                     }`}
                   >
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill={isFavorite ? 'currentColor' : 'none'}
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden
-                    >
-                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                    </svg>
+                    {isFavorite ? (
+                      <IconStarFilled size={14} aria-hidden />
+                    ) : (
+                      <IconStar size={14} aria-hidden />
+                    )}
                   </button>
                 )}
                 <span className="text-sm font-medium text-gray-1000">
@@ -159,24 +149,7 @@ export function SkillsPanel({
                 </span>
               </div>
               <div className="flex h-6 w-16 items-center justify-center gap-1">
-                {canEdit ? (
-                  <InlineStepper
-                    ariaLabel={skill.name}
-                    value={level}
-                    min={0}
-                    max={MAX_SKILL_LEVEL}
-                    onAdjust={(delta) =>
-                      onSkillChange(
-                        skill.id,
-                        Math.max(0, Math.min(MAX_SKILL_LEVEL, level + delta)),
-                      )
-                    }
-                  />
-                ) : (
-                  <span className="text-sm font-medium text-white">
-                    {level}
-                  </span>
-                )}
+                <span className="text-sm font-medium text-white">{level}</span>
               </div>
               <button
                 onClick={() =>

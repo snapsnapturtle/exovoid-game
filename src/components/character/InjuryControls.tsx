@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { IconSkull } from '@tabler/icons-react'
 import { Button } from '~/components/ui/Button'
 import { InjurySummary } from './InjurySummary'
 import { RollForInjuryModal } from './RollForInjuryModal'
@@ -77,6 +78,7 @@ export function InjuryControls({
             onClick={() => setRollOpen(true)}
             className="ml-auto shrink-0"
           >
+            <IconSkull size={14} className="mr-1.5" aria-hidden />
             Roll for injury
           </Button>
         )}

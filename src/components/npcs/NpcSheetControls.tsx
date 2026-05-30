@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { updateNpcFlags } from '~/lib/server/npcs'
+import { Select } from '~/components/ui/Input'
 
 interface NpcSheetControlsProps {
   characterId: string
@@ -98,7 +99,8 @@ export function NpcSheetControls({
         <span className="text-xs font-medium uppercase tracking-wide text-gray-900">
           Controller
         </span>
-        <select
+        <Select
+          size="sm"
           value={controller ?? ''}
           disabled={!canManageFlags || pending}
           onChange={(e) => {
@@ -106,7 +108,7 @@ export function NpcSheetControls({
             setController(value)
             save({ controller_user_id: value })
           }}
-          className="rounded-lg border border-gray-400 bg-gray-100 px-2 py-1 text-sm text-white focus:border-accent-900 focus:outline-none disabled:opacity-40"
+          className="w-auto"
         >
           {(() => {
             const gm = members.find((m) => m.role === 'gm')
@@ -120,7 +122,7 @@ export function NpcSheetControls({
                 {m.profiles?.display_name || 'Unknown'}
               </option>
             ))}
-        </select>
+        </Select>
       </label>
     </div>
   )

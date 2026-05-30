@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useReportSave } from '~/lib/hooks/saveStatusContext'
 
 interface UseDebouncedNumberOptions {
   /** Server value — refreshes the local state when no save is pending. */
@@ -41,6 +42,11 @@ export function useDebouncedNumber({
   saveRef.current = save
   const onErrorRef = useRef(onError)
   onErrorRef.current = onError
+  const { beginSave, endSave } = useReportSave()
+  const beginSaveRef = useRef(beginSave)
+  beginSaveRef.current = beginSave
+  const endSaveRef = useRef(endSave)
+  endSaveRef.current = endSave
 
   useEffect(() => {
     if (!pendingRef.current) setValue(initial)
@@ -59,9 +65,12 @@ export function useDebouncedNumber({
       pendingRef.current = true
       if (timerRef.current) clearTimeout(timerRef.current)
       timerRef.current = setTimeout(async () => {
+        beginSaveRef.current()
         try {
           await saveRef.current(next)
+          endSaveRef.current('saved')
         } catch (e) {
+          endSaveRef.current('error')
           onErrorRef.current?.(e)
         } finally {
           pendingRef.current = false

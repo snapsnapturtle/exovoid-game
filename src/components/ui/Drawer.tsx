@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { IconX } from '@tabler/icons-react'
 
 export type DrawerSide = 'left' | 'right'
 export type DrawerWidth = 'sm' | 'md' | 'lg'
@@ -81,7 +82,7 @@ export function Drawer({
             aria-label="Close"
             className="flex h-7 w-7 shrink-0 items-center justify-center rounded text-gray-900 transition hover:bg-gray-100 hover:text-white"
           >
-            ✕
+            <IconX size={16} />
           </button>
         </header>
         <div className="flex-1 overflow-y-auto p-4">{children}</div>

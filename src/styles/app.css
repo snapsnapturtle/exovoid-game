@@ -280,6 +280,17 @@
     drop-shadow(0 1px 0 #fff) drop-shadow(0 -1px 0 #fff);
 }
 
+/* Custom chevron for <Select>. Pairs with `appearance-none` so the native
+   OS arrow is suppressed and replaced with this one — that's the only way to
+   give the icon real breathing room from the right border (the native arrow
+   ignores padding). Color matches gray-900 (--color-gray-900, hsla 0 0% 63%);
+   if the token shifts, update %23a1a1a1 here too. */
+.select-chevron {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%23a1a1a1' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='3 4.5 6 7.5 9 4.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+}
+
 /* Crisp 1px black outline for the white number on a DieCounter. Keeps the
    count readable when it sits on top of the wireframe edges. */
 .die-number {

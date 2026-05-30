@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { createGame } from '~/lib/server/games'
 import { Button } from '~/components/ui/Button'
+import { Input } from '~/components/ui/Input'
 
 export const Route = createFileRoute('/_app/games/new')({
   head: () => ({ meta: [{ title: 'Create game — Exovoid' }] }),
@@ -41,13 +42,14 @@ function NewGamePage() {
               >
                 Game Name
               </label>
-              <input
+              <Input
                 id="name"
                 type="text"
                 required
+                size="lg"
+                className="w-full"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-lg border border-gray-400 bg-gray-100 px-4 py-2 text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
                 placeholder="e.g., The Void Runners"
               />
             </div>

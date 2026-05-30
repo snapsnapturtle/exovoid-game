@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { joinGame } from '~/lib/server/games'
 import { Button } from '~/components/ui/Button'
+import { Input } from '~/components/ui/Input'
 
 export const Route = createFileRoute('/_app/games/join')({
   head: () => ({ meta: [{ title: 'Join game — Exovoid' }] }),
@@ -41,13 +42,14 @@ function JoinGamePage() {
               >
                 Invite Code
               </label>
-              <input
+              <Input
                 id="inviteCode"
                 type="text"
                 required
+                size="lg"
                 value={inviteCode}
                 onChange={(e) => setInviteCode(e.target.value)}
-                className="w-full rounded-lg border border-gray-400 bg-gray-100 px-4 py-2 text-center font-mono text-lg tracking-widest text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+                className="w-full text-center font-mono text-lg tracking-widest"
                 placeholder="ABCD1234"
               />
             </div>

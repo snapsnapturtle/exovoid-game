@@ -29,6 +29,7 @@ import careersData from '~/data/careers.json'
 import backgroundsData from '~/data/backgrounds.json'
 import { Button } from '~/components/ui/Button'
 import { Alert } from '~/components/ui/Alert'
+import { Input, Select } from '~/components/ui/Input'
 import { BackgroundBonusModal } from './BackgroundBonusModal'
 import {
   bonusNeedsChoice,
@@ -1186,10 +1187,10 @@ function BackgroundTablePicker({
 
       {isManual ? (
         <div className="space-y-2">
-          <select
+          <Select
             value={pick.chosen ?? ''}
             onChange={(e) => onChoose(parseInt(e.target.value, 10))}
-            className="w-full rounded-lg border border-gray-400 bg-background-200 px-3 py-2 text-sm text-white focus:border-accent-900 focus:outline-none"
+            className="w-full"
           >
             <option value="">— pick an entry —</option>
             {table.map((entry) => (
@@ -1197,7 +1198,7 @@ function BackgroundTablePicker({
                 {entry.id}. {entry.name}
               </option>
             ))}
-          </select>
+          </Select>
           {chosenEntry && (
             <div className="rounded-lg border border-accent-700/40 bg-accent-700/5 p-3">
               <div className="font-medium text-white">{chosenEntry.name}</div>
@@ -1418,34 +1419,34 @@ function FinalStep({
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label className="mb-1 block text-sm text-gray-900">Name</label>
-          <input
+          <Input
             type="text"
             value={state.name}
             onChange={(e) => setState((s) => ({ ...s, name: e.target.value }))}
             placeholder="Kira Voss"
             autoComplete="off"
-            className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+            className="w-full"
           />
         </div>
         <div>
           <label className="mb-1 block text-sm text-gray-900">Gender</label>
-          <input
+          <Input
             type="text"
             value={state.gender}
             onChange={(e) =>
               setState((s) => ({ ...s, gender: e.target.value }))
             }
-            className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+            className="w-full"
           />
         </div>
         <div>
           <label className="mb-1 block text-sm text-gray-900">Age</label>
-          <input
+          <Input
             type="number"
             value={state.age}
             onChange={(e) => setState((s) => ({ ...s, age: e.target.value }))}
             min={0}
-            className="w-full rounded-lg border border-gray-400 bg-gray-100 px-3 py-2 text-sm text-white placeholder-gray-700 focus:border-accent-900 focus:outline-none"
+            className="w-full"
           />
         </div>
       </div>
