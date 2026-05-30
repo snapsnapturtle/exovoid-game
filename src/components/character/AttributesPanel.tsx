@@ -47,7 +47,7 @@ export function AttributesPanel({
               <span className="text-[10px] font-medium uppercase tracking-wide text-gray-900">
                 {attr.abbr}
               </span>
-              <span className="my-1 text-2xl font-bold leading-none text-white">
+              <span className="mt-2 text-2xl font-bold leading-none text-white">
                 {effective}
               </span>
               {bonuses.length > 0 && canEdit && (

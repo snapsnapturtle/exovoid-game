@@ -446,26 +446,6 @@ function StyleguidePage() {
               />
             </div>
           </Row>
-          <Row label="Sizes">
-            <div className="w-32">
-              <Stepper
-                label="sm"
-                value={stepperValue}
-                onAdjust={(d) => setStepperValue((v) => v + d)}
-                min={0}
-                size="sm"
-              />
-            </div>
-            <div className="w-32">
-              <Stepper
-                label="md"
-                value={stepperValue}
-                onAdjust={(d) => setStepperValue((v) => v + d)}
-                min={0}
-                size="md"
-              />
-            </div>
-          </Row>
           <Row label="Value tones / state">
             <div className="w-32">
               <Stepper

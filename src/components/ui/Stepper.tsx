@@ -1,13 +1,7 @@
 import type { ReactNode } from 'react'
 import { Button } from '~/components/ui/Button'
 
-export type StepperSize = 'sm' | 'md'
 export type StepperValueTone = 'default' | 'accent' | 'danger'
-
-const VALUE_SIZE: Record<StepperSize, string> = {
-  sm: 'text-lg',
-  md: 'text-2xl',
-}
 
 const TONE: Record<StepperValueTone, string> = {
   default: 'text-white',
@@ -27,7 +21,6 @@ interface StepperProps {
   onAdjust: (delta: number) => void
   canEdit?: boolean
   busy?: boolean
-  size?: StepperSize
   valueTone?: StepperValueTone
 }
 
@@ -46,7 +39,6 @@ export function Stepper({
   onAdjust,
   canEdit = true,
   busy = false,
-  size = 'sm',
   valueTone = 'default',
 }: StepperProps) {
   const ceiling = hardMax ?? max
@@ -70,7 +62,7 @@ export function Stepper({
           −
         </Button>
         <span
-          className={`font-semibold leading-none ${VALUE_SIZE[size]} ${TONE[valueTone]}`}
+          className={`whitespace-nowrap text-lg font-semibold leading-none ${TONE[valueTone]}`}
         >
           {value}
           {max !== undefined && (
