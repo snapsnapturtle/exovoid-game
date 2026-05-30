@@ -119,9 +119,6 @@ export function DerivedStatsPanel({
                   >
                     <span className="text-xs text-gray-900">{label}</span>
                     <div className="flex items-center gap-2">
-                      <span className="text-lg font-bold text-white">
-                        {total}
-                      </span>
                       {key === 'vigilance' && (
                         <Button
                           variant="subtle"
@@ -137,6 +134,9 @@ export function DerivedStatsPanel({
                           Roll
                         </Button>
                       )}
+                      <span className="text-lg font-bold text-white">
+                        {total}
+                      </span>
                     </div>
                   </div>
                 )

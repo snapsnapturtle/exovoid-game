@@ -53,7 +53,7 @@ export function CharacterHeader({
   const { next: nextThreshold, percent: xpPercent } = xpProgress(experience)
 
   return (
-    <div className="flex flex-wrap items-start gap-4 rounded-xl border border-gray-400 bg-background-200 p-6">
+    <div className="flex flex-wrap items-start gap-4 rounded-xl border border-gray-400 bg-background-200 p-3">
       <CharacterPortrait
         name={name}
         portraitUrl={portraitUrl}

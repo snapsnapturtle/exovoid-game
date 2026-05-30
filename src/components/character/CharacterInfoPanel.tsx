@@ -20,7 +20,7 @@ export function CharacterInfoPanel({
   onBackgroundNotesChange,
 }: CharacterInfoPanelProps) {
   return (
-    <div className="rounded-xl border border-gray-400 bg-background-200 p-6">
+    <div className="rounded-xl border border-gray-400 bg-background-200 p-3">
       <h3 className="mb-4 text-lg font-semibold text-white">Character Info</h3>
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
