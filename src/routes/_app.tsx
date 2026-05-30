@@ -59,9 +59,19 @@ function AppLayoutInner() {
   return (
     <div className="flex h-screen flex-col overflow-hidden">
       <header className="shrink-0 border-b border-gray-400 bg-background-100">
+        {/* Two visual zones, gated at the 1600px breakpoint — that's the
+            viewport width at which the body's max-w-[1280px] content area
+            plus the w-80 dice feed first clear the viewport, so the feed
+            stops touching content.
+            ≥ 1600: the w-80 spacer is reserved on the right and the inner
+            row caps at max-w-[1280px], so the avatar lines up with the
+            right edge of the main content area.
+            < 1600: the spacer is hidden and the inner row goes full-width,
+            so the avatar instead lands at the right edge of the viewport
+            (= right edge of the dice feed), above the feed itself. */}
         <div className="flex">
           <div className="flex min-w-0 flex-1 justify-center">
-            <div className="flex w-full max-w-[1280px] items-center justify-between gap-4 px-6 py-3">
+            <div className="flex w-full max-w-none items-center justify-between gap-4 px-6 py-3 min-[1600px]:max-w-[1280px]">
               <div className="flex min-w-0 items-center gap-3">
                 <Link
                   to="/dashboard"
@@ -143,7 +153,7 @@ function AppLayoutInner() {
               </div>
             </div>
           </div>
-          <div className="w-80 shrink-0" aria-hidden />
+          <div className="hidden w-80 shrink-0 min-[1600px]:block" aria-hidden />
         </div>
       </header>
       <main className="min-h-0 flex-1 overflow-hidden">
