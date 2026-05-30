@@ -47,11 +47,7 @@ type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   function Textarea({ size = 'md', className, ...rest }, ref) {
     return (
-      <textarea
-        ref={ref}
-        className={inputClasses(size, className)}
-        {...rest}
-      />
+      <textarea ref={ref} className={inputClasses(size, className)} {...rest} />
     )
   },
 )

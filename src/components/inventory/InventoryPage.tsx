@@ -583,8 +583,7 @@ function NumberField({
           commit()
         }}
         onKeyDown={(e) => {
-          if (e.key === 'Enter')
-            (e.currentTarget as HTMLInputElement).blur()
+          if (e.key === 'Enter') (e.currentTarget as HTMLInputElement).blur()
           else if (e.key === 'Escape') {
             setDraft(String(value))
             ;(e.currentTarget as HTMLInputElement).blur()

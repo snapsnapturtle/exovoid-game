@@ -244,15 +244,14 @@ function StyleguidePage() {
           <Row label="Widths (intrinsic vs utility)">
             <Input defaultValue="No width — intrinsic (~20ch)" />
             <Input defaultValue="w-48" className="w-48" />
-            <Input defaultValue="w-full inside a w-64 parent" className="w-64" />
+            <Input
+              defaultValue="w-full inside a w-64 parent"
+              className="w-64"
+            />
           </Row>
           <Row label="States">
             <Input placeholder="Placeholder only" className="w-48" />
-            <Input
-              disabled
-              defaultValue="Disabled value"
-              className="w-48"
-            />
+            <Input disabled defaultValue="Disabled value" className="w-48" />
             <Input
               disabled
               placeholder="Disabled & empty (placeholder shows)"

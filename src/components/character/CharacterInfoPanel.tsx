@@ -55,11 +55,7 @@ export function CharacterInfoPanel({
         {canEdit && (
           <div className="flex items-center gap-3">
             {editing && (
-              <Button
-                variant="danger"
-                onClick={onDelete}
-                disabled={deleting}
-              >
+              <Button variant="danger" onClick={onDelete} disabled={deleting}>
                 {deleting ? 'Deleting…' : 'Delete'}
               </Button>
             )}

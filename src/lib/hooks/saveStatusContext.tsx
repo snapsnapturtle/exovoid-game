@@ -32,9 +32,7 @@ const SAVED_AUTO_CLEAR_MS = 2000
  */
 export function SaveStatusProvider({ children }: { children: ReactNode }) {
   const [inFlight, setInFlight] = useState(0)
-  const [lastOutcome, setLastOutcome] = useState<'saved' | 'error' | null>(
-    null,
-  )
+  const [lastOutcome, setLastOutcome] = useState<'saved' | 'error' | null>(null)
 
   const beginSave = useCallback(() => {
     setInFlight((c) => {

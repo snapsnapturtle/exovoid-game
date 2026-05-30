@@ -153,7 +153,10 @@ function AppLayoutInner() {
               </div>
             </div>
           </div>
-          <div className="hidden w-80 shrink-0 min-[1600px]:block" aria-hidden />
+          <div
+            className="hidden w-80 shrink-0 min-[1600px]:block"
+            aria-hidden
+          />
         </div>
       </header>
       <main className="min-h-0 flex-1 overflow-hidden">
