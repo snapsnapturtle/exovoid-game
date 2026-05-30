@@ -45,7 +45,6 @@ function AppLayoutInner() {
     shouldThrow: false,
   })
   const game = gameMatch?.loaderData?.game
-  const isGm = gameMatch?.loaderData?.isGm
   const combat = gameMatch?.loaderData?.gameState?.combat
   const accountMenu = usePopover({ placement: 'bottom-end' })
   const saveStatus = useSaveStatus()
@@ -89,11 +88,6 @@ function AppLayoutInner() {
                     >
                       {game.name}
                     </Link>
-                    {isGm && (
-                      <span className="shrink-0 rounded-full bg-blue-700/20 px-2 py-0.5 text-xs font-medium text-blue-900">
-                        GM
-                      </span>
-                    )}
                     <span className="text-gray-700">·</span>
                     <Link
                       to="/games/$gameId/combat"
