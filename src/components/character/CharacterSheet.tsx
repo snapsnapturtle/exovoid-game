@@ -14,7 +14,6 @@ import { DerivedStatsPanel } from './DerivedStatsPanel'
 import { LivePlayPanel } from './LivePlayPanel'
 import { SkillsPanel } from './SkillsPanel'
 import { EquipmentTabs } from './EquipmentTabs'
-import { SaveStatusToast } from './SaveStatusToast'
 import { DowntimeModal } from './downtime/DowntimeModal'
 import { LevelUpModal } from './level-up/LevelUpModal'
 import { NpcSheetControls } from '~/components/npcs/NpcSheetControls'
@@ -36,14 +35,8 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
   const [downtimeOpen, setDowntimeOpen] = useState(false)
   const [levelUpOpen, setLevelUpOpen] = useState(false)
   const navigate = useNavigate()
-  const {
-    character,
-    saveStatus,
-    updateField,
-    updateAttribute,
-    updateSkill,
-    flushSave,
-  } = useCharacter(initial, canEdit)
+  const { character, updateField, updateAttribute, updateSkill, flushSave } =
+    useCharacter(initial, canEdit)
   const {
     rows: progressionRows,
     loaded: progressionLoaded,
@@ -306,8 +299,6 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
           />
         </div>
       </div>
-
-      <SaveStatusToast status={saveStatus} />
 
       {downtimeOpen && (
         <DowntimeModal

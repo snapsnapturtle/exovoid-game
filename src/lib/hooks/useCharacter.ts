@@ -2,16 +2,21 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import type { Character, CharacterAttributes } from '~/lib/types/database'
 import { updateCharacter } from '~/lib/server/characters'
 import { levelFromXp } from '~/lib/game-logic/leveling'
+import { useReportSave } from '~/lib/hooks/saveStatusContext'
 
 const SAVE_DEBOUNCE_MS = 800
 
-export type SaveStatus = 'idle' | 'saving' | 'saved' | 'error'
-
 export function useCharacter(initial: Character, canEdit: boolean) {
   const [character, setCharacter] = useState(initial)
-  const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle')
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const pendingRef = useRef(false)
+  const { beginSave, endSave } = useReportSave()
+  // Refs let performSave (memoized once) read the current reporters
+  // without invalidating the callback's identity on every render.
+  const beginSaveRef = useRef(beginSave)
+  beginSaveRef.current = beginSave
+  const endSaveRef = useRef(endSave)
+  endSaveRef.current = endSave
   // Snapshot the debounced save needs to persist. Kept in lockstep with
   // `character` via synchronous writes in every mutator below — flushSave
   // and the unmount cleanup both read this without going through a
@@ -34,7 +39,7 @@ export function useCharacter(initial: Character, canEdit: boolean) {
       return
     }
     const snapshot = latestRef.current
-    setSaveStatus('saving')
+    beginSaveRef.current()
     try {
       await updateCharacter({
         data: {
@@ -61,17 +66,16 @@ export function useCharacter(initial: Character, canEdit: boolean) {
           },
         },
       })
-      setSaveStatus('saved')
+      endSaveRef.current('saved')
       pendingRef.current = false
-      setTimeout(() => setSaveStatus('idle'), 2000)
     } catch (err) {
-      // Show the failed state in the UI and clear pendingRef so the next
-      // mutation can schedule a fresh save. Re-throw so awaited callers
-      // (notably `flushSave`, used by the level-up wizard) can branch on
-      // the failure — without this, the wizard would happily
-      // `recordProgression(...)` a row whose picks were never actually
-      // persisted to the character row, creating permanent log drift.
-      setSaveStatus('error')
+      // Clear pendingRef so the next mutation can schedule a fresh
+      // save, and re-throw so awaited callers (notably `flushSave`,
+      // used by the level-up wizard) can branch on the failure —
+      // without this, the wizard would happily `recordProgression(...)`
+      // a row whose picks were never actually persisted to the
+      // character row, creating permanent log drift.
+      endSaveRef.current('error')
       pendingRef.current = false
       throw err
     }
@@ -92,10 +96,10 @@ export function useCharacter(initial: Character, canEdit: boolean) {
     if (timerRef.current) clearTimeout(timerRef.current)
     timerRef.current = setTimeout(() => {
       timerRef.current = null
-      // Fire-and-forget — performSave already set saveStatus='error' on
-      // failure. The catch keeps the rejection out of the
-      // unhandled-promise channel; awaited callers (flushSave) still
-      // see the rejection because they don't go through this path.
+      // Fire-and-forget — performSave already reports the failure to
+      // the save-status context. The catch keeps the rejection out of
+      // the unhandled-promise channel; awaited callers (flushSave)
+      // still see the rejection because they don't go through this path.
       performSave().catch(() => {})
     }, SAVE_DEBOUNCE_MS)
   }
@@ -127,8 +131,8 @@ export function useCharacter(initial: Character, canEdit: boolean) {
         timerRef.current = null
         if (pendingRef.current) {
           // Same fire-and-forget pattern as the debounce timer above —
-          // the failure surfaces via saveStatus, not via an unhandled
-          // rejection.
+          // the failure surfaces via the save-status context, not via
+          // an unhandled rejection.
           performSave().catch(() => {})
         }
       }
@@ -164,7 +168,6 @@ export function useCharacter(initial: Character, canEdit: boolean) {
 
   return {
     character,
-    saveStatus,
     updateField,
     updateAttribute,
     updateSkill,

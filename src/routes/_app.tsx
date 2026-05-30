@@ -7,8 +7,13 @@ import {
   useNavigate,
 } from '@tanstack/react-router'
 import { Popover, usePopover } from '~/components/ui/Popover'
+import { SaveChip } from '~/components/ui/SaveChip'
 import { getAuthUser } from '~/lib/server/auth'
 import { getSupabaseBrowserClient } from '~/lib/supabase/client'
+import {
+  SaveStatusProvider,
+  useSaveStatus,
+} from '~/lib/hooks/saveStatusContext'
 
 export const Route = createFileRoute('/_app')({
   beforeLoad: async () => {
@@ -22,6 +27,17 @@ export const Route = createFileRoute('/_app')({
 })
 
 function AppLayout() {
+  // SaveStatusProvider wraps both the header and the outlet so the
+  // header chip and the save-source hooks (useCharacter,
+  // useDebouncedNumber) share the same aggregate state.
+  return (
+    <SaveStatusProvider>
+      <AppLayoutInner />
+    </SaveStatusProvider>
+  )
+}
+
+function AppLayoutInner() {
   const { user, profile } = Route.useRouteContext()
   const navigate = useNavigate()
   const gameMatch = useMatch({
@@ -32,6 +48,7 @@ function AppLayout() {
   const isGm = gameMatch?.loaderData?.isGm
   const combat = gameMatch?.loaderData?.gameState?.combat
   const accountMenu = usePopover({ placement: 'bottom-end' })
+  const saveStatus = useSaveStatus()
 
   async function handleLogout() {
     const supabase = getSupabaseBrowserClient()
@@ -90,6 +107,7 @@ function AppLayout() {
                     >
                       {combat ? `⚔ Round ${combat.round}` : 'Combat'}
                     </Link>
+                    <SaveChip status={saveStatus} />
                   </>
                 )}
               </div>
