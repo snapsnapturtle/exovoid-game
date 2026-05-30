@@ -1,5 +1,6 @@
 import { useEffect, type MouseEventHandler, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
+import { IconX } from '@tabler/icons-react'
 
 /**
  * Standard close affordance for any dialog: a small "×" in the top-right
@@ -19,7 +20,7 @@ export function ModalCloseButton({
       aria-label="Close"
       className="flex h-7 w-7 shrink-0 items-center justify-center rounded text-gray-900 transition hover:bg-gray-100 hover:text-white"
     >
-      ✕
+      <IconX size={16} />
     </button>
   )
 }

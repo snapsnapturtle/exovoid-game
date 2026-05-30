@@ -7,6 +7,7 @@ import { Stepper } from '~/components/ui/Stepper'
 import { Drawer } from '~/components/ui/Drawer'
 import { Popover, usePopover } from '~/components/ui/Popover'
 import { Input, Select, Textarea } from '~/components/ui/Input'
+import { IconChevronDown, IconX } from '@tabler/icons-react'
 
 export const Route = createFileRoute('/_app/styleguide')({
   component: StyleguidePage,
@@ -135,7 +136,7 @@ function StyleguidePage() {
               Treat
             </Button>
             <Button variant="ghostDanger" size="xs">
-              ✕
+              <IconX size={12} />
             </Button>
             <Button variant="danger" size="xs">
               Danger
@@ -593,20 +594,11 @@ function PopoverExample({ longContent = false }: { longContent?: boolean }) {
         {...popover.getReferenceProps()}
       >
         {longContent ? 'Open (long)' : 'Open popover'}
-        <svg
-          width="10"
-          height="10"
-          viewBox="0 0 12 12"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+        <IconChevronDown
+          size={12}
           aria-hidden
           className={`ml-1.5 transition-transform ${popover.open ? 'rotate-180' : ''}`}
-        >
-          <polyline points="3 4.5 6 7.5 9 4.5" />
-        </svg>
+        />
       </button>
       <Popover popover={popover} className="w-64 text-xs">
         <div className="shrink-0 border-b border-gray-400 px-3 py-2 text-[10px] font-semibold uppercase tracking-wide text-gray-700">

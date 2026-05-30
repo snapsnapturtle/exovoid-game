@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { IconChevronUp } from '@tabler/icons-react'
 import { CustomDiceRoller } from './CustomDiceRoller'
 import { RollResultView } from './RollResultView'
 import { Button } from '~/components/ui/Button'
@@ -188,19 +189,7 @@ export function DiceFeed({
               : 'pointer-events-none translate-y-14 opacity-0'
           }`}
         >
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M5 15 L12 8 L19 15" />
-          </svg>
+          <IconChevronUp size={16} aria-hidden />
         </button>
       </aside>
 

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link, useRouter } from '@tanstack/react-router'
+import { IconChevronRight } from '@tabler/icons-react'
 import type {
   Character,
   CharacterAttributes,
@@ -1001,19 +1002,10 @@ function StatChip({
 
 function Chevron({ open }: { open: boolean }) {
   return (
-    <svg
-      width="10"
-      height="10"
-      viewBox="0 0 12 12"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+    <IconChevronRight
+      size={12}
       aria-hidden
       className={`shrink-0 transition-transform ${open ? 'rotate-90' : ''}`}
-    >
-      <polyline points="4.5 3 7.5 6 4.5 9" />
-    </svg>
+    />
   )
 }

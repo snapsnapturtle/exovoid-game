@@ -1,5 +1,6 @@
 import { Button } from '~/components/ui/Button'
 import { Popover, usePopover } from '~/components/ui/Popover'
+import { IconChevronDown, IconX } from '@tabler/icons-react'
 import injuriesData from '~/data/injuries.json'
 import { injuryEscalator, type InjuryDef } from '~/lib/game-logic/injuries'
 import type { InjuryEntry } from '~/lib/types/database'
@@ -52,20 +53,11 @@ export function InjurySummary({
             <span className="tabular-nums">+{escalator} dice</span>
           </>
         )}
-        <svg
-          width="10"
-          height="10"
-          viewBox="0 0 12 12"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+        <IconChevronDown
+          size={12}
           aria-hidden
           className={`transition-transform ${popover.open ? 'rotate-180' : ''}`}
-        >
-          <polyline points="3 4.5 6 7.5 9 4.5" />
-        </svg>
+        />
       </button>
       <Popover popover={popover} className="w-80 text-xs">
         <div className="shrink-0 border-b border-gray-400 px-3 py-2 text-[10px] font-semibold uppercase tracking-wide text-gray-700">
@@ -145,7 +137,7 @@ function InjuryRow({ injury, canEdit, onTreat, onRemove }: InjuryRowProps) {
               }}
               aria-label={`Remove ${injury.name}`}
             >
-              ✕
+              <IconX size={12} />
             </Button>
           </div>
         )}

@@ -11,6 +11,7 @@ import { parseQuality } from '~/lib/game-logic/weapons'
 import { lookupQuality } from '~/lib/game-logic/item-qualities'
 import { Alert } from '~/components/ui/Alert'
 import { Button } from '~/components/ui/Button'
+import { IconChevronDown } from '@tabler/icons-react'
 import type { PendingBonus } from '~/lib/types/database'
 
 export type ApplyBonusInput = NonNullable<TriggerOption['bonus']>
@@ -392,19 +393,10 @@ function WeaponTriggerPanel({
 
 function Chevron({ open }: { open: boolean }) {
   return (
-    <svg
-      width="10"
-      height="10"
-      viewBox="0 0 12 12"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+    <IconChevronDown
+      size={12}
       aria-hidden
       className={`shrink-0 text-gray-700 transition-transform ${open ? 'rotate-180' : ''}`}
-    >
-      <polyline points="3 4.5 6 7.5 9 4.5" />
-    </svg>
+    />
   )
 }
