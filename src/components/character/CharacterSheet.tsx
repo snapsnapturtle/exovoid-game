@@ -173,6 +173,7 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
         portraitUrl={character.portrait_url}
         canEdit={canEdit}
         isNpc={character.is_npc}
+        backgroundNotes={character.background_notes}
         pendingLevelUp={pending}
         portraitUploading={portraitUploading}
         onExperienceChange={(v) => updateField('experience', v)}

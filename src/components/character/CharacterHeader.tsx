@@ -16,6 +16,11 @@ interface CharacterHeaderProps {
   /** NPCs hide XP, level pill, and the Downtime button — none of
    * those concepts apply to GM-managed adversaries / allies. */
   isNpc: boolean
+  /** Surfaced inline beneath the name for NPCs only — fills the slot
+   * the XP bar occupies for PCs and gives the GM a glance-able stat
+   * block / disposition note without opening the Background tab. PCs
+   * have their notes hidden here (they live in the Background tab). */
+  backgroundNotes: string
   /** Set when there's an uncommitted level-up (`pendingLevelUp(...)`).
    * Drives the "Level up" CTA and the XP-bar pulse. Null when nothing
    * is pending or the viewer isn't the owner. */
@@ -34,6 +39,7 @@ export function CharacterHeader({
   portraitUrl,
   canEdit,
   isNpc,
+  backgroundNotes,
   pendingLevelUp,
   portraitUploading,
   onExperienceChange,
@@ -62,6 +68,11 @@ export function CharacterHeader({
             </span>
           )}
         </div>
+        {isNpc && backgroundNotes && (
+          <p className="whitespace-pre-line text-sm text-gray-1000">
+            {backgroundNotes}
+          </p>
+        )}
         {!isNpc && (
           <div>
             <div className="mb-1 flex items-center justify-between text-xs text-gray-900">
