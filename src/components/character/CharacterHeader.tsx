@@ -58,7 +58,10 @@ export function CharacterHeader({
         name={name}
         portraitUrl={portraitUrl}
         size="md"
-        canEdit={canEdit}
+        // Portrait is editable any time the viewer has permission — not
+        // gated on edit mode. `showModeToggle` is the root canEdit signal
+        // from CharacterSheet (vs. `canEdit` here, which is mode-gated).
+        canEdit={showModeToggle}
         onUpload={onPortraitChange}
         uploading={portraitUploading}
       />
