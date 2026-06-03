@@ -471,7 +471,7 @@ function StyleguidePage() {
 
         <Section
           title="InlineStepper"
-          description="Tiny [− value +] for attribute/skill/XP rows where the full Stepper card is too heavy. Buttons are the shared xs Button (20×20), so it lines up with other xs controls in the same row. Pass min/max to bound the buttons, or decrementDisabled/incrementDisabled for guards that aren't a plain numeric floor/ceiling (budgets, busy, bump caps). Pass display to render a non-raw readout (signed modifiers, base+pending)."
+          description="Tiny [− value +] for attribute/skill/XP rows where the full Stepper card is too heavy. Buttons are the shared xs Button (20×20), so it lines up with other xs controls in the same row. Pass min/max to bound the buttons, or decrementDisabled/incrementDisabled for guards that aren't a plain numeric floor/ceiling (budgets, busy, bump caps). The readout is always the raw value; convey state (e.g. 'changed') through valueClassName colour rather than custom content."
         >
           <Row label="Bounded (min 0, max 10)">
             <InlineStepper
@@ -484,27 +484,13 @@ function StyleguidePage() {
               }
             />
           </Row>
-          <Row label="Custom display (signed)">
-            <InlineStepper
-              value={microValue}
-              ariaLabel="demo modifier"
-              display={microValue > 0 ? `+${microValue}` : microValue}
-              onAdjust={(d) => setMicroValue((v) => v + d)}
-            />
-          </Row>
-          <Row label="Custom display (base +pending)">
+          <Row label="Changed state via colour">
             <InlineStepper
               value={microValue}
               ariaLabel="demo skill"
-              valueClassName="text-sm tabular-nums text-white"
-              display={
-                <>
-                  3
-                  {microValue > 0 ? (
-                    <span className="text-accent-900"> +{microValue}</span>
-                  ) : null}
-                </>
-              }
+              valueClassName={`text-sm tabular-nums ${
+                microValue > 0 ? 'text-accent-900' : 'text-white'
+              }`}
               onAdjust={(d) => setMicroValue((v) => Math.max(0, v + d))}
             />
           </Row>

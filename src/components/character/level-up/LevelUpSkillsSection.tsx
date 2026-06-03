@@ -63,15 +63,9 @@ export function LevelUpSkillsSection({ baseSkills, deltas, onAdjust }: Props) {
                 <InlineStepper
                   value={current}
                   ariaLabel={skill.name}
-                  valueClassName="text-sm tabular-nums text-white"
-                  display={
-                    <>
-                      {base}
-                      {delta > 0 ? (
-                        <span className="text-accent-900"> +{delta}</span>
-                      ) : null}
-                    </>
-                  }
+                  valueClassName={`text-sm tabular-nums ${
+                    delta > 0 ? 'text-accent-900' : 'text-white'
+                  }`}
                   decrementDisabled={!unbumpable}
                   incrementDisabled={!bumpable}
                   onAdjust={(d) => onAdjust(skill.id, d as 1 | -1)}

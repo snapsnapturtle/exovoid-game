@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react'
 import { Button } from '~/components/ui/Button'
 
 interface InlineStepperProps {
@@ -14,12 +13,6 @@ interface InlineStepperProps {
    * so don't pass widths here — the readout sizes to its content and the gap to
    * the buttons stays uniform across every stepper. */
   valueClassName?: string
-  /** Custom rendering of the displayed value. Defaults to `value`. Use when
-   * the readout isn't just the raw number — e.g. a signed modifier (`+3`) or a
-   * base-plus-pending display (`5 +1`). Note `value` is still what min/max are
-   * compared against, so when the display diverges from the bounded quantity,
-   * gate the buttons with `decrementDisabled` / `incrementDisabled` instead. */
-  display?: ReactNode
   /** Extra disable condition OR'd with the min bound (e.g. `busy`, or an
    * external "can't go lower" rule that isn't a simple numeric floor). */
   decrementDisabled?: boolean
@@ -41,7 +34,6 @@ export function InlineStepper({
   max,
   ariaLabel,
   valueClassName = 'text-sm font-medium text-white',
-  display,
   decrementDisabled = false,
   incrementDisabled = false,
   canEdit = true,
@@ -51,7 +43,7 @@ export function InlineStepper({
   // caller; valueClassName only contributes text styling.
   const valueClasses = `px-1.5 text-center ${valueClassName}`
   if (!canEdit) {
-    return <span className={valueClasses}>{display ?? value}</span>
+    return <span className={valueClasses}>{value}</span>
   }
   const stepBtnClass = 'w-5 shrink-0 px-0'
   return (
@@ -66,7 +58,7 @@ export function InlineStepper({
       >
         −
       </Button>
-      <span className={valueClasses}>{display ?? value}</span>
+      <span className={valueClasses}>{value}</span>
       <Button
         variant="subtle"
         size="xs"
