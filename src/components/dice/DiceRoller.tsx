@@ -481,7 +481,6 @@ export function DiceRoller({
                 <InlineStepper
                   value={modifier}
                   ariaLabel="modifier"
-                  display={modifier > 0 ? `+${modifier}` : modifier}
                   onAdjust={(d) => setModifier((m) => m + d)}
                 />
                 {modifier !== initialModifier && (
