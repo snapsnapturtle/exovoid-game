@@ -40,6 +40,7 @@ import { ManageArmorModsModal } from './ManageArmorModsModal'
 import { ManageWeaponModsModal } from './ManageWeaponModsModal'
 import { Alert } from '~/components/ui/Alert'
 import { Button } from '~/components/ui/Button'
+import { InlineStepper } from '~/components/ui/InlineStepper'
 import { Input } from '~/components/ui/Input'
 import { QualityBadge } from './QualityBadge'
 
@@ -1199,41 +1200,20 @@ function DurabilityStepper({
   onCommit: (v: number) => void
 }) {
   const broken = value <= 0
-  const btnClass = 'h-5 w-5 shrink-0 px-0 py-0'
   return (
-    <span className="inline-flex items-center gap-0.5">
-      {canEdit && (
-        <Button
-          variant="subtle"
-          size="sm"
-          onClick={() => onCommit(Math.max(0, value - 1))}
-          disabled={busy || value <= 0}
-          aria-label="Decrease durability"
-          className={btnClass}
-        >
-          −
-        </Button>
-      )}
-      <span
-        className={`min-w-[1.25rem] text-center text-xs font-semibold ${
-          broken ? 'text-warning-900' : 'text-white'
-        }`}
-      >
-        {value}
-      </span>
-      {canEdit && (
-        <Button
-          variant="subtle"
-          size="sm"
-          onClick={() => onCommit(Math.min(max, value + 1))}
-          disabled={busy || value >= max}
-          aria-label="Increase durability"
-          className={btnClass}
-        >
-          +
-        </Button>
-      )}
-    </span>
+    <InlineStepper
+      value={value}
+      min={0}
+      max={max}
+      ariaLabel="durability"
+      valueClassName={`text-xs font-semibold ${
+        broken ? 'text-warning-900' : 'text-white'
+      }`}
+      canEdit={canEdit}
+      decrementDisabled={busy}
+      incrementDisabled={busy}
+      onAdjust={(d) => onCommit(Math.max(0, Math.min(max, value + d)))}
+    />
   )
 }
 
@@ -1248,36 +1228,16 @@ function QuantityStepper({
   busy: boolean
   onCommit: (v: number) => void
 }) {
-  const btnClass = 'h-6 w-6 shrink-0 px-0 py-0'
   return (
-    <div className="inline-flex items-center gap-1">
-      {canEdit && (
-        <Button
-          variant="subtle"
-          size="sm"
-          onClick={() => value > 1 && onCommit(value - 1)}
-          disabled={busy || value <= 1}
-          aria-label="Decrease quantity"
-          className={btnClass}
-        >
-          −
-        </Button>
-      )}
-      <span className="min-w-[2.25rem] text-center text-sm font-semibold text-white">
-        {value}
-      </span>
-      {canEdit && (
-        <Button
-          variant="subtle"
-          size="sm"
-          onClick={() => onCommit(value + 1)}
-          disabled={busy}
-          aria-label="Increase quantity"
-          className={btnClass}
-        >
-          +
-        </Button>
-      )}
-    </div>
+    <InlineStepper
+      value={value}
+      min={1}
+      ariaLabel="quantity"
+      valueClassName="text-sm font-semibold text-white"
+      canEdit={canEdit}
+      decrementDisabled={busy}
+      incrementDisabled={busy}
+      onAdjust={(d) => onCommit(value + d)}
+    />
   )
 }

@@ -28,6 +28,7 @@ import type {
 import careersData from '~/data/careers.json'
 import backgroundsData from '~/data/backgrounds.json'
 import { Button } from '~/components/ui/Button'
+import { InlineStepper } from '~/components/ui/InlineStepper'
 import { Alert } from '~/components/ui/Alert'
 import { Input, Select } from '~/components/ui/Input'
 import { BackgroundBonusModal } from './BackgroundBonusModal'
@@ -888,22 +889,26 @@ function AttributesStep({
                 </span>
                 <span className="text-[10px] text-gray-700">cap {cap}</span>
                 <div className="mt-2 flex gap-1">
-                  <button
+                  <Button
+                    variant="subtle"
+                    size="xs"
                     onClick={() => adjust(a.id, -1)}
                     disabled={value <= 0}
                     aria-label={`Decrease ${a.name}`}
-                    className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition not-disabled:hover:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-30"
+                    className="w-5 px-0"
                   >
                     −
-                  </button>
-                  <button
+                  </Button>
+                  <Button
+                    variant="subtle"
+                    size="xs"
                     onClick={() => adjust(a.id, +1)}
                     disabled={value >= cap || pointsRemaining <= 0}
                     aria-label={`Increase ${a.name}`}
-                    className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition not-disabled:hover:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-30"
+                    className="w-5 px-0"
                   >
                     +
-                  </button>
+                  </Button>
                 </div>
               </div>
             )
@@ -1368,25 +1373,13 @@ function SkillsStep({
                   )}
                 </div>
               </div>
-              <button
-                onClick={() => adjust(skill.id, -1)}
-                disabled={current <= 0}
-                aria-label={`Decrease ${skill.name}`}
-                className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition not-disabled:hover:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-30"
-              >
-                −
-              </button>
-              <span className="min-w-[2ch] text-center text-sm font-medium text-white">
-                {finalLevel}
-              </span>
-              <button
-                onClick={() => adjust(skill.id, +1)}
-                disabled={base + current + bonus >= CREATION_SKILL_MAX}
-                aria-label={`Increase ${skill.name}`}
-                className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition not-disabled:hover:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-30"
-              >
-                +
-              </button>
+              <InlineStepper
+                value={finalLevel}
+                ariaLabel={skill.name}
+                decrementDisabled={current <= 0}
+                incrementDisabled={base + current + bonus >= CREATION_SKILL_MAX}
+                onAdjust={(d) => adjust(skill.id, d)}
+              />
             </div>
           )
         })}

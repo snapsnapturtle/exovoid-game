@@ -81,23 +81,27 @@ export function CharacterHeader({
                 <span>
                   {experience} / {nextThreshold}
                 </span>
-                <button
+                <Button
+                  variant="subtle"
+                  size="xs"
                   onClick={() =>
                     onExperienceChange(Math.max(0, experience - 1))
                   }
                   disabled={experience <= 0}
                   aria-label="Decrease XP"
-                  className="flex h-5 w-5 items-center justify-center rounded bg-gray-100 text-xs text-gray-1000 transition not-disabled:hover:bg-gray-400 disabled:cursor-not-allowed disabled:opacity-30"
+                  className="w-5 px-0"
                 >
                   −
-                </button>
-                <button
+                </Button>
+                <Button
+                  variant="subtle"
+                  size="xs"
                   onClick={() => onExperienceChange(experience + 1)}
                   aria-label="Add 1 XP"
-                  className="flex h-5 w-5 items-center justify-center rounded bg-gray-100 text-xs text-gray-1000 transition hover:bg-gray-400"
+                  className="w-5 px-0"
                 >
                   +
-                </button>
+                </Button>
               </div>
             </div>
             <div className="h-2 overflow-hidden rounded-full bg-gray-100">

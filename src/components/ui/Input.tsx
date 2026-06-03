@@ -7,10 +7,15 @@ import {
 
 type Size = 'sm' | 'md' | 'lg'
 
+// `sm` and `md` are bordered, so their `py`/text values match the Button SIZE
+// map verbatim — an Input and a Button at the same size land on the same outer
+// height (sm 24px, md 32px). `lg` (40px) is input-only: it has no button peer
+// and is the prominent field size used by the full-width auth/account forms.
+// See "Control heights" in CLAUDE.md.
 const SIZE_CLASSES: Record<Size, string> = {
-  sm: 'rounded px-2 py-1 text-sm',
-  md: 'rounded-lg px-3 py-2 text-sm',
-  lg: 'rounded-lg px-4 py-2 text-base',
+  sm: 'rounded px-2.5 py-[3px] text-xs',
+  md: 'rounded-lg px-3 py-[5px] text-sm',
+  lg: 'rounded-lg px-4 py-[7px] text-base',
 }
 
 // 1px gray hairline at rest; on focus the border swaps to accent-700 and a

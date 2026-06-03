@@ -1,3 +1,4 @@
+import { InlineStepper } from '~/components/ui/InlineStepper'
 import { SKILLS } from '~/lib/game-logic/skills'
 import {
   SKILL_POINTS_PER_LEVEL,
@@ -40,8 +41,6 @@ export function LevelUpSkillsSection({ baseSkills, deltas, onAdjust }: Props) {
           const nextCost = skillPointCost(current + 1)
           const bumpable = canBumpSkill(baseSkills, deltas, skill.id)
           const unbumpable = canUnbumpSkill(deltas, skill.id)
-          const microBtn =
-            'flex h-5 w-5 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition not-disabled:hover:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-30'
           return (
             <li
               key={skill.id}
@@ -61,30 +60,22 @@ export function LevelUpSkillsSection({ baseSkills, deltas, onAdjust }: Props) {
                     next: 2
                   </span>
                 )}
-                <button
-                  type="button"
-                  onClick={() => onAdjust(skill.id, -1)}
-                  disabled={!unbumpable}
-                  aria-label={`Decrease ${skill.name}`}
-                  className={microBtn}
-                >
-                  −
-                </button>
-                <span className="min-w-[3ch] text-center text-sm tabular-nums text-white">
-                  {base}
-                  {delta > 0 ? (
-                    <span className="text-accent-900"> +{delta}</span>
-                  ) : null}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => onAdjust(skill.id, 1)}
-                  disabled={!bumpable}
-                  aria-label={`Increase ${skill.name}`}
-                  className={microBtn}
-                >
-                  +
-                </button>
+                <InlineStepper
+                  value={current}
+                  ariaLabel={skill.name}
+                  valueClassName="text-sm tabular-nums text-white"
+                  display={
+                    <>
+                      {base}
+                      {delta > 0 ? (
+                        <span className="text-accent-900"> +{delta}</span>
+                      ) : null}
+                    </>
+                  }
+                  decrementDisabled={!unbumpable}
+                  incrementDisabled={!bumpable}
+                  onAdjust={(d) => onAdjust(skill.id, d as 1 | -1)}
+                />
               </span>
             </li>
           )

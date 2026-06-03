@@ -4,6 +4,7 @@ import { Button, buttonClasses } from '~/components/ui/Button'
 import { Modal } from '~/components/ui/Modal'
 import { Alert } from '~/components/ui/Alert'
 import { Stepper } from '~/components/ui/Stepper'
+import { InlineStepper } from '~/components/ui/InlineStepper'
 import { Drawer } from '~/components/ui/Drawer'
 import { Popover, usePopover } from '~/components/ui/Popover'
 import { Input, Select, Textarea } from '~/components/ui/Input'
@@ -200,7 +201,7 @@ function StyleguidePage() {
 
         <Section
           title="Input / Textarea / Select"
-          description="Form primitives — black surface (bg-background-100), 1px gray-400 hairline, gray-500 on hover. Focus swaps the border to accent-700 and adds a 1px accent halo via box-shadow (total visual frame 2px, no box-model shift). Three sizes (sm / md / lg) — md is the default for in-page forms; sm fits modal footers and inline editors; lg matches the auth screens. Width is intentionally not set: pass w-full on form fields that should fill their column, or a specific width utility (w-20, w-48) on inline / sized controls. Native size attribute is shadowed in favor of the variant prop."
+          description="Form primitives — black surface (bg-background-100), 1px gray-400 hairline, gray-500 on hover. Focus swaps the border to accent-700 and adds a 1px accent halo via box-shadow (total visual frame 2px, no box-model shift). Three sizes (sm 24px / md 32px / lg 40px) — sm and md share their height with the matching Button size so they align in a row; md is the default for in-page forms, sm fits modal footers and inline editors, lg is input-only and matches the auth screens. Width is intentionally not set: pass w-full on form fields that should fill their column, or a specific width utility (w-20, w-48) on inline / sized controls. Native size attribute is shadowed in favor of the variant prop."
         >
           <Row label="Sizes">
             <Input
@@ -469,35 +470,92 @@ function StyleguidePage() {
         </Section>
 
         <Section
-          title="In-row +/- micro-buttons"
-          description="No shared component — use these classes for compact in-row steppers (skills, attributes, XP). The <Stepper> primitive is the right call for prominent trackers; this recipe is for tighter inline contexts."
+          title="InlineStepper"
+          description="Tiny [− value +] for attribute/skill/XP rows where the full Stepper card is too heavy. Buttons are the shared xs Button (20×20), so it lines up with other xs controls in the same row. Pass min/max to bound the buttons, or decrementDisabled/incrementDisabled for guards that aren't a plain numeric floor/ceiling (budgets, busy, bump caps). Pass display to render a non-raw readout (signed modifiers, base+pending)."
         >
-          <Row label="Recipe">
-            <div className="flex items-center gap-1">
-              <button
-                type="button"
-                onClick={() => setMicroValue((v) => Math.max(0, v - 1))}
-                disabled={microValue <= 0}
-                className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition not-disabled:hover:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-30"
-              >
-                −
-              </button>
-              <span className="min-w-[2ch] text-center text-sm font-medium text-white">
-                {microValue}
-              </span>
-              <button
-                type="button"
-                onClick={() => setMicroValue((v) => v + 1)}
-                className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition not-disabled:hover:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-30"
-              >
-                +
-              </button>
-            </div>
-            <code className="text-xs text-gray-700">
-              h-5 w-5 shrink-0 rounded bg-gray-400
-              not-disabled:hover:bg-gray-500 disabled:cursor-not-allowed
-              disabled:opacity-30 text-xs text-gray-1000
-            </code>
+          <Row label="Bounded (min 0, max 10)">
+            <InlineStepper
+              value={microValue}
+              min={0}
+              max={10}
+              ariaLabel="demo value"
+              onAdjust={(d) =>
+                setMicroValue((v) => Math.max(0, Math.min(10, v + d)))
+              }
+            />
+          </Row>
+          <Row label="Custom display (signed)">
+            <InlineStepper
+              value={microValue}
+              ariaLabel="demo modifier"
+              display={microValue > 0 ? `+${microValue}` : microValue}
+              onAdjust={(d) => setMicroValue((v) => v + d)}
+            />
+          </Row>
+          <Row label="Custom display (base +pending)">
+            <InlineStepper
+              value={microValue}
+              ariaLabel="demo skill"
+              valueClassName="text-sm tabular-nums text-white"
+              display={
+                <>
+                  3
+                  {microValue > 0 ? (
+                    <span className="text-accent-900"> +{microValue}</span>
+                  ) : null}
+                </>
+              }
+              onAdjust={(d) => setMicroValue((v) => Math.max(0, v + d))}
+            />
+          </Row>
+          <Row label="Read-only">
+            <InlineStepper
+              value={microValue}
+              ariaLabel="demo value"
+              canEdit={false}
+              onAdjust={() => {}}
+            />
+          </Row>
+        </Section>
+
+        <Section
+          title="Control heights & alignment"
+          description="Buttons, inputs and steppers share one height scale so they line up in a row: xs 20px · sm 24px · md 32px (lg 40px is input-only). Every button variant is the same outer height at a given size — borderless variants carry a transparent 1px border so the box model matches the bordered ones. Heights come from border-compensated padding, not a fixed height. See the Control heights section in CLAUDE.md."
+        >
+          <Row label="md — 32px">
+            <Button size="md">Button</Button>
+            <Button variant="secondary" size="md">
+              Bordered
+            </Button>
+            <Input size="md" defaultValue="Input" className="w-28" readOnly />
+            <Select size="md" defaultValue="a" className="w-28">
+              <option value="a">Select</option>
+            </Select>
+          </Row>
+          <Row label="sm — 24px">
+            <Button size="sm">Button</Button>
+            <Button variant="secondary" size="sm">
+              Bordered
+            </Button>
+            <Input size="sm" defaultValue="Input" className="w-28" readOnly />
+            <Select size="sm" defaultValue="a" className="w-28">
+              <option value="a">Select</option>
+            </Select>
+          </Row>
+          <Row label="xs — 20px">
+            <Button size="xs">Button</Button>
+            <Button variant="secondary" size="xs">
+              Bordered
+            </Button>
+            <InlineStepper
+              value={microValue}
+              min={0}
+              ariaLabel="demo value"
+              onAdjust={(d) => setMicroValue((v) => Math.max(0, v + d))}
+            />
+          </Row>
+          <Row label="lg — 40px (input only)">
+            <Input size="lg" defaultValue="Input" className="w-40" readOnly />
           </Row>
         </Section>
       </div>

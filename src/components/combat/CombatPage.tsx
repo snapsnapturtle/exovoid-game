@@ -17,6 +17,7 @@ import { sortByTurnOrder } from '~/lib/game-logic/combat'
 import { Button } from '~/components/ui/Button'
 import { Alert } from '~/components/ui/Alert'
 import { Stepper } from '~/components/ui/Stepper'
+import { InlineStepper } from '~/components/ui/InlineStepper'
 import {
   lookupWeapon,
   weaponAttackSkill,
@@ -810,6 +811,7 @@ function WeaponRow({
                   value={ammo}
                   max={weapon.magazine!}
                   canEdit={canEdit}
+                  ariaLabel="ammo"
                   onAdjust={(delta) =>
                     setAmmo(
                       Math.max(0, Math.min(weapon.magazine!, ammo + delta)),
@@ -920,6 +922,7 @@ function ArmorRow({
               value={durability}
               max={armor.durability!}
               canEdit={canEdit}
+              ariaLabel="durability"
               onAdjust={(delta) =>
                 setDurability(
                   Math.max(0, Math.min(armor.durability!, durability + delta)),
@@ -937,39 +940,25 @@ function MiniStepper({
   value,
   max,
   canEdit,
+  ariaLabel,
   onAdjust,
 }: {
   value: number
   max: number
   canEdit: boolean
+  ariaLabel: string
   onAdjust: (delta: number) => void
 }) {
   return (
-    <span className="inline-flex items-center gap-0.5">
-      {canEdit && (
-        <button
-          onClick={() => onAdjust(-1)}
-          disabled={value <= 0}
-          className="h-5 w-5 rounded border border-gray-400 bg-gray-100 text-xs text-gray-1000 transition not-disabled:hover:border-accent-700 not-disabled:hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
-          aria-label="Decrease"
-        >
-          −
-        </button>
-      )}
-      <span className="min-w-[1.25rem] text-center text-xs font-semibold text-white">
-        {value}
-      </span>
-      {canEdit && (
-        <button
-          onClick={() => onAdjust(1)}
-          disabled={value >= max}
-          className="h-5 w-5 rounded border border-gray-400 bg-gray-100 text-xs text-gray-1000 transition not-disabled:hover:border-accent-700 not-disabled:hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
-          aria-label="Increase"
-        >
-          +
-        </button>
-      )}
-    </span>
+    <InlineStepper
+      value={value}
+      min={0}
+      max={max}
+      ariaLabel={ariaLabel}
+      valueClassName="text-xs font-semibold text-white"
+      canEdit={canEdit}
+      onAdjust={onAdjust}
+    />
   )
 }
 

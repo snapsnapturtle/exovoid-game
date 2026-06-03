@@ -42,7 +42,8 @@ export function Stepper({
   valueTone = 'default',
 }: StepperProps) {
   const ceiling = hardMax ?? max
-  const stepBtnClass = 'h-7 w-7 shrink-0 px-0 py-0 text-base'
+  // The shared `sm` Button (24px tall); `w-6 px-0` squares it off at 24×24.
+  const stepBtnClass = 'w-6 shrink-0 px-0'
   return (
     <div className="flex flex-col rounded-lg border border-gray-400 bg-background-100/40 p-2">
       {label !== undefined && (

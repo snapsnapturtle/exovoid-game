@@ -12,6 +12,7 @@ import {
 } from '~/lib/hooks/diceFeedContext'
 import { RollResultView, type ApplyBonusInput } from './RollResultView'
 import { Button } from '~/components/ui/Button'
+import { InlineStepper } from '~/components/ui/InlineStepper'
 import { Modal } from '~/components/ui/Modal'
 import type { PendingBonus, PendingSupport } from '~/lib/types/database'
 
@@ -477,29 +478,16 @@ export function DiceRoller({
                 Modifier
               </p>
               <div className="flex items-center gap-1.5">
-                <button
-                  type="button"
-                  onClick={() => setModifier((m) => m - 1)}
-                  aria-label="Decrease modifier"
-                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition hover:bg-gray-500"
-                >
-                  −
-                </button>
-                <span className="min-w-[3ch] text-center text-sm font-medium text-white">
-                  {modifier > 0 ? `+${modifier}` : modifier}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setModifier((m) => m + 1)}
-                  aria-label="Increase modifier"
-                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition hover:bg-gray-500"
-                >
-                  +
-                </button>
+                <InlineStepper
+                  value={modifier}
+                  ariaLabel="modifier"
+                  display={modifier > 0 ? `+${modifier}` : modifier}
+                  onAdjust={(d) => setModifier((m) => m + d)}
+                />
                 {modifier !== initialModifier && (
                   <Button
                     variant="ghost"
-                    size="sm"
+                    size="xs"
                     onClick={() => setModifier(initialModifier)}
                     className="ml-1"
                   >
