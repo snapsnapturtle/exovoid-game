@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { updateNpcFlags } from '~/lib/server/npcs'
 import { Select } from '~/components/ui/Input'
 import { Badge } from '~/components/ui/Badge'
+import { Checkbox } from '~/components/ui/Checkbox'
 
 interface NpcSheetControlsProps {
   characterId: string
@@ -70,32 +71,24 @@ export function NpcSheetControls({
       <Badge tone="purple" size="sm" uppercase pill>
         NPC
       </Badge>
-      <label className="inline-flex items-center gap-2">
-        <input
-          type="checkbox"
-          checked={minion}
-          disabled={!canManageFlags || pending}
-          onChange={(e) => {
-            setMinion(e.target.checked)
-            save({ is_minion: e.target.checked })
-          }}
-          className="h-4 w-4 rounded border-gray-400 bg-gray-100 text-accent-700 focus:ring-accent-900 disabled:opacity-40"
-        />
-        Minion
-      </label>
-      <label className="inline-flex items-center gap-2">
-        <input
-          type="checkbox"
-          checked={visible}
-          disabled={!canManageFlags || pending}
-          onChange={(e) => {
-            setVisible(e.target.checked)
-            save({ visible_to_players: e.target.checked })
-          }}
-          className="h-4 w-4 rounded border-gray-400 bg-gray-100 text-accent-700 focus:ring-accent-900 disabled:opacity-40"
-        />
-        Visible to players
-      </label>
+      <Checkbox
+        checked={minion}
+        disabled={!canManageFlags || pending}
+        onChange={(e) => {
+          setMinion(e.target.checked)
+          save({ is_minion: e.target.checked })
+        }}
+        label="Minion"
+      />
+      <Checkbox
+        checked={visible}
+        disabled={!canManageFlags || pending}
+        onChange={(e) => {
+          setVisible(e.target.checked)
+          save({ visible_to_players: e.target.checked })
+        }}
+        label="Visible to players"
+      />
       <label className="inline-flex items-center gap-2">
         <span className="text-xs font-medium uppercase tracking-wide text-gray-900">
           Controller

@@ -8,6 +8,7 @@ import {
 import { SKILLS, MAX_SKILL_LEVEL } from '~/lib/game-logic/skills'
 import type { CharacterAttributes } from '~/lib/types/database'
 import { Button } from '~/components/ui/Button'
+import { Checkbox } from '~/components/ui/Checkbox'
 import { Alert } from '~/components/ui/Alert'
 import { InlineStepper } from '~/components/ui/InlineStepper'
 import { Input, Select } from '~/components/ui/Input'
@@ -156,24 +157,16 @@ export function NpcCreationForm({
         </div>
 
         <div className="mt-3 flex flex-wrap gap-4">
-          <label className="inline-flex items-center gap-2 text-sm text-gray-1000">
-            <input
-              type="checkbox"
-              checked={isMinion}
-              onChange={(e) => setIsMinion(e.target.checked)}
-              className="h-4 w-4 rounded border-gray-400 bg-gray-100 text-accent-700 focus:ring-accent-900"
-            />
-            Minion
-          </label>
-          <label className="inline-flex items-center gap-2 text-sm text-gray-1000">
-            <input
-              type="checkbox"
-              checked={visibleToPlayers}
-              onChange={(e) => setVisibleToPlayers(e.target.checked)}
-              className="h-4 w-4 rounded border-gray-400 bg-gray-100 text-accent-700 focus:ring-accent-900"
-            />
-            Visible to players
-          </label>
+          <Checkbox
+            checked={isMinion}
+            onChange={(e) => setIsMinion(e.target.checked)}
+            label="Minion"
+          />
+          <Checkbox
+            checked={visibleToPlayers}
+            onChange={(e) => setVisibleToPlayers(e.target.checked)}
+            label="Visible to players"
+          />
         </div>
       </section>
 
