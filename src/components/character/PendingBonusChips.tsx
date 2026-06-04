@@ -1,4 +1,5 @@
 import type { PendingBonus } from '~/lib/types/database'
+import { Badge } from '~/components/ui/Badge'
 
 interface PendingBonusChipsProps {
   bonuses: PendingBonus[]
@@ -30,35 +31,20 @@ export function PendingBonusChips({
         </p>
       )}
       <div className="flex flex-wrap gap-1">
-        {bonuses.map((b) => {
-          const tone =
-            b.modifier >= 0
-              ? 'border-accent-700/60 bg-accent-700/15 text-accent-900'
-              : 'border-danger-700/60 bg-danger-700/15 text-danger-900'
-          return (
-            <span
-              key={b.id}
-              className={`inline-flex items-center gap-1 rounded border px-1.5 py-0.5 text-[10px] ${tone}`}
-              title={`Persisted from ${b.source}. Removes on next roll.`}
-            >
-              <span className="font-semibold tabular-nums">
-                {b.modifier > 0 ? `+${b.modifier}` : b.modifier}
-              </span>
-              <span>{b.label}</span>
-              {canEdit && (
-                <button
-                  type="button"
-                  onClick={() => onRemove(b.id)}
-                  className="-mr-0.5 inline-flex h-3.5 w-3.5 items-center justify-center rounded text-gray-700 transition hover:bg-gray-200 hover:text-white"
-                  aria-label={`Remove ${b.label}`}
-                  title="Remove this bonus"
-                >
-                  ×
-                </button>
-              )}
+        {bonuses.map((b) => (
+          <Badge
+            key={b.id}
+            tone={b.modifier >= 0 ? 'success' : 'danger'}
+            title={`Persisted from ${b.source}. Removes on next roll.`}
+            dismissLabel={canEdit ? `Remove ${b.label}` : undefined}
+            onDismiss={canEdit ? () => onRemove(b.id) : undefined}
+          >
+            <span className="font-semibold tabular-nums">
+              {b.modifier > 0 ? `+${b.modifier}` : b.modifier}
             </span>
-          )
-        })}
+            <span>{b.label}</span>
+          </Badge>
+        ))}
       </div>
     </div>
   )

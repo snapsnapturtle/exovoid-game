@@ -3,6 +3,7 @@ import type { ArmorData } from '~/lib/game-logic/armors'
 import { QualityBadge } from '~/components/inventory/QualityBadge'
 import { EffectTooltip } from '~/components/inventory/EffectTooltip'
 import { lookupArmorMod } from '~/lib/game-logic/armor-mods'
+import { Badge } from '~/components/ui/Badge'
 
 interface EquippedArmorCardProps {
   entry: InventoryItem
@@ -40,9 +41,9 @@ export function EquippedArmorCard({
           {armor.type}
         </span>
         {broken && (
-          <span className="rounded border border-warning-700/60 bg-warning-700/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-warning-900">
+          <Badge tone="warning" uppercase>
             Broken
-          </span>
+          </Badge>
         )}
       </div>
       <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-gray-900">

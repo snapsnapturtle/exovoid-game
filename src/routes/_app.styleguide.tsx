@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState, type ReactNode } from 'react'
 import { Button, buttonClasses } from '~/components/ui/Button'
+import { Badge } from '~/components/ui/Badge'
 import { Modal } from '~/components/ui/Modal'
 import { Alert } from '~/components/ui/Alert'
 import { Stepper } from '~/components/ui/Stepper'
@@ -27,6 +28,12 @@ function StyleguidePage() {
   const [edgeValue, setEdgeValue] = useState(4)
   const [apValue, setApValue] = useState(2)
   const [microValue, setMicroValue] = useState(2)
+  const [chips, setChips] = useState<Record<string, boolean>>({
+    edge: true,
+    flow: false,
+    note: true,
+  })
+  const [tags, setTags] = useState(['Flow', 'Note', 'Adrenaline'])
   const [textValue, setTextValue] = useState('Kira Voss')
   const [numberValue, setNumberValue] = useState(42)
   const [selectValue, setSelectValue] = useState('agi')
@@ -197,6 +204,114 @@ function StyleguidePage() {
             Use for soft explanations that shouldn't compete with the
             surrounding content.
           </Alert>
+        </Section>
+
+        <Section
+          title="Badge"
+          description="One primitive, three modes. Static — a status badge, count pill, or type tag. Selectable (onClick) — a toggle clicked on/off; it renders as a button with aria-pressed and selection reads as the badge lighting up in its tone (no checkbox glyph — the colour appearing is the on signal). Dismissible (onDismiss) — a removable tag with a trailing ✕. Tones pull from one ramp each: bg at 200 (component-bg), border at 400 (default border), text at 900 (secondary). Two sizes on the shared control scale — xs (20px, text-[10px], the workhorse default) and sm (24px, text-xs) — matching xs/sm buttons so a badge lines up with controls in a row. Optional pill shape and an optional uppercase 'status' treatment. Chrome only — leading glyphs, ± modifiers, and counts go in children."
+        >
+          <Row label="Tones">
+            <Badge>Neutral</Badge>
+            <Badge tone="accent">Installed</Badge>
+            <Badge tone="success">Saved</Badge>
+            <Badge tone="warning">Broken</Badge>
+            <Badge tone="danger">Hidden</Badge>
+            <Badge tone="purple">NPC</Badge>
+          </Row>
+          <Row label="Status (uppercase)">
+            <Badge tone="accent" uppercase>
+              Active
+            </Badge>
+            <Badge tone="warning" uppercase>
+              Round 3
+            </Badge>
+            <Badge tone="neutral" uppercase>
+              Tier III
+            </Badge>
+            <Badge tone="accent" uppercase>
+              Equipped
+            </Badge>
+          </Row>
+          <Row label="Sizes & pill">
+            <Badge size="xs">xs · 20px</Badge>
+            <Badge size="sm">sm · 24px</Badge>
+            <Badge tone="accent" pill>
+              Level 4
+            </Badge>
+            <Badge tone="success" size="sm" pill>
+              Saved
+            </Badge>
+          </Row>
+          <Row label="With leading content">
+            <Badge tone="accent">
+              <span className="font-semibold tabular-nums">+1</span>
+              <span>Flow</span>
+            </Badge>
+            <Badge tone="danger">
+              <span className="font-semibold tabular-nums">−2</span>
+              <span>Note</span>
+            </Badge>
+          </Row>
+          <Row label="Dismissible (onDismiss → ✕)">
+            {tags.length === 0 ? (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setTags(['Flow', 'Note', 'Adrenaline'])}
+              >
+                Reset tags
+              </Button>
+            ) : (
+              tags.map((t) => (
+                <Badge
+                  key={t}
+                  tone="accent"
+                  dismissLabel={`Remove ${t}`}
+                  onDismiss={() =>
+                    setTags((prev) => prev.filter((x) => x !== t))
+                  }
+                >
+                  {t}
+                </Badge>
+              ))
+            )}
+          </Row>
+          <Row label="Selectable (onClick → toggle)">
+            <Badge
+              tone="accent"
+              selected={chips.edge}
+              onClick={() => setChips((c) => ({ ...c, edge: !c.edge }))}
+            >
+              <span className="font-semibold tabular-nums">+3</span>
+              <span>Spend Edge</span>
+            </Badge>
+            <Badge
+              tone="accent"
+              selected={chips.flow}
+              onClick={() => setChips((c) => ({ ...c, flow: !c.flow }))}
+            >
+              <span className="font-semibold tabular-nums">+1</span>
+              <span>Flow</span>
+            </Badge>
+            <Badge
+              tone="accent"
+              selected={chips.note}
+              onClick={() => setChips((c) => ({ ...c, note: !c.note }))}
+            >
+              <span className="font-medium">Kira</span>
+              <span>(2 success)</span>
+            </Badge>
+          </Row>
+          <Row label="Selectable — disabled">
+            <Badge tone="accent" selected={false} disabled onClick={() => {}}>
+              <span className="font-semibold tabular-nums">+3</span>
+              <span>Spend Edge</span>
+            </Badge>
+            <Badge tone="accent" selected disabled onClick={() => {}}>
+              <span className="font-semibold tabular-nums">+1</span>
+              <span>Flow</span>
+            </Badge>
+          </Row>
         </Section>
 
         <Section

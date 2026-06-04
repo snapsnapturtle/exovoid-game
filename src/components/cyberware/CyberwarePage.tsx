@@ -15,6 +15,7 @@ import {
 } from '~/lib/server/characters'
 import { MalfunctionTableModal } from './MalfunctionTableModal'
 import { Alert } from '~/components/ui/Alert'
+import { Badge } from '~/components/ui/Badge'
 import { Button } from '~/components/ui/Button'
 import { Input } from '~/components/ui/Input'
 
@@ -358,8 +359,6 @@ function CategoryCard({
   )
 }
 
-const TIER_CLASS = 'border-gray-500 bg-gray-100 text-gray-1000'
-
 function VariantRow({
   variant,
   installed,
@@ -383,17 +382,10 @@ function VariantRow({
     <div className="grid gap-3 px-4 py-3 sm:grid-cols-[1fr_auto]">
       <div className="space-y-1">
         <div className="flex items-center gap-2">
-          {installed && (
-            <span className="inline-flex items-center gap-1 rounded-md border border-accent-700/60 bg-accent-700/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-accent-900">
-              ✓ Installed
-            </span>
-          )}
-          <span className="font-medium text-white">{variant.name}</span>
-          <span
-            className={`inline-flex rounded-md border px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${TIER_CLASS}`}
-          >
+          <Badge tone="neutral" uppercase>
             {variant.tier}
-          </span>
+          </Badge>
+          <span className="font-medium text-white">{variant.name}</span>
         </div>
         <p className="whitespace-pre-line text-sm text-gray-1000">
           {variant.description}
