@@ -8,6 +8,7 @@ import {
 } from '~/lib/hooks/diceFeedContext'
 import { RollResultView } from './RollResultView'
 import { Button } from '~/components/ui/Button'
+import { InlineStepper } from '~/components/ui/InlineStepper'
 import { Modal } from '~/components/ui/Modal'
 import { Input, Select } from '~/components/ui/Input'
 
@@ -180,24 +181,12 @@ export function CustomDiceRoller({
                   <span className="flex-1 text-sm capitalize text-gray-1000">
                     {label}
                   </span>
-                  <button
-                    onClick={() => adjust(type, -1)}
-                    disabled={pool[type] === 0}
-                    aria-label={`Decrease ${label}`}
-                    className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition not-disabled:hover:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-30"
-                  >
-                    −
-                  </button>
-                  <span className="min-w-[2ch] text-center text-sm font-medium text-white">
-                    {pool[type]}
-                  </span>
-                  <button
-                    onClick={() => adjust(type, +1)}
-                    aria-label={`Increase ${label}`}
-                    className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-gray-400 text-xs text-gray-1000 transition hover:bg-gray-500"
-                  >
-                    +
-                  </button>
+                  <InlineStepper
+                    value={pool[type]}
+                    min={0}
+                    ariaLabel={label}
+                    onAdjust={(d) => adjust(type, d)}
+                  />
                 </div>
               ))}
             </div>
