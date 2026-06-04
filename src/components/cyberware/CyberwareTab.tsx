@@ -2,6 +2,7 @@ import { Link } from '@tanstack/react-router'
 import type { CyberwareEntry } from '~/lib/types/database'
 import { lookupCyberware, occupationUsed } from '~/lib/game-logic/cyberware'
 import { buttonClasses } from '~/components/ui/Button'
+import { Badge } from '~/components/ui/Badge'
 
 interface CyberwareTabProps {
   cyberware: CyberwareEntry[]
@@ -65,9 +66,9 @@ export function CyberwareTab({
                 className="rounded border border-gray-400 bg-gray-100/40 p-2 text-sm"
               >
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex rounded-md border border-gray-500 bg-gray-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-gray-1000">
+                  <Badge tone="neutral" uppercase>
                     {c.tier}
-                  </span>
+                  </Badge>
                   <span className="font-medium text-white">{c.name}</span>
                   <span className="text-xs text-gray-700">{c.category}</span>
                 </div>

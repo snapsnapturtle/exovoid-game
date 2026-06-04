@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { IconChevronUp } from '@tabler/icons-react'
 import { CustomDiceRoller } from './CustomDiceRoller'
 import { RollResultView } from './RollResultView'
+import { Badge } from '~/components/ui/Badge'
 import { Button } from '~/components/ui/Button'
 import { Modal } from '~/components/ui/Modal'
 import { removePendingSupport, type DiceRollEntry } from '~/lib/server/dice'
@@ -243,9 +244,9 @@ function RollCard({
       <div className="mt-0.5 flex flex-wrap items-center gap-x-1.5">
         <span className="font-medium text-white">{skill}</span>
         {isSupport && (
-          <span className="rounded bg-gray-200 px-1.5 py-0.5 text-[10px] leading-none text-gray-900">
-            SUPPORT
-          </span>
+          <Badge tone="neutral" uppercase>
+            Support
+          </Badge>
         )}
         {absorbedCount > 0 && (
           <span className="text-xs text-accent-900">
@@ -259,9 +260,9 @@ function RollCard({
           </span>
         )}
         {roll.is_hidden && (
-          <span className="rounded bg-warning-700/20 px-1.5 py-0.5 text-[10px] leading-none text-warning-900">
-            HIDDEN
-          </span>
+          <Badge tone="warning" uppercase>
+            Hidden
+          </Badge>
         )}
       </div>
 
@@ -314,30 +315,23 @@ function PendingSupportStrip({
       <div className="mb-1.5 flex items-center justify-between gap-2">
         <span className="text-xs font-semibold text-white">Supports</span>
       </div>
-      <ul className="flex flex-wrap gap-1">
+      <div className="flex flex-wrap gap-1">
         {pendingSupport.map((s) => (
-          <li
+          <Badge
             key={s.id}
-            className="inline-flex items-center gap-1 rounded border border-accent-700/40 bg-accent-700/15 py-0.5 pl-1.5 pr-0.5 text-[11px] text-accent-900"
+            tone="success"
             title={`${s.supporterName} — ${s.skillName}`}
+            dismissLabel={`Discard ${s.supporterName}'s support for ${s.skillName}`}
+            dismissDisabled={busy}
+            onDismiss={() => handleRemove(s.id)}
           >
             <span className="truncate">
               <span className="font-medium">{s.supporterName}</span>
               <span> ({s.skillName})</span>
             </span>
-            <button
-              type="button"
-              onClick={() => handleRemove(s.id)}
-              disabled={busy}
-              aria-label={`Discard ${s.supporterName}'s support for ${s.skillName}`}
-              title="Discard this support"
-              className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded text-accent-900 transition not-disabled:hover:bg-accent-700/30 not-disabled:hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              ×
-            </button>
-          </li>
+          </Badge>
         ))}
-      </ul>
+      </div>
     </div>
   )
 }
@@ -354,39 +348,22 @@ function PendingBonusesStrip({
       <div className="mb-1.5 flex items-center justify-between gap-2">
         <span className="text-xs font-semibold text-white">Bonuses</span>
       </div>
-      <ul className="flex flex-wrap gap-1">
-        {pendingBonuses.map(({ characterId, characterName, bonus }) => {
-          const tone =
-            bonus.modifier >= 0
-              ? 'border-accent-700/40 bg-accent-700/15 text-accent-900'
-              : 'border-danger-700/40 bg-danger-700/15 text-danger-900'
-          const removeHover =
-            bonus.modifier >= 0
-              ? 'not-disabled:hover:bg-accent-700/30'
-              : 'not-disabled:hover:bg-danger-700/30'
-          return (
-            <li
-              key={bonus.id}
-              className={`inline-flex items-center gap-1 rounded border py-0.5 pl-1.5 pr-0.5 text-[11px] ${tone}`}
-              title={`${characterName} — persisted from ${bonus.source}. Removes on next roll.`}
-            >
-              <span className="tabular-nums">
-                {bonus.modifier > 0 ? `+${bonus.modifier}` : bonus.modifier}
-              </span>
-              <span>{bonus.label}</span>
-              <button
-                type="button"
-                onClick={() => onRemoveBonus(characterId, bonus.id)}
-                aria-label={`Remove ${bonus.label} from ${characterName}`}
-                title="Remove this bonus"
-                className={`inline-flex h-4 w-4 shrink-0 items-center justify-center rounded transition not-disabled:hover:text-white ${removeHover}`}
-              >
-                ×
-              </button>
-            </li>
-          )
-        })}
-      </ul>
+      <div className="flex flex-wrap gap-1">
+        {pendingBonuses.map(({ characterId, characterName, bonus }) => (
+          <Badge
+            key={bonus.id}
+            tone={bonus.modifier >= 0 ? 'success' : 'danger'}
+            title={`${characterName} — persisted from ${bonus.source}. Removes on next roll.`}
+            dismissLabel={`Remove ${bonus.label} from ${characterName}`}
+            onDismiss={() => onRemoveBonus(characterId, bonus.id)}
+          >
+            <span className="font-semibold tabular-nums">
+              {bonus.modifier > 0 ? `+${bonus.modifier}` : bonus.modifier}
+            </span>
+            <span>{bonus.label}</span>
+          </Badge>
+        ))}
+      </div>
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { updateNpcFlags } from '~/lib/server/npcs'
 import { Select } from '~/components/ui/Input'
+import { Badge } from '~/components/ui/Badge'
 
 interface NpcSheetControlsProps {
   characterId: string
@@ -66,9 +67,9 @@ export function NpcSheetControls({
 
   return (
     <div className="flex flex-wrap items-center gap-x-6 gap-y-2 rounded-xl border border-gray-400 bg-gray-200 px-5 py-3 text-sm text-gray-1000">
-      <span className="rounded-full bg-purple-300 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-purple-1000">
+      <Badge tone="purple" size="sm" uppercase pill>
         NPC
-      </span>
+      </Badge>
       <label className="inline-flex items-center gap-2">
         <input
           type="checkbox"

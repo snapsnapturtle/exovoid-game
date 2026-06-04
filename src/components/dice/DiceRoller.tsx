@@ -11,6 +11,7 @@ import {
   useDiceFeedRefresh,
 } from '~/lib/hooks/diceFeedContext'
 import { RollResultView, type ApplyBonusInput } from './RollResultView'
+import { Badge } from '~/components/ui/Badge'
 import { Button } from '~/components/ui/Button'
 import { InlineStepper } from '~/components/ui/InlineStepper'
 import { Modal } from '~/components/ui/Modal'
@@ -69,17 +70,6 @@ const SUPPORT_SYMBOL_ORDER = [
   'botch',
   'xp',
 ] as const
-
-const CHIP_BASE =
-  'inline-flex items-center gap-1 rounded border px-1.5 py-0.5 text-[11px] transition disabled:cursor-not-allowed disabled:opacity-50'
-const CHIP_SELECTED =
-  'border-accent-700/60 bg-accent-700/15 text-accent-900 not-disabled:hover:bg-accent-700/25'
-const CHIP_UNSELECTED =
-  'border-gray-400 bg-transparent text-gray-1000 not-disabled:hover:bg-gray-100'
-
-function chipClasses(selected: boolean): string {
-  return `${CHIP_BASE} ${selected ? CHIP_SELECTED : CHIP_UNSELECTED}`
-}
 
 function formatSupportSummary(summary: Record<string, number>): string {
   const parts: string[] = []
@@ -396,28 +386,28 @@ export function DiceRoller({
                 </p>
                 <div className="flex flex-wrap gap-1.5">
                   {edgeEnabled && (
-                    <button
-                      type="button"
-                      onClick={() => setEdgeBonusReserved((v) => !v)}
+                    <Badge
+                      tone="success"
+                      selected={edgeBonusReserved}
                       disabled={!canReserveEdge}
-                      aria-pressed={edgeBonusReserved}
+                      onClick={() => setEdgeBonusReserved((v) => !v)}
                       title={
                         (edgeAvailable ?? 0) <= 0 && !edgeBonusReserved
                           ? 'No edge points available'
                           : 'Spend 1 Edge to add +3 to your pool for this roll'
                       }
-                      className={chipClasses(edgeBonusReserved)}
                     >
-                      <span className="tabular-nums">+3</span>
+                      <span className="font-semibold tabular-nums">+3</span>
                       <span>Spend Edge</span>
-                    </button>
+                    </Badge>
                   )}
                   {appliedBonuses.map((b) => {
                     const applied = !skippedBonusIds.has(b.id)
                     return (
-                      <button
+                      <Badge
                         key={b.id}
-                        type="button"
+                        tone={b.modifier >= 0 ? 'success' : 'danger'}
+                        selected={applied}
                         onClick={() =>
                           setSkippedBonusIds((prev) => {
                             const next = new Set(prev)
@@ -426,27 +416,26 @@ export function DiceRoller({
                             return next
                           })
                         }
-                        aria-pressed={applied}
                         title={
                           applied
                             ? `Click to skip this roll (${b.source})`
                             : `Click to apply (${b.source})`
                         }
-                        className={chipClasses(applied)}
                       >
-                        <span className="tabular-nums">
+                        <span className="font-semibold tabular-nums">
                           {b.modifier > 0 ? `+${b.modifier}` : b.modifier}
                         </span>
                         <span>{b.label}</span>
-                      </button>
+                      </Badge>
                     )
                   })}
                   {supportList.map((s) => {
                     const picked = absorbedIds.has(s.id)
                     return (
-                      <button
+                      <Badge
                         key={s.id}
-                        type="button"
+                        tone="success"
+                        selected={picked}
                         onClick={() =>
                           setAbsorbedIds((prev) => {
                             const next = new Set(prev)
@@ -455,17 +444,15 @@ export function DiceRoller({
                             return next
                           })
                         }
-                        aria-pressed={picked}
                         title={
                           picked
                             ? `Click to skip ${s.supporterName}'s support`
                             : `Click to absorb ${s.supporterName}'s support`
                         }
-                        className={chipClasses(picked)}
                       >
                         <span className="font-medium">{s.supporterName}</span>
                         <span> ({formatSupportSummary(s.summary)})</span>
-                      </button>
+                      </Badge>
                     )
                   })}
                 </div>

@@ -14,6 +14,7 @@ import type { ApplyBonusInput } from '~/components/dice/RollResultView'
 import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
 import { edgeCap } from '~/lib/game-logic/derived-stats'
 import { sortByTurnOrder } from '~/lib/game-logic/combat'
+import { Badge } from '~/components/ui/Badge'
 import { Button } from '~/components/ui/Button'
 import { Alert } from '~/components/ui/Alert'
 import { Stepper } from '~/components/ui/Stepper'
@@ -175,9 +176,14 @@ export function CombatPage({
           <h1 className="text-2xl font-bold text-white">
             Combat
             {combat && (
-              <span className="ml-2 rounded-md border border-warning-700/60 bg-warning-700/15 px-2 py-0.5 align-middle text-xs font-semibold uppercase tracking-wide text-warning-900">
+              <Badge
+                tone="warning"
+                size="sm"
+                uppercase
+                className="ml-2 align-middle"
+              >
                 Round {combat.round}
-              </span>
+              </Badge>
             )}
           </h1>
         </div>
@@ -504,9 +510,9 @@ function ParticipantCard({
             {character.name}
           </span>
           {isActive && (
-            <span className="rounded border border-accent-700/60 bg-accent-700/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-accent-900">
+            <Badge tone="accent" uppercase>
               Active
-            </span>
+            </Badge>
           )}
         </span>
         <span className="ml-auto flex shrink-0 items-center gap-2 text-xs">
@@ -571,9 +577,9 @@ function ParticipantCard({
             {character.name}
           </Link>
           {isActive && (
-            <span className="rounded border border-accent-700/60 bg-accent-700/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-accent-900">
+            <Badge tone="accent" uppercase>
               Active
-            </span>
+            </Badge>
           )}
           <span className="text-[11px] text-gray-700">
             base {participant.baseAp} + d6:{participant.rolled}

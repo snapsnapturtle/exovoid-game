@@ -5,6 +5,7 @@ import {
   type MalfunctionGroup,
   type SeverityRange,
 } from '~/lib/game-logic/cyberware-malfunctions'
+import { Badge, type BadgeTone } from '~/components/ui/Badge'
 import { Button } from '~/components/ui/Button'
 import { Modal } from '~/components/ui/Modal'
 
@@ -16,10 +17,10 @@ interface MalfunctionTableModalProps {
   onClose: () => void
 }
 
-const SEVERITY_STYLES: Record<SeverityRange, string> = {
-  central: 'border-accent-700/40 bg-accent-700/10 text-accent-900',
-  outer: 'border-warning-700/40 bg-warning-700/10 text-warning-900',
-  extreme: 'border-danger-700/50 bg-danger-700/10 text-danger-900',
+const SEVERITY_TONE: Record<SeverityRange, BadgeTone> = {
+  central: 'accent',
+  outer: 'warning',
+  extreme: 'danger',
 }
 
 export function MalfunctionTableModal({
@@ -125,19 +126,16 @@ function OutcomeGroup({
   canSelectMore: boolean
   onToggle: (slot: number) => void
 }) {
-  const sevClass = SEVERITY_STYLES[group.severity]
   return (
     <li className="rounded-lg border border-gray-400 bg-background-100/40 p-3">
       <div className="mb-2 flex flex-wrap items-center gap-2">
         <span className="font-medium text-white">{group.outcome}</span>
-        <span
-          className={`inline-flex rounded-md border px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${sevClass}`}
-        >
+        <Badge tone={SEVERITY_TONE[group.severity]} uppercase>
           {SEVERITY_LABEL[group.severity]}
-        </span>
-        <span className="rounded-md border border-gray-400 bg-gray-100 px-1.5 py-0.5 font-mono text-[10px] text-gray-900">
+        </Badge>
+        <Badge tone="neutral" className="font-mono">
           {formatRange(group.rolls)}
-        </span>
+        </Badge>
       </div>
       <p className="text-xs text-gray-900">{group.description}</p>
       <div className="mt-3 flex flex-wrap gap-1.5">

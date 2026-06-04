@@ -39,6 +39,7 @@ import { AddArmorModal } from './AddArmorModal'
 import { ManageArmorModsModal } from './ManageArmorModsModal'
 import { ManageWeaponModsModal } from './ManageWeaponModsModal'
 import { Alert } from '~/components/ui/Alert'
+import { Badge } from '~/components/ui/Badge'
 import { Button } from '~/components/ui/Button'
 import { InlineStepper } from '~/components/ui/InlineStepper'
 import { Input } from '~/components/ui/Input'
@@ -816,16 +817,10 @@ function ItemRow({
             </span>
           )}
           {item.equipped && (
-            <span className="rounded border border-accent-700/60 bg-accent-700/15 px-1 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-accent-900">
+            <Badge tone="accent" uppercase>
               Equipped
-            </span>
+            </Badge>
           )}
-          {(item.source === 'armor' || item.source === 'weapon') &&
-            (item.mods?.length ?? 0) > 0 && (
-              <span className="rounded border border-gray-400 bg-gray-100 px-1 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-gray-1000">
-                {item.mods!.length} mod{item.mods!.length === 1 ? '' : 's'}
-              </span>
-            )}
         </div>
         {!isEquipment && (
           <span className="text-sm font-semibold text-white">
@@ -1031,11 +1026,6 @@ function WeaponStats({
               {manufacturer.name}
             </span>
           </EffectTooltip>
-          {manufacturer.hegemony && (
-            <span className="ml-2 rounded border border-warning-400 bg-warning-100 px-1 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-warning-900">
-              Hegemony
-            </span>
-          )}
         </div>
       )}
       {weapon.type !== 'Throwing' && (
@@ -1144,9 +1134,9 @@ function ArmorStats({
             </span>
           </EffectTooltip>
           {manufacturer.hegemony && (
-            <span className="ml-2 rounded border border-warning-400 bg-warning-100 px-1 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-warning-900">
+            <Badge tone="warning" uppercase className="ml-2">
               Hegemony
-            </span>
+            </Badge>
           )}
         </div>
       )}

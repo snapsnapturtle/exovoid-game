@@ -9,6 +9,7 @@ import {
   type DowntimeActivity,
 } from '~/lib/game-logic/downtime'
 import { Modal } from '~/components/ui/Modal'
+import { Badge } from '~/components/ui/Badge'
 import { Button } from '~/components/ui/Button'
 import { RelaxAndRest } from './RelaxAndRest'
 import { SeekInspiration } from './SeekInspiration'
@@ -158,14 +159,14 @@ function ActivityList({
               <div className="flex items-center gap-2">
                 <h4 className="font-medium text-white">{activity.name}</h4>
                 {isTrainSkill && (
-                  <span className="rounded-md border border-gray-400 bg-gray-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-gray-1000">
+                  <Badge tone="neutral" uppercase>
                     {trainSkillRemaining} / {character.level} left
-                  </span>
+                  </Badge>
                 )}
                 {activity.oncePerLevel && (
-                  <span className="rounded-md border border-gray-400 bg-gray-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-gray-1000">
+                  <Badge tone="neutral" uppercase>
                     1× per level
-                  </span>
+                  </Badge>
                 )}
                 {!available && !isTrainSkill && lastUsedAt != null && (
                   <span className="text-[10px] uppercase tracking-wide text-gray-700">

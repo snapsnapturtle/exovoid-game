@@ -10,7 +10,7 @@ import { COMBAT_TRIGGER_OPTIONS } from '~/data/combat-triggers'
 import { parseQuality } from '~/lib/game-logic/weapons'
 import { lookupQuality } from '~/lib/game-logic/item-qualities'
 import { Alert } from '~/components/ui/Alert'
-import { Button } from '~/components/ui/Button'
+import { Badge } from '~/components/ui/Badge'
 import { IconChevronDown } from '@tabler/icons-react'
 import type { PendingBonus } from '~/lib/types/database'
 
@@ -307,11 +307,9 @@ function TriggerOptionsPanel({
                   <p className="mt-0.5 leading-snug">{opt.description}</p>
                 </div>
                 {opt.bonus && onApplyBonus && (
-                  <Button
-                    variant={
-                      wasApplied || blockedByExisting ? 'secondary' : 'subtle'
-                    }
-                    size="xs"
+                  <Badge
+                    tone="accent"
+                    selected={wasApplied || blockedByExisting}
                     disabled={!canToggle}
                     onClick={() => handleToggle(opt)}
                     className="shrink-0 self-start"
@@ -325,8 +323,8 @@ function TriggerOptionsPanel({
                             : 'Not enough triggers'
                     }
                   >
-                    {wasApplied || blockedByExisting ? '✓ Applied' : 'Apply'}
-                  </Button>
+                    {wasApplied || blockedByExisting ? 'Applied' : 'Apply'}
+                  </Badge>
                 )}
               </li>
             )

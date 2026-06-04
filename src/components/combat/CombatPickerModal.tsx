@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Modal } from '~/components/ui/Modal'
+import { Badge } from '~/components/ui/Badge'
 import { Button } from '~/components/ui/Button'
 import { Alert } from '~/components/ui/Alert'
 import { CharacterPortrait } from '~/components/character/CharacterPortrait'
@@ -226,14 +227,14 @@ function Section({
                       {c.name}
                     </span>
                     {c.is_minion && (
-                      <span className="rounded-full bg-warning-700/20 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-warning-900">
+                      <Badge tone="warning" uppercase pill>
                         Minion
-                      </span>
+                      </Badge>
                     )}
                     {c.is_npc && !c.visible_to_players && (
-                      <span className="rounded-full bg-gray-400 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-gray-1000">
+                      <Badge tone="neutral" uppercase pill>
                         Hidden
-                      </span>
+                      </Badge>
                     )}
                   </div>
                 </div>
