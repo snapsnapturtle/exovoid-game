@@ -9,6 +9,7 @@ import { InlineStepper } from '~/components/ui/InlineStepper'
 import { Drawer } from '~/components/ui/Drawer'
 import { Popover, usePopover } from '~/components/ui/Popover'
 import { Input, Select, Textarea } from '~/components/ui/Input'
+import { Checkbox } from '~/components/ui/Checkbox'
 import { IconChevronDown, IconX } from '@tabler/icons-react'
 
 export const Route = createFileRoute('/_app/styleguide')({
@@ -37,6 +38,7 @@ function StyleguidePage() {
   const [textValue, setTextValue] = useState('Kira Voss')
   const [numberValue, setNumberValue] = useState(42)
   const [selectValue, setSelectValue] = useState('agi')
+  const [checks, setChecks] = useState({ hidden: true, minion: false })
   const [textareaValue, setTextareaValue] = useState(
     'Ex-corporate fixer with a soft spot for stray drones.',
   )
@@ -405,6 +407,38 @@ function StyleguidePage() {
             <Select disabled defaultValue="a" className="w-64">
               <option value="a">Disabled</option>
             </Select>
+          </Row>
+        </Section>
+
+        <Section
+          title="Checkbox"
+          description="A real <input type='checkbox'> with the browser chrome hidden (appearance-none) and a dark-theme box drawn on top: gray-400 hairline on transparent, filling to accent-700 when checked with a tabler IconCheck overlaid. Keeps native focus / keyboard / label semantics — pass a label to wrap the box and text in one clickable <label>, or omit it to render just the box. Focus shows the same accent halo as Input."
+        >
+          <Row label="With label">
+            <Checkbox
+              checked={checks.hidden}
+              onChange={(e) =>
+                setChecks((c) => ({ ...c, hidden: e.target.checked }))
+              }
+              label="Hidden roll"
+            />
+            <Checkbox
+              checked={checks.minion}
+              onChange={(e) =>
+                setChecks((c) => ({ ...c, minion: e.target.checked }))
+              }
+              label="Minion"
+            />
+          </Row>
+          <Row label="States">
+            <Checkbox defaultChecked label="Checked" />
+            <Checkbox label="Unchecked" />
+            <Checkbox disabled checked readOnly label="Disabled checked" />
+            <Checkbox disabled label="Disabled" />
+          </Row>
+          <Row label="Box only (no label)">
+            <Checkbox defaultChecked aria-label="standalone checked" />
+            <Checkbox aria-label="standalone unchecked" />
           </Row>
         </Section>
 

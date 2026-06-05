@@ -13,6 +13,7 @@ import {
 import { RollResultView, type ApplyBonusInput } from './RollResultView'
 import { Badge } from '~/components/ui/Badge'
 import { Button } from '~/components/ui/Button'
+import { Checkbox } from '~/components/ui/Checkbox'
 import { InlineStepper } from '~/components/ui/InlineStepper'
 import { Modal } from '~/components/ui/Modal'
 import type { PendingBonus, PendingSupport } from '~/lib/types/database'
@@ -296,18 +297,12 @@ export function DiceRoller({
       }
       footerLeft={
         showConfig && !isSupport ? (
-          <label
-            className="flex items-center gap-2 text-sm text-gray-1000"
+          <Checkbox
+            checked={hidden}
+            onChange={(e) => setHidden(e.target.checked)}
+            label="Hidden roll"
             title="Only you and the GM see the result"
-          >
-            <input
-              type="checkbox"
-              checked={hidden}
-              onChange={(e) => setHidden(e.target.checked)}
-              className="h-4 w-4"
-            />
-            Hidden roll
-          </label>
+          />
         ) : undefined
       }
       footer={

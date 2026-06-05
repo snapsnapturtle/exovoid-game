@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { Modal } from '~/components/ui/Modal'
 import { Badge } from '~/components/ui/Badge'
 import { Button } from '~/components/ui/Button'
+import { Checkbox } from '~/components/ui/Checkbox'
 import { Alert } from '~/components/ui/Alert'
 import { CharacterPortrait } from '~/components/character/CharacterPortrait'
 import type { Character } from '~/lib/types/database'
@@ -210,11 +211,10 @@ function Section({
                     : 'border-gray-400 hover:border-accent-700'
                 }`}
               >
-                <input
-                  type="checkbox"
+                <Checkbox
                   checked={isPicked}
                   onChange={() => onToggle(c.id)}
-                  className="h-4 w-4 rounded border-gray-400 bg-gray-100 text-accent-700 focus:ring-accent-900"
+                  aria-label={`Select ${c.name}`}
                 />
                 <CharacterPortrait
                   name={c.name}

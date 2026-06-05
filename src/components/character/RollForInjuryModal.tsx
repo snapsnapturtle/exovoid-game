@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Modal } from '~/components/ui/Modal'
 import { Button } from '~/components/ui/Button'
+import { Checkbox } from '~/components/ui/Checkbox'
 import { Alert } from '~/components/ui/Alert'
 import { Input } from '~/components/ui/Input'
 import { RollResultView } from '~/components/dice/RollResultView'
@@ -218,15 +219,14 @@ export function RollForInjuryModal({
                   from adrenaline.
                 </span>
                 <label className="flex shrink-0 items-center gap-1.5 text-xs">
-                  <input
-                    type="checkbox"
+                  <Checkbox
                     checked={adrenalineKept === roll.adrenalineCount}
                     onChange={(e) =>
                       setAdrenalineKept(
                         e.target.checked ? roll.adrenalineCount : 0,
                       )
                     }
-                    className="h-4 w-4"
+                    aria-label="Apply adrenaline edge"
                   />
                   Apply ({edgeCurrent} → {edgeCurrent + adrenalineKept})
                 </label>
