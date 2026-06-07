@@ -225,6 +225,7 @@ function RollCard({
   const skill = roll.skill_name ?? 'Custom roll'
   const modifier = roll.data.modifier ?? 0
   const isSupport = roll.data.kind === 'support'
+  const isPoly = roll.data.kind === 'poly'
   const absorbedCount = roll.data.absorbedSupports?.length ?? 0
 
   return (
@@ -267,7 +268,9 @@ function RollCard({
       </div>
 
       <div className="mt-2 flex flex-wrap items-center gap-2">
-        {ordered.length === 0 ? (
+        {isPoly ? (
+          <PolyRollSummary data={roll.data} />
+        ) : ordered.length === 0 ? (
           <span className="text-xs italic text-gray-700">Nothing</span>
         ) : (
           ordered.map((s) => (
@@ -288,6 +291,34 @@ function RollCard({
         )}
       </div>
     </button>
+  )
+}
+
+/** Compact numeric breakdown + total for a polyhedral roll in the feed. */
+function PolyRollSummary({ data }: { data: DiceRollEntry['data'] }) {
+  const dice = data.polyResult ?? []
+  const total = data.polyTotal ?? dice.reduce((sum, d) => sum + d.value, 0)
+  // Group consecutive (server-ordered) dice by type: "3d6 → 4, 2, 5".
+  const groups: { type: string; values: number[] }[] = []
+  for (const d of dice) {
+    const last = groups[groups.length - 1]
+    if (last && last.type === d.type) last.values.push(d.value)
+    else groups.push({ type: d.type, values: [d.value] })
+  }
+
+  return (
+    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gray-1000">
+      {groups.map((g, i) => (
+        <span key={i} className="text-gray-900">
+          <span className="text-gray-1000">
+            {g.values.length}
+            {g.type}
+          </span>{' '}
+          <span className="tabular-nums">{g.values.join(', ')}</span>
+        </span>
+      ))}
+      <span className="font-semibold tabular-nums text-white">= {total}</span>
+    </div>
   )
 }
 

@@ -1,6 +1,10 @@
 import { useState } from 'react'
-import { Die } from './Die'
-import type { DieType } from '~/lib/game-logic/dice'
+import { Die, PolyDie } from './Die'
+import {
+  POLY_DIE_ORDER,
+  type DieType,
+  type RolledPolyDie,
+} from '~/lib/game-logic/dice'
 import type { DiceRollData } from '~/lib/server/dice'
 import {
   UNIVERSAL_TRIGGER_OPTIONS,
@@ -96,6 +100,12 @@ export function RollResultView({
   onRemoveBonus,
   currentBonuses,
 }: RollResultViewProps) {
+  if (data.kind === 'poly') {
+    return (
+      <PolyRollResultView data={data} dieSize={dieSize} animate={animate} />
+    )
+  }
+
   const summary = data.summary ?? {}
   const ordered = orderSymbols(summary)
   const dice = [...(data.result ?? [])].sort(
@@ -207,6 +217,77 @@ export function RollResultView({
           Support contribution — these symbols will be added to the main
           roller's check when they absorb this support.
         </Alert>
+      )}
+    </div>
+  )
+}
+
+/**
+ * Result view for a standard polyhedral roll (kind === 'poly'): a prominent
+ * total plus the individual numeric dice, grouped by die type. No symbol
+ * summary or trigger options — those don't apply to numeric dice.
+ */
+function PolyRollResultView({
+  data,
+  dieSize = 'sm',
+  animate = true,
+}: {
+  data: DiceRollData
+  dieSize?: 'sm' | 'md' | 'lg'
+  animate?: boolean
+}) {
+  const dice = data.polyResult ?? []
+  const total = data.polyTotal ?? dice.reduce((sum, d) => sum + d.value, 0)
+  const ordered = [...dice].sort(
+    (a, b) => POLY_DIE_ORDER.indexOf(a.type) - POLY_DIE_ORDER.indexOf(b.type),
+  )
+  // Group consecutive (already-sorted) dice by type for labelled rows.
+  const groups: { type: RolledPolyDie['type']; dice: RolledPolyDie[] }[] = []
+  for (const d of ordered) {
+    const last = groups[groups.length - 1]
+    if (last && last.type === d.type) last.dice.push(d)
+    else groups.push({ type: d.type, dice: [d] })
+  }
+
+  let dieIndex = 0
+  return (
+    <div>
+      <div className="mb-5">
+        <p className="mb-1 text-xs uppercase tracking-wide text-gray-700">
+          Total
+        </p>
+        <p className="text-4xl font-semibold tabular-nums text-gray-1000">
+          {total}
+        </p>
+      </div>
+
+      {groups.length > 0 && (
+        <div className="space-y-4">
+          {groups.map((group) => (
+            <div key={group.type}>
+              <p className="mb-2 text-xs uppercase tracking-wide text-gray-700">
+                {group.dice.length}
+                {group.type}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {group.dice.map((d, i) => {
+                  const delay = dieIndex++ * CASCADE_STAGGER_MS
+                  return (
+                    <div
+                      key={i}
+                      className={animate ? 'die-tumble-in' : undefined}
+                      style={
+                        animate ? { animationDelay: `${delay}ms` } : undefined
+                      }
+                    >
+                      <PolyDie type={d.type} value={d.value} size={dieSize} />
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   )
