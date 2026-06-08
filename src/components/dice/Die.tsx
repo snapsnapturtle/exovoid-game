@@ -1,4 +1,4 @@
-import type { DieType, DieSymbol } from '~/lib/game-logic/dice'
+import type { DieType, DieSymbol, PolyDieType } from '~/lib/game-logic/dice'
 import { DieShape } from './DieShape'
 
 // The die body fills the silhouette in the type's primary color; the
@@ -103,6 +103,39 @@ export function DieCounter({ type, count, size = 'sm' }: DieCounterProps) {
         className={`die-number relative z-10 font-semibold text-white ${COUNT_TEXT[size]}`}
       >
         {count}
+      </span>
+    </div>
+  )
+}
+
+interface PolyDieProps {
+  type: PolyDieType
+  value: number
+  size?: 'sm' | 'md' | 'lg'
+}
+
+/**
+ * A single rolled polyhedral die (d4–d100): die silhouette with the rolled
+ * number on top. Uses the purple ramp so numeric dice read as distinct from
+ * the Exovoid symbol dice (and from the accent/teal used for selection).
+ */
+export function PolyDie({ type, value, size = 'md' }: PolyDieProps) {
+  const px = SIZE_PX[size]
+  return (
+    <div
+      className="relative inline-flex items-center justify-center"
+      style={{ width: px, height: px }}
+      title={type}
+    >
+      <DieShape
+        className="absolute inset-0 h-full w-full"
+        bodyClassName="text-purple-700"
+        wireClassName="text-purple-900"
+      />
+      <span
+        className={`die-number relative z-10 font-semibold tabular-nums text-white ${COUNT_TEXT[size]}`}
+      >
+        {value}
       </span>
     </div>
   )

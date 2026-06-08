@@ -196,6 +196,68 @@ export function summarizeRoll(result: RollResult): Record<string, number> {
   return summary
 }
 
+// ============================================================
+// Standard polyhedral dice (d4–d100) — a numeric path that sits
+// alongside the symbol-based Exovoid dice above. Used by the custom
+// roller for random tables, conversions, and ad-hoc GM calls. These
+// roll a number rather than symbols, so they never touch DICE_TABLES,
+// rollPool, or summarizeRoll.
+// ============================================================
+
+export type PolyDieType = 'd4' | 'd6' | 'd8' | 'd10' | 'd12' | 'd20' | 'd100'
+
+export const POLY_SIDES: Record<PolyDieType, number> = {
+  d4: 4,
+  d6: 6,
+  d8: 8,
+  d10: 10,
+  d12: 12,
+  d20: 20,
+  d100: 100,
+}
+
+/** Stable display order for UI rows and result grouping. */
+export const POLY_DIE_ORDER: PolyDieType[] = [
+  'd4',
+  'd6',
+  'd8',
+  'd10',
+  'd12',
+  'd20',
+  'd100',
+]
+
+export interface RolledPolyDie {
+  type: PolyDieType
+  value: number
+}
+
+export type PolyPool = Partial<Record<PolyDieType, number>>
+
+/**
+ * Roll a polyhedral pool. For each die type, rolls the requested count,
+ * producing one numeric value (1..sides) per physical die. Returns one
+ * entry per die rolled, in POLY_DIE_ORDER.
+ *
+ * Counts are normalized to non-negative integers — fractional, negative,
+ * NaN, and Infinity values are coerced/skipped rather than trusted, since
+ * the pool can arrive from an unvalidated client request.
+ */
+export function rollPolyPool(pool: PolyPool): RolledPolyDie[] {
+  const result: RolledPolyDie[] = []
+  for (const type of POLY_DIE_ORDER) {
+    const raw = pool[type] ?? 0
+    const count = Number.isFinite(raw) ? Math.max(0, Math.floor(raw)) : 0
+    for (let i = 0; i < count; i++) {
+      result.push({
+        type,
+        value: Math.floor(Math.random() * POLY_SIDES[type]) + 1,
+      })
+    }
+  }
+  return result
+}
+
 /**
  * Compute the attribute average for a skill check.
  * Per rules: average of linked attributes, rounded up (ceil).

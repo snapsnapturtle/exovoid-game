@@ -2,7 +2,10 @@ import { createServerFn } from '@tanstack/react-start'
 import { getSupabaseServerClient } from '~/lib/supabase/server'
 import {
   rollPool,
+  rollPolyPool,
   summarizeRoll,
+  type PolyPool,
+  type RolledPolyDie,
   type RollPool,
   type RollResult,
 } from '~/lib/game-logic/dice'
@@ -10,18 +13,24 @@ import type { Database, PendingSupport } from '~/lib/types/database'
 
 type DiceRollRow = Database['public']['Tables']['dice_rolls']['Row']
 
-export type DiceRollKind = 'normal' | 'support'
+export type DiceRollKind = 'normal' | 'support' | 'poly'
 
 export interface DiceRollData {
   pool: RollPool
   result: RollResult
   summary: Record<string, number>
   modifier: number
-  /** `support` marks rolls created via rollSupportContribution. Undefined ≡ `normal`. */
+  /** `support` marks rolls created via rollSupportContribution, `poly` marks
+   * standard polyhedral rolls (rollPolyDice). Undefined ≡ `normal`. */
   kind?: DiceRollKind
   /** When a normal roll absorbed pending supports, snapshots them here for
    * audit + UI credit. The merged symbols are already baked into `summary`. */
   absorbedSupports?: PendingSupport[]
+  /** Polyhedral rolls (kind === 'poly'). The symbol fields above stay empty. */
+  polyPool?: PolyPool
+  polyResult?: RolledPolyDie[]
+  /** Sum of all polyResult values. */
+  polyTotal?: number
 }
 
 export interface DiceRollEntry {
@@ -110,6 +119,59 @@ export const rollDice = createServerFn({ method: 'POST' })
       summary,
       modifier: data.modifier ?? 0,
       ...(absorbed.length > 0 ? { absorbedSupports: absorbed } : {}),
+    }
+
+    const { data: row, error } = await supabase
+      .from('dice_rolls')
+      .insert({
+        game_id: data.gameId,
+        user_id: user.id,
+        character_id: data.characterId ?? null,
+        skill_name: data.skillName ?? null,
+        is_hidden: data.isHidden ?? false,
+        roll_data: rollData as never,
+      })
+      .select()
+      .single()
+
+    if (error) throw new Error(error.message)
+    return row as DiceRollRow
+  })
+
+/**
+ * Roll a pool of standard polyhedral dice (d4–d100). Numeric path — no
+ * symbols, no support absorption, no modifier. The client supplies the pool
+ * shape; the server does the RNG (mirrors rollDice).
+ */
+export const rollPolyDice = createServerFn({ method: 'POST' })
+  .inputValidator(
+    (d: {
+      gameId: string
+      characterId?: string | null
+      skillName?: string | null
+      pool: PolyPool
+      isHidden?: boolean
+    }) => d,
+  )
+  .handler(async ({ data }) => {
+    const supabase = getSupabaseServerClient()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (!user) throw new Error('Not authenticated')
+
+    const polyResult = rollPolyPool(data.pool)
+    const polyTotal = polyResult.reduce((sum, d) => sum + d.value, 0)
+
+    const rollData: DiceRollData = {
+      pool: {},
+      result: [],
+      summary: {},
+      modifier: 0,
+      kind: 'poly',
+      polyPool: data.pool,
+      polyResult,
+      polyTotal,
     }
 
     const { data: row, error } = await supabase

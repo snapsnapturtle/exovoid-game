@@ -1,7 +1,11 @@
 import { useState } from 'react'
 import { DieCounter } from './Die'
-import { rollDice, type DiceRollData } from '~/lib/server/dice'
-import type { DieType } from '~/lib/game-logic/dice'
+import { rollDice, rollPolyDice, type DiceRollData } from '~/lib/server/dice'
+import {
+  POLY_DIE_ORDER,
+  type DieType,
+  type PolyDieType,
+} from '~/lib/game-logic/dice'
 import {
   useDiceFeedBroadcast,
   useDiceFeedRefresh,
@@ -20,6 +24,18 @@ const DICE: { type: DieType; label: string }[] = [
   { type: 'injury', label: 'Injury' },
 ]
 
+type RollMode = 'exovoid' | 'standard'
+
+const EMPTY_POLY_POOL: Record<PolyDieType, number> = {
+  d4: 0,
+  d6: 0,
+  d8: 0,
+  d10: 0,
+  d12: 0,
+  d20: 0,
+  d100: 0,
+}
+
 interface CustomDiceRollerProps {
   gameId: string
   characters: { id: string; name: string }[]
@@ -36,6 +52,7 @@ export function CustomDiceRoller({
   characters,
   onClose,
 }: CustomDiceRollerProps) {
+  const [mode, setMode] = useState<RollMode>('exovoid')
   const [name, setName] = useState('')
   const [characterId, setCharacterId] = useState<string | null>(
     characters[0]?.id ?? null,
@@ -46,6 +63,8 @@ export function CustomDiceRoller({
     expertise: 0,
     injury: 0,
   })
+  const [polyPool, setPolyPool] =
+    useState<Record<PolyDieType, number>>(EMPTY_POLY_POOL)
   const [hidden, setHidden] = useState(false)
   const [rolling, setRolling] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -54,13 +73,19 @@ export function CustomDiceRoller({
   const refreshFeed = useDiceFeedRefresh()
   const broadcastNewRoll = useDiceFeedBroadcast()
 
-  const total = pool.standard + pool.aptitude + pool.expertise + pool.injury
+  const exovoidTotal =
+    pool.standard + pool.aptitude + pool.expertise + pool.injury
+  const polyTotal = POLY_DIE_ORDER.reduce((sum, t) => sum + polyPool[t], 0)
   const trimmedName = name.trim()
-  const canRoll = total > 0
+  const canRoll = mode === 'exovoid' ? exovoidTotal > 0 : polyTotal > 0
   const showConfig = !result
 
   function adjust(type: DieType, delta: number) {
     setPool((p) => ({ ...p, [type]: Math.max(0, p[type] + delta) }))
+  }
+
+  function adjustPoly(type: PolyDieType, delta: number) {
+    setPolyPool((p) => ({ ...p, [type]: Math.max(0, p[type] + delta) }))
   }
 
   async function submit() {
@@ -68,16 +93,27 @@ export function CustomDiceRoller({
     setRolling(true)
     setError(null)
     try {
-      const row = await rollDice({
-        data: {
-          gameId,
-          characterId,
-          skillName: trimmedName || 'Custom roll',
-          pool,
-          modifier: 0,
-          isHidden: hidden,
-        },
-      })
+      const row =
+        mode === 'exovoid'
+          ? await rollDice({
+              data: {
+                gameId,
+                characterId,
+                skillName: trimmedName || 'Custom roll',
+                pool,
+                modifier: 0,
+                isHidden: hidden,
+              },
+            })
+          : await rollPolyDice({
+              data: {
+                gameId,
+                characterId,
+                skillName: trimmedName || 'Custom roll',
+                pool: polyPool,
+                isHidden: hidden,
+              },
+            })
       setResult(row.roll_data as unknown as DiceRollData)
       setRollKey((k) => k + 1)
       await refreshFeed()
@@ -125,6 +161,25 @@ export function CustomDiceRoller({
     >
       {showConfig && (
         <>
+          <div className="mb-4 flex gap-1 rounded-lg border border-gray-400 p-1">
+            <Button
+              size="sm"
+              variant={mode === 'exovoid' ? 'secondary' : 'ghost'}
+              onClick={() => setMode('exovoid')}
+              className="flex-1"
+            >
+              Exovoid
+            </Button>
+            <Button
+              size="sm"
+              variant={mode === 'standard' ? 'secondary' : 'ghost'}
+              onClick={() => setMode('standard')}
+              className="flex-1"
+            >
+              Standard
+            </Button>
+          </div>
+
           <div className="mb-4">
             <label
               htmlFor="custom-roll-name"
@@ -169,22 +224,40 @@ export function CustomDiceRoller({
             <p className="mb-2 text-xs uppercase tracking-wide text-gray-700">
               Dice
             </p>
-            <div className="space-y-2">
-              {DICE.map(({ type, label }) => (
-                <div key={type} className="flex items-center gap-3">
-                  <DieCounter type={type} count={pool[type]} size="sm" />
-                  <span className="flex-1 text-sm capitalize text-gray-1000">
-                    {label}
-                  </span>
-                  <InlineStepper
-                    value={pool[type]}
-                    min={0}
-                    ariaLabel={label}
-                    onAdjust={(d) => adjust(type, d)}
-                  />
-                </div>
-              ))}
-            </div>
+            {mode === 'exovoid' ? (
+              <div className="space-y-2">
+                {DICE.map(({ type, label }) => (
+                  <div key={type} className="flex items-center gap-3">
+                    <DieCounter type={type} count={pool[type]} size="sm" />
+                    <span className="flex-1 text-sm capitalize text-gray-1000">
+                      {label}
+                    </span>
+                    <InlineStepper
+                      value={pool[type]}
+                      min={0}
+                      ariaLabel={label}
+                      onAdjust={(d) => adjust(type, d)}
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {POLY_DIE_ORDER.map((type) => (
+                  <div key={type} className="flex items-center gap-3">
+                    <span className="flex-1 text-sm text-gray-1000">
+                      {type}
+                    </span>
+                    <InlineStepper
+                      value={polyPool[type]}
+                      min={0}
+                      ariaLabel={type}
+                      onAdjust={(d) => adjustPoly(type, d)}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </>
       )}
