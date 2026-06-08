@@ -18,6 +18,7 @@ import { Badge } from '~/components/ui/Badge'
 import { Button } from '~/components/ui/Button'
 import { Alert } from '~/components/ui/Alert'
 import { Stepper } from '~/components/ui/Stepper'
+import { StatusDot } from '~/components/ui/StatusDot'
 import { InlineStepper } from '~/components/ui/InlineStepper'
 import {
   lookupWeapon,
@@ -524,11 +525,7 @@ function ParticipantCard({
             <span className="truncate text-base font-semibold text-white">
               {character.name}
             </span>
-            {isActive && (
-              <Badge tone="accent" uppercase>
-                Active
-              </Badge>
-            )}
+            {isActive && <StatusDot tone="accent" label="Active" />}
           </span>
           <span className="ml-auto flex shrink-0 items-baseline gap-2 text-xs">
             {pendingBonuses.length > 0 && (
@@ -581,11 +578,7 @@ function ParticipantCard({
             >
               {character.name}
             </Link>
-            {isActive && (
-              <Badge tone="accent" uppercase>
-                Active
-              </Badge>
-            )}
+            {isActive && <StatusDot tone="accent" label="Active" />}
             <span className="text-[11px] text-gray-700">
               base {participant.baseAp} + d6:{participant.rolled}
               {participant.apOverflow != null && participant.apOverflow < 0 && (

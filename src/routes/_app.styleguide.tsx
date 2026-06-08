@@ -5,6 +5,7 @@ import { Badge } from '~/components/ui/Badge'
 import { Modal } from '~/components/ui/Modal'
 import { Alert } from '~/components/ui/Alert'
 import { Stepper } from '~/components/ui/Stepper'
+import { StatusDot } from '~/components/ui/StatusDot'
 import { InlineStepper } from '~/components/ui/InlineStepper'
 import { Drawer } from '~/components/ui/Drawer'
 import { Popover, usePopover } from '~/components/ui/Popover'
@@ -313,6 +314,28 @@ function StyleguidePage() {
               <span className="font-semibold tabular-nums">+1</span>
               <span>Flow</span>
             </Badge>
+          </Row>
+        </Section>
+
+        <Section
+          title="StatusDot"
+          description="A small solid status pip — the minimal stand-in for a status Badge when the surrounding context already names the thing and only an at-a-glance on/off signal is needed (e.g. the active combatant in the tracker). Takes the high-contrast fill (700) of its ramp rather than the muted 200 a Badge sits on, since the dot has no label to lean on. Defaults to the success (green) tone. Pass a label for the sr-only text + title tooltip so the meaning survives for screen-reader and hover users."
+        >
+          <Row label="Tones">
+            <StatusDot label="Active" />
+            <StatusDot tone="accent" label="Selected" />
+            <StatusDot tone="warning" label="Warning" />
+            <StatusDot tone="danger" label="Down" />
+            <StatusDot tone="neutral" label="Idle" />
+            <StatusDot tone="purple" label="NPC" />
+          </Row>
+          <Row label="In context">
+            <span className="inline-flex items-baseline gap-2">
+              <StatusDot label="Active" />
+              <span className="text-base font-semibold text-white">
+                Kira Vance
+              </span>
+            </span>
           </Row>
         </Section>
 
