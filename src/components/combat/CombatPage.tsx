@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link, useRouter } from '@tanstack/react-router'
+import { IconLogout } from '@tabler/icons-react'
 import type {
   Character,
   CharacterAttributes,
@@ -632,7 +633,7 @@ function ParticipantCard({
               title="Leave combat"
               className="ml-auto gap-1"
             >
-              <span aria-hidden>×</span>
+              <IconLogout size={14} aria-hidden />
               <span>Leave</span>
             </Button>
           )}
