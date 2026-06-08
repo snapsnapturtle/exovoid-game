@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link, useRouter } from '@tanstack/react-router'
-import { IconChevronRight } from '@tabler/icons-react'
 import type {
   Character,
   CharacterAttributes,
@@ -495,37 +494,41 @@ function ParticipantCard({
   // stays mounted and animates its height via the grid-rows 0fr→1fr trick,
   // so both opening and closing transition smoothly. `inert` keeps the
   // hidden controls out of the tab order and a11y tree while collapsed.
-  const containerClass = isActive
-    ? expanded
-      ? 'border-accent-700 bg-gradient-to-b from-accent-700/20 via-background-200 to-background-200'
-      : 'border-accent-700 bg-accent-100'
-    : expanded
-      ? 'border-gray-400 bg-background-200'
-      : 'border-gray-400 bg-background-200 hover:border-accent-700'
+  // The active combatant is signalled solely by the StatusDot now — the card
+  // chrome depends only on whether it's open, not whose turn it is.
+  const borderClass = expanded
+    ? 'border-accent-700'
+    : 'border-gray-400 hover:border-accent-700'
 
   return (
     <article
-      className={`overflow-hidden rounded-xl border transition-colors ${containerClass}`}
+      className={`relative overflow-hidden rounded-xl border bg-background-200 transition-colors ${borderClass}`}
     >
+      {/* Accent gradient on its own layer so it can fade with the expansion —
+          background-image can't be transitioned, but opacity can. Timed to
+          match the 200ms grid-rows height animation; content is lifted above
+          it with `relative`. */}
+      <div
+        aria-hidden
+        className={`pointer-events-none absolute inset-0 bg-gradient-to-b from-accent-700/20 via-background-200 to-background-200 transition-opacity duration-200 ${
+          expanded ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
       {!expanded ? (
         <button
           type="button"
           onClick={onToggleExpanded}
-          className="flex w-full items-baseline gap-2 px-4 py-2.5 text-left"
+          className="relative flex w-full items-baseline gap-2 px-4 py-2.5 text-left"
           aria-expanded={false}
           aria-label={`Expand ${character.name}`}
         >
-          {/* Mirror the expanded header's left cluster exactly (chevron box,
-              gaps, font size, baseline) so the name doesn't shift or resize
-              when the card toggles. */}
+          {/* Name leads the row in both states (the chevron sits at the end),
+              so it keeps the same position and size when the card toggles. */}
           <span className="flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-0.5">
-            <span className="mr-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center text-gray-700">
-              <Chevron open={false} />
-            </span>
             <span className="truncate text-base font-semibold text-white">
               {character.name}
             </span>
-            {isActive && <StatusDot tone="accent" label="Active" />}
+            {isActive && <StatusDot tone="accent" pulse label="Active" />}
           </span>
           <span className="ml-auto flex shrink-0 items-baseline gap-2 text-xs">
             {pendingBonuses.length > 0 && (
@@ -552,17 +555,27 @@ function ParticipantCard({
           </span>
         </button>
       ) : (
-        <header className="flex flex-wrap items-baseline justify-between gap-2 px-4 pb-3 pt-2.5">
+        // Clicking anywhere on the header collapses the card — except the
+        // name link and the Leave button, which stop propagation so they keep
+        // their own behaviour. role/tabIndex/onKeyDown keep it keyboard-
+        // operable; the keydown guard ignores Enter/Space that originated on a
+        // focusable child so those still trigger the child, not the toggle.
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={onToggleExpanded}
+          onKeyDown={(e) => {
+            if (e.target !== e.currentTarget) return
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              onToggleExpanded()
+            }
+          }}
+          aria-expanded={true}
+          aria-label={`Collapse ${character.name}`}
+          className="relative flex flex-wrap items-baseline gap-2 px-4 pb-3 pt-2.5"
+        >
           <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-            <button
-              type="button"
-              onClick={onToggleExpanded}
-              className="mr-0.5 inline-flex h-5 w-5 items-center justify-center rounded text-gray-700 transition hover:bg-gray-100 hover:text-white"
-              aria-label={`Collapse ${character.name}`}
-              aria-expanded={true}
-            >
-              <Chevron open={true} />
-            </button>
             <Link
               to={
                 character.is_npc
@@ -574,11 +587,12 @@ function ParticipantCard({
                   ? { gameId, npcId: character.id }
                   : { gameId, characterId: character.id }
               }
+              onClick={(e) => e.stopPropagation()}
               className="text-base font-semibold text-white transition hover:text-accent-900"
             >
               {character.name}
             </Link>
-            {isActive && <StatusDot tone="accent" label="Active" />}
+            {isActive && <StatusDot tone="accent" pulse label="Active" />}
             <span className="text-[11px] text-gray-700">
               base {participant.baseAp} + d6:{participant.rolled}
               {participant.apOverflow != null && participant.apOverflow < 0 && (
@@ -599,20 +613,23 @@ function ParticipantCard({
             <Button
               variant="ghostDanger"
               size="sm"
-              onClick={() => void onLeave()}
+              onClick={(e) => {
+                e.stopPropagation()
+                void onLeave()
+              }}
               aria-label={`Remove ${character.name} from combat`}
               title="Leave combat"
-              className="gap-1"
+              className="ml-auto gap-1"
             >
               <span aria-hidden>×</span>
               <span>Leave</span>
             </Button>
           )}
-        </header>
+        </div>
       )}
 
       <div
-        className={`grid transition-[grid-template-rows] duration-200 ease-out ${
+        className={`relative grid transition-[grid-template-rows] duration-200 ease-out ${
           expanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
         }`}
       >
@@ -1010,15 +1027,5 @@ function StatChip({
         {value}
       </span>
     </span>
-  )
-}
-
-function Chevron({ open }: { open: boolean }) {
-  return (
-    <IconChevronRight
-      size={12}
-      aria-hidden
-      className={`shrink-0 transition-transform ${open ? 'rotate-90' : ''}`}
-    />
   )
 }
