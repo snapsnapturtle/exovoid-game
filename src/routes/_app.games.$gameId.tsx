@@ -47,8 +47,15 @@ function GameLayout() {
     () => ({ refresh, broadcastNewRoll }),
     [refresh, broadcastNewRoll],
   )
+  // Characters the viewer acts on: their own plus any NPC delegated to them.
+  // Same predicate as the combat tracker's canAdjust(), so the dice-feed
+  // bonus strip and roll-as picker stay consistent with who can control what.
   const myFullCharacters = useMemo(
-    () => liveCharacters.filter((c) => c.user_id === currentUserId),
+    () =>
+      liveCharacters.filter(
+        (c) =>
+          c.user_id === currentUserId || c.controller_user_id === currentUserId,
+      ),
     [liveCharacters, currentUserId],
   )
   const myCharacters = useMemo(

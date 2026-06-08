@@ -111,13 +111,19 @@ export const getGame = createServerFn()
       .select('*, profiles(display_name, avatar_url)')
       .eq('game_id', data.gameId)
 
+    // PCs for the whole-game roster, plus any character the caller acts on
+    // (their own + NPCs delegated to them) so the dice-feed bonus strip can
+    // surface and clear bonuses for controlled NPCs too. RLS still gates each
+    // row.
     const { data: characters } = await supabase
       .from('characters')
       .select(
-        'id, name, career, level, user_id, portrait_url, is_npc, pending_bonuses',
+        'id, name, career, level, user_id, controller_user_id, portrait_url, is_npc, pending_bonuses',
       )
       .eq('game_id', data.gameId)
-      .eq('is_npc', false)
+      .or(
+        `is_npc.eq.false,user_id.eq.${user.id},controller_user_id.eq.${user.id}`,
+      )
 
     const isMember = members?.some((m) => m.user_id === user.id)
     if (!isMember) throw new Error('Not a member of this game')
