@@ -39,7 +39,11 @@ function GameLobbyPage() {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  const myCharacters = characters.filter((c) => c.user_id === currentUserId)
+  // The parent loader's `characters` now also carries the caller's own/
+  // controlled NPCs (for the dice-feed bonus strip), so filter to PCs here —
+  // NPCs have their own section below, sourced from listNpcs.
+  const pcs = characters.filter((c) => !c.is_npc)
+  const myCharacters = pcs.filter((c) => c.user_id === currentUserId)
 
   return (
     <div className="p-6">
@@ -101,11 +105,11 @@ function GameLobbyPage() {
               </Link>
             </div>
 
-            {(isGm ? characters : myCharacters).length === 0 ? (
+            {(isGm ? pcs : myCharacters).length === 0 ? (
               <p className="text-sm text-gray-700">No characters yet.</p>
             ) : (
               <ul className="space-y-2">
-                {(isGm ? characters : myCharacters).map((char) => {
+                {(isGm ? pcs : myCharacters).map((char) => {
                   const ownerName = nameByUserId.get(char.user_id) ?? 'Unknown'
                   return (
                     <li key={char.id}>
