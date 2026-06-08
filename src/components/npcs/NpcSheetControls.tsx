@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { updateNpcFlags } from '~/lib/server/npcs'
 import { Select } from '~/components/ui/Input'
 import { Badge } from '~/components/ui/Badge'
+import { Button } from '~/components/ui/Button'
 import { Checkbox } from '~/components/ui/Checkbox'
 
 interface NpcSheetControlsProps {
@@ -10,6 +11,10 @@ interface NpcSheetControlsProps {
   visibleToPlayers: boolean
   controllerUserId: string | null
   canManageFlags: boolean
+  /** GM-only — duplicating clones the NPC row into a fresh one. */
+  canDuplicate: boolean
+  duplicating: boolean
+  onDuplicate: () => void
   /** Game members. The GM gets folded into the "GM" sentinel
    * (controller_user_id = null) and so is hidden from this list. */
   members: {
@@ -40,6 +45,9 @@ export function NpcSheetControls({
   visibleToPlayers,
   controllerUserId,
   canManageFlags,
+  canDuplicate,
+  duplicating,
+  onDuplicate,
   members,
 }: NpcSheetControlsProps) {
   const [minion, setMinion] = useState(isMinion)
@@ -118,6 +126,17 @@ export function NpcSheetControls({
             ))}
         </Select>
       </label>
+      {canDuplicate && (
+        <Button
+          variant="secondary"
+          size="sm"
+          className="ml-auto"
+          disabled={duplicating}
+          onClick={onDuplicate}
+        >
+          {duplicating ? 'Duplicating…' : 'Duplicate'}
+        </Button>
+      )}
     </div>
   )
 }
