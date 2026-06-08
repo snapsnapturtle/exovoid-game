@@ -31,4 +31,14 @@ describe('rollPolyPool', () => {
     expect(rollPolyPool({})).toEqual([])
     expect(rollPolyPool({ d6: 0 })).toEqual([])
   })
+
+  it('normalizes untrusted counts to non-negative integers', () => {
+    // Fractional counts floor (2.9 → 2), never rounding up via `i < count`.
+    expect(rollPolyPool({ d6: 2.9 })).toHaveLength(2)
+    // Negative, NaN, and Infinity counts roll nothing rather than throwing
+    // or looping forever.
+    expect(rollPolyPool({ d6: -3 })).toEqual([])
+    expect(rollPolyPool({ d6: NaN })).toEqual([])
+    expect(rollPolyPool({ d6: Infinity })).toEqual([])
+  })
 })

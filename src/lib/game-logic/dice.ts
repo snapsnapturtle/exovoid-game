@@ -238,11 +238,16 @@ export type PolyPool = Partial<Record<PolyDieType, number>>
  * Roll a polyhedral pool. For each die type, rolls the requested count,
  * producing one numeric value (1..sides) per physical die. Returns one
  * entry per die rolled, in POLY_DIE_ORDER.
+ *
+ * Counts are normalized to non-negative integers — fractional, negative,
+ * NaN, and Infinity values are coerced/skipped rather than trusted, since
+ * the pool can arrive from an unvalidated client request.
  */
 export function rollPolyPool(pool: PolyPool): RolledPolyDie[] {
   const result: RolledPolyDie[] = []
   for (const type of POLY_DIE_ORDER) {
-    const count = pool[type] ?? 0
+    const raw = pool[type] ?? 0
+    const count = Number.isFinite(raw) ? Math.max(0, Math.floor(raw)) : 0
     for (let i = 0; i < count; i++) {
       result.push({
         type,
