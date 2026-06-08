@@ -205,10 +205,16 @@ export function CombatPage({
   // Cards the current viewer can act on (GM: everyone; others: their own PC +
   // any NPC delegated to them). Only these render as cards — the rest stay on
   // the timeline for turn-order awareness. Same predicate as canAdjust().
-  const visible = ordered.filter((p) => {
-    const character = characterById.get(p.characterId)
-    return character != null && canAdjust(p)
-  })
+  // Sorted by character name (not AP) so the list stays put while AP is
+  // adjusted; the tracker is where turn order is read.
+  const nameOf = (p: CombatParticipant) =>
+    characterById.get(p.characterId)?.name ?? p.name
+  const visible = (combat?.participants ?? [])
+    .filter((p) => {
+      const character = characterById.get(p.characterId)
+      return character != null && canAdjust(p)
+    })
+    .sort((a, b) => nameOf(a).localeCompare(nameOf(b)))
   // Auto-expand only when the viewer has a single card to run; with several,
   // collapse them all so the list stays scannable. Same rule for GM and
   // players. The per-card toggle set inverts this default.
@@ -253,11 +259,17 @@ export function CombatPage({
           {isGm && combat && (
             <>
               <Button
-                onClick={() =>
-                  withGmBusy('round', () =>
+                onClick={() => {
+                  if (
+                    !window.confirm(
+                      'Start the next round? Re-rolls initiative for everyone.',
+                    )
+                  )
+                    return
+                  void withGmBusy('round', () =>
                     nextRound({ data: { gameId: game.id } }),
                   )
-                }
+                }}
                 disabled={gmBusy !== null}
               >
                 {gmBusy === 'round' ? 'Rolling…' : 'Next round'}
