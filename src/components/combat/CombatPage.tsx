@@ -184,7 +184,7 @@ export function CombatPage({
     <div className="space-y-4 p-6">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-bold text-gray-1000">
             Combat
             {combat && (
               <Badge
@@ -501,12 +501,12 @@ function ParticipantCard({
   // The active combatant is signalled solely by the StatusDot now — the card
   // chrome depends only on whether it's open, not whose turn it is.
   const borderClass = expanded
-    ? 'border-accent-700'
-    : 'border-gray-400 hover:border-accent-700'
+    ? 'border-accent-600'
+    : 'border-gray-400 hover:border-gray-500 hover:bg-gray-100'
 
   return (
     <article
-      className={`relative overflow-hidden rounded-xl border bg-background-200 transition-colors ${borderClass}`}
+      className={`relative overflow-hidden rounded-xl border bg-background-200 transition-colors duration-75 ${borderClass}`}
     >
       {/* Accent gradient on its own layer so it can fade with the expansion —
           background-image can't be transitioned, but opacity can. Timed to
@@ -529,7 +529,7 @@ function ParticipantCard({
           {/* Name leads the row in both states (the chevron sits at the end),
               so it keeps the same position and size when the card toggles. */}
           <span className="flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-0.5">
-            <span className="truncate text-base font-semibold text-white">
+            <span className="truncate text-base font-semibold text-gray-1000">
               {character.name}
             </span>
             {isActive && <StatusDot tone="accent" pulse label="Active" />}
@@ -599,7 +599,7 @@ function ParticipantCard({
                   : { gameId, characterId: character.id }
               }
               onClick={(e) => e.stopPropagation()}
-              className="text-base font-semibold text-white transition hover:text-accent-900"
+              className="text-base font-semibold text-gray-1000 transition hover:text-accent-900"
             >
               {character.name}
             </Link>
