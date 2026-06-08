@@ -1,6 +1,8 @@
 import { createFileRoute, getRouteApi, Link } from '@tanstack/react-router'
 import { useMemo, useState } from 'react'
-import { buttonClasses } from '~/components/ui/Button'
+import { IconCheck, IconCopy } from '@tabler/icons-react'
+import { Button, buttonClasses } from '~/components/ui/Button'
+import { Input } from '~/components/ui/Input'
 import { CharacterPortrait } from '~/components/character/CharacterPortrait'
 import { listNpcs } from '~/lib/server/npcs'
 import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
@@ -73,17 +75,27 @@ function GameLobbyPage() {
 
           {isGm && (
             <div className="mt-6 border-t border-gray-400 pt-4">
-              <p className="mb-2 text-sm text-gray-900">Invite Code</p>
+              <p className="mb-2 text-sm text-gray-900">Invite code</p>
               <div className="flex items-center gap-2">
-                <code className="rounded bg-gray-100 px-3 py-1.5 font-mono text-lg tracking-widest text-white">
-                  {game.invite_code}
-                </code>
-                <button
+                <Input
+                  readOnly
+                  value={game.invite_code}
+                  aria-label="Invite code"
+                  onFocus={(e) => e.currentTarget.select()}
+                  className="flex-1 font-mono tracking-widest"
+                />
+                <Button
+                  variant="secondary"
                   onClick={copyInviteCode}
-                  className="rounded-lg border border-gray-400 px-3 py-1.5 text-sm text-gray-900 transition hover:text-white"
+                  className="gap-1.5"
                 >
-                  {copied ? 'Copied!' : 'Copy'}
-                </button>
+                  {copied ? (
+                    <IconCheck size={16} aria-hidden />
+                  ) : (
+                    <IconCopy size={16} aria-hidden />
+                  )}
+                  <span>{copied ? 'Copied!' : 'Copy'}</span>
+                </Button>
               </div>
             </div>
           )}
