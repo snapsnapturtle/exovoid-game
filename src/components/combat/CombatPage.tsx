@@ -534,7 +534,7 @@ function ParticipantCard({
             </span>
             {isActive && <StatusDot tone="accent" pulse label="Active" />}
           </span>
-          <span className="ml-auto flex shrink-0 items-baseline gap-2 text-xs">
+          <span className="ml-auto flex shrink-0 items-center gap-1 self-center">
             {pendingBonuses.length > 0 && (
               // Read-only in the compact row — nested clickable buttons would
               // be invalid HTML inside the row's own button. Expand to remove.
@@ -545,17 +545,24 @@ function ParticipantCard({
                 compact
               />
             )}
-            <StatChip
-              label="AP"
-              value={participant.ap}
-              tone={participant.ap < 0 ? 'danger' : 'accent'}
-            />
-            <StatChip
-              label="HP"
-              value={`${healthCurrent}/${derived.health}`}
-              tone={healthCurrent <= 0 ? 'danger' : 'neutral'}
-            />
-            <StatChip label="Edge" value={`${edgeCurrent}/${derived.edge}`} />
+            <Badge tone={participant.ap < 0 ? 'danger' : 'accent'}>
+              <span>AP</span>
+              <span className="font-semibold tabular-nums">
+                {participant.ap}
+              </span>
+            </Badge>
+            <Badge tone={healthCurrent <= 0 ? 'danger' : 'neutral'}>
+              <span>HP</span>
+              <span className="font-semibold tabular-nums">
+                {healthCurrent}/{derived.health}
+              </span>
+            </Badge>
+            <Badge tone="neutral">
+              <span>Edge</span>
+              <span className="font-semibold tabular-nums">
+                {edgeCurrent}/{derived.edge}
+              </span>
+            </Badge>
           </span>
         </button>
       ) : (
@@ -1004,32 +1011,5 @@ function MiniStepper({
       canEdit={canEdit}
       onAdjust={onAdjust}
     />
-  )
-}
-
-function StatChip({
-  label,
-  value,
-  tone = 'neutral',
-}: {
-  label: string
-  value: number | string
-  tone?: 'neutral' | 'accent' | 'danger'
-}) {
-  const valueClass =
-    tone === 'danger'
-      ? 'text-danger-900'
-      : tone === 'accent'
-        ? 'text-accent-900'
-        : 'text-gray-1000'
-  return (
-    <span className="inline-flex items-baseline gap-1 rounded border border-gray-400 bg-gray-100 px-1.5 py-0.5">
-      <span className="text-[10px] uppercase tracking-wide text-gray-700">
-        {label}
-      </span>
-      <span className={`text-xs font-semibold tabular-nums ${valueClass}`}>
-        {value}
-      </span>
-    </span>
   )
 }
