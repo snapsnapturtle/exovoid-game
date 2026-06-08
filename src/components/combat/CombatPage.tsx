@@ -168,6 +168,17 @@ export function CombatPage({
 
   const ordered = combat ? sortByTurnOrder(combat.participants) : []
   const activeCharacterId = ordered[0]?.characterId
+  // Cards the current viewer can act on (GM: everyone; others: their own PC +
+  // any NPC delegated to them). Only these render as cards — the rest stay on
+  // the timeline for turn-order awareness. Same predicate as canAdjust().
+  const visible = ordered.filter((p) => {
+    const character = characterById.get(p.characterId)
+    return character != null && canAdjust(p)
+  })
+  // Auto-expand only when the viewer has a single card to run; with several,
+  // collapse them all so the list stays scannable. Same rule for GM and
+  // players. The per-card toggle set inverts this default.
+  const singleCard = visible.length === 1
 
   return (
     <div className="space-y-4 p-6">
@@ -249,19 +260,12 @@ export function CombatPage({
           />
 
           <div className="space-y-2">
-            {ordered.map((participant) => {
-              const character = characterById.get(participant.characterId)
-              if (!character) return null
-              // Hide other players' details — they still appear on the
-              // timeline so everyone has tactical awareness of AP/turn order,
-              // but their card-level state (HP, edge, ammo, durability)
-              // stays private to them and the GM.
-              if (!isGm && character.user_id !== currentUserId) return null
+            {visible.map((participant) => {
+              const character = characterById.get(participant.characterId)!
               const isActive = participant.characterId === activeCharacterId
               const overridden = toggledCards.has(participant.characterId)
-              // GM default = collapsed; player default = expanded. The
-              // override set just inverts the default per-card.
-              const expanded = isGm ? overridden : !overridden
+              // Default from singleCard; the toggle set flips it per card.
+              const expanded = overridden ? !singleCard : singleCard
               return (
                 <ParticipantCard
                   key={participant.characterId}
