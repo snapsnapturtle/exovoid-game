@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react'
-import { getRouteApi, useNavigate } from '@tanstack/react-router'
+import { getRouteApi, useNavigate, useRouter } from '@tanstack/react-router'
 import type { Character, PendingBonus } from '~/lib/types/database'
 import { useCharacter } from '~/lib/hooks/useCharacter'
 import { useCharacterProgression } from '~/lib/hooks/useCharacterProgression'
@@ -34,6 +34,7 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
   const [downtimeOpen, setDowntimeOpen] = useState(false)
   const [levelUpOpen, setLevelUpOpen] = useState(false)
   const navigate = useNavigate()
+  const router = useRouter()
   const { character, updateField, flushSave } = useCharacter(initial, canEdit)
   const {
     rows: progressionRows,
@@ -145,6 +146,9 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
       const { gameId } = await deleteCharacter({
         data: { characterId: character.id },
       })
+      // Drop cached loader data so the roster/game page re-fetches without
+      // the now-deleted row (otherwise it shows until a manual refresh).
+      await router.invalidate()
       if (character.is_npc) {
         navigate({ to: '/games/$gameId/npcs', params: { gameId } })
       } else {
@@ -160,6 +164,7 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
     setDuplicating(true)
     try {
       const row = await duplicateNpc({ data: { npcId: character.id } })
+      await router.invalidate()
       // Same route component — only the params change — so this instance
       // stays mounted across the navigation and we must clear the flag
       // ourselves once the new sheet has loaded.
