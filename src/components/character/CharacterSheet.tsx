@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react'
-import { getRouteApi, useNavigate } from '@tanstack/react-router'
+import { getRouteApi, useNavigate, useRouter } from '@tanstack/react-router'
 import type { Character, PendingBonus } from '~/lib/types/database'
 import { useCharacter } from '~/lib/hooks/useCharacter'
 import { useCharacterProgression } from '~/lib/hooks/useCharacterProgression'
@@ -7,6 +7,7 @@ import { useRealtimeGameState } from '~/lib/hooks/useRealtimeGameState'
 import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
 import { pendingLevelUp } from '~/lib/game-logic/level-up'
 import { deleteCharacter, updatePortraitUrl } from '~/lib/server/characters'
+import { duplicateNpc } from '~/lib/server/npcs'
 import { uploadPortrait, PortraitError } from '~/lib/portrait'
 import { CharacterHeader } from './CharacterHeader'
 import { AttributesPanel } from './AttributesPanel'
@@ -28,10 +29,12 @@ interface CharacterSheetProps {
 
 export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
   const [deleting, setDeleting] = useState(false)
+  const [duplicating, setDuplicating] = useState(false)
   const [portraitUploading, setPortraitUploading] = useState(false)
   const [downtimeOpen, setDowntimeOpen] = useState(false)
   const [levelUpOpen, setLevelUpOpen] = useState(false)
   const navigate = useNavigate()
+  const router = useRouter()
   const { character, updateField, flushSave } = useCharacter(initial, canEdit)
   const {
     rows: progressionRows,
@@ -143,6 +146,9 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
       const { gameId } = await deleteCharacter({
         data: { characterId: character.id },
       })
+      // Drop cached loader data so the roster/game page re-fetches without
+      // the now-deleted row (otherwise it shows until a manual refresh).
+      await router.invalidate()
       if (character.is_npc) {
         navigate({ to: '/games/$gameId/npcs', params: { gameId } })
       } else {
@@ -151,6 +157,25 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
     } catch (e) {
       setDeleting(false)
       alert(e instanceof Error ? e.message : 'Failed to delete character')
+    }
+  }
+
+  async function handleDuplicate() {
+    setDuplicating(true)
+    try {
+      const row = await duplicateNpc({ data: { npcId: character.id } })
+      await router.invalidate()
+      // Same route component — only the params change — so this instance
+      // stays mounted across the navigation and we must clear the flag
+      // ourselves once the new sheet has loaded.
+      await navigate({
+        to: '/games/$gameId/npcs/$npcId',
+        params: { gameId: row.game_id, npcId: row.id },
+      })
+    } catch (e) {
+      alert(e instanceof Error ? e.message : 'Failed to duplicate NPC')
+    } finally {
+      setDuplicating(false)
     }
   }
 
@@ -163,6 +188,9 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
           visibleToPlayers={character.visible_to_players}
           controllerUserId={character.controller_user_id}
           canManageFlags={canManageNpcFlags}
+          canDuplicate={isGm}
+          duplicating={duplicating}
+          onDuplicate={handleDuplicate}
           members={members}
         />
       )}

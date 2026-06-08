@@ -1,5 +1,6 @@
 import { createServerFn } from '@tanstack/react-start'
 import { getSupabaseServerClient } from '~/lib/supabase/server'
+import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
 import type { Character, CharacterAttributes } from '~/lib/types/database'
 
 /**
@@ -86,6 +87,99 @@ export const createNpc = createServerFn({ method: 'POST' })
             ? controllerDefault
             : data.controller_user_id,
       })
+      .select()
+      .single()
+
+    if (error) throw new Error(error.message)
+    return row as unknown as Character
+  })
+
+/**
+ * Clone an NPC into a fresh row in the same game. GM-only — duplicating is
+ * a content-authoring shortcut (spin up three of the same guard), not a
+ * play action, so it stays with the table owner regardless of who controls
+ * the source NPC.
+ *
+ * Everything that defines the NPC carries over (attributes, skills, talents,
+ * cyberware, inventory, portrait, visibility, controller). Live combat state
+ * is reset so the copy starts pristine:
+ *   - health_current → null (= full, mirrors createNpc)
+ *   - edge_current   → max (recomputed from the copied build)
+ *   - injuries, pending_bonuses, malfunction_allocations → []
+ *
+ * The name is prefixed "Copy of …"; rename in the new NPC's sheet.
+ */
+export const duplicateNpc = createServerFn({ method: 'POST' })
+  .inputValidator((d: { npcId: string }) => d)
+  .handler(async ({ data }) => {
+    const supabase = getSupabaseServerClient()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (!user) throw new Error('Not authenticated')
+
+    const { data: source, error: fetchError } = await supabase
+      .from('characters')
+      .select('*')
+      .eq('id', data.npcId)
+      .eq('is_npc', true)
+      .single()
+    if (fetchError || !source) throw new Error('NPC not found')
+
+    const npc = source as unknown as Character
+
+    const { data: game } = await supabase
+      .from('games')
+      .select('gm_id')
+      .eq('id', npc.game_id)
+      .single()
+    if (!game) throw new Error('Game not found')
+    if (game.gm_id !== user.id)
+      throw new Error('Only the GM can duplicate NPCs')
+
+    const maxEdge = applyPassiveEffects(
+      npc.attributes,
+      npc.talents,
+      npc.cyberware,
+      npc.inventory,
+      npc.derived_stat_bonuses,
+    ).derived.edge
+
+    const { data: row, error } = await supabase
+      .from('characters')
+      .insert({
+        game_id: npc.game_id,
+        user_id: user.id,
+        name: `Copy of ${npc.name}`,
+        career: npc.career,
+        level: npc.level,
+        experience: npc.experience,
+        gender: npc.gender,
+        age: npc.age,
+        background_notes: npc.background_notes,
+        notes: npc.notes,
+        attributes: npc.attributes,
+        skills: npc.skills,
+        talents: npc.talents,
+        cyberware: npc.cyberware,
+        inventory: npc.inventory,
+        favorite_skills: npc.favorite_skills,
+        derived_stat_bonuses: npc.derived_stat_bonuses,
+        downtime_uses_used: npc.downtime_uses_used,
+        portrait_url: npc.portrait_url,
+        credits: npc.credits,
+        assets: npc.assets,
+        is_npc: true,
+        is_minion: npc.is_minion,
+        visible_to_players: npc.visible_to_players,
+        controller_user_id: npc.controller_user_id,
+        // Reset live state — the copy starts at full health/edge, no injuries.
+        health_current: null,
+        edge_current: maxEdge,
+        injuries: [],
+        pending_bonuses: [],
+        malfunction_allocations: [],
+      } as never)
       .select()
       .single()
 
