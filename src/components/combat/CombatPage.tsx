@@ -557,11 +557,11 @@ function ParticipantCard({
     >
       {/* Accent gradient on its own layer so it can fade with the expansion —
           background-image can't be transitioned, but opacity can. Timed to
-          match the 200ms grid-rows height animation; content is lifted above
+          match the 300ms grid-rows height animation; content is lifted above
           it with `relative`. */}
       <div
         aria-hidden
-        className={`pointer-events-none absolute inset-0 bg-gradient-to-b from-accent-700/20 via-background-200 to-background-200 transition-opacity duration-200 ${
+        className={`pointer-events-none absolute inset-0 bg-gradient-to-b from-accent-700/20 via-background-200 to-background-200 transition-opacity duration-300 ${
           expanded ? 'opacity-100' : 'opacity-0'
         }`}
       />
@@ -701,7 +701,7 @@ function ParticipantCard({
       )}
 
       <div
-        className={`relative grid transition-[grid-template-rows] duration-200 ease-out ${
+        className={`relative grid transition-[grid-template-rows] duration-300 ease-out ${
           expanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
         }`}
       >
