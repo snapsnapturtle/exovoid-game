@@ -227,12 +227,12 @@ function Section({
                       {c.name}
                     </span>
                     {c.is_minion && (
-                      <Badge tone="warning" uppercase pill>
+                      <Badge tone="warning" uppercase>
                         Minion
                       </Badge>
                     )}
                     {c.is_npc && !c.visible_to_players && (
-                      <Badge tone="neutral" uppercase pill>
+                      <Badge tone="neutral" uppercase>
                         Hidden
                       </Badge>
                     )}

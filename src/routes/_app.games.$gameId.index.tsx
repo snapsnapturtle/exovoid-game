@@ -1,6 +1,7 @@
 import { createFileRoute, getRouteApi, Link } from '@tanstack/react-router'
 import { useMemo, useState } from 'react'
 import { IconCheck, IconCopy } from '@tabler/icons-react'
+import { Badge } from '~/components/ui/Badge'
 import { Button, buttonClasses } from '~/components/ui/Button'
 import { Input } from '~/components/ui/Input'
 import { surfaceCardClasses, SurfaceArrow } from '~/components/ui/Surface'
@@ -196,17 +197,18 @@ function GameLobbyPage() {
                               {npc.name}
                             </p>
                             {npc.is_minion && (
-                              <span className="rounded-full bg-warning-700/20 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-warning-900">
+                              <Badge tone="warning" uppercase>
                                 Minion
-                              </span>
+                              </Badge>
                             )}
                             {!npc.visible_to_players && (
-                              <span
+                              <Badge
+                                tone="neutral"
+                                uppercase
                                 title="Hidden from other players"
-                                className="rounded-full bg-gray-400 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-gray-1000"
                               >
                                 Hidden
-                              </span>
+                              </Badge>
                             )}
                           </div>
                           {!youControl && (

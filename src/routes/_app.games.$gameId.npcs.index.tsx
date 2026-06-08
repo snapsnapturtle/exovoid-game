@@ -1,5 +1,6 @@
 import { createFileRoute, getRouteApi, Link } from '@tanstack/react-router'
 import { useMemo } from 'react'
+import { Badge } from '~/components/ui/Badge'
 import { buttonClasses } from '~/components/ui/Button'
 import { surfaceCardClasses, SurfaceArrow } from '~/components/ui/Surface'
 import { CharacterPortrait } from '~/components/character/CharacterPortrait'
@@ -176,17 +177,14 @@ function NpcCard({
         <div className="flex flex-wrap items-center gap-1.5">
           <p className="truncate font-medium text-white">{npc.name}</p>
           {npc.is_minion && (
-            <span className="rounded-full bg-warning-700/20 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-warning-900">
+            <Badge tone="warning" uppercase>
               Minion
-            </span>
+            </Badge>
           )}
           {!npc.visible_to_players && (
-            <span
-              title="Hidden from other players"
-              className="rounded-full bg-gray-400 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-gray-1000"
-            >
+            <Badge tone="neutral" uppercase title="Hidden from other players">
               Hidden
-            </span>
+            </Badge>
           )}
         </div>
         {showController && (
