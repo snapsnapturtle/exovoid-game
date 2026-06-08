@@ -6,7 +6,6 @@ import { Input } from '~/components/ui/Input'
 import { surfaceCardClasses, SurfaceArrow } from '~/components/ui/Surface'
 import { CharacterPortrait } from '~/components/character/CharacterPortrait'
 import { listNpcs } from '~/lib/server/npcs'
-import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
 
 const gameRoute = getRouteApi('/_app/games/$gameId')
 
@@ -141,8 +140,9 @@ function GameLobbyPage() {
                           <p className="text-xs text-gray-900">
                             Level {char.level}
                             <span className="mx-1.5 text-gray-700">·</span>
-                            <span className="text-gray-700">Played by </span>
-                            <span className="text-gray-1000">{ownerName}</span>
+                            <span className="text-gray-700">
+                              Played by {ownerName}
+                            </span>
                           </p>
                         </div>
                         <SurfaceArrow />
@@ -171,15 +171,6 @@ function GameLobbyPage() {
             ) : (
               <ul className="space-y-2">
                 {npcs.map((npc) => {
-                  const { derived } = applyPassiveEffects(
-                    npc.attributes,
-                    npc.talents,
-                    npc.cyberware,
-                    npc.inventory,
-                    npc.derived_stat_bonuses,
-                  )
-                  const healthMax = derived.health
-                  const healthCurrent = npc.health_current ?? healthMax
                   const youControl =
                     npc.controller_user_id === currentUserId ||
                     (isGm && npc.controller_user_id === null)
@@ -218,20 +209,11 @@ function GameLobbyPage() {
                               </span>
                             )}
                           </div>
-                          <p className="mt-0.5 text-xs text-gray-900">
-                            HP {healthCurrent} / {healthMax}
-                            {!youControl && (
-                              <>
-                                <span className="mx-1.5 text-gray-700">·</span>
-                                <span className="text-gray-700">
-                                  Controlled by{' '}
-                                </span>
-                                <span className="text-gray-1000">
-                                  {controller}
-                                </span>
-                              </>
-                            )}
-                          </p>
+                          {!youControl && (
+                            <p className="mt-0.5 text-xs text-gray-700">
+                              Controlled by {controller}
+                            </p>
+                          )}
                         </div>
                         <SurfaceArrow />
                       </Link>

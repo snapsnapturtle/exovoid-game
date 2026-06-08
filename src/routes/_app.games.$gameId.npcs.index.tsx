@@ -3,7 +3,6 @@ import { useMemo } from 'react'
 import { buttonClasses } from '~/components/ui/Button'
 import { surfaceCardClasses, SurfaceArrow } from '~/components/ui/Surface'
 import { CharacterPortrait } from '~/components/character/CharacterPortrait'
-import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
 import type { Character } from '~/lib/types/database'
 
 const gameRoute = getRouteApi('/_app/games/$gameId')
@@ -162,16 +161,6 @@ function NpcCard({
   controllerLabel,
   showController,
 }: NpcCardProps) {
-  const { derived } = applyPassiveEffects(
-    npc.attributes,
-    npc.talents,
-    npc.cyberware,
-    npc.inventory,
-    npc.derived_stat_bonuses,
-  )
-  const healthMax = derived.health
-  const healthCurrent = npc.health_current ?? healthMax
-
   return (
     <Link
       to="/games/$gameId/npcs/$npcId"
@@ -200,16 +189,11 @@ function NpcCard({
             </span>
           )}
         </div>
-        <p className="mt-0.5 text-xs text-gray-900">
-          HP {healthCurrent} / {healthMax}
-          {showController && (
-            <>
-              <span className="mx-1.5 text-gray-700">·</span>
-              <span className="text-gray-700">Controlled by </span>
-              <span className="text-gray-1000">{controllerLabel}</span>
-            </>
-          )}
-        </p>
+        {showController && (
+          <p className="mt-0.5 text-xs text-gray-700">
+            Controlled by {controllerLabel}
+          </p>
+        )}
       </div>
       <SurfaceArrow />
     </Link>
