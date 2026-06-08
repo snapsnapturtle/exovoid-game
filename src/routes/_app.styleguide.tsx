@@ -329,9 +329,14 @@ function StyleguidePage() {
             <StatusDot tone="neutral" label="Idle" />
             <StatusDot tone="purple" label="NPC" />
           </Row>
+          <Row label="Pulse (live)">
+            <StatusDot pulse label="Active" />
+            <StatusDot tone="accent" pulse label="Active" />
+            <StatusDot tone="danger" pulse label="Live" />
+          </Row>
           <Row label="In context">
             <span className="inline-flex items-baseline gap-2">
-              <StatusDot label="Active" />
+              <StatusDot tone="accent" pulse label="Active" />
               <span className="text-base font-semibold text-white">
                 Kira Vance
               </span>

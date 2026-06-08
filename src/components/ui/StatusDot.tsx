@@ -29,6 +29,12 @@ interface StatusDotProps {
    * Omit only for purely decorative dots.
    */
   label?: string
+  /**
+   * "Live" treatment: a second dot of the same tone radiates out from the
+   * centre, growing past the dot and fading — the familiar pulsing status
+   * indicator. Suppressed under prefers-reduced-motion.
+   */
+  pulse?: boolean
   className?: string
 }
 
@@ -40,13 +46,20 @@ interface StatusDotProps {
 export function StatusDot({
   tone = 'success',
   label,
+  pulse = false,
   className = '',
 }: StatusDotProps) {
   return (
     <span
       title={label}
-      className={`inline-block h-2 w-2 shrink-0 rounded-full ${TONE[tone]} ${className}`}
+      className={`relative inline-block h-2 w-2 shrink-0 rounded-full ${TONE[tone]} ${className}`}
     >
+      {pulse && (
+        <span
+          aria-hidden
+          className={`absolute inset-0 animate-ping rounded-full opacity-75 motion-reduce:hidden ${TONE[tone]}`}
+        />
+      )}
       {label && <span className="sr-only">{label}</span>}
     </span>
   )
