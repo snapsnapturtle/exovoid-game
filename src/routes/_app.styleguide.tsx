@@ -6,6 +6,7 @@ import { Modal } from '~/components/ui/Modal'
 import { Alert } from '~/components/ui/Alert'
 import { Stepper } from '~/components/ui/Stepper'
 import { StatusDot } from '~/components/ui/StatusDot'
+import { surfaceCardClasses, SurfaceArrow } from '~/components/ui/Surface'
 import { InlineStepper } from '~/components/ui/InlineStepper'
 import { Drawer } from '~/components/ui/Drawer'
 import { Popover, usePopover } from '~/components/ui/Popover'
@@ -80,29 +81,6 @@ function StyleguidePage() {
           <PaletteRow label="Blue" tokens={fullRamp('blue')} />
           <PaletteRow label="Purple" tokens={fullRamp('purple')} />
           <PaletteRow label="Pink" tokens={fullRamp('pink')} />
-        </Section>
-
-        <Section
-          title="Surfaces"
-          description="The default panel is bg-background-200 with a border-gray-400 hairline. For surfaces that need to read as “this is the relevant/active part right now” (e.g. the active combat participant), layer a top-fading accent gradient on top of background-200 and bump the border to accent. The gradient is bg-gradient-to-b from-accent-700/20 via-background-200 to-background-200."
-        >
-          <Row label="Default">
-            <div className="rounded-xl border border-gray-400 bg-background-200 p-4">
-              <p className="text-sm text-white">Default surface</p>
-              <p className="text-xs text-gray-900">
-                bg-background-200 · border-gray-400
-              </p>
-            </div>
-          </Row>
-          <Row label="Active">
-            <div className="rounded-xl border border-accent-700 bg-gradient-to-b from-accent-700/20 via-background-200 to-background-200 p-4">
-              <p className="text-sm text-white">Active surface</p>
-              <p className="text-xs text-gray-900">
-                bg-gradient-to-b from-accent-700/20 via-background-200
-                to-background-200 · border-accent-700
-              </p>
-            </div>
-          </Row>
         </Section>
 
         <Section
@@ -341,6 +319,55 @@ function StyleguidePage() {
                 Kira Vance
               </span>
             </span>
+          </Row>
+        </Section>
+
+        <Section
+          title="Surface card"
+          description="A clickable surface card with one shared sizing — a flex row at p-4 — for both list rows and grid cards. Resting state sits on the neutral ramp (border-gray-400 hairline, bg-background-200); hover lifts to border-gray-500 + bg-gray-100, the same treatment as the combat-tracker rows. Apply surfaceCardClasses() to any Link / a / button / div: leading content (a portrait, etc.) first, main content in a min-w-0 flex-1 wrapper, and a trailing <SurfaceArrow> that sits in the border tone (gray-400) and slides right on hover. The dashed variant centres its content for the empty 'add new' affordance (e.g. create a game)."
+        >
+          <Row label="With portrait">
+            <button
+              type="button"
+              className={surfaceCardClasses('default', 'w-72 text-left')}
+            >
+              <div className="h-9 w-9 shrink-0 rounded-full bg-gray-300" />
+              <div className="min-w-0 flex-1">
+                <p className="font-medium text-gray-1000">Kira Vance</p>
+                <p className="text-xs text-gray-700">
+                  Level 4 · Played by Alex
+                </p>
+              </div>
+              <SurfaceArrow />
+            </button>
+          </Row>
+          <Row label="With heading">
+            <button
+              type="button"
+              className={surfaceCardClasses('default', 'w-72 text-left')}
+            >
+              <div className="min-w-0 flex-1">
+                <h3 className="text-lg font-semibold text-gray-1000">
+                  Crimson Void
+                </h3>
+                <span className="mt-1 inline-block rounded-full bg-blue-700/20 px-2 py-0.5 text-xs font-medium text-blue-900">
+                  Game Master
+                </span>
+              </div>
+              <SurfaceArrow />
+            </button>
+          </Row>
+          <Row label="Empty (dashed)">
+            <button
+              type="button"
+              className={surfaceCardClasses(
+                'dashed',
+                'w-72 text-sm font-medium text-gray-900',
+              )}
+            >
+              <span aria-hidden>+</span>
+              <span>New game</span>
+            </button>
           </Row>
         </Section>
 

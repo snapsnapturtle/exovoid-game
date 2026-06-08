@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { getUserGames } from '~/lib/server/games'
 import { buttonClasses } from '~/components/ui/Button'
+import { surfaceCardClasses, SurfaceArrow } from '~/components/ui/Surface'
 
 export const Route = createFileRoute('/_app/dashboard')({
   loader: () => getUserGames(),
@@ -40,22 +41,27 @@ function DashboardPage() {
               key={game.id}
               to="/games/$gameId"
               params={{ gameId: game.id }}
-              className="group rounded-xl border border-gray-400 bg-background-200 p-6 transition hover:border-accent-700"
+              className={surfaceCardClasses()}
             >
-              <h3 className="mb-2 text-lg font-semibold text-white group-hover:text-accent-900">
-                {game.name}
-              </h3>
-              <span
-                className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${
-                  game.role === 'gm'
-                    ? 'bg-blue-700/20 text-blue-900'
-                    : 'bg-accent-700/20 text-accent-900'
-                }`}
-              >
-                {game.role === 'gm' ? 'Game Master' : 'Player'}
-              </span>
+              <div className="min-w-0 flex-1">
+                <h3 className="mb-1 text-lg font-semibold text-gray-1000">
+                  {game.name}
+                </h3>
+                <p className="text-sm text-gray-700">GM: {game.gmName}</p>
+              </div>
+              <SurfaceArrow />
             </Link>
           ))}
+          <Link
+            to="/games/new"
+            className={surfaceCardClasses(
+              'dashed',
+              'text-sm font-medium text-gray-900',
+            )}
+          >
+            <span aria-hidden>+</span>
+            <span>New game</span>
+          </Link>
         </div>
       )}
     </div>

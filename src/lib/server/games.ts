@@ -25,9 +25,22 @@ export const getUserGames = createServerFn().handler(async () => {
     .in('id', gameIds)
     .order('created_at', { ascending: false })
 
+  const { data: gmMembers } = await supabase
+    .from('game_members')
+    .select('game_id, profiles(display_name)')
+    .in('game_id', gameIds)
+    .eq('role', 'gm')
+  const gmNameByGame = new Map(
+    (gmMembers ?? []).map((m) => [
+      m.game_id,
+      m.profiles?.display_name || 'Unknown',
+    ]),
+  )
+
   return (games || []).map((game) => ({
     ...game,
     role: memberships.find((m) => m.game_id === game.id)?.role || 'player',
+    gmName: gmNameByGame.get(game.id) ?? 'Unknown',
   }))
 })
 

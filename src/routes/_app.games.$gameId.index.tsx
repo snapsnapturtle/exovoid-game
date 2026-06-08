@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react'
 import { IconCheck, IconCopy } from '@tabler/icons-react'
 import { Button, buttonClasses } from '~/components/ui/Button'
 import { Input } from '~/components/ui/Input'
+import { surfaceCardClasses, SurfaceArrow } from '~/components/ui/Surface'
 import { CharacterPortrait } from '~/components/character/CharacterPortrait'
 import { listNpcs } from '~/lib/server/npcs'
 import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
@@ -128,7 +129,7 @@ function GameLobbyPage() {
                       <Link
                         to="/games/$gameId/characters/$characterId"
                         params={{ gameId: game.id, characterId: char.id }}
-                        className="flex items-center gap-3 rounded-lg border border-gray-400 p-3 transition hover:border-accent-700"
+                        className={surfaceCardClasses()}
                       >
                         <CharacterPortrait
                           name={char.name}
@@ -144,7 +145,7 @@ function GameLobbyPage() {
                             <span className="text-gray-1000">{ownerName}</span>
                           </p>
                         </div>
-                        <span className="text-sm text-gray-700">&rarr;</span>
+                        <SurfaceArrow />
                       </Link>
                     </li>
                   )
@@ -191,7 +192,7 @@ function GameLobbyPage() {
                       <Link
                         to="/games/$gameId/npcs/$npcId"
                         params={{ gameId: game.id, npcId: npc.id }}
-                        className="flex items-center gap-3 rounded-lg border border-gray-400 p-3 transition hover:border-accent-700"
+                        className={surfaceCardClasses()}
                       >
                         <CharacterPortrait
                           name={npc.name}
@@ -232,7 +233,7 @@ function GameLobbyPage() {
                             )}
                           </p>
                         </div>
-                        <span className="text-sm text-gray-700">&rarr;</span>
+                        <SurfaceArrow />
                       </Link>
                     </li>
                   )
