@@ -324,12 +324,12 @@ function StyleguidePage() {
 
         <Section
           title="Surface card"
-          description="A clickable surface card with one shared sizing — a flex row at p-4 — for both list rows and grid cards. Resting state sits on the neutral ramp (border-gray-400 hairline, bg-background-200); hover lifts to border-gray-500 + bg-gray-100, the same treatment as the combat-tracker rows. Apply surfaceCardClasses() to any Link / a / button / div: leading content (a portrait, etc.) first, main content in a min-w-0 flex-1 wrapper, and a trailing <SurfaceArrow> that sits in the border tone (gray-400) and slides right on hover. The dashed variant centres its content for the empty 'add new' affordance (e.g. create a game)."
+          description="A clickable surface card with one shared sizing — a flex row at p-3 — for both list rows and grid cards. Resting state sits on the neutral ramp (border-gray-400 hairline, bg-background-200); hover lifts to border-gray-500 + bg-gray-100, the same treatment as the combat-tracker rows. Apply surfaceCardClasses() to any Link / a / button / div: leading content (a portrait, etc.) first, main content in a min-w-0 flex-1 wrapper, and a trailing <SurfaceArrow> that sits in the border tone (gray-400) and shifts to gray-500 on hover to track the border."
         >
           <Row label="With portrait">
             <button
               type="button"
-              className={surfaceCardClasses('default', 'w-72 text-left')}
+              className={surfaceCardClasses('w-72 text-left')}
             >
               <div className="h-9 w-9 shrink-0 rounded-full bg-gray-300" />
               <div className="min-w-0 flex-1">
@@ -344,7 +344,7 @@ function StyleguidePage() {
           <Row label="With heading">
             <button
               type="button"
-              className={surfaceCardClasses('default', 'w-72 text-left')}
+              className={surfaceCardClasses('w-72 text-left')}
             >
               <div className="min-w-0 flex-1">
                 <h3 className="text-lg font-semibold text-gray-1000">
@@ -355,18 +355,6 @@ function StyleguidePage() {
                 </span>
               </div>
               <SurfaceArrow />
-            </button>
-          </Row>
-          <Row label="Empty (dashed)">
-            <button
-              type="button"
-              className={surfaceCardClasses(
-                'dashed',
-                'w-72 text-sm font-medium text-gray-900',
-              )}
-            >
-              <span aria-hidden>+</span>
-              <span>New game</span>
             </button>
           </Row>
         </Section>

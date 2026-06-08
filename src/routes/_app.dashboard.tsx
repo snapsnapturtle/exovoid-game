@@ -52,16 +52,6 @@ function DashboardPage() {
               <SurfaceArrow />
             </Link>
           ))}
-          <Link
-            to="/games/new"
-            className={surfaceCardClasses(
-              'dashed',
-              'text-sm font-medium text-gray-900',
-            )}
-          >
-            <span aria-hidden>+</span>
-            <span>New game</span>
-          </Link>
         </div>
       )}
     </div>

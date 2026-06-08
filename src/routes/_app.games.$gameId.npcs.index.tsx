@@ -1,6 +1,7 @@
 import { createFileRoute, getRouteApi, Link } from '@tanstack/react-router'
 import { useMemo } from 'react'
 import { buttonClasses } from '~/components/ui/Button'
+import { surfaceCardClasses, SurfaceArrow } from '~/components/ui/Surface'
 import { CharacterPortrait } from '~/components/character/CharacterPortrait'
 import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
 import type { Character } from '~/lib/types/database'
@@ -175,7 +176,7 @@ function NpcCard({
     <Link
       to="/games/$gameId/npcs/$npcId"
       params={{ gameId, npcId: npc.id }}
-      className="flex items-center gap-3 rounded-xl border border-gray-400 bg-background-200 p-3 transition hover:border-accent-700"
+      className={surfaceCardClasses()}
     >
       <CharacterPortrait
         name={npc.name}
@@ -210,7 +211,7 @@ function NpcCard({
           )}
         </p>
       </div>
-      <span className="text-sm text-gray-700">&rarr;</span>
+      <SurfaceArrow />
     </Link>
   )
 }

@@ -1,20 +1,12 @@
 import { IconArrowRight } from '@tabler/icons-react'
 
-export type SurfaceVariant = 'default' | 'dashed'
-
 // A clickable surface card. The resting state follows the neutral ramp
 // (border-gray-400 hairline, bg-background-200); hover lifts to border-gray-500
 // + bg-gray-100, the same treatment as the combat-tracker rows. One sizing
-// serves both list rows and grid cards — a flex row at p-4 with a gap-3 gutter
+// serves both list rows and grid cards — a flex row at p-3 with a gap-3 gutter
 // — so place the leading content (portrait, etc.) first, your main content in
-// a `min-w-0 flex-1` wrapper, and a trailing <SurfaceArrow>. The `dashed`
-// variant centres its content for the empty "add new" affordance (e.g. create
-// a game). `group` is baked in so the arrow animates on hover.
-const VARIANT: Record<SurfaceVariant, string> = {
-  default: 'flex items-center gap-3 p-4 border-gray-400 bg-background-200',
-  dashed:
-    'flex items-center justify-center gap-2 p-4 border-dashed border-gray-400',
-}
+// a `min-w-0 flex-1` wrapper, and a trailing <SurfaceArrow>. `group` is baked
+// in so the arrow can track the border on hover.
 
 /**
  * Class string for a clickable surface — apply to a `<Link>`, `<a>`,
@@ -23,11 +15,8 @@ const VARIANT: Record<SurfaceVariant, string> = {
  * like a fixed width. Mirrors the `buttonClasses()` helper; pair with
  * `<SurfaceArrow>` for the trailing arrow.
  */
-export function surfaceCardClasses(
-  variant: SurfaceVariant = 'default',
-  extra?: string,
-): string {
-  return `group rounded-xl border transition-colors duration-75 hover:border-gray-500 hover:bg-gray-100 ${VARIANT[variant]}${extra ? ` ${extra}` : ''}`
+export function surfaceCardClasses(extra?: string): string {
+  return `group flex items-center gap-3 rounded-xl border border-gray-400 bg-background-200 p-3 transition-colors duration-75 hover:border-gray-500 hover:bg-gray-100${extra ? ` ${extra}` : ''}`
 }
 
 /**
