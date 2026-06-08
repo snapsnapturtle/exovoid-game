@@ -49,7 +49,7 @@ function GameLobbyPage() {
     <div className="p-6">
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Players */}
-        <div className="rounded-xl border border-gray-400 bg-background-200 p-6">
+        <div className="self-start rounded-xl border border-gray-400 bg-background-200 p-6">
           <h3 className="mb-4 text-lg font-semibold text-white">Players</h3>
           <ul className="space-y-3">
             {members.map((member) => (
