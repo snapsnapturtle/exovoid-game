@@ -58,12 +58,12 @@ export function ApTimeline({ participants, characterNames }: ApTimelineProps) {
                   return (
                     <div
                       key={p.characterId}
-                      className={`flex min-h-10 items-center justify-center rounded-md border px-1.5 py-1 text-center text-[11px] font-medium ${
+                      className={`flex min-h-10 items-center justify-center rounded-md border p-1.5 text-center text-[11px] font-medium ${
                         active
                           ? 'border-accent-700 bg-accent-700/25 text-white'
                           : isNegative
                             ? 'border-danger-700/40 bg-danger-700/10 text-danger-900'
-                            : 'border-gray-400 bg-gray-100 text-gray-900'
+                            : 'border-gray-400 bg-background-200 text-gray-900'
                       }`}
                       title={`${name} · ${p.ap} AP (started ${p.baseAp + p.rolled})`}
                     >
