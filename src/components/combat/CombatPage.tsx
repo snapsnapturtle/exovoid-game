@@ -533,7 +533,14 @@ function ParticipantCard({
             <span className="truncate text-base font-semibold text-gray-1000">
               {character.name}
             </span>
-            {isActive && <StatusDot tone="accent" pulse label="Active" />}
+            {isActive && (
+              <StatusDot
+                tone="accent"
+                pulse
+                label="Active"
+                className="self-center"
+              />
+            )}
           </span>
           <span className="ml-auto flex shrink-0 items-center gap-1 self-center">
             {pendingBonuses.length > 0 && (
@@ -604,7 +611,14 @@ function ParticipantCard({
             >
               {character.name}
             </Link>
-            {isActive && <StatusDot tone="accent" pulse label="Active" />}
+            {isActive && (
+              <StatusDot
+                tone="accent"
+                pulse
+                label="Active"
+                className="self-center"
+              />
+            )}
             <span className="text-[11px] text-gray-700">
               base {participant.baseAp} + d6:{participant.rolled}
               {participant.apOverflow != null && participant.apOverflow < 0 && (
@@ -631,7 +645,7 @@ function ParticipantCard({
               }}
               aria-label={`Remove ${character.name} from combat`}
               title="Leave combat"
-              className="ml-auto gap-1"
+              className="ml-auto gap-1 self-center"
             >
               <IconLogout size={14} aria-hidden />
               <span>Leave</span>
