@@ -46,10 +46,18 @@ import { EquippedArmorCard } from '~/components/character/EquippedArmorCard'
 import { InjuryControls } from '~/components/character/InjuryControls'
 import { PendingBonusChips } from '~/components/character/PendingBonusChips'
 
+interface CombatMember {
+  user_id: string
+  role: string
+  profiles: { display_name: string | null } | null
+}
+
 interface CombatPageProps {
   game: { id: string; name: string }
   gameState: GameState
   characters: Character[]
+  /** Game members with joined profiles, for resolving who runs each character. */
+  members: CombatMember[]
   currentUserId: string
   isGm: boolean
 }
@@ -58,6 +66,7 @@ export function CombatPage({
   game,
   gameState,
   characters,
+  members,
   currentUserId,
   isGm,
 }: CombatPageProps) {
@@ -74,6 +83,30 @@ export function CombatPage({
   const combat = gameState.combat
   const characterById = new Map(characters.map((c) => [c.id, c]))
   const characterNames = new Map(characters.map((c) => [c.id, c.name]))
+  // Resolve each participant to the human running it — PC owner, NPC
+  // controller, or the GM for undelegated (or viewer-hidden) NPCs — so the
+  // initiative tracker can show the table whose turn it is and who's upcoming.
+  const playerNameByUserId = new Map(
+    members.map((m) => [m.user_id, m.profiles?.display_name || 'Unknown']),
+  )
+  const gmName =
+    members.find((m) => m.role === 'gm')?.profiles?.display_name || 'GM'
+  const controllingPlayerName = (characterId: string): string => {
+    const c = characterById.get(characterId)
+    if (!c) return gmName // viewer-hidden NPC — the GM runs it
+    if (c.is_npc) {
+      return c.controller_user_id
+        ? (playerNameByUserId.get(c.controller_user_id) ?? gmName)
+        : gmName
+    }
+    return playerNameByUserId.get(c.user_id) ?? 'Unknown'
+  }
+  const playerNames = new Map(
+    (combat?.participants ?? []).map((p) => [
+      p.characterId,
+      controllingPlayerName(p.characterId),
+    ]),
+  )
   const participantIds = new Set(
     combat?.participants.map((p) => p.characterId) ?? [],
   )
@@ -258,6 +291,7 @@ export function CombatPage({
           <ApTimeline
             participants={combat.participants}
             characterNames={characterNames}
+            playerNames={playerNames}
           />
 
           <div className="space-y-2">
