@@ -12,7 +12,13 @@ import { Drawer } from '~/components/ui/Drawer'
 import { Popover, usePopover } from '~/components/ui/Popover'
 import { Input, Select, Textarea } from '~/components/ui/Input'
 import { Checkbox } from '~/components/ui/Checkbox'
-import { IconChevronDown, IconX } from '@tabler/icons-react'
+import { EmptyState } from '~/components/ui/EmptyState'
+import {
+  IconChevronDown,
+  IconX,
+  IconSwords,
+  IconInbox,
+} from '@tabler/icons-react'
 
 export const Route = createFileRoute('/_app/styleguide')({
   component: StyleguidePage,
@@ -693,6 +699,31 @@ function StyleguidePage() {
               canEdit={false}
               onAdjust={() => {}}
             />
+          </Row>
+        </Section>
+
+        <Section
+          title="Empty state"
+          description="The canonical 'nothing here yet' panel: a bordered background-200 card with a centred 32px icon in a matching chip, a 16px gray-1000 title, a 14px gray-900 description, and an optional subtle md button. Reach for this instead of hand-rolling a centered message box."
+        >
+          <Row label="With action">
+            <div className="w-full max-w-md">
+              <EmptyState
+                icon={<IconSwords />}
+                title="No active encounter"
+                description="Roll initiative and track turns, AP, and health for everyone in the fight."
+                action={<Button variant="subtle">Start combat</Button>}
+              />
+            </div>
+          </Row>
+          <Row label="No action">
+            <div className="w-full max-w-md">
+              <EmptyState
+                icon={<IconInbox />}
+                title="No items yet"
+                description="Items you pick up or buy will show up here."
+              />
+            </div>
           </Row>
         </Section>
 
