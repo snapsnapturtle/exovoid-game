@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.19",
-    "@supabase/ssr": "^0.10.3",
+    "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.108.0",
     "@tabler/icons-react": "^3.44.0",
     "@tanstack/react-router": "^1.170.15",
@@ -32,7 +32,7 @@
     "@vitejs/plugin-react": "^6.0.2",
     "happy-dom": "^20.10.2",
     "nitro": "npm:nitro-nightly@^3.0.260522-beta",
-    "prettier": "3.8.3",
+    "prettier": "3.8.4",
     "tailwindcss": "^4.1.4",
     "typescript": "^6.0.3",
     "vite": "^8.0.16",
