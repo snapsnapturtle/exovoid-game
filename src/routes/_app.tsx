@@ -29,6 +29,14 @@ export const Route = createFileRoute('/_app')({
   component: AppLayout,
 })
 
+// Breadcrumb link styling. Ancestors are subdued (gray-900) and brighten on
+// hover; the deepest/current crumb sits at the brighter gray-1000.
+function crumbClass(active: boolean): string {
+  return `truncate text-sm transition ${
+    active ? 'text-gray-1000' : 'text-gray-900 hover:text-white'
+  }`
+}
+
 function AppLayout() {
   // SaveStatusProvider wraps both the header and the outlet so the
   // header chip and the save-source hooks (useCharacter,
@@ -49,6 +57,19 @@ function AppLayoutInner() {
   })
   const game = gameMatch?.loaderData?.game
   const gameState = gameMatch?.loaderData?.gameState
+  // The character layout route is nested under the game, so this match (and
+  // the crumb it drives) is present on the sheet and every child page
+  // (progression, cyberware, inventory, …).
+  const characterMatch = useMatch({
+    from: '/_app/games/$gameId/characters/$characterId',
+    shouldThrow: false,
+  })
+  const character = characterMatch?.loaderData?.character
+  const npcMatch = useMatch({
+    from: '/_app/games/$gameId/npcs/$npcId',
+    shouldThrow: false,
+  })
+  const npc = npcMatch?.loaderData?.character
   const accountMenu = usePopover({ placement: 'bottom-end' })
   const saveStatus = useSaveStatus()
 
@@ -91,27 +112,53 @@ function AppLayoutInner() {
                 </Link>
                 {game && gameState && (
                   <>
-                    <span className="text-gray-700">/</span>
-                    <Link
-                      to="/dashboard"
-                      className="text-sm text-gray-900 transition hover:text-white"
-                    >
-                      Games
-                    </Link>
+                    {/* "Games" is omitted — the Exovoid wordmark already links
+                        to the dashboard. The trail is at most two deep
+                        (game / character|NPC), so no truncation/collapse is
+                        needed. The deepest (current) crumb gets the brighter
+                        gray-1000; ancestors stay subdued. */}
                     <span className="text-gray-700">/</span>
                     <Link
                       to="/games/$gameId"
                       params={{ gameId: game.id }}
-                      className="truncate text-sm font-semibold text-white transition hover:text-accent-900"
+                      className={crumbClass(!character && !npc)}
                     >
                       {game.name}
                     </Link>
-                    <span className="text-gray-700">·</span>
-                    <CombatHeaderTag
-                      gameId={game.id}
-                      initialGameState={gameState}
-                    />
-                    <SaveChip status={saveStatus} />
+                    {character && (
+                      <>
+                        <span className="text-gray-700">/</span>
+                        <Link
+                          to="/games/$gameId/characters/$characterId"
+                          params={{
+                            gameId: game.id,
+                            characterId: character.id,
+                          }}
+                          className={crumbClass(true)}
+                        >
+                          {character.name}
+                        </Link>
+                      </>
+                    )}
+                    {npc && (
+                      <>
+                        <span className="text-gray-700">/</span>
+                        <Link
+                          to="/games/$gameId/npcs/$npcId"
+                          params={{ gameId: game.id, npcId: npc.id }}
+                          className={crumbClass(true)}
+                        >
+                          {npc.name}
+                        </Link>
+                      </>
+                    )}
+                    <div className="ml-5 flex items-center gap-3">
+                      <CombatHeaderTag
+                        gameId={game.id}
+                        initialGameState={gameState}
+                      />
+                      <SaveChip status={saveStatus} />
+                    </div>
                   </>
                 )}
               </div>
