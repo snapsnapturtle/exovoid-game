@@ -19,17 +19,20 @@ export const getUserGames = createServerFn().handler(async () => {
   if (!memberships || memberships.length === 0) return []
 
   const gameIds = memberships.map((m) => m.game_id)
-  const { data: games } = await supabase
-    .from('games')
-    .select('*')
-    .in('id', gameIds)
-    .order('created_at', { ascending: false })
-
-  const { data: gmMembers } = await supabase
-    .from('game_members')
-    .select('game_id, profiles(display_name)')
-    .in('game_id', gameIds)
-    .eq('role', 'gm')
+  // The games fetch and the GM-name lookup both depend only on gameIds and are
+  // independent of each other, so run them concurrently.
+  const [{ data: games }, { data: gmMembers }] = await Promise.all([
+    supabase
+      .from('games')
+      .select('*')
+      .in('id', gameIds)
+      .order('created_at', { ascending: false }),
+    supabase
+      .from('game_members')
+      .select('game_id, profiles(display_name)')
+      .in('game_id', gameIds)
+      .eq('role', 'gm'),
+  ])
   const gmNameByGame = new Map(
     (gmMembers ?? []).map((m) => [
       m.game_id,
