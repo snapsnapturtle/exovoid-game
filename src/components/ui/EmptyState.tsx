@@ -41,7 +41,9 @@ export function EmptyState({
       </div>
       <p className="mt-4 text-base font-semibold text-gray-1000">{title}</p>
       {description && (
-        <p className="mt-1.5 max-w-sm text-sm text-gray-900">{description}</p>
+        <div className="mt-1.5 max-w-sm text-sm text-gray-900">
+          {description}
+        </div>
       )}
       {action && <div className="mt-5">{action}</div>}
     </div>
