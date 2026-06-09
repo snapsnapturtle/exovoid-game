@@ -327,10 +327,21 @@
 }
    ───────────────────────────────────────────────────────────────────────── */
 
-/* Header sits in its own group: identical pixels old→new, so skip its
-   animation entirely and let it stay anchored. */
-::view-transition-group(app-header) {
+/* Header sits in its own group and stays anchored chrome. Its content does
+   change between pages now (breadcrumbs gain a character/NPC crumb, the combat
+   tag/save chip update), so we hard-cut rather than animate: kill the group's
+   position morph and the new snapshot's cross-fade so the breadcrumb swaps
+   instantly. The old snapshot must be hidden outright (opacity 0), not just
+   left un-animated — the header background is a translucent gradient, so a
+   parked old snapshot would ghost through the new one for the transition's
+   duration. */
+::view-transition-group(app-header),
+::view-transition-new(app-header) {
   animation: none;
+}
+::view-transition-old(app-header) {
+  animation: none;
+  opacity: 0;
 }
 
 /* Respect reduced-motion: hard-cut instead of animating. */
