@@ -46,7 +46,7 @@ export function AddCustomItemModal({
         <div className="flex flex-wrap items-center gap-2">
           <Input
             type="number"
-            size="sm"
+            size="md"
             min={1}
             value={quantity}
             onChange={(e) =>
@@ -57,7 +57,7 @@ export function AddCustomItemModal({
           />
           <Input
             type="text"
-            size="sm"
+            size="md"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             placeholder="Location (e.g. backpack)"
@@ -83,7 +83,7 @@ export function AddCustomItemModal({
           <Input
             autoFocus
             type="text"
-            size="sm"
+            size="md"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="e.g. cursed amulet"
@@ -93,7 +93,7 @@ export function AddCustomItemModal({
         <label className="block text-xs text-gray-900">
           Description (optional)
           <Textarea
-            size="sm"
+            size="md"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={3}

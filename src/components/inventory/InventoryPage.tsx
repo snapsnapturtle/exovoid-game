@@ -570,30 +570,32 @@ function NumberField({
   }
 
   return (
-    <label className="flex items-center gap-2 text-xs text-gray-900">
+    <label className="flex flex-col gap-1.5 text-xs text-gray-900">
       <span>{label}</span>
-      <Input
-        type="number"
-        size="sm"
-        min={0}
-        value={draft}
-        disabled={busy || !canEdit}
-        onChange={(e) => setDraft(e.target.value)}
-        onFocus={() => setFocused(true)}
-        onBlur={() => {
-          setFocused(false)
-          commit()
-        }}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') (e.currentTarget as HTMLInputElement).blur()
-          else if (e.key === 'Escape') {
-            setDraft(String(value))
-            ;(e.currentTarget as HTMLInputElement).blur()
-          }
-        }}
-        className="w-24"
-      />
-      <span className="text-gray-700">{suffix}</span>
+      <div className="flex items-center gap-2">
+        <Input
+          type="number"
+          size="md"
+          min={0}
+          value={draft}
+          disabled={busy || !canEdit}
+          onChange={(e) => setDraft(e.target.value)}
+          onFocus={() => setFocused(true)}
+          onBlur={() => {
+            setFocused(false)
+            commit()
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') (e.currentTarget as HTMLInputElement).blur()
+            else if (e.key === 'Escape') {
+              setDraft(String(value))
+              ;(e.currentTarget as HTMLInputElement).blur()
+            }
+          }}
+          className="w-24"
+        />
+        <span className="text-gray-700">{suffix}</span>
+      </div>
     </label>
   )
 }
