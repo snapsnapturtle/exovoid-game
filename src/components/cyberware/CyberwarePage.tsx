@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link, useRouter } from '@tanstack/react-router'
+import { useRouter } from '@tanstack/react-router'
 import type { Character } from '~/lib/types/database'
 import {
   canInstall,
@@ -154,16 +154,9 @@ export function CyberwarePage({ initial, canEdit }: CyberwarePageProps) {
 
   return (
     <div className="space-y-4 p-6">
-      <header className="flex flex-wrap items-center justify-between gap-3">
+      <header className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <Link
-            to="/games/$gameId/characters/$characterId"
-            params={{ gameId: character.game_id, characterId: character.id }}
-            className="text-sm text-gray-900 transition hover:text-white"
-          >
-            ← {character.name || 'Character'}
-          </Link>
-          <h1 className="mt-1 text-2xl font-bold text-white">Cyberware</h1>
+          <h1 className="text-2xl font-bold text-white">Cyberware</h1>
         </div>
         <div className="flex flex-col items-end gap-1">
           <OccupationBar used={used} capacity={capacity} over={overCapacity} />

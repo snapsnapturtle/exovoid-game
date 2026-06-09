@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
-import { Link, useRouter } from '@tanstack/react-router'
+import { useRouter } from '@tanstack/react-router'
 import { IconCash, IconCurrencyDollar } from '@tabler/icons-react'
 import { EffectTooltip } from './EffectTooltip'
 import type { Character, GameState, InventoryItem } from '~/lib/types/database'
@@ -125,14 +125,7 @@ export function InventoryPage({
   return (
     <div className="space-y-4 p-6">
       <header>
-        <Link
-          to="/games/$gameId/characters/$characterId"
-          params={{ gameId: character.game_id, characterId: character.id }}
-          className="text-sm text-gray-900 transition hover:text-white"
-        >
-          ← {character.name || 'Character'}
-        </Link>
-        <h1 className="mt-1 text-2xl font-bold text-white">Inventory</h1>
+        <h1 className="text-2xl font-bold text-white">Inventory</h1>
       </header>
 
       {error && <Alert>{error}</Alert>}
