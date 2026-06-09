@@ -231,7 +231,7 @@ function RollCard({
   return (
     <button
       onClick={onClick}
-      className={`w-full rounded-lg border border-gray-400 bg-background-200 p-3 text-left transition hover:border-accent-700 ${highlighted ? 'roll-flash' : ''}`}
+      className={`w-full rounded-lg border border-gray-400 bg-background-200 p-3 text-left transition hover:border-gray-500 hover:bg-gray-100 ${highlighted ? 'roll-flash' : ''}`}
     >
       <div className="flex items-baseline justify-between gap-2 text-xs text-gray-900">
         <span className="min-w-0 flex-1 truncate">{label}</span>
