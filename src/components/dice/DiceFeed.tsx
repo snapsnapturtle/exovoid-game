@@ -138,7 +138,7 @@ export function DiceFeed({
   return (
     <>
       <aside className="relative flex h-full w-80 shrink-0 flex-col border-l border-gray-400 bg-background-100 pt-[var(--app-header-h)]">
-        <div className="flex shrink-0 items-center justify-between border-b border-gray-400 px-4 py-3">
+        <div className="flex shrink-0 items-center justify-between border-y border-gray-400 px-4 py-3">
           <h3 className="text-sm font-semibold text-white">Dice Feed</h3>
           <Button
             variant="subtle"

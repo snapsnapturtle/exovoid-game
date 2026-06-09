@@ -87,7 +87,7 @@ function AppLayoutInner() {
           view-transition-name lifts it into its own snapshot group, so page
           transitions animate only the body below while the header stays put
           (see ::view-transition rules in app.css). */}
-      <header className="absolute inset-x-0 top-0 z-20 flex h-[var(--app-header-h)] items-center border-b border-gray-400 bg-gradient-to-t from-background-100/40 to-background-100 backdrop-blur-sm [view-transition-name:app-header]">
+      <header className="elevation-float absolute inset-x-0 top-0 z-20 flex h-[var(--app-header-h)] items-center bg-gradient-to-t from-background-100/40 to-background-100 backdrop-blur-sm [view-transition-name:app-header]">
         {/* Two visual zones, gated at the 1600px breakpoint — that's the
             viewport width at which the body's max-w-[1280px] content area
             plus the w-80 dice feed first clear the viewport, so the feed
