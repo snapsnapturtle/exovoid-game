@@ -39,6 +39,16 @@
   scrollbar-gutter: stable;
 }
 
+/* Fixed height of the overlaid app header (_app layout). The header is
+   absolutely positioned so body content scrolls under its frosted backdrop;
+   every scroll pane pads its top by this constant to clear the bar. It's an
+   intentional app-bar height that vertically centers its content (the account
+   button is ~44px tall, leaving ~10px above/below) — not a value derived from
+   summing the content's paddings. */
+:root {
+  --app-header-h: 4rem;
+}
+
 /* Elevation for elements that genuinely float above the page (toasts,
    tooltips, FAB-style buttons). On a pure-black page bg a black-tinted drop
    shadow is physically invisible — the bg is already as dark as the shadow.

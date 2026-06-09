@@ -60,11 +60,13 @@ function AppLayoutInner() {
   }
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden">
-      {/* view-transition-name lifts the persistent header into its own
-          snapshot group, so page transitions animate only the body below
-          while the header stays put (see ::view-transition rules in app.css). */}
-      <header className="shrink-0 border-b border-gray-400 bg-background-100 [view-transition-name:app-header]">
+    <div className="relative flex h-screen flex-col overflow-hidden">
+      {/* The header overlays the body (absolute, above the scroll panes) so
+          content scrolls under its frosted gradient backdrop.
+          view-transition-name lifts it into its own snapshot group, so page
+          transitions animate only the body below while the header stays put
+          (see ::view-transition rules in app.css). */}
+      <header className="absolute inset-x-0 top-0 z-20 flex h-[var(--app-header-h)] items-center border-b border-gray-400 bg-gradient-to-t from-background-100/40 to-background-100 backdrop-blur-sm [view-transition-name:app-header]">
         {/* Two visual zones, gated at the 1600px breakpoint — that's the
             viewport width at which the body's max-w-[1280px] content area
             plus the w-80 dice feed first clear the viewport, so the feed
@@ -75,9 +77,9 @@ function AppLayoutInner() {
             < 1600: the spacer is hidden and the inner row goes full-width,
             so the avatar instead lands at the right edge of the viewport
             (= right edge of the dice feed), above the feed itself. */}
-        <div className="flex">
+        <div className="flex w-full">
           <div className="flex min-w-0 flex-1 justify-center">
-            <div className="flex w-full max-w-none items-center justify-between gap-4 px-6 py-3 min-[1600px]:max-w-[1280px]">
+            <div className="flex w-full max-w-none items-center justify-between gap-4 px-6 min-[1600px]:max-w-[1280px]">
               <div className="flex min-w-0 items-center gap-3">
                 <Link
                   to="/dashboard"
@@ -117,7 +119,7 @@ function AppLayoutInner() {
                 <button
                   ref={accountMenu.refs.setReference}
                   type="button"
-                  className="flex items-center gap-3 rounded-md px-2 py-1 transition hover:bg-gray-100"
+                  className="flex items-center gap-2.5 rounded-md px-2 py-1 transition hover:bg-gray-100"
                   {...accountMenu.getReferenceProps()}
                 >
                   <div className="text-right">
@@ -126,7 +128,7 @@ function AppLayoutInner() {
                     </p>
                     <p className="text-xs text-gray-900">{user.email}</p>
                   </div>
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-700 text-sm font-medium text-white">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-accent-700 text-xs font-medium text-white">
                     {(profile?.display_name ||
                       user.email ||
                       '?')[0].toUpperCase()}
@@ -157,7 +159,7 @@ function AppLayoutInner() {
           />
         </div>
       </header>
-      <main className="min-h-0 flex-1 overflow-hidden">
+      <main className="min-h-0 flex-1 overflow-y-auto">
         <Outlet />
       </main>
     </div>

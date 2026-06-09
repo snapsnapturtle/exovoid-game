@@ -53,7 +53,7 @@ function StyleguidePage() {
 
   return (
     <div className="h-full overflow-auto">
-      <div className="mx-auto max-w-5xl space-y-12 p-8">
+      <div className="mx-auto max-w-5xl space-y-12 px-8 pb-8 pt-[calc(var(--app-header-h)+2rem)]">
         <header>
           <h1 className="text-3xl font-bold text-white">Styleguide</h1>
           <p className="mt-2 text-sm text-gray-900">

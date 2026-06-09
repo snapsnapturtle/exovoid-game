@@ -93,7 +93,7 @@ function GameLayout() {
     <DiceFeedContext.Provider value={ctx}>
       <div className="flex h-full min-h-0 overflow-hidden">
         <div className="min-w-0 flex-1 overflow-auto">
-          <div className="mx-auto w-full max-w-[1280px]">
+          <div className="mx-auto w-full max-w-[1280px] pt-[var(--app-header-h)]">
             <Outlet />
           </div>
         </div>

@@ -67,7 +67,7 @@ function AccountPage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl p-8">
+    <div className="mx-auto max-w-2xl px-8 pb-8 pt-[calc(var(--app-header-h)+2rem)]">
       <h2 className="mb-8 text-2xl font-bold text-white">Account settings</h2>
 
       <section className="rounded-xl border border-gray-400 bg-background-200 p-6">
