@@ -224,19 +224,7 @@ export function CombatPage({
     <div className="space-y-4 p-6">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-gray-1000">
-            Combat
-            {combat && (
-              <Badge
-                tone="warning"
-                size="sm"
-                uppercase
-                className="ml-2 align-middle"
-              >
-                Round {combat.round}
-              </Badge>
-            )}
-          </h1>
+          <h1 className="text-2xl font-bold text-gray-1000">Combat</h1>
         </div>
         <div className="flex flex-wrap gap-2">
           {isGm && !combat && (
