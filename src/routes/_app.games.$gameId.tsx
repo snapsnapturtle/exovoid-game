@@ -1,9 +1,4 @@
-import {
-  createFileRoute,
-  Link,
-  Outlet,
-  useLocation,
-} from '@tanstack/react-router'
+import { createFileRoute, Outlet } from '@tanstack/react-router'
 import { useCallback, useMemo } from 'react'
 import { getGame } from '~/lib/server/games'
 import { getRecentRolls } from '~/lib/server/dice'
@@ -37,7 +32,6 @@ function GameLayout() {
     Route.useLoaderData()
   const liveGameState = useRealtimeGameState(gameState)
   const liveCharacters = useRealtimeCharacters(game.id, characters)
-  const location = useLocation()
   const {
     rolls: liveRolls,
     refresh,
@@ -95,30 +89,10 @@ function GameLayout() {
     [myFullCharacters],
   )
 
-  const showCombatBanner =
-    !!liveGameState.combat && !location.pathname.endsWith('/combat')
-
   return (
     <DiceFeedContext.Provider value={ctx}>
       <div className="flex h-full min-h-0 overflow-hidden">
         <div className="min-w-0 flex-1 overflow-auto">
-          {showCombatBanner && liveGameState.combat && (
-            <Link
-              to="/games/$gameId/combat"
-              params={{ gameId: game.id }}
-              className="block border-b border-warning-700/40 bg-warning-700/10 text-sm text-warning-900 transition hover:bg-warning-700/20"
-            >
-              <div className="mx-auto flex min-h-12 w-full max-w-[1280px] items-center px-6">
-                <span className="mr-2">⚔</span>
-                <span className="font-semibold">
-                  Combat active — Round {liveGameState.combat.round}
-                </span>
-                <span className="ml-2 text-warning-900/80">
-                  Go to tracker →
-                </span>
-              </div>
-            </Link>
-          )}
           <div className="mx-auto w-full max-w-[1280px]">
             <Outlet />
           </div>

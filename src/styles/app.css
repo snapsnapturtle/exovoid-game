@@ -272,6 +272,65 @@
   transform: translateY(0);
 }
 
+/* ─── Page transitions (View Transitions API) ──────────────────────────────
+   Wired through the router's `defaultViewTransition` (src/router.tsx): every
+   navigation runs inside document.startViewTransition, which snapshots the
+   outgoing and incoming views so we can animate between them via the
+   ::view-transition-* pseudo-elements below.
+
+   The persistent app header carries `view-transition-name: app-header`
+   (_app.tsx), lifting it into its own snapshot group — so it holds perfectly
+   still while only the page body (the `root` group) animates.
+
+   Timing echoes the app's modal entrance: quick (≤180ms), ease-out, gentle —
+   no bounce. Two options below; keep one active and comment the other to
+   compare live.
+
+   ── Option A (active): fade out + an 8px rise on the incoming page ───────── */
+@keyframes page-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes page-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+::view-transition-old(root) {
+  animation: page-fade-out 120ms ease-out forwards;
+}
+::view-transition-new(root) {
+  animation: page-rise-in 180ms ease-out;
+}
+
+/* ── Option B: plain cross-fade (tuned faster than the 250ms browser default)
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 160ms;
+  animation-timing-function: ease-out;
+}
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Header sits in its own group: identical pixels old→new, so skip its
+   animation entirely and let it stay anchored. */
+::view-transition-group(app-header) {
+  animation: none;
+}
+
+/* Respect reduced-motion: hard-cut instead of animating. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
 /* Adds a 1px white outline around an image's alpha silhouette via stacked
    drop-shadows. Used on dice result symbols so they read against any die
    color without modifying the source PNGs. */

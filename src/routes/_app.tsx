@@ -8,6 +8,9 @@ import {
 } from '@tanstack/react-router'
 import { Popover, usePopover } from '~/components/ui/Popover'
 import { SaveChip } from '~/components/ui/SaveChip'
+import { StatusDot } from '~/components/ui/StatusDot'
+import { useRealtimeGameState } from '~/lib/hooks/useRealtimeGameState'
+import type { GameState } from '~/lib/types/database'
 import { getAuthUser } from '~/lib/server/auth'
 import { getSupabaseBrowserClient } from '~/lib/supabase/client'
 import {
@@ -45,7 +48,7 @@ function AppLayoutInner() {
     shouldThrow: false,
   })
   const game = gameMatch?.loaderData?.game
-  const combat = gameMatch?.loaderData?.gameState?.combat
+  const gameState = gameMatch?.loaderData?.gameState
   const accountMenu = usePopover({ placement: 'bottom-end' })
   const saveStatus = useSaveStatus()
 
@@ -58,7 +61,10 @@ function AppLayoutInner() {
 
   return (
     <div className="flex h-screen flex-col overflow-hidden">
-      <header className="shrink-0 border-b border-gray-400 bg-background-100">
+      {/* view-transition-name lifts the persistent header into its own
+          snapshot group, so page transitions animate only the body below
+          while the header stays put (see ::view-transition rules in app.css). */}
+      <header className="shrink-0 border-b border-gray-400 bg-background-100 [view-transition-name:app-header]">
         {/* Two visual zones, gated at the 1600px breakpoint — that's the
             viewport width at which the body's max-w-[1280px] content area
             plus the w-80 dice feed first clear the viewport, so the feed
@@ -81,7 +87,7 @@ function AppLayoutInner() {
                     Exo<span className="text-accent-900">void</span>
                   </h1>
                 </Link>
-                {game && (
+                {game && gameState && (
                   <>
                     <span className="text-gray-700">/</span>
                     <Link
@@ -99,18 +105,10 @@ function AppLayoutInner() {
                       {game.name}
                     </Link>
                     <span className="text-gray-700">·</span>
-                    <Link
-                      to="/games/$gameId/combat"
-                      params={{ gameId: game.id }}
-                      activeProps={{ className: 'text-accent-900' }}
-                      className={`shrink-0 rounded-md px-2 py-0.5 text-xs font-medium transition ${
-                        combat
-                          ? 'border border-warning-700/60 bg-warning-700/15 text-warning-900 hover:bg-warning-700/25'
-                          : 'border border-gray-400 text-gray-900 hover:border-accent-700 hover:text-white'
-                      }`}
-                    >
-                      {combat ? `⚔ Round ${combat.round}` : 'Combat'}
-                    </Link>
+                    <CombatHeaderTag
+                      gameId={game.id}
+                      initialGameState={gameState}
+                    />
                     <SaveChip status={saveStatus} />
                   </>
                 )}
@@ -163,5 +161,52 @@ function AppLayoutInner() {
         <Outlet />
       </main>
     </div>
+  )
+}
+
+// The combat tag lives in the persistent header (an ancestor of the game
+// layout route), so it can't read that route's realtime game state through
+// context. It subscribes on its own instead, so starting/ending combat in
+// another session updates the badge live rather than waiting for a refresh.
+// Only mounted when in a game, which keeps the realtime hook unconditional.
+function CombatHeaderTag({
+  gameId,
+  initialGameState,
+}: {
+  gameId: string
+  initialGameState: GameState
+}) {
+  const { combat } = useRealtimeGameState(initialGameState)
+
+  return (
+    <Link
+      to="/games/$gameId/combat"
+      params={{ gameId }}
+      // The active-page accent only applies when combat is idle; while it's
+      // live the warning treatment wins so sitting on /combat doesn't
+      // recolour the pill.
+      activeProps={combat ? undefined : { className: 'text-accent-900' }}
+      className={`flex shrink-0 items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium transition ${
+        combat
+          ? 'border border-warning-400 bg-warning-100 text-warning-900 hover:border-warning-500 hover:bg-warning-200'
+          : 'border border-gray-400 bg-gray-100 text-gray-900 hover:border-gray-500 hover:bg-gray-200'
+      }`}
+    >
+      {combat ? (
+        <>
+          <StatusDot
+            tone="warning"
+            pulse
+            label="Combat in progress"
+            className="mr-0.5"
+          />
+          <span className="font-semibold">Combat</span>
+          <span className="text-warning-900">–</span>
+          <span>Round {combat.round}</span>
+        </>
+      ) : (
+        'Combat'
+      )}
+    </Link>
   )
 }

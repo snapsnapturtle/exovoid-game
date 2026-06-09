@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link, useRouter } from '@tanstack/react-router'
-import { IconLogout } from '@tabler/icons-react'
+import { IconLogout, IconSwords } from '@tabler/icons-react'
 import type {
   Character,
   CharacterAttributes,
@@ -19,6 +19,7 @@ import { Button } from '~/components/ui/Button'
 import { Alert } from '~/components/ui/Alert'
 import { Stepper } from '~/components/ui/Stepper'
 import { StatusDot } from '~/components/ui/StatusDot'
+import { EmptyState } from '~/components/ui/EmptyState'
 import { InlineStepper } from '~/components/ui/InlineStepper'
 import {
   lookupWeapon,
@@ -224,29 +225,11 @@ export function CombatPage({
     <div className="space-y-4 p-6">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-gray-1000">
-            Combat
-            {combat && (
-              <Badge
-                tone="warning"
-                size="sm"
-                uppercase
-                className="ml-2 align-middle"
-              >
-                Round {combat.round}
-              </Badge>
-            )}
-          </h1>
+          <h1 className="text-2xl font-bold text-gray-1000">Combat</h1>
         </div>
         <div className="flex flex-wrap gap-2">
-          {isGm && !combat && (
-            <Button
-              onClick={() => setPickerOpen('start')}
-              disabled={gmBusy !== null}
-            >
-              Start combat
-            </Button>
-          )}
+          {/* When there's no combat the start action lives in the empty
+              state below, so the toolbar only carries in-combat controls. */}
           {combat && userCanJoin && (
             <Button
               variant="secondary"
@@ -294,10 +277,26 @@ export function CombatPage({
       {error && <Alert>{error}</Alert>}
 
       {!combat ? (
-        <div className="rounded-xl border border-gray-400 bg-background-200 p-8 text-center text-sm text-gray-700">
-          No combat is currently active.
-          {!isGm && ' Wait for the GM to start an encounter.'}
-        </div>
+        <EmptyState
+          icon={<IconSwords />}
+          title="No active encounter"
+          description={
+            isGm
+              ? 'Start combat to roll initiative and track turns, AP, and health for everyone in the fight.'
+              : 'Wait for the GM to start an encounter.'
+          }
+          action={
+            isGm ? (
+              <Button
+                variant="subtle"
+                onClick={() => setPickerOpen('start')}
+                disabled={gmBusy !== null}
+              >
+                Start combat
+              </Button>
+            ) : undefined
+          }
+        />
       ) : (
         <>
           <ApTimeline

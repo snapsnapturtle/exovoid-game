@@ -7,6 +7,10 @@ export function getRouter() {
     routeTree,
     defaultPreload: 'intent',
     scrollRestoration: true,
+    // Wrap every navigation in document.startViewTransition. The actual
+    // transition (cross-fade / rise) and the prefers-reduced-motion guard
+    // live in the ::view-transition-* rules in src/styles/app.css.
+    defaultViewTransition: true,
     defaultNotFoundComponent: NotFound,
   })
   return router
