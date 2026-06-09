@@ -436,13 +436,13 @@ function TabButton({
       onClick={onClick}
       className={`flex-1 rounded-lg px-3 py-2 text-sm font-medium transition ${
         active
-          ? 'bg-accent-700/20 text-accent-900'
+          ? 'bg-gray-400 text-white'
           : 'text-gray-900 hover:bg-gray-100 hover:text-white'
       }`}
     >
       {label}
       <span
-        className={`ml-2 text-xs ${active ? 'text-accent-900/80' : 'text-gray-700'}`}
+        className={`ml-2 text-xs ${active ? 'text-gray-900' : 'text-gray-700'}`}
       >
         {count}
       </span>
