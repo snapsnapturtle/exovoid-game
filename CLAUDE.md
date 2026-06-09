@@ -33,7 +33,7 @@ Digital companion app for the Exovoid tabletop RPG. Think D&D Beyond for a sci-f
 
 - All database writes go through `createServerFn` in `src/lib/server/`
 - Always validate auth via `supabase.auth.getUser()` in server functions
-- Use `.inputValidator()` for input validation (not `.validator()`)
+- Use `.validator()` for input validation (`.inputValidator()` is the deprecated alias in current TanStack Start)
 
 ### Game Logic
 

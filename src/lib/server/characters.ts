@@ -25,7 +25,7 @@ import careersData from '~/data/careers.json'
 const careers = careersData as CareerData[]
 
 export const createCharacter = createServerFn({ method: 'POST' })
-  .inputValidator(
+  .validator(
     (d: {
       gameId: string
       name: string
@@ -96,7 +96,7 @@ export const createCharacter = createServerFn({ method: 'POST' })
   })
 
 export const getCharacter = createServerFn()
-  .inputValidator((d: { characterId: string }) => d)
+  .validator((d: { characterId: string }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {
@@ -140,7 +140,7 @@ export const getCharacter = createServerFn()
   })
 
 export const updateCharacter = createServerFn({ method: 'POST' })
-  .inputValidator(
+  .validator(
     (d: {
       characterId: string
       updates: {
@@ -184,7 +184,7 @@ export const updateCharacter = createServerFn({ method: 'POST' })
   })
 
 export const grantTalent = createServerFn({ method: 'POST' })
-  .inputValidator((d: { characterId: string; talentName: string }) => d)
+  .validator((d: { characterId: string; talentName: string }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {
@@ -224,7 +224,7 @@ export const grantTalent = createServerFn({ method: 'POST' })
   })
 
 export const installCyberware = createServerFn({ method: 'POST' })
-  .inputValidator((d: { characterId: string; cyberwareName: string }) => d)
+  .validator((d: { characterId: string; cyberwareName: string }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {
@@ -274,7 +274,7 @@ export const installCyberware = createServerFn({ method: 'POST' })
   })
 
 export const uninstallCyberware = createServerFn({ method: 'POST' })
-  .inputValidator((d: { characterId: string; cyberwareName: string }) => d)
+  .validator((d: { characterId: string; cyberwareName: string }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {
@@ -330,7 +330,7 @@ function withAllocationReset(
 }
 
 export const setMalfunctionAllocations = createServerFn({ method: 'POST' })
-  .inputValidator((d: { characterId: string; allocations: number[] }) => d)
+  .validator((d: { characterId: string; allocations: number[] }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {
@@ -370,7 +370,7 @@ export const setMalfunctionAllocations = createServerFn({ method: 'POST' })
   })
 
 export const deleteCharacter = createServerFn({ method: 'POST' })
-  .inputValidator((d: { characterId: string }) => d)
+  .validator((d: { characterId: string }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {
@@ -413,7 +413,7 @@ export const deleteCharacter = createServerFn({ method: 'POST' })
   })
 
 export const updatePortraitUrl = createServerFn({ method: 'POST' })
-  .inputValidator((d: { characterId: string; portraitUrl: string | null }) => d)
+  .validator((d: { characterId: string; portraitUrl: string | null }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {

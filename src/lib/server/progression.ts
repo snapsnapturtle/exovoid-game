@@ -9,7 +9,7 @@ import type { Json, ProgressionEntry } from '~/lib/types/database'
  * `picks` shape is per-source and agreed in app code, not the DB.
  */
 export const recordProgression = createServerFn({ method: 'POST' })
-  .inputValidator(
+  .validator(
     (d: { characterId: string; level: number; source: string; picks: Json }) =>
       d,
   )
@@ -40,7 +40,7 @@ export const recordProgression = createServerFn({ method: 'POST' })
  * so callers can render a stable timeline.
  */
 export const listProgression = createServerFn({ method: 'POST' })
-  .inputValidator((d: { characterId: string }) => d)
+  .validator((d: { characterId: string }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {
@@ -66,7 +66,7 @@ export const listProgression = createServerFn({ method: 'POST' })
  * 20260529002537_progression_owner_edits_and_realtime.sql).
  */
 export const updateProgression = createServerFn({ method: 'POST' })
-  .inputValidator((d: { id: string; picks: Json }) => d)
+  .validator((d: { id: string; picks: Json }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {
@@ -89,7 +89,7 @@ export const updateProgression = createServerFn({ method: 'POST' })
  * disagrees with a row should edit it, not nuke it.
  */
 export const deleteProgression = createServerFn({ method: 'POST' })
-  .inputValidator((d: { id: string }) => d)
+  .validator((d: { id: string }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {

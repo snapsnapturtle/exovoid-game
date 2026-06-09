@@ -48,7 +48,7 @@ export const getUserGames = createServerFn().handler(async () => {
 })
 
 export const createGame = createServerFn({ method: 'POST' })
-  .inputValidator((d: { name: string }) => d)
+  .validator((d: { name: string }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {
@@ -73,7 +73,7 @@ export const createGame = createServerFn({ method: 'POST' })
   })
 
 export const joinGame = createServerFn({ method: 'POST' })
-  .inputValidator((d: { inviteCode: string }) => d)
+  .validator((d: { inviteCode: string }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {
@@ -106,7 +106,7 @@ export const joinGame = createServerFn({ method: 'POST' })
   })
 
 export const getGame = createServerFn()
-  .inputValidator((d: { gameId: string }) => d)
+  .validator((d: { gameId: string }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {
