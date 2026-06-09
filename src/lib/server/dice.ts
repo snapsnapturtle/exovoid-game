@@ -49,7 +49,7 @@ export interface DiceRollEntry {
 const FEED_LIMIT = 50
 
 export const rollDice = createServerFn({ method: 'POST' })
-  .inputValidator(
+  .validator(
     (d: {
       gameId: string
       characterId?: string | null
@@ -144,7 +144,7 @@ export const rollDice = createServerFn({ method: 'POST' })
  * shape; the server does the RNG (mirrors rollDice).
  */
 export const rollPolyDice = createServerFn({ method: 'POST' })
-  .inputValidator(
+  .validator(
     (d: {
       gameId: string
       characterId?: string | null
@@ -192,7 +192,7 @@ export const rollPolyDice = createServerFn({ method: 'POST' })
   })
 
 export const rollSupportContribution = createServerFn({ method: 'POST' })
-  .inputValidator(
+  .validator(
     (d: {
       gameId: string
       characterId: string | null
@@ -281,7 +281,7 @@ export const rollSupportContribution = createServerFn({ method: 'POST' })
   })
 
 export const removePendingSupport = createServerFn({ method: 'POST' })
-  .inputValidator((d: { gameId: string; supportId: string }) => d)
+  .validator((d: { gameId: string; supportId: string }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {
@@ -310,7 +310,7 @@ export const removePendingSupport = createServerFn({ method: 'POST' })
   })
 
 export const getRecentRolls = createServerFn()
-  .inputValidator((d: { gameId: string }) => d)
+  .validator((d: { gameId: string }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {

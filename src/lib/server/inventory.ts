@@ -104,7 +104,7 @@ function buildEntry(input: {
 // Inventory operations.
 
 export const addInventoryItem = createServerFn({ method: 'POST' })
-  .inputValidator(
+  .validator(
     (d: {
       owner: Owner
       source: 'catalog' | 'custom'
@@ -128,7 +128,7 @@ export const addInventoryItem = createServerFn({ method: 'POST' })
   })
 
 export const updateInventoryItem = createServerFn({ method: 'POST' })
-  .inputValidator(
+  .validator(
     (d: {
       owner: Owner
       itemId: string
@@ -354,7 +354,7 @@ export const updateInventoryItem = createServerFn({ method: 'POST' })
   })
 
 export const removeInventoryItem = createServerFn({ method: 'POST' })
-  .inputValidator((d: { owner: Owner; itemId: string }) => d)
+  .validator((d: { owner: Owner; itemId: string }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {
@@ -370,7 +370,7 @@ export const removeInventoryItem = createServerFn({ method: 'POST' })
   })
 
 export const transferInventoryItem = createServerFn({ method: 'POST' })
-  .inputValidator(
+  .validator(
     (d: {
       from: Owner
       to: Owner
@@ -426,7 +426,7 @@ export const transferInventoryItem = createServerFn({ method: 'POST' })
 // Weapon-specific operations.
 
 export const addWeapon = createServerFn({ method: 'POST' })
-  .inputValidator(
+  .validator(
     (d: {
       owner: Owner
       weaponRef: string
@@ -490,7 +490,7 @@ function weaponManufacturerType(weapon: WeaponData): 'firearms' | 'melee' {
 }
 
 export const setEquipped = createServerFn({ method: 'POST' })
-  .inputValidator(
+  .validator(
     (d: { characterId: string; itemId: string; equipped: boolean }) => d,
   )
   .handler(async ({ data }) => {
@@ -528,7 +528,7 @@ export const setEquipped = createServerFn({ method: 'POST' })
   })
 
 export const addArmor = createServerFn({ method: 'POST' })
-  .inputValidator(
+  .validator(
     (d: {
       owner: Owner
       armorRef: string
@@ -583,7 +583,7 @@ export const addArmor = createServerFn({ method: 'POST' })
 // Currency operations.
 
 export const setCurrency = createServerFn({ method: 'POST' })
-  .inputValidator((d: { owner: Owner; credits?: number; assets?: number }) => d)
+  .validator((d: { owner: Owner; credits?: number; assets?: number }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {
@@ -621,7 +621,7 @@ export const setCurrency = createServerFn({ method: 'POST' })
   })
 
 export const transferCurrency = createServerFn({ method: 'POST' })
-  .inputValidator(
+  .validator(
     (d: { from: Owner; to: Owner; kind: CurrencyKind; amount: number }) => d,
   )
   .handler(async ({ data }) => {
@@ -696,7 +696,7 @@ async function writeCurrency(
 // Loader.
 
 export const loadGameState = createServerFn({ method: 'GET' })
-  .inputValidator((d: { gameId: string }) => d)
+  .validator((d: { gameId: string }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {

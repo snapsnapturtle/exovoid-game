@@ -1,8 +1,9 @@
 import { createFileRoute, getRouteApi, Link } from '@tanstack/react-router'
 import { useMemo } from 'react'
+import { Badge } from '~/components/ui/Badge'
 import { buttonClasses } from '~/components/ui/Button'
+import { surfaceCardClasses, SurfaceArrow } from '~/components/ui/Surface'
 import { CharacterPortrait } from '~/components/character/CharacterPortrait'
-import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
 import type { Character } from '~/lib/types/database'
 
 const gameRoute = getRouteApi('/_app/games/$gameId')
@@ -161,21 +162,11 @@ function NpcCard({
   controllerLabel,
   showController,
 }: NpcCardProps) {
-  const { derived } = applyPassiveEffects(
-    npc.attributes,
-    npc.talents,
-    npc.cyberware,
-    npc.inventory,
-    npc.derived_stat_bonuses,
-  )
-  const healthMax = derived.health
-  const healthCurrent = npc.health_current ?? healthMax
-
   return (
     <Link
       to="/games/$gameId/npcs/$npcId"
       params={{ gameId, npcId: npc.id }}
-      className="flex items-center gap-3 rounded-xl border border-gray-400 bg-background-200 p-3 transition hover:border-accent-700"
+      className={surfaceCardClasses()}
     >
       <CharacterPortrait
         name={npc.name}
@@ -186,31 +177,23 @@ function NpcCard({
         <div className="flex flex-wrap items-center gap-1.5">
           <p className="truncate font-medium text-white">{npc.name}</p>
           {npc.is_minion && (
-            <span className="rounded-full bg-warning-700/20 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-warning-900">
+            <Badge tone="warning" uppercase>
               Minion
-            </span>
+            </Badge>
           )}
           {!npc.visible_to_players && (
-            <span
-              title="Hidden from other players"
-              className="rounded-full bg-gray-400 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-gray-1000"
-            >
+            <Badge tone="neutral" uppercase title="Hidden from other players">
               Hidden
-            </span>
+            </Badge>
           )}
         </div>
-        <p className="mt-0.5 text-xs text-gray-900">
-          HP {healthCurrent} / {healthMax}
-          {showController && (
-            <>
-              <span className="mx-1.5 text-gray-700">·</span>
-              <span className="text-gray-700">Controlled by </span>
-              <span className="text-gray-1000">{controllerLabel}</span>
-            </>
-          )}
-        </p>
+        {showController && (
+          <p className="mt-0.5 text-xs text-gray-700">
+            Controlled by {controllerLabel}
+          </p>
+        )}
       </div>
-      <span className="text-sm text-gray-700">&rarr;</span>
+      <SurfaceArrow />
     </Link>
   )
 }

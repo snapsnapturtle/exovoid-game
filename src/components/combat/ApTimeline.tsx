@@ -5,6 +5,8 @@ import { groupByAp, sortByTurnOrder } from '~/lib/game-logic/combat'
 interface ApTimelineProps {
   participants: CombatParticipant[]
   characterNames: Map<string, string>
+  /** characterId → the human running it (PC owner, NPC controller, or GM). */
+  playerNames: Map<string, string>
 }
 
 const MIN_CELLS = 10
@@ -17,7 +19,11 @@ const MAX_CELLS = 18
  * along the natural reading direction. Same-AP participants stack
  * vertically inside a single cell. Negative AP slots are visually distinct.
  */
-export function ApTimeline({ participants, characterNames }: ApTimelineProps) {
+export function ApTimeline({
+  participants,
+  characterNames,
+  playerNames,
+}: ApTimelineProps) {
   const cells = useMemo(() => buildCells(participants), [participants])
   const currentActorId = useMemo(
     () => sortByTurnOrder(participants)[0]?.characterId ?? null,
@@ -55,21 +61,27 @@ export function ApTimeline({ participants, characterNames }: ApTimelineProps) {
                 {cell.participants.map((p) => {
                   const active = p.characterId === currentActorId
                   const name = characterNames.get(p.characterId) ?? p.name
+                  const player = playerNames.get(p.characterId) ?? ''
                   return (
                     <div
                       key={p.characterId}
-                      className={`flex min-h-10 items-center justify-center rounded-md border px-1.5 py-1 text-center text-[11px] font-medium ${
+                      className={`flex min-h-10 flex-col items-center justify-center gap-0.5 rounded-md border p-1.5 text-center ${
                         active
                           ? 'border-accent-700 bg-accent-700/25 text-white'
                           : isNegative
                             ? 'border-danger-700/40 bg-danger-700/10 text-danger-900'
-                            : 'border-gray-400 bg-gray-100 text-gray-900'
+                            : 'border-gray-400 bg-background-200 text-gray-900'
                       }`}
-                      title={`${name} · ${p.ap} AP (started ${p.baseAp + p.rolled})`}
+                      title={`${name}${player ? ` — ${player}` : ''} · ${p.ap} AP (started ${p.baseAp + p.rolled})`}
                     >
-                      <span className="line-clamp-2 break-words leading-tight">
+                      <span className="w-full truncate text-[11px] font-medium leading-tight">
                         {name}
                       </span>
+                      {player && (
+                        <span className="w-full truncate text-[10px] leading-tight opacity-70">
+                          {player}
+                        </span>
+                      )}
                     </div>
                   )
                 })}

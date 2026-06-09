@@ -20,7 +20,7 @@ import type { Character, CharacterAttributes } from '~/lib/types/database'
  * NPCs do not deal with credits or assets — both forced to 0.
  */
 export const createNpc = createServerFn({ method: 'POST' })
-  .inputValidator(
+  .validator(
     (d: {
       gameId: string
       name: string
@@ -110,7 +110,7 @@ export const createNpc = createServerFn({ method: 'POST' })
  * The name is prefixed "Copy of …"; rename in the new NPC's sheet.
  */
 export const duplicateNpc = createServerFn({ method: 'POST' })
-  .inputValidator((d: { npcId: string }) => d)
+  .validator((d: { npcId: string }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {
@@ -195,7 +195,7 @@ export const duplicateNpc = createServerFn({ method: 'POST' })
  * stay in sync.
  */
 export const updateNpcFlags = createServerFn({ method: 'POST' })
-  .inputValidator(
+  .validator(
     (d: {
       characterId: string
       updates: {
@@ -230,7 +230,7 @@ export const updateNpcFlags = createServerFn({ method: 'POST' })
  * Returns full rows so the roster can show portrait + summary stats.
  */
 export const listNpcs = createServerFn({ method: 'GET' })
-  .inputValidator((d: { gameId: string }) => d)
+  .validator((d: { gameId: string }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {

@@ -20,7 +20,7 @@ export const Route = createFileRoute('/_app/games/$gameId/combat')({
 })
 
 function CombatRoute() {
-  const { game, currentUserId, isGm } = gameRoute.useLoaderData()
+  const { game, currentUserId, isGm, members } = gameRoute.useLoaderData()
   const { gameState: initialGameState, characters: initialCharacters } =
     Route.useLoaderData()
   const liveGameState = useRealtimeGameState(initialGameState)
@@ -30,6 +30,7 @@ function CombatRoute() {
       game={game}
       gameState={liveGameState}
       characters={liveCharacters}
+      members={members}
       currentUserId={currentUserId}
       isGm={isGm}
     />

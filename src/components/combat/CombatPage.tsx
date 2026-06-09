@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link, useRouter } from '@tanstack/react-router'
-import { IconChevronRight } from '@tabler/icons-react'
+import { IconLogout } from '@tabler/icons-react'
 import type {
   Character,
   CharacterAttributes,
@@ -18,6 +18,7 @@ import { Badge } from '~/components/ui/Badge'
 import { Button } from '~/components/ui/Button'
 import { Alert } from '~/components/ui/Alert'
 import { Stepper } from '~/components/ui/Stepper'
+import { StatusDot } from '~/components/ui/StatusDot'
 import { InlineStepper } from '~/components/ui/InlineStepper'
 import {
   lookupWeapon,
@@ -45,10 +46,18 @@ import { EquippedArmorCard } from '~/components/character/EquippedArmorCard'
 import { InjuryControls } from '~/components/character/InjuryControls'
 import { PendingBonusChips } from '~/components/character/PendingBonusChips'
 
+interface CombatMember {
+  user_id: string
+  role: string
+  profiles: { display_name: string | null } | null
+}
+
 interface CombatPageProps {
   game: { id: string; name: string }
   gameState: GameState
   characters: Character[]
+  /** Game members with joined profiles, for resolving who runs each character. */
+  members: CombatMember[]
   currentUserId: string
   isGm: boolean
 }
@@ -57,6 +66,7 @@ export function CombatPage({
   game,
   gameState,
   characters,
+  members,
   currentUserId,
   isGm,
 }: CombatPageProps) {
@@ -73,6 +83,30 @@ export function CombatPage({
   const combat = gameState.combat
   const characterById = new Map(characters.map((c) => [c.id, c]))
   const characterNames = new Map(characters.map((c) => [c.id, c.name]))
+  // Resolve each participant to the human running it — PC owner, NPC
+  // controller, or the GM for undelegated (or viewer-hidden) NPCs — so the
+  // initiative tracker can show the table whose turn it is and who's upcoming.
+  const playerNameByUserId = new Map(
+    members.map((m) => [m.user_id, m.profiles?.display_name || 'Unknown']),
+  )
+  const gmName =
+    members.find((m) => m.role === 'gm')?.profiles?.display_name || 'GM'
+  const controllingPlayerName = (characterId: string): string => {
+    const c = characterById.get(characterId)
+    if (!c) return gmName // viewer-hidden NPC — the GM runs it
+    if (c.is_npc) {
+      return c.controller_user_id
+        ? (playerNameByUserId.get(c.controller_user_id) ?? gmName)
+        : gmName
+    }
+    return playerNameByUserId.get(c.user_id) ?? 'Unknown'
+  }
+  const playerNames = new Map(
+    (combat?.participants ?? []).map((p) => [
+      p.characterId,
+      controllingPlayerName(p.characterId),
+    ]),
+  )
   const participantIds = new Set(
     combat?.participants.map((p) => p.characterId) ?? [],
   )
@@ -168,12 +202,29 @@ export function CombatPage({
 
   const ordered = combat ? sortByTurnOrder(combat.participants) : []
   const activeCharacterId = ordered[0]?.characterId
+  // Cards the current viewer can act on (GM: everyone; others: their own PC +
+  // any NPC delegated to them). Only these render as cards — the rest stay on
+  // the timeline for turn-order awareness. Same predicate as canAdjust().
+  // Sorted by character name (not AP) so the list stays put while AP is
+  // adjusted; the tracker is where turn order is read.
+  const nameOf = (p: CombatParticipant) =>
+    characterById.get(p.characterId)?.name ?? p.name
+  const visible = (combat?.participants ?? [])
+    .filter((p) => {
+      const character = characterById.get(p.characterId)
+      return character != null && canAdjust(p)
+    })
+    .sort((a, b) => nameOf(a).localeCompare(nameOf(b)))
+  // Auto-expand only when the viewer has a single card to run; with several,
+  // collapse them all so the list stays scannable. Same rule for GM and
+  // players. The per-card toggle set inverts this default.
+  const singleCard = visible.length === 1
 
   return (
     <div className="space-y-4 p-6">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-bold text-gray-1000">
             Combat
             {combat && (
               <Badge
@@ -208,11 +259,17 @@ export function CombatPage({
           {isGm && combat && (
             <>
               <Button
-                onClick={() =>
-                  withGmBusy('round', () =>
+                onClick={() => {
+                  if (
+                    !window.confirm(
+                      'Start the next round? Re-rolls initiative for everyone.',
+                    )
+                  )
+                    return
+                  void withGmBusy('round', () =>
                     nextRound({ data: { gameId: game.id } }),
                   )
-                }
+                }}
                 disabled={gmBusy !== null}
               >
                 {gmBusy === 'round' ? 'Rolling…' : 'Next round'}
@@ -246,22 +303,16 @@ export function CombatPage({
           <ApTimeline
             participants={combat.participants}
             characterNames={characterNames}
+            playerNames={playerNames}
           />
 
           <div className="space-y-2">
-            {ordered.map((participant) => {
-              const character = characterById.get(participant.characterId)
-              if (!character) return null
-              // Hide other players' details — they still appear on the
-              // timeline so everyone has tactical awareness of AP/turn order,
-              // but their card-level state (HP, edge, ammo, durability)
-              // stays private to them and the GM.
-              if (!isGm && character.user_id !== currentUserId) return null
+            {visible.map((participant) => {
+              const character = characterById.get(participant.characterId)!
               const isActive = participant.characterId === activeCharacterId
               const overridden = toggledCards.has(participant.characterId)
-              // GM default = collapsed; player default = expanded. The
-              // override set just inverts the default per-card.
-              const expanded = isGm ? overridden : !overridden
+              // Default from singleCard; the toggle set flips it per card.
+              const expanded = overridden ? !singleCard : singleCard
               return (
                 <ParticipantCard
                   key={participant.characterId}
@@ -489,206 +540,289 @@ function ParticipantCard({
   }
   const removeBonus = (id: string) => consumeBonuses([id])
 
-  // Compact row — single line summary, click anywhere to expand. Used in
-  // the GM party overview and when a player collapses their own card.
-  if (!expanded) {
-    return (
-      <button
-        type="button"
-        onClick={onToggleExpanded}
-        className={`flex w-full items-center gap-3 rounded-xl border px-4 py-2 text-left transition ${
-          isActive
-            ? 'border-accent-700 bg-accent-100'
-            : 'border-gray-400 bg-background-200 hover:border-accent-700'
-        }`}
-        aria-expanded={false}
-        aria-label={`Expand ${character.name}`}
-      >
-        <Chevron open={false} />
-        <span className="flex min-w-0 items-baseline gap-2">
-          <span className="truncate text-sm font-semibold text-white">
-            {character.name}
-          </span>
-          {isActive && (
-            <Badge tone="accent" uppercase>
-              Active
-            </Badge>
-          )}
-        </span>
-        <span className="ml-auto flex shrink-0 items-center gap-2 text-xs">
-          {pendingBonuses.length > 0 && (
-            // Read-only in the compact row — nested clickable buttons would
-            // be invalid HTML inside the row's own button. Expand to remove.
-            <PendingBonusChips
-              bonuses={pendingBonuses}
-              canEdit={false}
-              onRemove={removeBonus}
-              compact
-            />
-          )}
-          <StatChip
-            label="AP"
-            value={participant.ap}
-            tone={participant.ap < 0 ? 'danger' : 'accent'}
-          />
-          <StatChip
-            label="HP"
-            value={`${healthCurrent}/${derived.health}`}
-            tone={healthCurrent <= 0 ? 'danger' : 'neutral'}
-          />
-          <StatChip label="Edge" value={`${edgeCurrent}/${derived.edge}`} />
-        </span>
-      </button>
-    )
-  }
+  // One card, two faces. The header swaps between a compact summary row
+  // (collapsed) and the full title row (expanded); the body below always
+  // stays mounted and animates its height via the grid-rows 0fr→1fr trick,
+  // so both opening and closing transition smoothly. `inert` keeps the
+  // hidden controls out of the tab order and a11y tree while collapsed.
+  // The active combatant is signalled solely by the StatusDot now — the card
+  // chrome depends only on whether it's open, not whose turn it is.
+  const borderClass = expanded
+    ? 'border-accent-600'
+    : 'border-gray-400 hover:border-gray-500 hover:bg-gray-100'
 
   return (
     <article
-      className={`rounded-xl border p-4 ${
-        isActive
-          ? 'border-accent-700 bg-gradient-to-b from-accent-700/20 via-background-200 to-background-200'
-          : 'border-gray-400 bg-background-200'
-      }`}
+      className={`relative overflow-hidden rounded-xl border bg-background-200 transition-colors duration-75 ${borderClass}`}
     >
-      <header className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
-        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-          <button
-            type="button"
-            onClick={onToggleExpanded}
-            className="mr-0.5 inline-flex h-5 w-5 items-center justify-center rounded text-gray-700 transition hover:bg-gray-100 hover:text-white"
-            aria-label={`Collapse ${character.name}`}
-            aria-expanded={true}
-          >
-            <Chevron open={true} />
-          </button>
-          <Link
-            to={
-              character.is_npc
-                ? '/games/$gameId/npcs/$npcId'
-                : '/games/$gameId/characters/$characterId'
-            }
-            params={
-              character.is_npc
-                ? { gameId, npcId: character.id }
-                : { gameId, characterId: character.id }
-            }
-            className="text-base font-semibold text-white transition hover:text-accent-900"
-          >
-            {character.name}
-          </Link>
-          {isActive && (
-            <Badge tone="accent" uppercase>
-              Active
-            </Badge>
-          )}
-          <span className="text-[11px] text-gray-700">
-            base {participant.baseAp} + d6:{participant.rolled}
-            {participant.apOverflow != null && participant.apOverflow < 0 && (
-              <span className="text-danger-900">
-                {' '}
-                − {Math.abs(participant.apOverflow)} carry
-              </span>
-            )}{' '}
-            ={' '}
-            <span className="text-gray-1000">
-              {participant.baseAp +
-                participant.rolled +
-                (participant.apOverflow ?? 0)}
+      {/* Accent gradient on its own layer so it can fade with the expansion —
+          background-image can't be transitioned, but opacity can. Timed to
+          match the 300ms grid-rows height animation; content is lifted above
+          it with `relative`. */}
+      <div
+        aria-hidden
+        className={`pointer-events-none absolute inset-0 bg-gradient-to-b from-accent-700/20 via-background-200 to-background-200 transition-opacity duration-300 ${
+          expanded ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
+      {!expanded ? (
+        <button
+          type="button"
+          onClick={onToggleExpanded}
+          className="relative flex w-full items-baseline gap-2 px-4 py-2.5 text-left"
+          aria-expanded={false}
+          aria-label={`Expand ${character.name}`}
+        >
+          {/* Name leads the row in both states (the chevron sits at the end),
+              so it keeps the same position and size when the card toggles. */}
+          <span className="flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-0.5">
+            <span className="truncate text-base font-semibold text-gray-1000">
+              {character.name}
             </span>
+            {isActive && (
+              <StatusDot
+                tone="accent"
+                pulse
+                label="Active"
+                className="self-center"
+              />
+            )}
           </span>
-        </div>
-        {canAdjust && (
-          <Button
-            variant="ghostDanger"
-            size="sm"
-            onClick={() => void onLeave()}
-            aria-label={`Remove ${character.name} from combat`}
-            title="Leave combat"
-            className="gap-1"
-          >
-            <span aria-hidden>×</span>
-            <span>Leave</span>
-          </Button>
-        )}
-      </header>
-
-      <div className="grid gap-3 sm:grid-cols-3">
-        <Stepper
-          label="AP"
-          value={participant.ap}
-          onAdjust={(delta) => onAdjustAp(delta)}
-          canEdit={canAdjust}
-          busy={apBusy}
-          valueTone={participant.ap < 0 ? 'danger' : 'accent'}
-        />
-        <Stepper
-          label="Health"
-          value={healthCurrent}
-          max={derived.health}
-          min={0}
-          onAdjust={(delta) =>
-            setHealthCurrent(
-              Math.max(0, Math.min(derived.health, healthCurrent + delta)),
-            )
-          }
-          canEdit={canAdjust}
-        />
-        <Stepper
-          label="Edge"
-          value={edgeCurrent}
-          max={derived.edge}
-          hardMax={edgeHardMax}
-          min={0}
-          onAdjust={(delta) =>
-            setEdgeCurrent(
-              Math.max(0, Math.min(edgeHardMax, edgeCurrent + delta)),
-            )
-          }
-          canEdit={canAdjust}
-        />
-      </div>
-
-      <div className="mt-3">
-        <InjuryControls
-          gameId={gameId}
-          characterId={character.id}
-          injuries={injuries}
-          edgeCurrent={edgeCurrent}
-          edgeHardMax={edgeHardMax}
-          canEdit={canAdjust}
-          isMinion={character.is_minion}
-          defaultHidden={character.is_npc && !character.visible_to_players}
-          onInjuriesChange={saveInjuries}
-          onEdgeChange={setEdgeCurrent}
-        />
-      </div>
-
-      {pendingBonuses.length > 0 && (
-        <div className="mt-3">
-          <PendingBonusChips
-            bonuses={pendingBonuses}
-            canEdit={canAdjust}
-            onRemove={removeBonus}
-          />
+          <span className="ml-auto flex shrink-0 items-center gap-1 self-center">
+            {pendingBonuses.length > 0 && (
+              // Read-only in the compact row — nested clickable buttons would
+              // be invalid HTML inside the row's own button. Expand to remove.
+              <PendingBonusChips
+                bonuses={pendingBonuses}
+                canEdit={false}
+                onRemove={removeBonus}
+                compact
+              />
+            )}
+            <Badge tone={participant.ap < 0 ? 'danger' : 'accent'}>
+              <span>AP</span>
+              <span className="font-semibold tabular-nums">
+                {participant.ap}
+              </span>
+            </Badge>
+            <Badge tone={healthCurrent <= 0 ? 'danger' : 'neutral'}>
+              <span>HP</span>
+              <span className="font-semibold tabular-nums">
+                {healthCurrent}/{derived.health}
+              </span>
+            </Badge>
+            <Badge tone="neutral">
+              <span>Edge</span>
+              <span className="font-semibold tabular-nums">
+                {edgeCurrent}/{derived.edge}
+              </span>
+            </Badge>
+          </span>
+        </button>
+      ) : (
+        // Clicking anywhere on the header collapses the card — except the
+        // name link and the Leave button, which stop propagation so they keep
+        // their own behaviour. role/tabIndex/onKeyDown keep it keyboard-
+        // operable; the keydown guard ignores Enter/Space that originated on a
+        // focusable child so those still trigger the child, not the toggle.
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={onToggleExpanded}
+          onKeyDown={(e) => {
+            if (e.target !== e.currentTarget) return
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              onToggleExpanded()
+            }
+          }}
+          aria-expanded={true}
+          aria-label={`Collapse ${character.name}`}
+          className="relative flex flex-wrap items-baseline gap-2 px-4 pb-3 pt-2.5"
+        >
+          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+            <Link
+              to={
+                character.is_npc
+                  ? '/games/$gameId/npcs/$npcId'
+                  : '/games/$gameId/characters/$characterId'
+              }
+              params={
+                character.is_npc
+                  ? { gameId, npcId: character.id }
+                  : { gameId, characterId: character.id }
+              }
+              onClick={(e) => e.stopPropagation()}
+              className="text-base font-semibold text-gray-1000 transition hover:text-accent-900"
+            >
+              {character.name}
+            </Link>
+            {isActive && (
+              <StatusDot
+                tone="accent"
+                pulse
+                label="Active"
+                className="self-center"
+              />
+            )}
+            <span className="text-[11px] text-gray-700">
+              base {participant.baseAp} + d6:{participant.rolled}
+              {participant.apOverflow != null && participant.apOverflow < 0 && (
+                <span className="text-danger-900">
+                  {' '}
+                  − {Math.abs(participant.apOverflow)} carry
+                </span>
+              )}{' '}
+              ={' '}
+              <span className="text-gray-1000">
+                {participant.baseAp +
+                  participant.rolled +
+                  (participant.apOverflow ?? 0)}
+              </span>
+            </span>
+          </div>
+          {canAdjust && (
+            <Button
+              variant="ghostDanger"
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation()
+                void onLeave()
+              }}
+              aria-label={`Remove ${character.name} from combat`}
+              title="Leave combat"
+              className="ml-auto gap-1 self-center"
+            >
+              <IconLogout size={14} aria-hidden />
+              <span>Leave</span>
+            </Button>
+          )}
         </div>
       )}
 
-      {(equippedWeapons.length > 0 || worn) && (
-        <div className="mt-3 space-y-2 border-t border-gray-400 pt-3">
-          {equippedWeapons.map((entry) => {
-            const w = lookupWeapon(entry.weaponRef!)
-            if (!w) return null
-            return (
-              <WeaponRow
-                key={entry.id}
-                entry={entry}
-                weapon={w}
+      <div
+        className={`relative grid transition-[grid-template-rows] duration-300 ease-out ${
+          expanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+        }`}
+      >
+        <div className="overflow-hidden">
+          <div className="px-4 pb-4" inert={!expanded}>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <Stepper
+                label="AP"
+                value={participant.ap}
+                onAdjust={(delta) => onAdjustAp(delta)}
+                canEdit={canAdjust}
+                busy={apBusy}
+                valueTone={participant.ap < 0 ? 'danger' : 'accent'}
+              />
+              <Stepper
+                label="Health"
+                value={healthCurrent}
+                max={derived.health}
+                min={0}
+                onAdjust={(delta) =>
+                  setHealthCurrent(
+                    Math.max(
+                      0,
+                      Math.min(derived.health, healthCurrent + delta),
+                    ),
+                  )
+                }
+                canEdit={canAdjust}
+              />
+              <Stepper
+                label="Edge"
+                value={edgeCurrent}
+                max={derived.edge}
+                hardMax={edgeHardMax}
+                min={0}
+                onAdjust={(delta) =>
+                  setEdgeCurrent(
+                    Math.max(0, Math.min(edgeHardMax, edgeCurrent + delta)),
+                  )
+                }
+                canEdit={canAdjust}
+              />
+            </div>
+
+            <div className="mt-3">
+              <InjuryControls
+                gameId={gameId}
+                characterId={character.id}
+                injuries={injuries}
+                edgeCurrent={edgeCurrent}
+                edgeHardMax={edgeHardMax}
+                canEdit={canAdjust}
+                isMinion={character.is_minion}
+                defaultHidden={
+                  character.is_npc && !character.visible_to_players
+                }
+                onInjuriesChange={saveInjuries}
+                onEdgeChange={setEdgeCurrent}
+              />
+            </div>
+
+            {pendingBonuses.length > 0 && (
+              <div className="mt-3">
+                <PendingBonusChips
+                  bonuses={pendingBonuses}
+                  canEdit={canAdjust}
+                  onRemove={removeBonus}
+                />
+              </div>
+            )}
+
+            {(equippedWeapons.length > 0 || worn) && (
+              <div className="mt-3 space-y-2 border-t border-gray-400 pt-3">
+                {equippedWeapons.map((entry) => {
+                  const w = lookupWeapon(entry.weaponRef!)
+                  if (!w) return null
+                  return (
+                    <WeaponRow
+                      key={entry.id}
+                      entry={entry}
+                      weapon={w}
+                      gameId={gameId}
+                      characterId={character.id}
+                      effectiveAttributes={effectiveAttributes}
+                      skills={character.skills}
+                      canEdit={canAdjust}
+                      onSaveError={onSaveError}
+                      onDebitAp={(amount) => onAdjustAp(-amount)}
+                      edgeAvailable={edgeCurrent}
+                      onSpendEdge={() =>
+                        setEdgeCurrent(Math.max(0, edgeCurrent - 1))
+                      }
+                      pendingBonuses={pendingBonuses}
+                      onApplyBonus={applyBonus}
+                      onConsumeBonuses={consumeBonuses}
+                      onRemoveBonus={removeBonus}
+                      defaultHidden={
+                        character.is_npc && !character.visible_to_players
+                      }
+                    />
+                  )
+                })}
+                {worn && (
+                  <ArmorRow
+                    entry={worn.entry}
+                    armor={worn.data}
+                    characterId={character.id}
+                    canEdit={canAdjust}
+                    onSaveError={onSaveError}
+                  />
+                )}
+              </div>
+            )}
+
+            <div className="mt-3 border-t border-gray-400 pt-3">
+              <ActionPanel
                 gameId={gameId}
                 characterId={character.id}
                 effectiveAttributes={effectiveAttributes}
                 skills={character.skills}
                 canEdit={canAdjust}
-                onSaveError={onSaveError}
                 onDebitAp={(amount) => onAdjustAp(-amount)}
                 edgeAvailable={edgeCurrent}
                 onSpendEdge={() => setEdgeCurrent(Math.max(0, edgeCurrent - 1))}
@@ -700,36 +834,9 @@ function ParticipantCard({
                   character.is_npc && !character.visible_to_players
                 }
               />
-            )
-          })}
-          {worn && (
-            <ArmorRow
-              entry={worn.entry}
-              armor={worn.data}
-              characterId={character.id}
-              canEdit={canAdjust}
-              onSaveError={onSaveError}
-            />
-          )}
+            </div>
+          </div>
         </div>
-      )}
-
-      <div className="mt-3 border-t border-gray-400 pt-3">
-        <ActionPanel
-          gameId={gameId}
-          characterId={character.id}
-          effectiveAttributes={effectiveAttributes}
-          skills={character.skills}
-          canEdit={canAdjust}
-          onDebitAp={(amount) => onAdjustAp(-amount)}
-          edgeAvailable={edgeCurrent}
-          onSpendEdge={() => setEdgeCurrent(Math.max(0, edgeCurrent - 1))}
-          pendingBonuses={pendingBonuses}
-          onApplyBonus={applyBonus}
-          onConsumeBonuses={consumeBonuses}
-          onRemoveBonus={removeBonus}
-          defaultHidden={character.is_npc && !character.visible_to_players}
-        />
       </div>
     </article>
   )
@@ -964,43 +1071,6 @@ function MiniStepper({
       valueClassName="text-xs font-semibold text-white"
       canEdit={canEdit}
       onAdjust={onAdjust}
-    />
-  )
-}
-
-function StatChip({
-  label,
-  value,
-  tone = 'neutral',
-}: {
-  label: string
-  value: number | string
-  tone?: 'neutral' | 'accent' | 'danger'
-}) {
-  const valueClass =
-    tone === 'danger'
-      ? 'text-danger-900'
-      : tone === 'accent'
-        ? 'text-accent-900'
-        : 'text-gray-1000'
-  return (
-    <span className="inline-flex items-baseline gap-1 rounded border border-gray-400 bg-gray-100 px-1.5 py-0.5">
-      <span className="text-[10px] uppercase tracking-wide text-gray-700">
-        {label}
-      </span>
-      <span className={`text-xs font-semibold tabular-nums ${valueClass}`}>
-        {value}
-      </span>
-    </span>
-  )
-}
-
-function Chevron({ open }: { open: boolean }) {
-  return (
-    <IconChevronRight
-      size={12}
-      aria-hidden
-      className={`shrink-0 transition-transform ${open ? 'rotate-90' : ''}`}
     />
   )
 }

@@ -19,20 +19,36 @@ export const getUserGames = createServerFn().handler(async () => {
   if (!memberships || memberships.length === 0) return []
 
   const gameIds = memberships.map((m) => m.game_id)
-  const { data: games } = await supabase
-    .from('games')
-    .select('*')
-    .in('id', gameIds)
-    .order('created_at', { ascending: false })
+  // The games fetch and the GM-name lookup both depend only on gameIds and are
+  // independent of each other, so run them concurrently.
+  const [{ data: games }, { data: gmMembers }] = await Promise.all([
+    supabase
+      .from('games')
+      .select('*')
+      .in('id', gameIds)
+      .order('created_at', { ascending: false }),
+    supabase
+      .from('game_members')
+      .select('game_id, profiles(display_name)')
+      .in('game_id', gameIds)
+      .eq('role', 'gm'),
+  ])
+  const gmNameByGame = new Map(
+    (gmMembers ?? []).map((m) => [
+      m.game_id,
+      m.profiles?.display_name || 'Unknown',
+    ]),
+  )
 
   return (games || []).map((game) => ({
     ...game,
     role: memberships.find((m) => m.game_id === game.id)?.role || 'player',
+    gmName: gmNameByGame.get(game.id) ?? 'Unknown',
   }))
 })
 
 export const createGame = createServerFn({ method: 'POST' })
-  .inputValidator((d: { name: string }) => d)
+  .validator((d: { name: string }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {
@@ -57,7 +73,7 @@ export const createGame = createServerFn({ method: 'POST' })
   })
 
 export const joinGame = createServerFn({ method: 'POST' })
-  .inputValidator((d: { inviteCode: string }) => d)
+  .validator((d: { inviteCode: string }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {
@@ -90,7 +106,7 @@ export const joinGame = createServerFn({ method: 'POST' })
   })
 
 export const getGame = createServerFn()
-  .inputValidator((d: { gameId: string }) => d)
+  .validator((d: { gameId: string }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {
@@ -111,13 +127,19 @@ export const getGame = createServerFn()
       .select('*, profiles(display_name, avatar_url)')
       .eq('game_id', data.gameId)
 
+    // PCs for the whole-game roster, plus any character the caller acts on
+    // (their own + NPCs delegated to them) so the dice-feed bonus strip can
+    // surface and clear bonuses for controlled NPCs too. RLS still gates each
+    // row.
     const { data: characters } = await supabase
       .from('characters')
       .select(
-        'id, name, career, level, user_id, portrait_url, is_npc, pending_bonuses',
+        'id, name, career, level, user_id, controller_user_id, portrait_url, is_npc, pending_bonuses',
       )
       .eq('game_id', data.gameId)
-      .eq('is_npc', false)
+      .or(
+        `is_npc.eq.false,user_id.eq.${user.id},controller_user_id.eq.${user.id}`,
+      )
 
     const isMember = members?.some((m) => m.user_id === user.id)
     if (!isMember) throw new Error('Not a member of this game')

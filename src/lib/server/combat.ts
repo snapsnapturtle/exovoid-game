@@ -102,7 +102,7 @@ function snapshotParticipant(
 }
 
 export const startCombat = createServerFn({ method: 'POST' })
-  .inputValidator((d: { gameId: string; characterIds: string[] }) => d)
+  .validator((d: { gameId: string; characterIds: string[] }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {
@@ -147,7 +147,7 @@ export const startCombat = createServerFn({ method: 'POST' })
  * overflow (clean entry).
  */
 export const joinCombat = createServerFn({ method: 'POST' })
-  .inputValidator((d: { gameId: string; characterId: string }) => d)
+  .validator((d: { gameId: string; characterId: string }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {
@@ -199,7 +199,7 @@ export const joinCombat = createServerFn({ method: 'POST' })
   })
 
 export const nextRound = createServerFn({ method: 'POST' })
-  .inputValidator((d: { gameId: string }) => d)
+  .validator((d: { gameId: string }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {
@@ -246,7 +246,7 @@ export const nextRound = createServerFn({ method: 'POST' })
  * concurrent "Leave" clicks don't surface a confusing error.
  */
 export const leaveCombat = createServerFn({ method: 'POST' })
-  .inputValidator((d: { gameId: string; characterId: string }) => d)
+  .validator((d: { gameId: string; characterId: string }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {
@@ -291,9 +291,7 @@ export const leaveCombat = createServerFn({ method: 'POST' })
   })
 
 export const adjustAp = createServerFn({ method: 'POST' })
-  .inputValidator(
-    (d: { gameId: string; characterId: string; delta: number }) => d,
-  )
+  .validator((d: { gameId: string; characterId: string; delta: number }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {
@@ -330,7 +328,7 @@ export const adjustAp = createServerFn({ method: 'POST' })
   })
 
 export const loadCombatCharacters = createServerFn({ method: 'GET' })
-  .inputValidator((d: { gameId: string }) => d)
+  .validator((d: { gameId: string }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {
@@ -348,7 +346,7 @@ export const loadCombatCharacters = createServerFn({ method: 'GET' })
   })
 
 export const endCombat = createServerFn({ method: 'POST' })
-  .inputValidator((d: { gameId: string }) => d)
+  .validator((d: { gameId: string }) => d)
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
     const {

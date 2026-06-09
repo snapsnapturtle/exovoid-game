@@ -1,9 +1,12 @@
 import { createFileRoute, getRouteApi, Link } from '@tanstack/react-router'
 import { useMemo, useState } from 'react'
-import { buttonClasses } from '~/components/ui/Button'
+import { IconCheck, IconCopy } from '@tabler/icons-react'
+import { Badge } from '~/components/ui/Badge'
+import { Button, buttonClasses } from '~/components/ui/Button'
+import { Input } from '~/components/ui/Input'
+import { surfaceCardClasses, SurfaceArrow } from '~/components/ui/Surface'
 import { CharacterPortrait } from '~/components/character/CharacterPortrait'
 import { listNpcs } from '~/lib/server/npcs'
-import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
 
 const gameRoute = getRouteApi('/_app/games/$gameId')
 
@@ -39,13 +42,17 @@ function GameLobbyPage() {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  const myCharacters = characters.filter((c) => c.user_id === currentUserId)
+  // The parent loader's `characters` now also carries the caller's own/
+  // controlled NPCs (for the dice-feed bonus strip), so filter to PCs here —
+  // NPCs have their own section below, sourced from listNpcs.
+  const pcs = characters.filter((c) => !c.is_npc)
+  const myCharacters = pcs.filter((c) => c.user_id === currentUserId)
 
   return (
     <div className="p-6">
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Players */}
-        <div className="rounded-xl border border-gray-400 bg-background-200 p-6">
+        <div className="self-start rounded-xl border border-gray-400 bg-background-200 p-6">
           <h3 className="mb-4 text-lg font-semibold text-white">Players</h3>
           <ul className="space-y-3">
             {members.map((member) => (
@@ -69,17 +76,27 @@ function GameLobbyPage() {
 
           {isGm && (
             <div className="mt-6 border-t border-gray-400 pt-4">
-              <p className="mb-2 text-sm text-gray-900">Invite Code</p>
+              <p className="mb-2 text-sm text-gray-900">Invite code</p>
               <div className="flex items-center gap-2">
-                <code className="rounded bg-gray-100 px-3 py-1.5 font-mono text-lg tracking-widest text-white">
-                  {game.invite_code}
-                </code>
-                <button
+                <Input
+                  readOnly
+                  value={game.invite_code}
+                  aria-label="Invite code"
+                  onFocus={(e) => e.currentTarget.select()}
+                  className="flex-1 font-mono tracking-widest"
+                />
+                <Button
+                  variant="secondary"
                   onClick={copyInviteCode}
-                  className="rounded-lg border border-gray-400 px-3 py-1.5 text-sm text-gray-900 transition hover:text-white"
+                  className="gap-1.5"
                 >
-                  {copied ? 'Copied!' : 'Copy'}
-                </button>
+                  {copied ? (
+                    <IconCheck size={16} aria-hidden />
+                  ) : (
+                    <IconCopy size={16} aria-hidden />
+                  )}
+                  <span>{copied ? 'Copied!' : 'Copy'}</span>
+                </Button>
               </div>
             </div>
           )}
@@ -101,18 +118,18 @@ function GameLobbyPage() {
               </Link>
             </div>
 
-            {(isGm ? characters : myCharacters).length === 0 ? (
+            {(isGm ? pcs : myCharacters).length === 0 ? (
               <p className="text-sm text-gray-700">No characters yet.</p>
             ) : (
               <ul className="space-y-2">
-                {(isGm ? characters : myCharacters).map((char) => {
+                {(isGm ? pcs : myCharacters).map((char) => {
                   const ownerName = nameByUserId.get(char.user_id) ?? 'Unknown'
                   return (
                     <li key={char.id}>
                       <Link
                         to="/games/$gameId/characters/$characterId"
                         params={{ gameId: game.id, characterId: char.id }}
-                        className="flex items-center gap-3 rounded-lg border border-gray-400 p-3 transition hover:border-accent-700"
+                        className={surfaceCardClasses()}
                       >
                         <CharacterPortrait
                           name={char.name}
@@ -124,11 +141,12 @@ function GameLobbyPage() {
                           <p className="text-xs text-gray-900">
                             Level {char.level}
                             <span className="mx-1.5 text-gray-700">·</span>
-                            <span className="text-gray-700">Played by </span>
-                            <span className="text-gray-1000">{ownerName}</span>
+                            <span className="text-gray-700">
+                              Played by {ownerName}
+                            </span>
                           </p>
                         </div>
-                        <span className="text-sm text-gray-700">&rarr;</span>
+                        <SurfaceArrow />
                       </Link>
                     </li>
                   )
@@ -154,15 +172,6 @@ function GameLobbyPage() {
             ) : (
               <ul className="space-y-2">
                 {npcs.map((npc) => {
-                  const { derived } = applyPassiveEffects(
-                    npc.attributes,
-                    npc.talents,
-                    npc.cyberware,
-                    npc.inventory,
-                    npc.derived_stat_bonuses,
-                  )
-                  const healthMax = derived.health
-                  const healthCurrent = npc.health_current ?? healthMax
                   const youControl =
                     npc.controller_user_id === currentUserId ||
                     (isGm && npc.controller_user_id === null)
@@ -175,7 +184,7 @@ function GameLobbyPage() {
                       <Link
                         to="/games/$gameId/npcs/$npcId"
                         params={{ gameId: game.id, npcId: npc.id }}
-                        className="flex items-center gap-3 rounded-lg border border-gray-400 p-3 transition hover:border-accent-700"
+                        className={surfaceCardClasses()}
                       >
                         <CharacterPortrait
                           name={npc.name}
@@ -188,35 +197,27 @@ function GameLobbyPage() {
                               {npc.name}
                             </p>
                             {npc.is_minion && (
-                              <span className="rounded-full bg-warning-700/20 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-warning-900">
+                              <Badge tone="warning" uppercase>
                                 Minion
-                              </span>
+                              </Badge>
                             )}
                             {!npc.visible_to_players && (
-                              <span
+                              <Badge
+                                tone="neutral"
+                                uppercase
                                 title="Hidden from other players"
-                                className="rounded-full bg-gray-400 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-gray-1000"
                               >
                                 Hidden
-                              </span>
+                              </Badge>
                             )}
                           </div>
-                          <p className="mt-0.5 text-xs text-gray-900">
-                            HP {healthCurrent} / {healthMax}
-                            {!youControl && (
-                              <>
-                                <span className="mx-1.5 text-gray-700">·</span>
-                                <span className="text-gray-700">
-                                  Controlled by{' '}
-                                </span>
-                                <span className="text-gray-1000">
-                                  {controller}
-                                </span>
-                              </>
-                            )}
-                          </p>
+                          {!youControl && (
+                            <p className="mt-0.5 text-xs text-gray-700">
+                              Controlled by {controller}
+                            </p>
+                          )}
                         </div>
-                        <span className="text-sm text-gray-700">&rarr;</span>
+                        <SurfaceArrow />
                       </Link>
                     </li>
                   )
