@@ -137,8 +137,14 @@ export function DiceFeed({
 
   return (
     <>
-      <aside className="relative flex h-full w-80 shrink-0 flex-col border-l border-gray-400 bg-background-100 pt-[var(--app-header-h)]">
-        <div className="flex shrink-0 items-center justify-between border-y border-gray-400 px-4 py-3">
+      {/* A normal block in the page flow, sticky below the overlay header so it
+          stays in view while the page scrolls under it. Bounded by max-h (the
+          viewport minus the header and the top/bottom gaps) so its internal
+          list scrolls. overflow-hidden clips the scroll-to-newest FAB when it's
+          hidden — it animates out via translate-y, which would otherwise poke
+          below the panel and add phantom page scroll. */}
+      <aside className="sticky top-[calc(var(--app-header-h)+1.5rem)] mr-6 mt-6 flex max-h-[calc(100vh-var(--app-header-h)-3rem)] w-80 shrink-0 flex-col self-start overflow-hidden rounded-xl border border-gray-400 bg-background-100">
+        <div className="flex shrink-0 items-center justify-between border-b border-gray-400 px-4 py-3">
           <h3 className="text-sm font-semibold text-white">Dice Feed</h3>
           <Button
             variant="subtle"
@@ -168,7 +174,7 @@ export function DiceFeed({
         ) : (
           <div
             ref={scrollRef}
-            className="flex flex-1 flex-col gap-2 overflow-y-auto p-3"
+            className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto p-3"
           >
             {rolls.map((roll) => (
               <RollCard

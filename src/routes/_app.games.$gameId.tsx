@@ -91,11 +91,13 @@ function GameLayout() {
 
   return (
     <DiceFeedContext.Provider value={ctx}>
-      <div className="flex h-full min-h-0 overflow-hidden">
-        <div className="min-w-0 flex-1 overflow-auto">
-          <div className="mx-auto w-full max-w-[1280px] pt-[var(--app-header-h)]">
-            <Outlet />
-          </div>
+      {/* Content + dice feed are one centered block in the normal page scroll
+          (main owns the scroll), so on wide screens the feed stays beside the
+          content (≈1280px) rather than flying to the viewport edge. The 1600px
+          cap mirrors the header's 1280 content + 320 feed zones. */}
+      <div className="mx-auto flex w-full max-w-[1600px] items-start pt-[var(--app-header-h)]">
+        <div className="min-w-0 flex-1">
+          <Outlet />
         </div>
         <DiceFeed
           rolls={liveRolls}
