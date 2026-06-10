@@ -144,7 +144,7 @@ export function DiceFeed({
           hidden — it animates out via translate-y, which would otherwise poke
           below the panel and add phantom page scroll. */}
       <aside className="sticky top-[calc(var(--app-header-h)+1.5rem)] mr-6 mt-6 flex max-h-[calc(100vh-var(--app-header-h)-3rem)] w-80 shrink-0 flex-col self-start overflow-hidden rounded-xl border border-gray-400 bg-background-100">
-        <div className="flex shrink-0 items-center justify-between border-b border-gray-400 px-4 py-3">
+        <div className="flex shrink-0 items-center justify-between border-b border-gray-400 bg-background-200 px-4 py-3">
           <h3 className="text-sm font-semibold text-white">Dice Feed</h3>
           <Button
             variant="subtle"
