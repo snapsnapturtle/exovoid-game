@@ -12,6 +12,7 @@ import {
   type ManufacturerEquipmentType,
 } from '~/lib/game-logic/manufacturers'
 import { QualityBadge } from './QualityBadge'
+import { Stat } from './Stat'
 import { Button } from '~/components/ui/Button'
 import { Modal } from '~/components/ui/Modal'
 import { Input } from '~/components/ui/Input'
@@ -161,7 +162,7 @@ export function AddWeaponModal({ busy, onAdd, onClose }: AddWeaponModalProps) {
         <div className="flex flex-wrap items-center gap-2">
           <Input
             type="text"
-            size="sm"
+            size="md"
             value={name}
             disabled={!weapon}
             onChange={(e) => setName(e.target.value)}
@@ -171,7 +172,7 @@ export function AddWeaponModal({ busy, onAdd, onClose }: AddWeaponModalProps) {
           />
           <Input
             type="text"
-            size="sm"
+            size="md"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             placeholder="Location (e.g. holster)"
@@ -397,20 +398,5 @@ function TypePill({
     >
       {label}
     </button>
-  )
-}
-
-function Stat({
-  label,
-  children,
-}: {
-  label: string
-  children: React.ReactNode
-}) {
-  return (
-    <span>
-      <span className="text-gray-700">{label}:</span>{' '}
-      <span className="text-gray-1000">{children}</span>
-    </span>
   )
 }

@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { getSupabaseBrowserClient } from '~/lib/supabase/client'
 import { Button } from '~/components/ui/Button'
@@ -38,16 +38,25 @@ function LoginPage() {
 
   return (
     <>
-      <h2 className="mb-6 text-xl font-semibold text-white">Log In</h2>
+      <div className="mb-7 text-center">
+        <h2 className="text-2xl font-bold tracking-tight text-white">
+          Welcome back
+        </h2>
+        <p className="mt-1.5 text-sm text-gray-900">
+          Log in to pick up where you left off.
+        </p>
+      </div>
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="email" className="mb-1 block text-sm text-gray-900">
+          <label htmlFor="email" className="mb-1.5 block text-sm text-gray-900">
             Email
           </label>
           <Input
             id="email"
             type="email"
             required
+            autoFocus
             size="lg"
             className="w-full"
             value={email}
@@ -55,42 +64,52 @@ function LoginPage() {
             placeholder="you@example.com"
           />
         </div>
-        <div>
-          <label
-            htmlFor="password"
-            className="mb-1 block text-sm text-gray-900"
-          >
-            Password
-          </label>
-          <Input
-            id="password"
-            type="password"
-            required
-            size="lg"
-            className="w-full"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Your password"
-          />
-        </div>
-        {error && <p className="text-sm text-danger-900">{error}</p>}
-        <Button type="submit" disabled={loading} className="w-full">
-          {loading ? 'Logging in...' : 'Log In'}
-        </Button>
-        <p className="text-center text-sm">
-          <a
-            href="/forgot-password"
-            className="text-accent-900 hover:underline"
+        {/* The "Forgot password?" link is visually pinned to the password
+            label row, but rendered last in the DOM so its tab order falls
+            after the Log in button (email → password → button → forgot).
+            Focus order follows source order, not the absolute placement. */}
+        <div className="relative">
+          <div className="space-y-4">
+            <div>
+              <label
+                htmlFor="password"
+                className="mb-1.5 block text-sm text-gray-900"
+              >
+                Password
+              </label>
+              <Input
+                id="password"
+                type="password"
+                required
+                size="lg"
+                className="w-full"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Your password"
+              />
+            </div>
+            {error && <p className="text-sm text-danger-900">{error}</p>}
+            <Button type="submit" disabled={loading} className="mt-1 w-full">
+              {loading ? 'Logging in…' : 'Log in'}
+            </Button>
+          </div>
+          <Link
+            to="/forgot-password"
+            className="absolute right-0 top-0 text-xs leading-5 text-accent-900 transition hover:text-accent-1000 hover:underline"
           >
             Forgot password?
-          </a>
-        </p>
+          </Link>
+        </div>
       </form>
-      <p className="mt-4 text-center text-sm text-gray-900">
+
+      <p className="mt-6 text-center text-sm text-gray-900">
         Don't have an account?{' '}
-        <a href="/signup" className="text-accent-900 hover:underline">
+        <Link
+          to="/signup"
+          className="font-medium text-accent-900 transition hover:text-accent-1000 hover:underline"
+        >
           Sign up
-        </a>
+        </Link>
       </p>
     </>
   )

@@ -30,7 +30,7 @@ function NewGamePage() {
   }
 
   return (
-    <div className="flex min-h-full items-start justify-center p-8">
+    <div className="flex min-h-full items-start justify-center px-8 pb-8 pt-[calc(var(--app-header-h)+2rem)]">
       <div className="w-full max-w-md">
         <h2 className="mb-6 text-2xl font-bold text-white">Create New Game</h2>
         <div className="rounded-xl border border-gray-400 bg-background-200 p-6">

@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { allItems, type ItemData } from '~/lib/game-logic/items'
+import { Stat } from './Stat'
 import { Button } from '~/components/ui/Button'
 import { Modal } from '~/components/ui/Modal'
 import { Input } from '~/components/ui/Input'
@@ -62,7 +63,7 @@ export function AddCatalogItemModal({
         <div className="flex flex-wrap items-center gap-2">
           <Input
             type="number"
-            size="sm"
+            size="md"
             min={1}
             value={quantity}
             onChange={(e) =>
@@ -73,7 +74,7 @@ export function AddCatalogItemModal({
           />
           <Input
             type="text"
-            size="sm"
+            size="md"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             placeholder="Location (e.g. backpack)"
@@ -112,18 +113,21 @@ export function AddCatalogItemModal({
                   }`}
                 >
                   <div className="flex flex-wrap items-baseline gap-2">
+                    <span className="font-medium text-white">{it.name}</span>
                     <span className="text-[10px] uppercase tracking-wide text-gray-700">
                       {it.category}
                     </span>
-                    <span className="font-medium text-white">{it.name}</span>
-                    <span className="text-xs text-gray-700">
-                      {it.cost.toLocaleString()} ¢ · r{it.rarity}
-                      {it.size > 0 && ` · size ${it.size}`}
-                    </span>
                   </div>
-                  <p className="mt-0.5 line-clamp-2 text-xs text-gray-900">
-                    {it.description}
-                  </p>
+                  <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-gray-900">
+                    <Stat label="Cost">{it.cost.toLocaleString()} ¢</Stat>
+                    <Stat label="Rarity">{it.rarity}</Stat>
+                    {it.size > 0 && <Stat label="Size">{it.size}</Stat>}
+                  </div>
+                  {it.description && (
+                    <p className="mt-2 whitespace-pre-line text-xs text-gray-1000">
+                      {it.description}
+                    </p>
+                  )}
                 </button>
               </li>
             )

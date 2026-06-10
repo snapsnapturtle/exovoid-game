@@ -39,6 +39,16 @@
   scrollbar-gutter: stable;
 }
 
+/* Fixed height of the overlaid app header (_app layout). The header is
+   absolutely positioned so body content scrolls under its frosted backdrop;
+   every scroll pane pads its top by this constant to clear the bar. It's an
+   intentional app-bar height that vertically centers its content (the account
+   button is ~44px tall, leaving ~10px above/below) — not a value derived from
+   summing the content's paddings. */
+:root {
+  --app-header-h: 4rem;
+}
+
 /* Elevation for elements that genuinely float above the page (toasts,
    tooltips, FAB-style buttons). On a pure-black page bg a black-tinted drop
    shadow is physically invisible — the bg is already as dark as the shadow.
@@ -317,10 +327,21 @@
 }
    ───────────────────────────────────────────────────────────────────────── */
 
-/* Header sits in its own group: identical pixels old→new, so skip its
-   animation entirely and let it stay anchored. */
-::view-transition-group(app-header) {
+/* Header sits in its own group and stays anchored chrome. Its content does
+   change between pages now (breadcrumbs gain a character/NPC crumb, the combat
+   tag/save chip update), so we hard-cut rather than animate: kill the group's
+   position morph and the new snapshot's cross-fade so the breadcrumb swaps
+   instantly. The old snapshot must be hidden outright (opacity 0), not just
+   left un-animated — the header background is a translucent gradient, so a
+   parked old snapshot would ghost through the new one for the transition's
+   duration. */
+::view-transition-group(app-header),
+::view-transition-new(app-header) {
   animation: none;
+}
+::view-transition-old(app-header) {
+  animation: none;
+  opacity: 0;
 }
 
 /* Respect reduced-motion: hard-cut instead of animating. */

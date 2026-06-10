@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
-import { Link, useRouter } from '@tanstack/react-router'
+import { useRouter } from '@tanstack/react-router'
 import { IconCash, IconCurrencyDollar } from '@tabler/icons-react'
 import { EffectTooltip } from './EffectTooltip'
 import type { Character, GameState, InventoryItem } from '~/lib/types/database'
@@ -43,6 +43,7 @@ import { Badge } from '~/components/ui/Badge'
 import { Button } from '~/components/ui/Button'
 import { InlineStepper } from '~/components/ui/InlineStepper'
 import { Input } from '~/components/ui/Input'
+import { SegmentedControl } from '~/components/ui/SegmentedControl'
 import { QualityBadge } from './QualityBadge'
 
 type Owner =
@@ -125,14 +126,7 @@ export function InventoryPage({
   return (
     <div className="space-y-4 p-6">
       <header>
-        <Link
-          to="/games/$gameId/characters/$characterId"
-          params={{ gameId: character.game_id, characterId: character.id }}
-          className="text-sm text-gray-900 transition hover:text-white"
-        >
-          ← {character.name || 'Character'}
-        </Link>
-        <h1 className="mt-1 text-2xl font-bold text-white">Inventory</h1>
+        <h1 className="text-2xl font-bold text-white">Inventory</h1>
       </header>
 
       {error && <Alert>{error}</Alert>}
@@ -156,20 +150,19 @@ export function InventoryPage({
         }
       />
 
-      <div className="flex gap-1 rounded-xl border border-gray-400 bg-background-200 p-1">
-        <TabButton
-          active={tab === 'mine'}
-          onClick={() => setTab('mine')}
-          label="Mine"
-          count={character.inventory.length}
-        />
-        <TabButton
-          active={tab === 'party'}
-          onClick={() => setTab('party')}
-          label="Party"
-          count={gameState.inventory.length}
-        />
-      </div>
+      <SegmentedControl
+        size="md"
+        value={tab}
+        onChange={setTab}
+        options={[
+          { value: 'mine', label: 'Mine', badge: character.inventory.length },
+          {
+            value: 'party',
+            label: 'Party',
+            badge: gameState.inventory.length,
+          },
+        ]}
+      />
 
       {tab === 'mine' ? (
         <InventoryColumn
@@ -420,36 +413,6 @@ export function InventoryPage({
   )
 }
 
-function TabButton({
-  active,
-  onClick,
-  label,
-  count,
-}: {
-  active: boolean
-  onClick: () => void
-  label: string
-  count: number
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`flex-1 rounded-lg px-3 py-2 text-sm font-medium transition ${
-        active
-          ? 'bg-accent-700/20 text-accent-900'
-          : 'text-gray-900 hover:bg-gray-100 hover:text-white'
-      }`}
-    >
-      {label}
-      <span
-        className={`ml-2 text-xs ${active ? 'text-accent-900/80' : 'text-gray-700'}`}
-      >
-        {count}
-      </span>
-    </button>
-  )
-}
-
 interface CurrencyBarProps {
   characterCredits: number
   characterAssets: number
@@ -570,30 +533,32 @@ function NumberField({
   }
 
   return (
-    <label className="flex items-center gap-2 text-xs text-gray-900">
+    <label className="flex flex-col gap-1.5 text-xs text-gray-900">
       <span>{label}</span>
-      <Input
-        type="number"
-        size="sm"
-        min={0}
-        value={draft}
-        disabled={busy || !canEdit}
-        onChange={(e) => setDraft(e.target.value)}
-        onFocus={() => setFocused(true)}
-        onBlur={() => {
-          setFocused(false)
-          commit()
-        }}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') (e.currentTarget as HTMLInputElement).blur()
-          else if (e.key === 'Escape') {
-            setDraft(String(value))
-            ;(e.currentTarget as HTMLInputElement).blur()
-          }
-        }}
-        className="w-24"
-      />
-      <span className="text-gray-700">{suffix}</span>
+      <div className="flex items-center gap-2">
+        <Input
+          type="number"
+          size="md"
+          min={0}
+          value={draft}
+          disabled={busy || !canEdit}
+          onChange={(e) => setDraft(e.target.value)}
+          onFocus={() => setFocused(true)}
+          onBlur={() => {
+            setFocused(false)
+            commit()
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') (e.currentTarget as HTMLInputElement).blur()
+            else if (e.key === 'Escape') {
+              setDraft(String(value))
+              ;(e.currentTarget as HTMLInputElement).blur()
+            }
+          }}
+          className="w-24"
+        />
+        <span className="text-gray-700">{suffix}</span>
+      </div>
     </label>
   )
 }

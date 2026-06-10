@@ -95,7 +95,7 @@ export function AddArmorModal({ busy, onAdd, onClose }: AddArmorModalProps) {
         <div className="flex flex-wrap items-center gap-2">
           <Input
             type="text"
-            size="sm"
+            size="md"
             value={name}
             disabled={!armor}
             onChange={(e) => setName(e.target.value)}
@@ -105,7 +105,7 @@ export function AddArmorModal({ busy, onAdd, onClose }: AddArmorModalProps) {
           />
           <Input
             type="text"
-            size="sm"
+            size="md"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             placeholder="Location (e.g. locker)"

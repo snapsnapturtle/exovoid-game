@@ -1,10 +1,9 @@
 import { useMemo, useState } from 'react'
-import { Link } from '@tanstack/react-router'
 import type { Character, ProgressionEntry } from '~/lib/types/database'
 import { SKILLS } from '~/lib/game-logic/skills'
 import { isLevelUpPicks, type LevelUpPicks } from '~/lib/game-logic/level-up'
 import { useCharacterProgression } from '~/lib/hooks/useCharacterProgression'
-import { Button, buttonClasses } from '~/components/ui/Button'
+import { Button } from '~/components/ui/Button'
 import { Alert } from '~/components/ui/Alert'
 import { LevelUpEntryEdit } from './progression-history/LevelUpEntryEdit'
 import { TrainSkillEntryEdit } from './progression-history/TrainSkillEntryEdit'
@@ -49,25 +48,10 @@ export function ProgressionHistoryPage({
   }, [rows])
 
   return (
-    <div className="mx-auto max-w-3xl space-y-4 p-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-white">Progression</h1>
-          <p className="mt-1 text-sm text-gray-1000">
-            {character.name} — level {character.level}
-          </p>
-        </div>
-        <Link
-          to="/games/$gameId/characters/$characterId"
-          params={{
-            gameId: character.game_id,
-            characterId: character.id,
-          }}
-          className={buttonClasses('ghost', 'sm')}
-        >
-          Back to sheet
-        </Link>
-      </div>
+    <div className="space-y-4 p-6">
+      <header>
+        <h1 className="text-2xl font-bold text-white">Progression</h1>
+      </header>
 
       {grouped.length === 0 && (
         <Alert variant="info">

@@ -4,6 +4,7 @@ import { getSupabaseBrowserClient } from '~/lib/supabase/client'
 import { Button } from '~/components/ui/Button'
 import { Alert } from '~/components/ui/Alert'
 import { Input } from '~/components/ui/Input'
+import { SettingsCard } from '~/components/ui/SettingsCard'
 
 export const Route = createFileRoute('/_app/account')({
   head: () => ({ meta: [{ title: 'Account settings — Exovoid' }] }),
@@ -11,7 +12,7 @@ export const Route = createFileRoute('/_app/account')({
 })
 
 function AccountPage() {
-  const { user } = Route.useRouteContext()
+  const { user, profile } = Route.useRouteContext()
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -67,84 +68,115 @@ function AccountPage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl p-8">
+    <div className="mx-auto w-full max-w-[1280px] px-8 pb-8 pt-[calc(var(--app-header-h)+2rem)]">
       <h2 className="mb-8 text-2xl font-bold text-white">Account settings</h2>
 
-      <section className="rounded-xl border border-gray-400 bg-background-200 p-6">
-        <h3 className="mb-1 text-lg font-semibold text-white">Password</h3>
-        <p className="mb-5 text-sm text-gray-900">
-          Change the password for {user.email}.
-        </p>
+      <div className="space-y-6">
+        <SettingsCard
+          title="Display name"
+          description="The name other players see at the table."
+        >
+          <Input
+            type="text"
+            size="lg"
+            className="w-full max-w-sm"
+            value={profile?.display_name || ''}
+            disabled
+            readOnly
+          />
+        </SettingsCard>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label
-              htmlFor="currentPassword"
-              className="mb-1 block text-sm text-gray-900"
-            >
-              Current password
-            </label>
-            <Input
-              id="currentPassword"
-              type="password"
-              required
-              size="lg"
-              className="w-full"
-              autoComplete="current-password"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="newPassword"
-              className="mb-1 block text-sm text-gray-900"
-            >
-              New password
-            </label>
-            <Input
-              id="newPassword"
-              type="password"
-              required
-              minLength={6}
-              size="lg"
-              className="w-full"
-              autoComplete="new-password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              placeholder="At least 6 characters"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="confirmPassword"
-              className="mb-1 block text-sm text-gray-900"
-            >
-              Confirm new password
-            </label>
-            <Input
-              id="confirmPassword"
-              type="password"
-              required
-              minLength={6}
-              size="lg"
-              className="w-full"
-              autoComplete="new-password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-          </div>
-          {error && <Alert variant="danger">{error}</Alert>}
-          {success && (
-            <Alert variant="success">Password updated successfully.</Alert>
-          )}
-          <div className="flex justify-end">
-            <Button type="submit" disabled={loading}>
-              {loading ? 'Updating…' : 'Update password'}
-            </Button>
-          </div>
+        <SettingsCard
+          title="Email"
+          description="Used to sign in to your account."
+        >
+          <Input
+            type="email"
+            size="lg"
+            className="w-full max-w-sm"
+            value={user.email || ''}
+            disabled
+            readOnly
+          />
+        </SettingsCard>
+
+        <form onSubmit={handleSubmit}>
+          <SettingsCard
+            title="Password"
+            description="Choose a strong password you don't reuse elsewhere."
+            footer="Use at least 6 characters."
+            action={
+              <Button type="submit" disabled={loading}>
+                {loading ? 'Saving…' : 'Save'}
+              </Button>
+            }
+          >
+            <div className="space-y-4">
+              <div>
+                <label
+                  htmlFor="currentPassword"
+                  className="mb-1.5 block text-sm text-gray-900"
+                >
+                  Current password
+                </label>
+                <Input
+                  id="currentPassword"
+                  type="password"
+                  required
+                  size="lg"
+                  className="w-full max-w-sm"
+                  autoComplete="current-password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="newPassword"
+                  className="mb-1.5 block text-sm text-gray-900"
+                >
+                  New password
+                </label>
+                <Input
+                  id="newPassword"
+                  type="password"
+                  required
+                  minLength={6}
+                  size="lg"
+                  className="w-full max-w-sm"
+                  autoComplete="new-password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="At least 6 characters"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="confirmPassword"
+                  className="mb-1.5 block text-sm text-gray-900"
+                >
+                  Confirm new password
+                </label>
+                <Input
+                  id="confirmPassword"
+                  type="password"
+                  required
+                  minLength={6}
+                  size="lg"
+                  className="w-full max-w-sm"
+                  autoComplete="new-password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+              </div>
+              {error && <Alert variant="danger">{error}</Alert>}
+              {success && (
+                <Alert variant="success">Password updated successfully.</Alert>
+              )}
+            </div>
+          </SettingsCard>
         </form>
-      </section>
+      </div>
     </div>
   )
 }
