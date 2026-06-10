@@ -43,6 +43,7 @@ import { Badge } from '~/components/ui/Badge'
 import { Button } from '~/components/ui/Button'
 import { InlineStepper } from '~/components/ui/InlineStepper'
 import { Input } from '~/components/ui/Input'
+import { SegmentedControl } from '~/components/ui/SegmentedControl'
 import { QualityBadge } from './QualityBadge'
 
 type Owner =
@@ -149,20 +150,19 @@ export function InventoryPage({
         }
       />
 
-      <div className="flex gap-1 rounded-xl border border-gray-400 bg-background-200 p-1">
-        <TabButton
-          active={tab === 'mine'}
-          onClick={() => setTab('mine')}
-          label="Mine"
-          count={character.inventory.length}
-        />
-        <TabButton
-          active={tab === 'party'}
-          onClick={() => setTab('party')}
-          label="Party"
-          count={gameState.inventory.length}
-        />
-      </div>
+      <SegmentedControl
+        size="md"
+        value={tab}
+        onChange={setTab}
+        options={[
+          { value: 'mine', label: 'Mine', badge: character.inventory.length },
+          {
+            value: 'party',
+            label: 'Party',
+            badge: gameState.inventory.length,
+          },
+        ]}
+      />
 
       {tab === 'mine' ? (
         <InventoryColumn
@@ -410,36 +410,6 @@ export function InventoryPage({
         />
       )}
     </div>
-  )
-}
-
-function TabButton({
-  active,
-  onClick,
-  label,
-  count,
-}: {
-  active: boolean
-  onClick: () => void
-  label: string
-  count: number
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`flex-1 rounded-lg px-3 py-2 text-sm font-medium transition ${
-        active
-          ? 'bg-gray-400 text-white'
-          : 'text-gray-900 hover:bg-gray-100 hover:text-white'
-      }`}
-    >
-      {label}
-      <span
-        className={`ml-2 text-xs ${active ? 'text-gray-900' : 'text-gray-700'}`}
-      >
-        {count}
-      </span>
-    </button>
   )
 }
 

@@ -16,6 +16,7 @@ import { Checkbox } from '~/components/ui/Checkbox'
 import { InlineStepper } from '~/components/ui/InlineStepper'
 import { Modal } from '~/components/ui/Modal'
 import { Input, Select } from '~/components/ui/Input'
+import { SegmentedControl } from '~/components/ui/SegmentedControl'
 
 const DICE: { type: DieType; label: string }[] = [
   { type: 'standard', label: 'Standard' },
@@ -161,24 +162,16 @@ export function CustomDiceRoller({
     >
       {showConfig && (
         <>
-          <div className="mb-4 flex gap-1 rounded-lg border border-gray-400 p-1">
-            <Button
-              size="sm"
-              variant={mode === 'exovoid' ? 'secondary' : 'ghost'}
-              onClick={() => setMode('exovoid')}
-              className="flex-1"
-            >
-              Exovoid
-            </Button>
-            <Button
-              size="sm"
-              variant={mode === 'standard' ? 'secondary' : 'ghost'}
-              onClick={() => setMode('standard')}
-              className="flex-1"
-            >
-              Standard
-            </Button>
-          </div>
+          <SegmentedControl
+            size="sm"
+            className="mb-4"
+            value={mode}
+            onChange={setMode}
+            options={[
+              { value: 'exovoid', label: 'Exovoid' },
+              { value: 'standard', label: 'Standard' },
+            ]}
+          />
 
           <div className="mb-4">
             <label
