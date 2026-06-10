@@ -7,13 +7,18 @@ import { Input } from '~/components/ui/Input'
 import { surfaceCardClasses, SurfaceArrow } from '~/components/ui/Surface'
 import { CharacterPortrait } from '~/components/character/CharacterPortrait'
 import { listNpcs } from '~/lib/server/npcs'
+import { listShips } from '~/lib/server/ships'
+import { IconRocket } from '@tabler/icons-react'
 
 const gameRoute = getRouteApi('/_app/games/$gameId')
 
 export const Route = createFileRoute('/_app/games/$gameId/')({
   loader: async ({ params }) => {
-    const npcs = await listNpcs({ data: { gameId: params.gameId } })
-    return { npcs }
+    const [npcs, ships] = await Promise.all([
+      listNpcs({ data: { gameId: params.gameId } }),
+      listShips({ data: { gameId: params.gameId } }),
+    ])
+    return { npcs, ships }
   },
   component: GameLobbyPage,
 })
@@ -21,7 +26,7 @@ export const Route = createFileRoute('/_app/games/$gameId/')({
 function GameLobbyPage() {
   const { game, members, characters, currentUserId, isGm } =
     gameRoute.useLoaderData()
-  const { npcs } = Route.useLoaderData()
+  const { npcs, ships } = Route.useLoaderData()
   const [copied, setCopied] = useState(false)
 
   const gmName = useMemo(() => {
@@ -235,6 +240,61 @@ function GameLobbyPage() {
                   View all NPCs →
                 </Link>
               </div>
+            )}
+          </div>
+
+          <div className="rounded-xl border border-gray-400 bg-background-200 p-6">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-white">Ships</h3>
+              <Link
+                to="/games/$gameId/ships"
+                params={{ gameId: game.id }}
+                className={buttonClasses('primary')}
+              >
+                View ships
+              </Link>
+            </div>
+
+            {ships.length === 0 ? (
+              <p className="text-sm text-gray-700">
+                No ships yet. Anyone in the game can build one.
+              </p>
+            ) : (
+              <ul className="space-y-2">
+                {ships.map((ship) => (
+                  <li key={ship.id}>
+                    <Link
+                      to="/games/$gameId/ships/$shipId"
+                      params={{ gameId: game.id, shipId: ship.id }}
+                      className={surfaceCardClasses()}
+                    >
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent-700/20 text-accent-900">
+                        <IconRocket size={16} aria-hidden />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          <p className="truncate font-medium text-white">
+                            {ship.name}
+                          </p>
+                          {!ship.visible_to_players && (
+                            <Badge
+                              tone="neutral"
+                              uppercase
+                              title="Hidden from other players"
+                            >
+                              Hidden
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="mt-0.5 text-xs text-gray-700">
+                          {ship.config.classRef}
+                        </p>
+                      </div>
+                      <SurfaceArrow />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             )}
           </div>
         </div>

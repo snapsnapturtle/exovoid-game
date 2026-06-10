@@ -1,0 +1,111 @@
+systemType,systemName,capacityMultiplier,capacityModifier,powerRequirementMultiplier,powerRequirementModifier,description,assetCostMultiplier,assetCostModifier,rarity
+Power Reactor,Auxilliary Capacitator,0,1,0,-9,"Adds +9 Power generated, but requires recharging of the batteries after 48 hours of providing energy.",0,1,3
+,Small-Scale Generator,0,1,0,-6,"Adds +6 Power generated, but requires new fuel after 2 weeks of ship use, costing 300 credits.",0,1,3
+,Fission Generator,0,3,0,-12,"Adds +12 Power generated, but requires new fuel rods after 6 months of ship use, costing 5.000 credits.",0,3,4
+,Fusion Generator,0,5,0,-12,"Adds +12 Power generated, requiring new material every four weeks at negligible cost.",0,4,5
+,Antimatter Generator,0,10,0,-100,"Adds +100 Power generated, but requires new antimatter after one month of ship use, costing 20.000 credits.",0,20,6
+Thruster Upgrade,Ion Thrusters,0.125,0,0.25,0,Adds +1 speed.,0.5,0,3
+,Chemical Thrusters,0.083,0,0,0,Adds +1 speed and +1 maneuverability. Can only be used for 5 rounds total before needing to be recharged at a station.,0.33,0,3
+,Hall Effect Drive,0.125,0,0.5,0,Adds +1 speed and +1 maneuverability.,0.5,0,4
+,Antimatter Drive,0.125,0,1,0,Adds +3 speed and +1 maneuverability.,1,2,6
+FTL Drive,Burst Vector,0.1,2,1,0,"Charge-Time to Maximum: 1 Hour.
+Maximum Travel Distance: 5 Light Years.",2,0,4
+,Traveller,0.1,2,0.5,0,"Charge-Time to Maximum: 5 Hours.
+Maximum Travel Distance: 10 Light Years.",1,0,4
+,Long Haul,0.167,2,1,0,"Charge-Time to Maximum: 2 Hours.
+Maximum Travel Distance: 25 Light Years.",1,0,5
+Armor Plating,Steel Plates,0.1,0,0,0,Adds +50% Armor Durability.,0.25,0,3
+,Titanium Alloy,0.1,0,0,0,"Adds +1 primary and secondary Soak and +25% Armor Durability.
+
+* Cannot be combined with Steel Plates.",0.5,0,3
+,Carbon Nanotube Layers,0.1,0,0,0,Adds +3 primary Soak.,0.5,0,4
+,Reactive Armor,0.1,0,0,0,"Provides +5 primary Soak against missiles, rockets and torpedoes.",0.33,0,4
+,Reflective Coating,0.067,0,0,0,"Lasers attacking you cannot use their ""Penetration"" trigger option.
+The downside of this coating is that your ship lights up like a flare in other ships' scanners.",0.33,0,4
+Structure,Structural Enhancements,0.083,0,0,0,Gain +25% Hull (round up).,0.25,0,3
+,Redundancy Systems,0.1,0,0.33,0,Halve the cumulative malfunction-roll modifiers from suffered subsystem malfunctions.,0.5,0,3
+Defensive Systems,Chaff Dispersal Pods,0,1,0,0,"Charges: 3
+Can be launched to perform active defense against an incoming guided rocket or torpedo (any projectile that uses the ""Traveling"" quality) using the Computers skill.",0,1,3
+,Energy Dispersion Mesh,0,2,0,3,Can be used once per round to perform an active defense against incoming laser attacks using the Computers skill.,0,1,4
+,Projectile Evaporator,0,1,0,2,"Can be fired to perform active defense against an incoming projectile attack (vulcan, cannon, railgun, unguided rocket etc.).",0,1,4
+Shield Systems,Impact Absorption Array,0.05,0.5,0.5,0.5,"Shield Points = Base Hull / 10 + 4
+Regeneration = 25% per round (round up)",0.5,0,4
+,Aegies Defense Grid,0.067,5,1,0,"Shield Points = Base Hull / 2
+Regeneration = 25% per round (round up)",0.75,0,5
+,Vanguard Shield System,0.1,10,2,0,"Shield Points = Base Hull
+Regeneration = 15% per round (round up)",1,0,6
+,Paladin Barrier Network,0.1,10,4,0,"Shield Points = Base Hull * 2
+Regeneration = 10% per round (round up)",3,0,7
+Sensors,Basic Sensor Array,0,0,0,1,"Allows to perform Sensor actions against uncloaked ships and objects within Line Of Sight.
+Active Scanner Range: 20.",0,1,3
+,Advanced Sensor Array,0,2,0,2,"Allows to perform Sensor actions against uncloaked ships and objects within Line Of Sight.
+Reduces AP cost of all Scanner operations by 1.
+Active Scanner Range: 50.",0,2,4
+,Capital Sensor Array,0,6,0,5,"Allows to perform Sensor actions against all ships and objects within Line Of Sight.
+Allows up to two operators to use the station at once.
+Active Scanner Range: 100.",0,3,5
+Board Computer,Basic Computer,0,0,0,1,"Thresholds: 1 | 3 | 5
+Multitasking Limitation: 2
+Firewall: 5
+IC Level: 3",0,2,3
+,Advanced Computer,0,1,0,3,"Thresholds: 3 | 5 | 6
+Multitasking Limitation: 3
+Firewall: 6
+IC Level: 3",0,3,4
+,Superior Computer,0,2,0,5,"Thresholds: 4 | 5 | 7
+Multitasking Limitation: 5
+Firewall: 6
+IC Level: 4",0,4,5
+,Capital Ship AI,0,6,0,8,"Thresholds: 5 | 6 | 8
+Multitasking Limitation: 20
+Firewall: 8
+IC Level: 4",0,6,6
+Quarters,Capsule Bed,0,1,0,0,"Provides a simple, coffin like bed that is installed within the ship like a shelf or compartment.",0,0.5,3
+,2-Crew Bunkbeds,0,2,0,0,A simple room with two bunk beds and life support systems for two crew members.,0,1,3
+,4-Crew Bunkbeds,0,3,0,1,A medium-sized room with four bunk beds and life support systems for four crew members.,0,2,3
+,10-Crew Bunkbeds,0,8,0,2,A military-like barracks with ten bunk beds and life support systems for ten crew members.,0,3,3
+,Spartan's Bathroom,0,1,0,0,A simple shower cabin with a retractable toilet and small mirror.,0,0.5,3
+,Full Bathroom,0,2,0,0,"A normal-sized bathroom with a toilet, shower, sink and large mirror.",0,1,3
+,Kitchen Area,0,0.5,0,0,"Provides a small area with a microwave, fridge and some kitchenware enough to support two crew members at once. Several kitchen areas can be combined to add additional amenities like an oven, cooking plates etc.",0,0.5,3
+,Officer's Suite,0,3,0,0,"A medium-sized room with a desk, cabinet, bed and small toilet. Comes with life support systems for one crew member.",0,1,3
+,Captain's Suite,0,5,0,1,"A decently sized room with a conference table, bed, cabinet, toilet, desk and wall-mounted bed. Comes with life support systems for one crew member.",0,2,3
+,Noble Suite,0,10,0,2,A spatious room with all the amenities a celebrity or wealthy person could ask for on a space ship. Comes with life support systems for two crew members.,0,5,4
+,Hangout Area,0,4,0,1,"A hangout area to chill and have fun, with various entertainment systems (video games, music or similar).",0,2,3
+,Entertainment Lounge,0,8,0,2,"A larger entertainment lounge with a large table to hang out at, and an area for physical entertainment / sports.",0,3,3
+,On-Board Club / Bar,0,20,0,3,"A spatious club or bar with music, lighting and a small stage.",0,6,4
+Misc.,Electronic Warfare Suite,0,0,0,1,Allows the use of Electronic Warfare actions within the active range of the installed Sensors.,0,2,3
+,Electronic Warfare Station,0,1,0,2,"Allows the use of Electronic Warfare actions within the active range of the installed Sensors.
+Up to two operators can use this station at once, and they reduce the AP cost of their actions by 1.",0,3,3
+,Small Ammunitions Depot,0,1,0,0,"Can safely store a total of 4 full reloads for a given mounted weapon of capacity size 1 or less (e.g. vulcan cannon, unguided rockets etc.), effectively halving the reload time.",0,0,3
+,Medium Ammunitions Depot,0,2,0,0,"Can safely store a total of 4 full reloads for a given mounted weapon of capacity size 2-4, effectively halving the reload time.",0,0,3
+,Large Ammunitions Depot,0,4,0,0,"Can safely store a total of 4 full reloads for a given mounted weapon of capacity size 5+, effectively halving the reload time.",0,0,3
+,Cryo Berths (2),0,1,0,1,Contains two capsules to cryofreeze people and maintain their life functions.,0,2,4
+,Smuggler's Compartment,0,2,0,0,Provides enough space for cargo equal to 0.5 capacity. Cargo stored in this cargo eludes most scanners and is difficult to find during a physical search. The difficulty to discover the compartment is 4.,0,1,4
+,Medical Bay,0,3,0,1,Allows for basic surgeries and contains one bed for a patient.,0,2,4
+,On-Board Hospital,0,8,0,2,"Allows for most medical operations, like surgieres, installing / repairing cyberware, artificial coma and so on. Contains four beds for patients.",0,5,5
+,Bio-Cultivation Chamber,0,4,0,2,Produces enough food to support four crew members. Can also be used to reduce the strain on stored food supplies.,0,2,4
+,Mining Bay,0,4,0,1,"Contains hooks, magnets and other tools to safely haul in asteroid rocks from a short distance, as well as facilities to extract metals from the rock.",0,3,3
+,Gas Collection Scoops,0,2,0,0,"Allows the ship to fly through certain gas bodies to collect and separate fuel for the ""Small-Scale Generator"" and ""Fusion Generator"".",0,2,3
+,Docking Pylon,0,3,0,0,"Allows to hook up and attach another ship that has 25% or less capacity than the ship the hook is installed on.
+Each installed Docking Pylon reduces Hull by 10.",0,1,3
+,Fighter Hangar,0,12,0,1,"Allows a Fighter class space craft to fully dock inside the ship, and simple maintenance and repairs to be done.",0,4,4
+,Corvette Hangar,0,30,0,2,"Allows a Corvette class space craft to fully dock inside the ship, and simple maintenance and repairs to be done.",0,8,5
+,Frigate Hangar,0,50,0,3,"Allows a Frigate class space craft to fully dock inside the ship, and simple maintenance and repairs to be done.",0,14,5
+,Repair Drones Bay,0,2,0,1,"Repair drones replenish 1 Hull or Armor Durability point per hour of work, up to half the ship's maximum.",0,2,4
+,Support Ship Module,0,3,0,1,"A ship equipped with this module can provide one engineer repairing another, adjacent ship a +4 pool modifier on all relevant checks during downtime repairs.",0,2,3
+,Science Lab,0,3,0,3,"A lab to perform various analytic tasks, e.g. probing samples, testing chemicals etc. Can also be used to synthesize drugs and chemicals.",0,3,4
+,Workshop,0,2,0,2,"A simple workshop to repair or modify devices, firearms and similarly sized items.",0,3,3
+,Cloaking Device,0.167,0,1,0,Renders the ship invisible against most scanners by reducing emission profiles. Enemy scanners can attempt a D5 Sensors test to attempt to detect the cloaked ship. The cloaking device becomes inactive for this and the next round when the ship fires any weapon or activates shields.,1,0,5
+,FTL Radiation Scrambler,0,2,0,0,"Charges: 3
+Releases a device that disrupts the FTL signature your ship leaves behind, making the radiation decays after 1 hour per step (instead of 12 hours). Reflling one device costs 500 Credits.",0,4,4
+,FTL Dampening Field,0,4,0,6,"Creates a large gravity well of 2000 hexes within which other ships cannot activate their FTL drive unless they accept a +3 difficulty modifier on their attempt. While you use the disruptor field, you cannot use shields or cloaking devices.",0,7,4
+,Escape Pods,0,1,0,0,Contains 2 Escape Pods that crew members can use in case of Emergency. Each Escape Pod has enough Life Support for 72hours and can safely land on most nearby planets.,0,1,3
+,Atmospheric Hull Design,0.1,0,0,0,Modifies the ship so that it can safely fly within dense atmospheres.,0.33,0,2
+,Extravagant Interior,0.1,0,0,0,The inside of the ship is especially comfortable and pleasing to be in. Crew members who spend considerable time on this ship to travel around or live gain +2 maximum edge.,0.5,0,4
+,Hull Extension,-0.2,0,0,0,"Extends the hull of the ship to become bigger and consequently gaining capacity for other modules. This can only be installed once, and it permanently reduces the maneuverability of the ship by 1.",-1,0,3
+,Used Ship,0,0,0,0,"Makes the ship and all modules cost 25% less assets. The downside is that so long as the ship has at least one part like this, it suffers a +2 pool modifier on all malfunction rolls.
+
+The drawback can be removed later by paying the difference between used and modern parts, plus a 10% fee on top of the difference to pay for the overhaul.",0,0,0
+,State-Of-The-Art Variant,0,0,0,0,"The ship is built with bleeding edge systems, making everything more compact and efficient. The ship's maximum capacity (that can be used to install modules and weapons) increases by 25%.
+
+* Cannot be combined with the ""Used Ship"" variant.",0,0,5
