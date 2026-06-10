@@ -88,122 +88,102 @@ function AppLayoutInner() {
           transitions animate only the body below while the header stays put
           (see ::view-transition rules in app.css). */}
       <header className="elevation-float absolute inset-x-0 top-0 z-20 flex h-[var(--app-header-h)] items-center bg-gradient-to-t from-background-100/40 to-background-100 backdrop-blur-sm [view-transition-name:app-header]">
-        {/* Two visual zones, gated at the 1600px breakpoint — that's the
-            viewport width at which the body's max-w-[1280px] content area
-            plus the w-80 dice feed first clear the viewport, so the feed
-            stops touching content.
-            ≥ 1600: the w-80 spacer is reserved on the right and the inner
-            row caps at max-w-[1280px], so the avatar lines up with the
-            right edge of the main content area.
-            < 1600: the spacer is hidden and the inner row goes full-width,
-            so the avatar instead lands at the right edge of the viewport
-            (= right edge of the dice feed), above the feed itself. */}
-        <div className="flex w-full">
-          <div className="flex min-w-0 flex-1 justify-center">
-            <div className="flex w-full max-w-none items-center justify-between gap-4 px-6 min-[1600px]:max-w-[1280px]">
-              <div className="flex min-w-0 items-center gap-3">
+        {/* The header content tracks the body's centered max-w-[1600px] block
+            (content + dice feed), so the account button sits at its right edge
+            — above the feed — at every screen size. No breakpoint, no jump. */}
+        <div className="mx-auto flex w-full max-w-[1600px] items-center justify-between gap-4 px-6">
+          <div className="flex min-w-0 items-center gap-3">
+            <Link to="/dashboard" className="flex items-center gap-2 shrink-0">
+              <h1 className="text-lg font-bold tracking-tight text-white">
+                Exo<span className="text-accent-900">void</span>
+              </h1>
+            </Link>
+            {game && gameState && (
+              <>
+                {/* "Games" is omitted — the Exovoid wordmark already links to
+                    the dashboard. The trail is at most two deep (game /
+                    character|NPC), so no truncation/collapse is needed. The
+                    deepest (current) crumb gets the brighter gray-1000;
+                    ancestors stay subdued. */}
+                <span className="text-gray-700">/</span>
                 <Link
-                  to="/dashboard"
-                  className="flex items-center gap-2 shrink-0"
+                  to="/games/$gameId"
+                  params={{ gameId: game.id }}
+                  className={crumbClass(!character && !npc)}
                 >
-                  <h1 className="text-lg font-bold tracking-tight text-white">
-                    Exo<span className="text-accent-900">void</span>
-                  </h1>
+                  {game.name}
                 </Link>
-                {game && gameState && (
+                {character && (
                   <>
-                    {/* "Games" is omitted — the Exovoid wordmark already links
-                        to the dashboard. The trail is at most two deep
-                        (game / character|NPC), so no truncation/collapse is
-                        needed. The deepest (current) crumb gets the brighter
-                        gray-1000; ancestors stay subdued. */}
                     <span className="text-gray-700">/</span>
                     <Link
-                      to="/games/$gameId"
-                      params={{ gameId: game.id }}
-                      className={crumbClass(!character && !npc)}
+                      to="/games/$gameId/characters/$characterId"
+                      params={{
+                        gameId: game.id,
+                        characterId: character.id,
+                      }}
+                      className={crumbClass(true)}
                     >
-                      {game.name}
+                      {character.name}
                     </Link>
-                    {character && (
-                      <>
-                        <span className="text-gray-700">/</span>
-                        <Link
-                          to="/games/$gameId/characters/$characterId"
-                          params={{
-                            gameId: game.id,
-                            characterId: character.id,
-                          }}
-                          className={crumbClass(true)}
-                        >
-                          {character.name}
-                        </Link>
-                      </>
-                    )}
-                    {npc && (
-                      <>
-                        <span className="text-gray-700">/</span>
-                        <Link
-                          to="/games/$gameId/npcs/$npcId"
-                          params={{ gameId: game.id, npcId: npc.id }}
-                          className={crumbClass(true)}
-                        >
-                          {npc.name}
-                        </Link>
-                      </>
-                    )}
-                    <div className="ml-5 flex items-center gap-3">
-                      <CombatHeaderTag
-                        gameId={game.id}
-                        initialGameState={gameState}
-                      />
-                      <SaveChip status={saveStatus} />
-                    </div>
                   </>
                 )}
-              </div>
-              <div className="flex shrink-0 items-center">
-                <button
-                  ref={accountMenu.refs.setReference}
-                  type="button"
-                  className="flex items-center gap-2.5 rounded-md px-2 py-1 transition hover:bg-gray-100"
-                  {...accountMenu.getReferenceProps()}
-                >
-                  <div className="text-right">
-                    <p className="text-sm font-medium text-white">
-                      {profile?.display_name || 'Player'}
-                    </p>
-                    <p className="text-xs text-gray-900">{user.email}</p>
-                  </div>
-                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-accent-700 text-xs font-medium text-white">
-                    {(profile?.display_name ||
-                      user.email ||
-                      '?')[0].toUpperCase()}
-                  </div>
-                </button>
-                <Popover popover={accountMenu} className="w-44 py-1">
-                  <Link
-                    to="/account"
-                    onClick={() => accountMenu.setOpen(false)}
-                    className="block w-full px-3 py-2 text-left text-sm text-gray-1000 transition hover:bg-gray-100"
-                  >
-                    Account settings
-                  </Link>
-                  <button
-                    type="button"
-                    onClick={handleLogout}
-                    className="w-full px-3 py-2 text-left text-sm text-gray-1000 transition hover:bg-gray-100"
-                  >
-                    Log out
-                  </button>
-                </Popover>
-              </div>
-            </div>
+                {npc && (
+                  <>
+                    <span className="text-gray-700">/</span>
+                    <Link
+                      to="/games/$gameId/npcs/$npcId"
+                      params={{ gameId: game.id, npcId: npc.id }}
+                      className={crumbClass(true)}
+                    >
+                      {npc.name}
+                    </Link>
+                  </>
+                )}
+                <div className="ml-5 flex items-center gap-3">
+                  <CombatHeaderTag
+                    gameId={game.id}
+                    initialGameState={gameState}
+                  />
+                  <SaveChip status={saveStatus} />
+                </div>
+              </>
+            )}
           </div>
-          <div
-            className="hidden w-80 shrink-0 min-[1600px]:block"
-            aria-hidden
-          />
+          <div className="flex shrink-0 items-center">
+            <button
+              ref={accountMenu.refs.setReference}
+              type="button"
+              className="flex items-center gap-2.5 rounded-md px-2 py-1 transition hover:bg-gray-100"
+              {...accountMenu.getReferenceProps()}
+            >
+              <div className="text-right">
+                <p className="text-sm font-medium text-white">
+                  {profile?.display_name || 'Player'}
+                </p>
+                <p className="text-xs text-gray-900">{user.email}</p>
+              </div>
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-accent-700 text-xs font-medium text-white">
+                {(profile?.display_name || user.email || '?')[0].toUpperCase()}
+              </div>
+            </button>
+            <Popover popover={accountMenu} className="w-44 py-1">
+              <Link
+                to="/account"
+                onClick={() => accountMenu.setOpen(false)}
+                className="block w-full px-3 py-2 text-left text-sm text-gray-1000 transition hover:bg-gray-100"
+              >
+                Account settings
+              </Link>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="w-full px-3 py-2 text-left text-sm text-gray-1000 transition hover:bg-gray-100"
+              >
+                Log out
+              </button>
+            </Popover>
+          </div>
         </div>
       </header>
       <main className="min-h-0 flex-1 overflow-y-auto">
