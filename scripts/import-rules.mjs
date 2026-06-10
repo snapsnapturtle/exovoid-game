@@ -373,4 +373,92 @@ const injuries = injuryRows
   }))
 writeJson('injuries.json', injuries)
 
+// --- Ship Classes -------------------------------------------------------------
+// From "Exovoid Ship Builder.xlsx" (Space Ships sheet, exported to CSV). One row
+// per hull class. `basePowerGenerated` is stored negative in the sheet (it
+// feeds a subtraction in the builder formulas) — normalized here to a positive
+// `powerGenerated`.
+console.log('Ship Classes...')
+const shipClassRows = readTable('Exovoid Content - Space Ships.csv')
+const shipClasses = shipClassRows.map((r) => ({
+  shipClass: r.shipClass,
+  sizeClass: parseInt(r.sizeClass, 10),
+  bridgeSize: parseInt(r.bridgeSize, 10),
+  maneuverability: parseInt(r.maneuverability, 10),
+  speed: parseInt(r.speed, 10),
+  basePowerNeeded: parseInt(r.basePowerNeeded, 10),
+  powerGenerated: Math.abs(parseInt(r.basePowerGenerated, 10)),
+  hull: parseInt(r.hull, 10),
+  armorDurability: parseInt(r.armorDurability, 10),
+  primarySoak: parseInt(r.primarySoak, 10),
+  secondarySoak: parseInt(r.secondarySoak, 10),
+  systemsCapacity: parseInt(r.systemsCapacity, 10),
+  assetCost: parseInt(r.assetCost, 10),
+  rarity: parseInt(r.rarity, 10),
+}))
+writeJson('ship-classes.json', shipClasses)
+
+// --- Ship Systems (modules + ship-wide variants) ------------------------------
+// `systemType` only appears on the first row of each group; forward-fill like
+// cyberware. Capacity / power / asset cost are *formulas* per the builder
+// sheet: cost = multiplier × shipClass.systemsCapacity + modifier (fractional
+// multipliers like 0.067 are intentional — keep floats). "Used Ship" and
+// "State-Of-The-Art Variant" are ship-wide variants, not installable modules;
+// their math lives in src/lib/game-logic/ships.ts.
+console.log('Ship Systems...')
+const shipSystemRows = readTable('Exovoid Content - Ship Systems.csv')
+const SHIP_VARIANT_NAMES = new Set(['Used Ship', 'State-Of-The-Art Variant'])
+let currentSystemType = ''
+const shipSystems = preserveEffects(
+  'ship-systems.json',
+  shipSystemRows.map((r) => {
+    if (r.systemType) currentSystemType = r.systemType
+    return {
+      systemType: currentSystemType,
+      name: r.systemName,
+      kind: SHIP_VARIANT_NAMES.has(r.systemName) ? 'variant' : 'module',
+      capacityMultiplier: parseFloat(r.capacityMultiplier),
+      capacityModifier: parseFloat(r.capacityModifier),
+      powerRequirementMultiplier: parseFloat(r.powerRequirementMultiplier),
+      powerRequirementModifier: parseFloat(r.powerRequirementModifier),
+      description: r.description,
+      assetCostMultiplier: parseFloat(r.assetCostMultiplier),
+      assetCostModifier: parseFloat(r.assetCostModifier),
+      rarity: parseInt(r.rarity, 10),
+    }
+  }),
+)
+writeJson('ship-systems.json', shipSystems)
+
+// --- Ship Weapons --------------------------------------------------------------
+// `shipWeapon` is the canonical identifier, `shipWeaponName` the illustrative
+// default display name (same convention as weapons.json). Lasers have no
+// magazine ("-"). `reloadAP` stays a raw string ("8 (per rocket)") — ship
+// combat is a later phase and only displays it. Railguns carry sentinel range
+// values in the sheet: optimalRange "0-1.000" is a locale artifact for 0-1000
+// and maximumRange 1000000 means unlimited (→ null).
+console.log('Ship Weapons...')
+const shipWeaponRows = readTable('Exovoid Content - Ship Weapons.csv')
+const shipWeapons = shipWeaponRows.map((r) => ({
+  type: r.shipWeaponType,
+  weapon: r.shipWeapon,
+  illustrativeName: r.shipWeaponName,
+  capacityCost: parseFloat(r.capacityCost),
+  powerRequirement: parseFloat(r.powerRequirement),
+  magazine: nullableInt(r.magazine),
+  reloadAP: r.reloadAP === '-' || r.reloadAP === '' ? null : r.reloadAP,
+  attackAP: parseInt(r.attackAP, 10),
+  damage: parseInt(r.damage, 10),
+  damageType: r.damageType,
+  optimalRange:
+    r.optimalRange === '-' ? null : r.optimalRange.replace('0-1.000', '0-1000'),
+  maxRange: r.maximumRange === '1000000' ? null : nullableInt(r.maximumRange),
+  qualities: parseQualityList(r.qualities),
+  triggerOptions: parseQualityList(r.triggerOptions),
+  assetCost: parseFloat(r.assetCost),
+  magCost: nullableInt(r.magCost),
+  rarity: parseInt(r.rarity, 10),
+}))
+writeJson('ship-weapons.json', shipWeapons)
+
 console.log('done.')

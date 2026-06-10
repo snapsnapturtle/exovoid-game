@@ -1,0 +1,23 @@
+shipWeaponType,shipWeapon,shipWeaponName,capacityCost,powerRequirement,magazine,reloadAP,attackAP,damage,damageType,optimalRange,maximumRange,qualities,triggerOptions,assetCost,magCost,rarity
+Arc Based,Vulcan Cannon,Vortex Rapid-Fire Cannon,0.5,0,120,10,4,5,Physical,0-3,4,"Burst (10), Full Auto (30), Compensated, Handling (2)",Shredding (2),1,720,3
+Turret,Vulcan Turret,Vortex Omni-Gatling,1,1,90,10,4,5,Physical,0-3,4,"Burst (10), Full Auto (30), Compensated, Handling (2)",Shredding (2),1,540,3
+Arc Based,Unguided Rockets,Firestorm Rocket Pods,1,1,3,8 (per rocket),3,12,Explosive,0-2,4,Handling (2),"Concussing, Lethal (3)",1,500,3
+Turret,Small Cannon Turret,Ares Mk I Rotary Turret,1,1,40,10,4,7,Physical,0-3,5,Burst (8),Shredding (2),1,900,3
+Arc Based,Torpedo Tube,Kraken Torpedo System,1,1,1,10 (per torpedo),5,20,Explosive,-,-,"Traveling (3 | 6), Fuel (8)","Penetrating (6), Shredding (4), Lethal (5)",1,350,3
+Arc Based,Small Laser,Starlance Mining Beam,0.5,3,-,-,3,4,Laser,0-8,20,Handling (3),Penetrating (4),2,-,4
+Turret,Small Laser Turret,Starlance Tactical Laser,1,4,-,-,4,4,Laser,0-8,20,Handling (3),Penetrating (4),2,-,4
+Arc Based,Small Railgun,Magnetar Compact Railgun,2,5,8,4,5,4,Physical,0-1.000,1000000,,Breakthrough (4),2,80,3
+Turret,Missile Launcher,Viper Missile Array,2,1,2,8 (per missile),3,10,Explosive,-,-,"Traveling (4 | 8), Fuel (3), Handling (2)","Concussing, Lethal (3)",2,550,4
+Arc Based,Medium Cannon,Maelstrom Direct-Fire Cannon,2,0,40,10,5,10,Physical,0-4,6,Burst (8),Shredding (3),2,1350,4
+Turret,Shrapnel Gun,Exocore Razorhail Launcher,3,1,10,8,4,8,Physical,0-3,4,Handling (3),Shredding (4),2,300,3
+Turret,EMP Launcher,Blackout Storm Projector,3,2,6,8,5,5,Electrical,0-3,6,,Disabling,2,900,4
+Turret,Medium Cannon Turret,Artemis Defense Turret,4,2,40,10,5,9,Physical,0-4,6,Burst (8),Shredding (3),2,1350,4
+Arc Based,Medium Laser,Maelstrom Advanced Laser,2,6,-,-,3,6,Laser,0-8,20,Handling (3),Penetrating (5),3,-,5
+Turret,Medium Laser Turret,Zephyr Precision Laser,3,7,-,-,4,6,Laser,0-8,20,Handling (3),Penetrating (5),3,-,5
+Arc Based,Medium Railgun,Sledgehammer Railgun,4,9,8,5,6,6,Physical,0-1.000,1000000,,Breakthrough (6),3,160,4
+Arc Based,Hornet Rocket Launcher,Hornet Sting Rocket Array,5,1,30,4 (per rocket),3,12,Explosive,0-2,6,"Handling (2), Burst (6), Compensated","Concussing, Lethal (5)",4,3000,5
+Arc Based,Shipbuster Torpedoes,Dreadnought Shipbuster System,6,2,2,12 (per torpedo),5,25,Explosive,-,-,"Traveling (3 | 9), Fuel (10)","Penetrating (8), Shredding (6), Lethal (8)",4,2000,6
+Turret,Large Laser Turret,Nova Strike Laser Array,7,12,-,-,4,8,Laser,0-10,25,Handling (3),Penetrating (6),5,-,6
+Arc Based,Large Railgun,Omega Strike Rail System,8,20,8,6,7,8,Physical,0-1.000,1000000,,Breakthrough (8),5,240,5
+Arc Based,Large Cannon,Goliath Heavy Bore Cannon,5,0,40,10,6,14,Physical,0-5,8,Burst (8),Shredding (4),4,1800,5
+Turret,Large Cannon Turret,Ares Mk V Rotary Turret,8,4,40,10,6,12,Physical,0-5,8,Burst (8),Shredding (4),4,1800,5

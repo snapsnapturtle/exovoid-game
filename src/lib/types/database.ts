@@ -11,9 +11,6 @@ export type Json =
   | Json[]
 
 export type Database = {
-  __InternalSupabase: {
-    PostgrestVersion: '12'
-  }
   graphql_public: {
     Tables: {
       [_ in never]: never
@@ -403,11 +400,69 @@ export type Database = {
         }
         Relationships: []
       }
+      ships: {
+        Row: {
+          config: Json
+          created_at: string
+          created_by: string
+          damage: Json
+          game_id: string
+          id: string
+          name: string
+          notes: string
+          updated_at: string
+          visible_to_players: boolean
+        }
+        Insert: {
+          config: Json
+          created_at?: string
+          created_by: string
+          damage?: Json
+          game_id: string
+          id?: string
+          name?: string
+          notes?: string
+          updated_at?: string
+          visible_to_players?: boolean
+        }
+        Update: {
+          config?: Json
+          created_at?: string
+          created_by?: string
+          damage?: Json
+          game_id?: string
+          id?: string
+          name?: string
+          notes?: string
+          updated_at?: string
+          visible_to_players?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'ships_created_by_fkey'
+            columns: ['created_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'ships_game_id_fkey'
+            columns: ['game_id']
+            isOneToOne: false
+            referencedRelation: 'games'
+            referencedColumns: ['id']
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      character_portraits_character_id: {
+        Args: { p_name: string }
+        Returns: string
+      }
       find_game_by_invite_code: {
         Args: { p_invite_code: string }
         Returns: {
@@ -426,7 +481,7 @@ export type Database = {
           isSetofReturn: false
         }
       }
-      get_user_game_ids: { Args: { p_user_id: string }; Returns: string[] }
+      get_user_game_ids: { Args: never; Returns: string[] }
     }
     Enums: {
       [_ in never]: never
@@ -662,6 +717,62 @@ type ProgressionRow =
 // Mirrors the row shape directly. Per-source narrowing of `picks` lives at
 // the read site (the history view in #42 will discriminate via `source`).
 export type ProgressionEntry = ProgressionRow
+
+/** One of the four ship combat arcs/quadrants (rulebook §"Armor & Shield Quadrants"). */
+export type FiringArc = 'fore' | 'aft' | 'port' | 'starboard'
+
+export type ShipQuadrants = Record<FiringArc, number>
+
+/**
+ * Ship-wide build variant ("Used Ship" / "State-Of-The-Art Variant" rows of
+ * the Ship Systems table). Used: total cost ×0.75, +2 malfunction modifier.
+ * State-of-the-art: capacity ×1.25, total cost ×1.25.
+ */
+export type ShipVariant = 'standard' | 'used' | 'state_of_the_art'
+
+export type ShipModuleEntry = {
+  id: string
+  /** Catalog key (`name`) into ship-systems.json. Duplicates are legal (generators, quarters). */
+  moduleRef: string
+}
+
+export type ShipWeaponEntry = {
+  id: string
+  /** Catalog key (`weapon`) into ship-weapons.json. */
+  weaponRef: string
+  /** Display name; defaults to the catalog's illustrativeName. */
+  name?: string
+  /** Firing arc for Arc Based weapons; undefined for turrets (360°) or while unassigned. */
+  arc?: FiringArc
+}
+
+export type ShipConfig = {
+  /** Catalog key (`shipClass`) into ship-classes.json. */
+  classRef: string
+  variant: ShipVariant
+  modules: ShipModuleEntry[]
+  weapons: ShipWeaponEntry[]
+  /** Armor durability points distributed across quadrants (sum ≤ derived max — warn, don't block). */
+  armorAllocation: ShipQuadrants
+  /** Shield points distributed across quadrants (only meaningful with a shield system installed). */
+  shieldAllocation: ShipQuadrants
+}
+
+/** In-play damage state. `null` means "undamaged" — hull at max, quadrants
+ * mirroring their allocation — so changing class/allocations never leaves
+ * stale current values behind (same trick as NPC `health_current`). */
+export type ShipDamage = {
+  hullCurrent: number | null
+  armorCurrent: ShipQuadrants | null
+  shieldCurrent: ShipQuadrants | null
+}
+
+type ShipRow = Database['public']['Tables']['ships']['Row']
+
+export type Ship = Omit<ShipRow, 'config' | 'damage'> & {
+  config: ShipConfig
+  damage: ShipDamage
+}
 
 type GameStateRow = Database['public']['Tables']['game_state']['Row']
 
