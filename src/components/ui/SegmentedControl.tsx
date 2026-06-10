@@ -47,7 +47,7 @@ export function SegmentedControl<T extends string>({
 }: SegmentedControlProps<T>) {
   return (
     <div
-      role="tablist"
+      role="group"
       className={`flex gap-1 border border-gray-400 bg-background-200 p-1 ${CONTAINER[size]} ${className}`}
     >
       {options.map((opt) => {
@@ -56,8 +56,7 @@ export function SegmentedControl<T extends string>({
           <button
             key={opt.value}
             type="button"
-            role="tab"
-            aria-selected={active}
+            aria-pressed={active}
             onClick={() => onChange(opt.value)}
             className={`flex-1 font-medium transition ${SEGMENT[size]} ${
               active
