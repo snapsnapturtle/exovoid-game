@@ -9,12 +9,18 @@ export const Route = createFileRoute('/_auth/login')({
   component: LoginPage,
 })
 
+// WebAuthn is unavailable in non-secure contexts and older browsers; hide the
+// passkey option entirely rather than offer a button that can only fail.
+const passkeysSupported =
+  typeof window !== 'undefined' && !!window.PublicKeyCredential
+
 function LoginPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [passkeyLoading, setPasskeyLoading] = useState(false)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -36,6 +42,27 @@ function LoginPage() {
     navigate({ to: '/dashboard' })
   }
 
+  async function handlePasskeySignIn() {
+    setError(null)
+    setPasskeyLoading(true)
+
+    const supabase = getSupabaseBrowserClient()
+    const { error } = await supabase.auth.signInWithPasskey()
+
+    if (error) {
+      // A user-cancelled or timed-out ceremony surfaces as an abort/NotAllowed
+      // DOMError — not worth an alarming message, so swallow it silently.
+      const name = (error as { name?: string }).name
+      if (name !== 'NotAllowedError' && name !== 'AbortError') {
+        setError(error.message || 'Could not sign in with a passkey.')
+      }
+      setPasskeyLoading(false)
+      return
+    }
+
+    navigate({ to: '/dashboard' })
+  }
+
   return (
     <>
       <div className="mb-7 text-center">
@@ -46,6 +73,8 @@ function LoginPage() {
           Log in to pick up where you left off.
         </p>
       </div>
+
+      {error && <p className="mb-4 text-sm text-danger-900">{error}</p>}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -88,7 +117,6 @@ function LoginPage() {
                 placeholder="Your password"
               />
             </div>
-            {error && <p className="text-sm text-danger-900">{error}</p>}
             <Button type="submit" disabled={loading} className="mt-1 w-full">
               {loading ? 'Logging in…' : 'Log in'}
             </Button>
@@ -101,6 +129,27 @@ function LoginPage() {
           </Link>
         </div>
       </form>
+
+      {passkeysSupported && (
+        <>
+          <div className="my-5 flex items-center gap-3">
+            <span className="h-px flex-1 bg-gray-400" />
+            <span className="text-xs uppercase tracking-wide text-gray-700">
+              or
+            </span>
+            <span className="h-px flex-1 bg-gray-400" />
+          </div>
+          <Button
+            type="button"
+            variant="secondary"
+            disabled={passkeyLoading}
+            onClick={handlePasskeySignIn}
+            className="w-full"
+          >
+            {passkeyLoading ? 'Waiting for passkey…' : 'Sign in with a passkey'}
+          </Button>
+        </>
+      )}
 
       <p className="mt-6 text-center text-sm text-gray-900">
         Don't have an account?{' '}
