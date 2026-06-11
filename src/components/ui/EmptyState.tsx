@@ -36,7 +36,22 @@ export function EmptyState({
     <div
       className={`flex flex-col items-center rounded-xl border border-gray-400 bg-background-200 px-6 py-10 text-center ${className}`}
     >
-      <div className="inline-flex items-center justify-center rounded-xl border border-gray-400 p-2.5 text-gray-900 [&>svg]:h-8 [&>svg]:w-8 [&>svg]:[stroke-width:1.5]">
+      <div className="inline-flex items-center justify-center rounded-xl border border-gray-400 p-2.5 text-gray-900 [&>svg]:h-8 [&>svg]:w-8 [&>svg]:[stroke-width:1.5] [&>svg]:[stroke:url(#empty-state-icon-gradient)]">
+        <svg width="0" height="0" aria-hidden className="absolute">
+          <defs>
+            <linearGradient
+              id="empty-state-icon-gradient"
+              gradientUnits="userSpaceOnUse"
+              x1="0"
+              y1="24"
+              x2="24"
+              y2="0"
+            >
+              <stop offset="0%" stopColor="var(--color-gray-1000)" />
+              <stop offset="100%" stopColor="var(--color-gray-500)" />
+            </linearGradient>
+          </defs>
+        </svg>
         {icon}
       </div>
       <p className="mt-4 text-base font-semibold text-gray-1000">{title}</p>
