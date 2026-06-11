@@ -546,13 +546,11 @@ function ParticipantCard({
   // hidden controls out of the tab order and a11y tree while collapsed.
   // The active combatant is signalled solely by the StatusDot now — the card
   // chrome depends only on whether it's open, not whose turn it is.
-  const borderClass = expanded
-    ? 'border-accent-600'
-    : 'border-gray-400 hover:border-gray-500 hover:bg-gray-100'
-
   return (
     <article
-      className={`relative overflow-hidden rounded-xl border bg-background-200 transition-colors duration-75 ${borderClass}`}
+      className={`group relative overflow-hidden rounded-xl border border-transparent bg-background-200 transition-colors duration-75 ${
+        expanded ? '' : 'hover:bg-gray-100'
+      }`}
     >
       {/* Accent gradient on its own layer so it can fade with the expansion —
           background-image can't be transitioned, but opacity can. Timed to
@@ -561,6 +559,23 @@ function ParticipantCard({
       <div
         aria-hidden
         className={`pointer-events-none absolute inset-0 bg-gradient-to-b from-accent-700/20 via-background-200 to-background-200 transition-opacity duration-300 ${
+          expanded ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
+      {/* The edge is drawn as two stacked ring overlays (a gradient border
+          that keeps the rounded corners — see `.border-mask`) rather than a
+          plain CSS border, so the accent can fade top→bottom and cross-fade
+          with the expansion the same way the background does. Painted after
+          the background layer (which is opaque in its lower half) so the ring
+          stays visible all the way down. Gray ring is the resting edge; the
+          accent ring sits on top and fades in when expanded. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 rounded-xl border-mask bg-gray-400 p-px transition-colors duration-75 group-hover:bg-gray-500"
+      />
+      <div
+        aria-hidden
+        className={`pointer-events-none absolute inset-0 rounded-xl border-mask bg-gradient-to-b from-accent-600 to-gray-400 p-px transition-opacity duration-300 ${
           expanded ? 'opacity-100' : 'opacity-0'
         }`}
       />
