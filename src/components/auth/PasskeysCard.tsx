@@ -181,6 +181,14 @@ function PasskeyRow({
   }
 
   async function remove() {
+    const label = passkey.friendly_name || 'this passkey'
+    if (
+      !window.confirm(
+        `Delete ${label}? You won't be able to sign in with it anymore.`,
+      )
+    ) {
+      return
+    }
     setBusy(true)
     await onDelete(passkey.id)
     // No setBusy(false): the row unmounts once the list refreshes.
@@ -251,7 +259,7 @@ function PasskeyRow({
             </Button>
             <Button
               type="button"
-              variant="ghost"
+              variant="ghostDanger"
               size="sm"
               disabled={busy}
               onClick={remove}

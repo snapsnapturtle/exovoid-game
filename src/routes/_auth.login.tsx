@@ -74,6 +74,8 @@ function LoginPage() {
         </p>
       </div>
 
+      {error && <p className="mb-4 text-sm text-danger-900">{error}</p>}
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="email" className="mb-1.5 block text-sm text-gray-900">
@@ -115,7 +117,6 @@ function LoginPage() {
                 placeholder="Your password"
               />
             </div>
-            {error && <p className="text-sm text-danger-900">{error}</p>}
             <Button type="submit" disabled={loading} className="mt-1 w-full">
               {loading ? 'Logging in…' : 'Log in'}
             </Button>
