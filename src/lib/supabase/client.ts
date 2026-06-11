@@ -10,6 +10,13 @@ export function getSupabaseBrowserClient() {
   client = createBrowserClient<Database>(
     import.meta.env.VITE_SUPABASE_URL,
     import.meta.env.VITE_SUPABASE_ANON_KEY,
+    {
+      // Opt into the experimental passkey API (`signInWithPasskey`,
+      // `registerPasskey`, `auth.passkey.*`). Required by auth-js — the
+      // methods throw without it. The server stack must also have passkeys
+      // enabled (config.toml locally, Terraform for the cloud project).
+      auth: { experimental: { passkey: true } },
+    },
   )
 
   // Keep the realtime token in sync on subsequent token refreshes. The

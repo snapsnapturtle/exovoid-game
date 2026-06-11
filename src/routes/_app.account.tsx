@@ -5,6 +5,7 @@ import { Button } from '~/components/ui/Button'
 import { Alert } from '~/components/ui/Alert'
 import { Input } from '~/components/ui/Input'
 import { SettingsCard } from '~/components/ui/SettingsCard'
+import { PasskeysCard } from '~/components/auth/PasskeysCard'
 
 export const Route = createFileRoute('/_app/account')({
   head: () => ({ meta: [{ title: 'Account settings — Exovoid' }] }),
@@ -12,7 +13,7 @@ export const Route = createFileRoute('/_app/account')({
 })
 
 function AccountPage() {
-  const { user, profile } = Route.useRouteContext()
+  const { user } = Route.useRouteContext()
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -72,33 +73,7 @@ function AccountPage() {
       <h2 className="mb-8 text-2xl font-bold text-white">Account settings</h2>
 
       <div className="space-y-6">
-        <SettingsCard
-          title="Display name"
-          description="The name other players see at the table."
-        >
-          <Input
-            type="text"
-            size="lg"
-            className="w-full max-w-sm"
-            value={profile?.display_name || ''}
-            disabled
-            readOnly
-          />
-        </SettingsCard>
-
-        <SettingsCard
-          title="Email"
-          description="Used to sign in to your account."
-        >
-          <Input
-            type="email"
-            size="lg"
-            className="w-full max-w-sm"
-            value={user.email || ''}
-            disabled
-            readOnly
-          />
-        </SettingsCard>
+        <PasskeysCard />
 
         <form onSubmit={handleSubmit}>
           <SettingsCard
