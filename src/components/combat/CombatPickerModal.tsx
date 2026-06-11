@@ -199,16 +199,14 @@ function Section({
           </button>
         </div>
       </div>
-      <ul className="space-y-1.5">
+      <ul className="overflow-hidden rounded-lg border border-gray-400">
         {rows.map((c) => {
           const isPicked = picked.has(c.id)
           return (
-            <li key={c.id}>
+            <li key={c.id} className="border-b border-gray-400 last:border-b-0">
               <label
-                className={`flex cursor-pointer items-center gap-3 rounded-lg border p-2 transition ${
-                  isPicked
-                    ? 'border-accent-700 bg-accent-700/10'
-                    : 'border-gray-400 hover:border-accent-700'
+                className={`flex cursor-pointer items-center gap-3 px-3 py-2.5 transition ${
+                  isPicked ? 'bg-gray-100' : 'hover:bg-gray-100'
                 }`}
               >
                 <Checkbox
