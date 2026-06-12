@@ -1,5 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
-import { getSupabaseServerClient } from '~/lib/supabase/server'
+import { authMiddleware } from '~/lib/server/middleware'
 import type {
   Character,
   CharacterAttributes,
@@ -46,12 +46,9 @@ export const createCharacter = createServerFn({ method: 'POST' })
       skillPointsBudget?: number
     }) => d,
   )
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase, user } = context
 
     if (!data.name.trim()) throw new Error('Name is required')
 
@@ -97,12 +94,9 @@ export const createCharacter = createServerFn({ method: 'POST' })
 
 export const getCharacter = createServerFn()
   .validator((d: { characterId: string }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase, user } = context
 
     const { data: character, error } = await supabase
       .from('characters')
@@ -165,12 +159,9 @@ export const updateCharacter = createServerFn({ method: 'POST' })
       }
     }) => d,
   )
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
 
     const { data: character, error } = await supabase
       .from('characters')
@@ -185,12 +176,9 @@ export const updateCharacter = createServerFn({ method: 'POST' })
 
 export const grantTalent = createServerFn({ method: 'POST' })
   .validator((d: { characterId: string; talentName: string }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
 
     const { data: row, error: readErr } = await supabase
       .from('characters')
@@ -225,12 +213,9 @@ export const grantTalent = createServerFn({ method: 'POST' })
 
 export const installCyberware = createServerFn({ method: 'POST' })
   .validator((d: { characterId: string; cyberwareName: string }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
 
     const { data: row, error: readErr } = await supabase
       .from('characters')
@@ -275,12 +260,9 @@ export const installCyberware = createServerFn({ method: 'POST' })
 
 export const uninstallCyberware = createServerFn({ method: 'POST' })
   .validator((d: { characterId: string; cyberwareName: string }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
 
     const { data: row, error: readErr } = await supabase
       .from('characters')
@@ -331,12 +313,9 @@ function withAllocationReset(
 
 export const setMalfunctionAllocations = createServerFn({ method: 'POST' })
   .validator((d: { characterId: string; allocations: number[] }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
 
     const { data: row, error: readErr } = await supabase
       .from('characters')
@@ -371,12 +350,9 @@ export const setMalfunctionAllocations = createServerFn({ method: 'POST' })
 
 export const deleteCharacter = createServerFn({ method: 'POST' })
   .validator((d: { characterId: string }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
 
     // RLS ("Owner or GM can delete character") gates the actual permission
     // check; we still need to read the row first to know which game to
@@ -414,12 +390,9 @@ export const deleteCharacter = createServerFn({ method: 'POST' })
 
 export const updatePortraitUrl = createServerFn({ method: 'POST' })
   .validator((d: { characterId: string; portraitUrl: string | null }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
 
     const { data: character, error } = await supabase
       .from('characters')

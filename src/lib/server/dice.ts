@@ -1,5 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
-import { getSupabaseServerClient } from '~/lib/supabase/server'
+import { authMiddleware } from '~/lib/server/middleware'
 import {
   rollPool,
   rollPolyPool,
@@ -68,12 +68,9 @@ export const rollDice = createServerFn({ method: 'POST' })
       preAbsorbedSupports?: PendingSupport[]
     }) => d,
   )
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase, user } = context
 
     const result = rollPool(data.pool)
     const summary = summarizeRoll(result)
@@ -154,12 +151,9 @@ export const rollPolyDice = createServerFn({ method: 'POST' })
       isHidden?: boolean
     }) => d,
   )
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase, user } = context
 
     const polyResult = rollPolyPool(data.pool)
     const polyTotal = polyResult.reduce((sum, d) => sum + d.value, 0)
@@ -205,12 +199,9 @@ export const rollSupportContribution = createServerFn({ method: 'POST' })
       supporterName: string
     }) => d,
   )
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase, user } = context
 
     const result = rollPool(data.pool)
     const summary = summarizeRoll(result)
@@ -283,12 +274,9 @@ export const rollSupportContribution = createServerFn({ method: 'POST' })
 
 export const removePendingSupport = createServerFn({ method: 'POST' })
   .validator((d: { gameId: string; supportId: string }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
 
     const { data: stateRow, error: stateErr } = await supabase
       .from('game_state')
@@ -312,12 +300,9 @@ export const removePendingSupport = createServerFn({ method: 'POST' })
 
 export const getRecentRolls = createServerFn()
   .validator((d: { gameId: string }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
 
     const { data: rows, error } = await supabase
       .from('dice_rolls')

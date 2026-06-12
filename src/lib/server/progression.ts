@@ -1,5 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
-import { getSupabaseServerClient } from '~/lib/supabase/server'
+import { authMiddleware } from '~/lib/server/middleware'
 import type { Json } from '~/lib/types/database'
 import type { ProgressionEntry } from '~/lib/types/domain'
 
@@ -14,12 +14,9 @@ export const recordProgression = createServerFn({ method: 'POST' })
     (d: { characterId: string; level: number; source: string; picks: Json }) =>
       d,
   )
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
 
     const { data: row, error } = await supabase
       .from('character_progression')
@@ -42,12 +39,9 @@ export const recordProgression = createServerFn({ method: 'POST' })
  */
 export const listProgression = createServerFn({ method: 'POST' })
   .validator((d: { characterId: string }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
 
     const { data: rows, error } = await supabase
       .from('character_progression')
@@ -68,12 +62,9 @@ export const listProgression = createServerFn({ method: 'POST' })
  */
 export const updateProgression = createServerFn({ method: 'POST' })
   .validator((d: { id: string; picks: Json }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
 
     const { data: row, error } = await supabase
       .from('character_progression')
@@ -91,12 +82,9 @@ export const updateProgression = createServerFn({ method: 'POST' })
  */
 export const deleteProgression = createServerFn({ method: 'POST' })
   .validator((d: { id: string }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
 
     const { error } = await supabase
       .from('character_progression')
