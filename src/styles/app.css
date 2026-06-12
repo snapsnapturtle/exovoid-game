@@ -344,11 +344,94 @@
   opacity: 0;
 }
 
+/* The nav loading bar is anchored chrome too (it sits just below the header).
+   Hold it still during a page transition rather than letting it rise/fade with
+   the page body — it shows across the pending→committed boundary, so animating
+   it would make it flicker. Hard-cut, same as the header: hide the old snapshot
+   outright so it can't sit over the new one for the transition's duration (the
+   fill is opaque, so a parked old snapshot would otherwise stay visible). */
+::view-transition-group(nav-loading-bar),
+::view-transition-new(nav-loading-bar) {
+  animation: none;
+}
+::view-transition-old(nav-loading-bar) {
+  animation: none;
+  opacity: 0;
+}
+
 /* Respect reduced-motion: hard-cut instead of animating. */
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root),
   ::view-transition-new(root) {
     animation: none;
+  }
+}
+
+/* Dot-matrix loader (src/components/ui/DotMatrix.tsx). A square grid of dots
+   that ripple diagonally — a bright wave sweeping corner-to-corner. Each dot's
+   animation-delay (set inline by the component, staggered by its row+col
+   diagonal) offsets it along this shared cycle so the wave travels
+   continuously. Dots paint with currentColor, so colour comes from a text-*
+   class on (or above) the grid. The resting opacity matches the keyframe's 0%
+   so a dot doesn't flash before its delay elapses (no fill-mode needed). */
+@keyframes dot-matrix-ripple {
+  0%,
+  100% {
+    opacity: 0.18;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+.dot-matrix-dot {
+  opacity: 0.18;
+}
+.dot-matrix--active .dot-matrix-dot {
+  animation: dot-matrix-ripple var(--dmx-duration, 1100ms) ease-in-out infinite;
+}
+/* Reduced motion: drop the travelling wave and hold every dot at a steady mid
+   opacity, so the loader still reads as present without any movement. */
+@media (prefers-reduced-motion: reduce) {
+  .dot-matrix--active .dot-matrix-dot {
+    animation: none;
+    opacity: 0.6;
+  }
+}
+
+/* Indeterminate loading bar (src/components/ui/LoadingBar.tsx). With no real
+   progress to report, the fill grows in from the left to full width, then
+   recedes off to the right — the transform-origin flips at the 50% mark (while
+   the bar is at full width, so the flip is invisible) to turn the grow into a
+   recede. Gap-free: each cycle ends invisible at the right and the next starts
+   invisible at the left, so the loop point isn't seen. */
+@keyframes loading-bar-sweep {
+  0% {
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+  }
+  50% {
+    transform: scaleX(1);
+    transform-origin: 0 50%;
+  }
+  50.0001% {
+    transform: scaleX(1);
+    transform-origin: 100% 50%;
+  }
+  100% {
+    transform: scaleX(0);
+    transform-origin: 100% 50%;
+  }
+}
+.loading-bar-sweep {
+  animation: loading-bar-sweep 1.4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  /* No sweep — hold a faint full-width fill so the bar still signals activity
+     without motion. */
+  .loading-bar-sweep {
+    animation: none;
+    transform: none;
+    opacity: 0.5;
   }
 }
 

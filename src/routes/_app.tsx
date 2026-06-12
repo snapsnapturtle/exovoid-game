@@ -9,6 +9,8 @@ import {
 import { Popover, usePopover } from '~/components/ui/Popover'
 import { SaveChip } from '~/components/ui/SaveChip'
 import { StatusDot } from '~/components/ui/StatusDot'
+import { LoadingBar } from '~/components/ui/LoadingBar'
+import { useNavigationPending } from '~/lib/hooks/useNavigationPending'
 import { useRealtimeGameState } from '~/lib/hooks/useRealtimeGameState'
 import type { GameState } from '~/lib/types/domain'
 import { getAuthUser } from '~/lib/server/auth'
@@ -68,6 +70,7 @@ function AppLayoutInner() {
   const character = characterMatch?.loaderData?.character
   const accountMenu = usePopover({ placement: 'bottom-end' })
   const saveStatus = useSaveStatus()
+  const navPending = useNavigationPending()
 
   async function handleLogout() {
     const supabase = getSupabaseBrowserClient()
@@ -170,6 +173,19 @@ function AppLayoutInner() {
           </div>
         </div>
       </header>
+      {/* Thin indeterminate bar pinned just below the header, shown only for
+          slow navigations (the `navPending` signal is gated to >150ms). Always
+          mounted (only its fill toggles) and given a view-transition-name so it
+          holds still across page transitions; pointer-events-none so it never
+          intercepts clicks. The bar itself is decorative, so the visually
+          hidden role="status" region below it announces the load to assistive
+          tech. */}
+      <div className="pointer-events-none absolute inset-x-0 top-[var(--app-header-h)] z-20 [view-transition-name:nav-loading-bar]">
+        <LoadingBar active={navPending} />
+      </div>
+      <span role="status" aria-live="polite" className="sr-only">
+        {navPending ? 'Loading page' : ''}
+      </span>
       <main className="min-h-0 flex-1 overflow-y-auto">
         <Outlet />
       </main>
