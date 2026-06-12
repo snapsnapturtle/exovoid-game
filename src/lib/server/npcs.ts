@@ -1,5 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
-import { getSupabaseServerClient } from '~/lib/supabase/server'
+import { authMiddleware } from '~/lib/server/middleware'
 import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
 import type { Character, CharacterAttributes } from '~/lib/types/domain'
 
@@ -33,12 +33,9 @@ export const createNpc = createServerFn({ method: 'POST' })
       background_notes?: string
     }) => d,
   )
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase, user } = context
 
     const trimmed = data.name.trim()
     if (!trimmed) throw new Error('Name is required')
@@ -111,12 +108,9 @@ export const createNpc = createServerFn({ method: 'POST' })
  */
 export const duplicateNpc = createServerFn({ method: 'POST' })
   .validator((d: { npcId: string }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase, user } = context
 
     const { data: source, error: fetchError } = await supabase
       .from('characters')
@@ -190,12 +184,9 @@ export const updateNpcFlags = createServerFn({ method: 'POST' })
       }
     }) => d,
   )
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
 
     const { data: updated, error } = await supabase
       .from('characters')
@@ -216,12 +207,9 @@ export const updateNpcFlags = createServerFn({ method: 'POST' })
  */
 export const listNpcs = createServerFn({ method: 'GET' })
   .validator((d: { gameId: string }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
 
     const { data: rows, error } = await supabase
       .from('characters')

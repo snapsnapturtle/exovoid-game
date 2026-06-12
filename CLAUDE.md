@@ -32,7 +32,7 @@ Digital companion app for the Exovoid tabletop RPG. Think D&D Beyond for a sci-f
 ### Server Functions
 
 - All database writes go through `createServerFn` in `src/lib/server/`
-- Always validate auth via `supabase.auth.getUser()` in server functions
+- Gate auth with `.middleware([authMiddleware])` (`src/lib/server/middleware.ts`) rather than re-deriving it inline. The middleware creates the request-scoped Supabase client, resolves the user, throws `Not authenticated` when there is none, and exposes `{ supabase, user }` on the handler's `context` — so handlers open with `const { supabase, user } = context` (drop `user` when unused). `getAuthUser` (auth.ts) is the deliberate exception: it returns `{ user: null }` instead of throwing, for checks that tolerate an unauthenticated caller.
 - Use `.validator()` for input validation (`.inputValidator()` is the deprecated alias in current TanStack Start)
 
 ### Game Logic

@@ -1,6 +1,6 @@
 import { createServerFn } from '@tanstack/react-start'
 import type { SupabaseClient } from '@supabase/supabase-js'
-import { getSupabaseServerClient } from '~/lib/supabase/server'
+import { authMiddleware } from '~/lib/server/middleware'
 import type {
   Character,
   CombatParticipant,
@@ -103,12 +103,9 @@ function snapshotParticipant(
 
 export const startCombat = createServerFn({ method: 'POST' })
   .validator((d: { gameId: string; characterIds: string[] }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase, user } = context
     await requireGm(supabase, data.gameId, user.id)
 
     const state = await loadGameState(supabase, data.gameId)
@@ -148,12 +145,9 @@ export const startCombat = createServerFn({ method: 'POST' })
  */
 export const joinCombat = createServerFn({ method: 'POST' })
   .validator((d: { gameId: string; characterId: string }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase, user } = context
 
     const { data: char, error: charErr } = await supabase
       .from('characters')
@@ -200,12 +194,9 @@ export const joinCombat = createServerFn({ method: 'POST' })
 
 export const nextRound = createServerFn({ method: 'POST' })
   .validator((d: { gameId: string }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase, user } = context
     await requireGm(supabase, data.gameId, user.id)
 
     const state = await loadGameState(supabase, data.gameId)
@@ -247,12 +238,9 @@ export const nextRound = createServerFn({ method: 'POST' })
  */
 export const leaveCombat = createServerFn({ method: 'POST' })
   .validator((d: { gameId: string; characterId: string }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase, user } = context
 
     const { data: char, error: charErr } = await supabase
       .from('characters')
@@ -292,12 +280,9 @@ export const leaveCombat = createServerFn({ method: 'POST' })
 
 export const adjustAp = createServerFn({ method: 'POST' })
   .validator((d: { gameId: string; characterId: string; delta: number }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase, user } = context
 
     // The owner of the targeted character may adjust their own AP; for an
     // NPC, the delegated controller can too; the GM may adjust anyone's.
@@ -329,12 +314,9 @@ export const adjustAp = createServerFn({ method: 'POST' })
 
 export const loadCombatCharacters = createServerFn({ method: 'GET' })
   .validator((d: { gameId: string }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
     // Visible characters (PCs + permitted NPCs) for the combat picker.
     // RLS filters NPCs the caller isn't allowed to see.
     const { data: rows, error } = await supabase
@@ -347,12 +329,9 @@ export const loadCombatCharacters = createServerFn({ method: 'GET' })
 
 export const endCombat = createServerFn({ method: 'POST' })
   .validator((d: { gameId: string }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase, user } = context
     await requireGm(supabase, data.gameId, user.id)
 
     return writeCombat(supabase, data.gameId, null)

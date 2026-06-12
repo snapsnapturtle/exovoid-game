@@ -1,60 +1,55 @@
 import { createServerFn } from '@tanstack/react-start'
-import { getSupabaseServerClient } from '~/lib/supabase/server'
+import { authMiddleware } from '~/lib/server/middleware'
 import type { Database } from '~/lib/types/database'
 
 type GameRow = Database['public']['Tables']['games']['Row']
 
-export const getUserGames = createServerFn().handler(async () => {
-  const supabase = getSupabaseServerClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) throw new Error('Not authenticated')
+export const getUserGames = createServerFn()
+  .middleware([authMiddleware])
+  .handler(async ({ context }) => {
+    const { supabase, user } = context
 
-  const { data: memberships } = await supabase
-    .from('game_members')
-    .select('game_id, role')
-    .eq('user_id', user.id)
-
-  if (!memberships || memberships.length === 0) return []
-
-  const gameIds = memberships.map((m) => m.game_id)
-  // The games fetch and the GM-name lookup both depend only on gameIds and are
-  // independent of each other, so run them concurrently.
-  const [{ data: games }, { data: gmMembers }] = await Promise.all([
-    supabase
-      .from('games')
-      .select('*')
-      .in('id', gameIds)
-      .order('created_at', { ascending: false }),
-    supabase
+    const { data: memberships } = await supabase
       .from('game_members')
-      .select('game_id, profiles(display_name)')
-      .in('game_id', gameIds)
-      .eq('role', 'gm'),
-  ])
-  const gmNameByGame = new Map(
-    (gmMembers ?? []).map((m) => [
-      m.game_id,
-      m.profiles?.display_name || 'Unknown',
-    ]),
-  )
+      .select('game_id, role')
+      .eq('user_id', user.id)
 
-  return (games || []).map((game) => ({
-    ...game,
-    role: memberships.find((m) => m.game_id === game.id)?.role || 'player',
-    gmName: gmNameByGame.get(game.id) ?? 'Unknown',
-  }))
-})
+    if (!memberships || memberships.length === 0) return []
+
+    const gameIds = memberships.map((m) => m.game_id)
+    // The games fetch and the GM-name lookup both depend only on gameIds and are
+    // independent of each other, so run them concurrently.
+    const [{ data: games }, { data: gmMembers }] = await Promise.all([
+      supabase
+        .from('games')
+        .select('*')
+        .in('id', gameIds)
+        .order('created_at', { ascending: false }),
+      supabase
+        .from('game_members')
+        .select('game_id, profiles(display_name)')
+        .in('game_id', gameIds)
+        .eq('role', 'gm'),
+    ])
+    const gmNameByGame = new Map(
+      (gmMembers ?? []).map((m) => [
+        m.game_id,
+        m.profiles?.display_name || 'Unknown',
+      ]),
+    )
+
+    return (games || []).map((game) => ({
+      ...game,
+      role: memberships.find((m) => m.game_id === game.id)?.role || 'player',
+      gmName: gmNameByGame.get(game.id) ?? 'Unknown',
+    }))
+  })
 
 export const createGame = createServerFn({ method: 'POST' })
   .validator((d: { name: string }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase, user } = context
 
     const { data: game, error } = await supabase
       .from('games')
@@ -74,12 +69,9 @@ export const createGame = createServerFn({ method: 'POST' })
 
 export const joinGame = createServerFn({ method: 'POST' })
   .validator((d: { inviteCode: string }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase, user } = context
 
     const { data: rpcResult } = await supabase
       .rpc('find_game_by_invite_code', { p_invite_code: data.inviteCode })
@@ -107,12 +99,9 @@ export const joinGame = createServerFn({ method: 'POST' })
 
 export const getGame = createServerFn()
   .validator((d: { gameId: string }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase, user } = context
 
     const { data: game } = await supabase
       .from('games')

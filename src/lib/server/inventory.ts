@@ -1,6 +1,6 @@
 import { createServerFn } from '@tanstack/react-start'
 import type { SupabaseClient } from '@supabase/supabase-js'
-import { getSupabaseServerClient } from '~/lib/supabase/server'
+import { authMiddleware } from '~/lib/server/middleware'
 import type { GameState, InventoryItem } from '~/lib/types/domain'
 import { lookupItem } from '~/lib/game-logic/items'
 import {
@@ -114,12 +114,9 @@ export const addInventoryItem = createServerFn({ method: 'POST' })
       description?: string
     }) => d,
   )
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
 
     const entry = buildEntry(data)
     const current = await readInventory(supabase, data.owner)
@@ -146,12 +143,9 @@ export const updateInventoryItem = createServerFn({ method: 'POST' })
       }
     }) => d,
   )
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
 
     const current = await readInventory(supabase, data.owner)
     const idx = current.findIndex((e) => e.id === data.itemId)
@@ -355,12 +349,9 @@ export const updateInventoryItem = createServerFn({ method: 'POST' })
 
 export const removeInventoryItem = createServerFn({ method: 'POST' })
   .validator((d: { owner: Owner; itemId: string }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
 
     const current = await readInventory(supabase, data.owner)
     const next = current.filter((e) => e.id !== data.itemId)
@@ -379,12 +370,9 @@ export const transferInventoryItem = createServerFn({ method: 'POST' })
       quantity?: number
     }) => d,
   )
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
 
     const fromInventory = await readInventory(supabase, data.from)
     const idx = fromInventory.findIndex((e) => e.id === data.itemId)
@@ -437,12 +425,9 @@ export const addWeapon = createServerFn({ method: 'POST' })
       location?: string
     }) => d,
   )
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
 
     const catalog = lookupWeapon(data.weaponRef)
     if (!catalog) throw new Error(`Unknown weapon: ${data.weaponRef}`)
@@ -493,12 +478,9 @@ export const setEquipped = createServerFn({ method: 'POST' })
   .validator(
     (d: { characterId: string; itemId: string; equipped: boolean }) => d,
   )
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
 
     const owner: Owner = { type: 'character', characterId: data.characterId }
     const current = await readInventory(supabase, owner)
@@ -537,12 +519,9 @@ export const addArmor = createServerFn({ method: 'POST' })
       location?: string
     }) => d,
   )
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
 
     const catalog = lookupArmor(data.armorRef)
     if (!catalog) throw new Error(`Unknown armor: ${data.armorRef}`)
@@ -584,12 +563,9 @@ export const addArmor = createServerFn({ method: 'POST' })
 
 export const setCurrency = createServerFn({ method: 'POST' })
   .validator((d: { owner: Owner; credits?: number; assets?: number }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
 
     const updates: { credits?: number; assets?: number } = {}
     if (data.credits !== undefined) {
@@ -624,12 +600,9 @@ export const transferCurrency = createServerFn({ method: 'POST' })
   .validator(
     (d: { from: Owner; to: Owner; kind: CurrencyKind; amount: number }) => d,
   )
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
     if (data.amount < 1) throw new Error('Amount must be at least 1')
 
     const fromBalance = await readCurrency(supabase, data.from, data.kind)
@@ -697,12 +670,9 @@ async function writeCurrency(
 
 export const loadGameState = createServerFn({ method: 'GET' })
   .validator((d: { gameId: string }) => d)
-  .handler(async ({ data }) => {
-    const supabase = getSupabaseServerClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const { supabase } = context
 
     const { data: row, error } = await supabase
       .from('game_state')
