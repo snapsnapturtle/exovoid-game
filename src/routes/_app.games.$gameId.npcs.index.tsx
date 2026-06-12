@@ -1,9 +1,7 @@
 import { createFileRoute, getRouteApi, Link } from '@tanstack/react-router'
-import { useMemo } from 'react'
-import { Badge } from '~/components/ui/Badge'
 import { buttonClasses } from '~/components/ui/Button'
-import { surfaceCardClasses, SurfaceArrow } from '~/components/ui/Surface'
-import { CharacterPortrait } from '~/components/character/CharacterPortrait'
+import { NpcRosterCard } from '~/components/npcs/NpcRosterCard'
+import { useNpcControllers } from '~/components/npcs/useNpcControllers'
 import type { Character } from '~/lib/types/database'
 
 const gameRoute = getRouteApi('/_app/games/$gameId')
@@ -16,40 +14,11 @@ export const Route = createFileRoute('/_app/games/$gameId/npcs/')({
 function NpcRosterPage() {
   const { game, members, currentUserId, isGm } = gameRoute.useLoaderData()
   const { npcs } = npcsRoute.useLoaderData()
-
-  /**
-   * Resolve a controller user_id to a display name. `null` means the GM
-   * implicitly controls (no delegation); show the GM's name explicitly
-   * rather than the literal string "GM" so the player can see *who*.
-   */
-  const nameByUserId = useMemo(() => {
-    const map = new Map<string, string>()
-    for (const m of members) {
-      const name = m.profiles?.display_name || 'Unknown'
-      map.set(m.user_id, name)
-    }
-    return map
-  }, [members])
-  const gmName = useMemo(() => {
-    const gm = members.find((m) => m.role === 'gm')
-    const name = gm?.profiles?.display_name || 'GM'
-    return `${name} (GM)`
-  }, [members])
-
-  function controllerLabel(npc: Character): string {
-    if (npc.controller_user_id === null) return gmName
-    return nameByUserId.get(npc.controller_user_id) ?? 'Unknown'
-  }
-
-  /**
-   * GM implicitly controls every NPC where `controller_user_id` is null.
-   * Players only "own" NPCs explicitly delegated to them.
-   */
-  function isYours(npc: Character): boolean {
-    if (npc.controller_user_id === currentUserId) return true
-    if (isGm && npc.controller_user_id === null) return true
-    return false
-  }
+  const { controllerLabel, isYours } = useNpcControllers(
+    members,
+    currentUserId,
+    isGm,
+  )
 
   const yours = npcs.filter(isYours)
   const others = npcs.filter((n) => !isYours(n))
@@ -135,65 +104,15 @@ function NpcSection({
         <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {npcs.map((npc) => (
             <li key={npc.id}>
-              <NpcCard
+              <NpcRosterCard
                 npc={npc}
                 gameId={gameId}
-                controllerLabel={controllerLabel(npc)}
-                showController={showController}
+                controllerLabel={showController ? controllerLabel(npc) : null}
               />
             </li>
           ))}
         </ul>
       )}
     </section>
-  )
-}
-
-interface NpcCardProps {
-  npc: Character
-  gameId: string
-  controllerLabel: string
-  showController: boolean
-}
-
-function NpcCard({
-  npc,
-  gameId,
-  controllerLabel,
-  showController,
-}: NpcCardProps) {
-  return (
-    <Link
-      to="/games/$gameId/npcs/$npcId"
-      params={{ gameId, npcId: npc.id }}
-      className={surfaceCardClasses()}
-    >
-      <CharacterPortrait
-        name={npc.name}
-        portraitUrl={npc.portrait_url}
-        size="sm"
-      />
-      <div className="min-w-0 flex-1">
-        <div className="flex flex-wrap items-center gap-1.5">
-          <p className="truncate font-medium text-white">{npc.name}</p>
-          {npc.is_minion && (
-            <Badge tone="warning" uppercase>
-              Minion
-            </Badge>
-          )}
-          {!npc.visible_to_players && (
-            <Badge tone="neutral" uppercase title="Hidden from other players">
-              Hidden
-            </Badge>
-          )}
-        </div>
-        {showController && (
-          <p className="mt-0.5 text-xs text-gray-700">
-            Controlled by {controllerLabel}
-          </p>
-        )}
-      </div>
-      <SurfaceArrow />
-    </Link>
   )
 }

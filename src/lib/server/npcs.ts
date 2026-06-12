@@ -145,34 +145,19 @@ export const duplicateNpc = createServerFn({ method: 'POST' })
       npc.derived_stat_bonuses,
     ).derived.edge
 
+    // Spread the source row so any column added to `characters` later is
+    // carried into the copy automatically — no allowlist to keep in sync.
+    // Drop identity/timestamps (the DB regenerates them); reset user_id to the
+    // duplicating GM and reset live combat state so the copy starts pristine.
+    const { id, created_at, updated_at, ...rest } = npc
+
     const { data: row, error } = await supabase
       .from('characters')
       .insert({
-        game_id: npc.game_id,
+        ...rest,
         user_id: user.id,
         name: `Copy of ${npc.name}`,
-        career: npc.career,
-        level: npc.level,
-        experience: npc.experience,
-        gender: npc.gender,
-        age: npc.age,
-        background_notes: npc.background_notes,
-        notes: npc.notes,
-        attributes: npc.attributes,
-        skills: npc.skills,
-        talents: npc.talents,
-        cyberware: npc.cyberware,
-        inventory: npc.inventory,
-        favorite_skills: npc.favorite_skills,
-        derived_stat_bonuses: npc.derived_stat_bonuses,
-        downtime_uses_used: npc.downtime_uses_used,
-        portrait_url: npc.portrait_url,
-        credits: npc.credits,
-        assets: npc.assets,
         is_npc: true,
-        is_minion: npc.is_minion,
-        visible_to_players: npc.visible_to_players,
-        controller_user_id: npc.controller_user_id,
         // Reset live state — the copy starts at full health/edge, no injuries.
         health_current: null,
         edge_current: maxEdge,

@@ -57,19 +57,15 @@ function AppLayoutInner() {
   })
   const game = gameMatch?.loaderData?.game
   const gameState = gameMatch?.loaderData?.gameState
-  // The character layout route is nested under the game, so this match (and
-  // the crumb it drives) is present on the sheet and every child page
-  // (progression, cyberware, inventory, …).
+  // The character layout route is nested under the game and now serves both
+  // PCs and NPCs, so this match (and the crumb it drives) is present on the
+  // sheet and every child page (progression, cyberware, inventory, …) for
+  // either kind.
   const characterMatch = useMatch({
     from: '/_app/games/$gameId/characters/$characterId',
     shouldThrow: false,
   })
   const character = characterMatch?.loaderData?.character
-  const npcMatch = useMatch({
-    from: '/_app/games/$gameId/npcs/$npcId',
-    shouldThrow: false,
-  })
-  const npc = npcMatch?.loaderData?.character
   const accountMenu = usePopover({ placement: 'bottom-end' })
   const saveStatus = useSaveStatus()
 
@@ -109,7 +105,7 @@ function AppLayoutInner() {
                 <Link
                   to="/games/$gameId"
                   params={{ gameId: game.id }}
-                  className={crumbClass(!character && !npc)}
+                  className={crumbClass(!character)}
                 >
                   {game.name}
                 </Link>
@@ -125,18 +121,6 @@ function AppLayoutInner() {
                       className={crumbClass(true)}
                     >
                       {character.name}
-                    </Link>
-                  </>
-                )}
-                {npc && (
-                  <>
-                    <span className="text-gray-700">/</span>
-                    <Link
-                      to="/games/$gameId/npcs/$npcId"
-                      params={{ gameId: game.id, npcId: npc.id }}
-                      className={crumbClass(true)}
-                    >
-                      {npc.name}
                     </Link>
                   </>
                 )}
