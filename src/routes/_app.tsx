@@ -173,14 +173,19 @@ function AppLayoutInner() {
           </div>
         </div>
       </header>
-      {/* Thin indeterminate bar pinned just below the header, on the same
-          `navPending` signal as the header dot-matrix (gated to >150ms) so it
-          only shows for slow navigations. Always mounted (only its fill toggles)
-          and given a view-transition-name so it holds still across page
-          transitions; pointer-events-none so it never intercepts clicks. */}
+      {/* Thin indeterminate bar pinned just below the header, shown only for
+          slow navigations (the `navPending` signal is gated to >150ms). Always
+          mounted (only its fill toggles) and given a view-transition-name so it
+          holds still across page transitions; pointer-events-none so it never
+          intercepts clicks. The bar itself is decorative, so the visually
+          hidden role="status" region below it announces the load to assistive
+          tech. */}
       <div className="pointer-events-none absolute inset-x-0 top-[var(--app-header-h)] z-20 [view-transition-name:nav-loading-bar]">
         <LoadingBar active={navPending} />
       </div>
+      <span role="status" aria-live="polite" className="sr-only">
+        {navPending ? 'Loading page' : ''}
+      </span>
       <main className="min-h-0 flex-1 overflow-y-auto">
         <Outlet />
       </main>

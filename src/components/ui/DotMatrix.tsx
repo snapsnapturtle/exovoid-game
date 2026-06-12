@@ -61,9 +61,7 @@ export function DotMatrix({
 
   return (
     <span
-      {...(label
-        ? { role: 'status', 'aria-label': label }
-        : { 'aria-hidden': true })}
+      {...(label ? { role: 'status' } : { 'aria-hidden': true })}
       className={`dot-matrix inline-grid align-middle ${active ? 'dot-matrix--active' : ''} ${className}`}
       style={
         {
@@ -84,6 +82,7 @@ export function DotMatrix({
           }}
         />
       ))}
+      {label && <span className="sr-only">{label}</span>}
     </span>
   )
 }

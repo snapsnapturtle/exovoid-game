@@ -366,7 +366,7 @@ function StyleguidePage() {
 
         <Section
           title="LoadingBar"
-          description="A thin indeterminate loading bar: the accent fill grows in from the left, fills the track, then recedes off to the right on a loop. Used pinned just below the app header during navigation (driven by useNavigationPending, gated to >150ms so quick/preloaded loads never flash it). Decorative (aria-hidden) — the header dot-matrix carries the role=status label. Holds a faint static fill under prefers-reduced-motion. In the app it spans full width; the box below is just a demo frame."
+          description="A thin indeterminate loading bar: the accent fill grows in from the left, fills the track, then recedes off to the right on a loop. Used pinned just below the app header during navigation (driven by useNavigationPending, gated to >150ms so quick/preloaded loads never flash it). Decorative (aria-hidden); pair it with a separate labelled role=status element when an announcement is needed (the app layout renders one alongside it for navigation). Holds a faint static fill under prefers-reduced-motion. In the app it spans full width; the box below is just a demo frame."
         >
           <Row label="Active (indeterminate)">
             <div className="relative w-full max-w-sm rounded bg-gray-100">

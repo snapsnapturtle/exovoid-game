@@ -347,11 +347,16 @@
 /* The nav loading bar is anchored chrome too (it sits just below the header).
    Hold it still during a page transition rather than letting it rise/fade with
    the page body — it shows across the pending→committed boundary, so animating
-   it would make it flicker. Hard-cut, same as the header. */
+   it would make it flicker. Hard-cut, same as the header: hide the old snapshot
+   outright so it can't sit over the new one for the transition's duration (the
+   fill is opaque, so a parked old snapshot would otherwise stay visible). */
 ::view-transition-group(nav-loading-bar),
-::view-transition-old(nav-loading-bar),
 ::view-transition-new(nav-loading-bar) {
   animation: none;
+}
+::view-transition-old(nav-loading-bar) {
+  animation: none;
+  opacity: 0;
 }
 
 /* Respect reduced-motion: hard-cut instead of animating. */
