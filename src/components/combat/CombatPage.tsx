@@ -9,7 +9,7 @@ import type {
   InjuryEntry,
   InventoryItem,
   PendingBonus,
-} from '~/lib/types/database'
+} from '~/lib/types/domain'
 import type { ApplyBonusInput } from '~/components/dice/RollResultView'
 import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
 import { edgeCap } from '~/lib/game-logic/derived-stats'

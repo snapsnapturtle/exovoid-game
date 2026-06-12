@@ -1,4 +1,4 @@
-import type { CharacterAttributes } from '~/lib/types/database'
+import type { CharacterAttributes } from '~/lib/types/domain'
 
 /** All division uses Math.ceil (round up) per game table ruling */
 

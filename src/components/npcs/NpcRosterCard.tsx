@@ -2,7 +2,7 @@ import { Link } from '@tanstack/react-router'
 import { Badge } from '~/components/ui/Badge'
 import { surfaceCardClasses, SurfaceArrow } from '~/components/ui/Surface'
 import { CharacterPortrait } from '~/components/character/CharacterPortrait'
-import type { Character } from '~/lib/types/database'
+import type { Character } from '~/lib/types/domain'
 
 interface NpcRosterCardProps {
   npc: Character

@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import type { Character, ProgressionEntry } from '~/lib/types/database'
+import type { Character, ProgressionEntry } from '~/lib/types/domain'
 import type { AppliedPassiveEffects } from '~/lib/game-logic/passive-effects'
 import {
   DOWNTIME_ACTIVITIES,

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { CharacterAttributes } from '~/lib/types/database'
+import type { CharacterAttributes } from '~/lib/types/domain'
 import {
   validateCreation,
   validateCreationAttributes,

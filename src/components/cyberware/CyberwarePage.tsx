@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from '@tanstack/react-router'
-import type { Character } from '~/lib/types/database'
+import type { Character } from '~/lib/types/domain'
 import {
   canInstall,
   groupByCategory,

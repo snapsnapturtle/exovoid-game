@@ -4,7 +4,7 @@ import type {
   Character,
   ProgressionEntry,
   TalentEntry,
-} from '~/lib/types/database'
+} from '~/lib/types/domain'
 import {
   type LevelUpPicks,
   legalTalentsForLevelUp,

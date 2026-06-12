@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { useRouter } from '@tanstack/react-router'
 import { IconCash, IconCurrencyDollar } from '@tabler/icons-react'
 import { EffectTooltip } from './EffectTooltip'
-import type { Character, GameState, InventoryItem } from '~/lib/types/database'
+import type { Character, GameState, InventoryItem } from '~/lib/types/domain'
 import { inventoryByLocation, lookupItem } from '~/lib/game-logic/items'
 import {
   effectiveWeaponModLimit,

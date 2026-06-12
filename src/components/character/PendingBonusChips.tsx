@@ -1,4 +1,4 @@
-import type { PendingBonus } from '~/lib/types/database'
+import type { PendingBonus } from '~/lib/types/domain'
 import { Badge } from '~/components/ui/Badge'
 
 interface PendingBonusChipsProps {

@@ -3,7 +3,7 @@ import { IconSkull } from '@tabler/icons-react'
 import { Button } from '~/components/ui/Button'
 import { InjurySummary } from './InjurySummary'
 import { RollForInjuryModal } from './RollForInjuryModal'
-import type { InjuryEntry } from '~/lib/types/database'
+import type { InjuryEntry } from '~/lib/types/domain'
 
 interface InjuryControlsProps {
   gameId: string

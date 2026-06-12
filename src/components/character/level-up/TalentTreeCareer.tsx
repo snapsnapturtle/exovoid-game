@@ -1,4 +1,4 @@
-import type { TalentEntry } from '~/lib/types/database'
+import type { TalentEntry } from '~/lib/types/domain'
 import {
   tierPrereqMet,
   unlockedInCareer,

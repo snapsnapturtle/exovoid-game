@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useRealtimeSubscription } from './useRealtimeSubscription'
-import type { GameState } from '~/lib/types/database'
+import type { GameState } from '~/lib/types/domain'
 
 export function useRealtimeGameState(initial: GameState): GameState {
   const [state, setState] = useState(initial)

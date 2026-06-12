@@ -1,5 +1,5 @@
 import cyberwareData from '~/data/cyberware.json'
-import type { Character, CyberwareEntry } from '~/lib/types/database'
+import type { Character, CyberwareEntry } from '~/lib/types/domain'
 
 export interface CyberwareData {
   category: string

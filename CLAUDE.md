@@ -18,7 +18,7 @@ Digital companion app for the Exovoid tabletop RPG. Think D&D Beyond for a sci-f
 - `src/lib/server/` — Server functions (auth, games, characters)
 - `src/lib/game-logic/` — Pure game rule functions (attributes, skills, derived stats, dice)
 - `src/lib/hooks/` — React hooks (useCharacter with auto-save)
-- `src/lib/types/` — TypeScript types (database.ts will be auto-generated)
+- `src/lib/types/` — TypeScript types. `database.ts` is generated (`npm run gen:types`, never hand-edit); `domain.ts` holds the hand-written types that narrow JSON columns to runtime shapes (`Character`, `CombatState`, …)
 - `supabase/migrations/` — SQL migrations
 
 ## Conventions
@@ -135,7 +135,16 @@ npm run dev           # Start dev server on port 3000
 npm run build         # Build for production
 supabase start        # Start local Supabase
 supabase db reset     # Reset DB and run migrations
+npm run gen:types     # Regenerate src/lib/types/database.ts from the local DB
 ```
+
+### Database types
+
+`src/lib/types/database.ts` is a **generated artifact** — `npm run gen:types` overwrites it from the local Supabase schema, and CI (`build-and-test.yml`'s `types-drift` job) fails if a migration lands without regenerating. Never hand-edit it; it's excluded from Prettier (raw double-quoted CLI output) so the drift check stays byte-exact. Hand-written types that narrow its `Json` columns live in `domain.ts` (which imports from `database.ts`).
+
+The `supabase` CLI used for generation is a **pinned devDependency** (not the brew CLI) — `npm run gen:types` and the CI drift job both run it via `node_modules/.bin` / `npx`, so local and CI always use the identical version and can't silently drift. Dependabot bumps it like any other package; when you accept a `supabase` CLI bump, run `npm run gen:types` and commit the regenerated file in the same PR (the drift job fails otherwise — by design). Bumping it is the only way the generator version changes; brew's `supabase` is still fine for running the stack day-to-day.
+
+One gotcha when regenerating: **run `supabase db reset` first.** `gen:types` reflects whatever is in your _running_ local DB. If you've checked out a feature branch (e.g. `ship-builder` and its `ships` table), reset back to a clean, migrations-only state or its tables will leak into the committed file.
 
 ## Environment Variables
 

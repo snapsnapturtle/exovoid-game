@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import type { CyberwareEntry } from '~/lib/types/database'
+import type { CyberwareEntry } from '~/lib/types/domain'
 import { lookupCyberware, occupationUsed } from '~/lib/game-logic/cyberware'
 import { buttonClasses } from '~/components/ui/Button'
 import { Badge } from '~/components/ui/Badge'

@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { IconCash, IconCurrencyDollar } from '@tabler/icons-react'
-import type { InventoryItem } from '~/lib/types/database'
+import type { InventoryItem } from '~/lib/types/domain'
 import { inventoryByLocation, lookupItem } from '~/lib/game-logic/items'
 import { buttonClasses } from '~/components/ui/Button'
 

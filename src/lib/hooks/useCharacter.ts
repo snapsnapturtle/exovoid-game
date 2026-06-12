@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import type { Character } from '~/lib/types/database'
+import type { Character } from '~/lib/types/domain'
 import { updateCharacter } from '~/lib/server/characters'
 import { levelFromXp } from '~/lib/game-logic/leveling'
 import { useReportSave } from '~/lib/hooks/saveStatusContext'

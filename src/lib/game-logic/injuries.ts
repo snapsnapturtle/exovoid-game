@@ -1,5 +1,5 @@
 import injuriesData from '~/data/injuries.json'
-import type { InjuryEntry } from '~/lib/types/database'
+import type { InjuryEntry } from '~/lib/types/domain'
 
 /**
  * Catalog entry for an injury (the row in the rulebook injury table).

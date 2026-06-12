@@ -1,4 +1,4 @@
-import type { Character, TalentEntry } from '~/lib/types/database'
+import type { Character, TalentEntry } from '~/lib/types/domain'
 
 export interface CareerTalentRef {
   talent: string

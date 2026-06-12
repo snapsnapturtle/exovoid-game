@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRealtimeSubscription } from './useRealtimeSubscription'
 import { listProgression } from '~/lib/server/progression'
-import type { ProgressionEntry } from '~/lib/types/database'
+import type { ProgressionEntry } from '~/lib/types/domain'
 
 export interface UseCharacterProgressionResult {
   rows: ProgressionEntry[]

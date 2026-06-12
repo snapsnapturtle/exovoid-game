@@ -1,7 +1,7 @@
 import { computeAttributeAverage, computeDicePool } from '~/lib/game-logic/dice'
 import { SKILLS } from '~/lib/game-logic/skills'
 import { DiceRoller } from '~/components/dice/DiceRoller'
-import type { CharacterAttributes, PendingBonus } from '~/lib/types/database'
+import type { CharacterAttributes, PendingBonus } from '~/lib/types/domain'
 import type { WeaponData } from '~/lib/game-logic/weapons'
 import type { ApplyBonusInput } from '~/components/dice/RollResultView'
 

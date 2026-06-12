@@ -1,7 +1,7 @@
 import { edgeCap } from '~/lib/game-logic/derived-stats'
 import { Stepper } from '~/components/ui/Stepper'
 import { InjuryControls } from './InjuryControls'
-import type { InjuryEntry } from '~/lib/types/database'
+import type { InjuryEntry } from '~/lib/types/domain'
 
 interface LivePlayPanelProps {
   gameId: string

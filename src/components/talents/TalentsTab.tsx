@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import type { TalentEntry } from '~/lib/types/database'
+import type { TalentEntry } from '~/lib/types/domain'
 import talentsData from '~/data/talents.json'
 import { pointsTotal, pointsSpent } from '~/lib/game-logic/talents'
 import { buttonClasses } from '~/components/ui/Button'

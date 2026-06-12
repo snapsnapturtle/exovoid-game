@@ -1,4 +1,4 @@
-import type { InventoryItem } from '~/lib/types/database'
+import type { InventoryItem } from '~/lib/types/domain'
 import { lookupWeapon } from '~/lib/game-logic/weapons'
 import { equippedArmor } from '~/lib/game-logic/armors'
 import { EquippedWeaponCard } from './EquippedWeaponCard'

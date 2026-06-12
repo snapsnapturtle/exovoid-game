@@ -1,6 +1,7 @@
 import { createServerFn } from '@tanstack/react-start'
 import { getSupabaseServerClient } from '~/lib/supabase/server'
-import type { Json, ProgressionEntry } from '~/lib/types/database'
+import type { Json } from '~/lib/types/database'
+import type { ProgressionEntry } from '~/lib/types/domain'
 
 /**
  * Record one progression pick (Train Skill bump, level-up commit, etc.).

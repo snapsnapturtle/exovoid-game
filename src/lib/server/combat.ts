@@ -6,7 +6,7 @@ import type {
   CombatParticipant,
   CombatState,
   GameState,
-} from '~/lib/types/database'
+} from '~/lib/types/domain'
 import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
 import { rollD6 } from '~/lib/game-logic/combat'
 

@@ -1,5 +1,5 @@
 import itemsData from '~/data/items.json'
-import type { InventoryItem } from '~/lib/types/database'
+import type { InventoryItem } from '~/lib/types/domain'
 
 export interface ItemData {
   category: string

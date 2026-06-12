@@ -10,7 +10,7 @@ import { Popover, usePopover } from '~/components/ui/Popover'
 import { SaveChip } from '~/components/ui/SaveChip'
 import { StatusDot } from '~/components/ui/StatusDot'
 import { useRealtimeGameState } from '~/lib/hooks/useRealtimeGameState'
-import type { GameState } from '~/lib/types/database'
+import type { GameState } from '~/lib/types/domain'
 import { getAuthUser } from '~/lib/server/auth'
 import { getSupabaseBrowserClient } from '~/lib/supabase/client'
 import {

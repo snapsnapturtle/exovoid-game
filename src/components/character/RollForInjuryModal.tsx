@@ -16,7 +16,7 @@ import {
   pickInjury,
   type InjuryDef,
 } from '~/lib/game-logic/injuries'
-import type { InjuryEntry } from '~/lib/types/database'
+import type { InjuryEntry } from '~/lib/types/domain'
 
 interface RollForInjuryModalProps {
   gameId: string

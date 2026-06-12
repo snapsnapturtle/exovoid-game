@@ -1,4 +1,4 @@
-import type { CharacterAttributes } from '~/lib/types/database'
+import type { CharacterAttributes } from '~/lib/types/domain'
 import type { AttributeId } from './attributes'
 
 export interface DicePool {

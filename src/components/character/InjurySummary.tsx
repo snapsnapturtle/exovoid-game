@@ -3,7 +3,7 @@ import { Popover, usePopover } from '~/components/ui/Popover'
 import { IconChevronDown, IconX } from '@tabler/icons-react'
 import injuriesData from '~/data/injuries.json'
 import { injuryEscalator, type InjuryDef } from '~/lib/game-logic/injuries'
-import type { InjuryEntry } from '~/lib/types/database'
+import type { InjuryEntry } from '~/lib/types/domain'
 
 // Effect text isn't stored on the carried injury (we only denormalize the
 // fields the rules engine needs). Look it back up from the catalog by name

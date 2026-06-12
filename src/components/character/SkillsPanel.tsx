@@ -3,7 +3,7 @@ import type {
   CharacterAttributes,
   PendingBonus,
   PendingSupport,
-} from '~/lib/types/database'
+} from '~/lib/types/domain'
 import { SKILLS } from '~/lib/game-logic/skills'
 import {
   computeAttributeAverage,

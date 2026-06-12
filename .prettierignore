@@ -2,6 +2,7 @@ node_modules
 dist
 .output
 src/routeTree.gen.ts
+src/lib/types/database.ts
 package-lock.json
 supabase/snippets
 supabase/.temp

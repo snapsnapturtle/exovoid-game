@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import type { CombatParticipant } from '~/lib/types/database'
+import type { CombatParticipant } from '~/lib/types/domain'
 import { groupByAp, sortByTurnOrder } from '~/lib/game-logic/combat'
 
 interface ApTimelineProps {

@@ -1,5 +1,5 @@
 import downtimeActivitiesData from '~/data/downtime-activities.json'
-import type { ProgressionEntry } from '~/lib/types/database'
+import type { ProgressionEntry } from '~/lib/types/domain'
 import { SKILLS } from './skills'
 
 export const TRAIN_SKILL_PROGRESSION_SOURCE = 'downtime:train-skill'

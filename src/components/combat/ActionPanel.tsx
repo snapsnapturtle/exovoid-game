@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button } from '~/components/ui/Button'
 import { COMBAT_ACTIONS, type CombatAction } from '~/data/combat-actions'
 import { CombatRollModal } from './CombatRollModal'
-import type { CharacterAttributes, PendingBonus } from '~/lib/types/database'
+import type { CharacterAttributes, PendingBonus } from '~/lib/types/domain'
 import type { ApplyBonusInput } from '~/components/dice/RollResultView'
 
 interface ActionPanelProps {
