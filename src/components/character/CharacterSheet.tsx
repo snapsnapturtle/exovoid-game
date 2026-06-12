@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 import { getRouteApi, useNavigate, useRouter } from '@tanstack/react-router'
-import type { Character, PendingBonus } from '~/lib/types/database'
+import type { Character, PendingBonus } from '~/lib/types/domain'
 import { useCharacter } from '~/lib/hooks/useCharacter'
 import { useCharacterProgression } from '~/lib/hooks/useCharacterProgression'
 import { useRealtimeGameState } from '~/lib/hooks/useRealtimeGameState'

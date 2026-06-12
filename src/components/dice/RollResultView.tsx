@@ -16,7 +16,7 @@ import { lookupQuality } from '~/lib/game-logic/item-qualities'
 import { Alert } from '~/components/ui/Alert'
 import { Badge } from '~/components/ui/Badge'
 import { IconChevronDown } from '@tabler/icons-react'
-import type { PendingBonus } from '~/lib/types/database'
+import type { PendingBonus } from '~/lib/types/domain'
 
 export type ApplyBonusInput = NonNullable<TriggerOption['bonus']>
 

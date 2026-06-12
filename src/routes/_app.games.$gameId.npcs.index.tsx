@@ -2,7 +2,7 @@ import { createFileRoute, getRouteApi, Link } from '@tanstack/react-router'
 import { buttonClasses } from '~/components/ui/Button'
 import { NpcRosterCard } from '~/components/npcs/NpcRosterCard'
 import { useNpcControllers } from '~/components/npcs/useNpcControllers'
-import type { Character } from '~/lib/types/database'
+import type { Character } from '~/lib/types/domain'
 
 const gameRoute = getRouteApi('/_app/games/$gameId')
 const npcsRoute = getRouteApi('/_app/games/$gameId/npcs')

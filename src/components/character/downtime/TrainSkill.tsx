@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useRouter } from '@tanstack/react-router'
-import type { Character } from '~/lib/types/database'
+import type { Character } from '~/lib/types/domain'
 import { SKILLS } from '~/lib/game-logic/skills'
 import { trainableSkillIds } from '~/lib/game-logic/downtime'
 import { recordProgression } from '~/lib/server/progression'

@@ -16,7 +16,7 @@ import { Button } from '~/components/ui/Button'
 import { Checkbox } from '~/components/ui/Checkbox'
 import { InlineStepper } from '~/components/ui/InlineStepper'
 import { Modal } from '~/components/ui/Modal'
-import type { PendingBonus, PendingSupport } from '~/lib/types/database'
+import type { PendingBonus, PendingSupport } from '~/lib/types/domain'
 
 interface DiceRollerProps {
   gameId: string

@@ -24,7 +24,7 @@ import type {
   CharacterAttributes,
   DerivedStatBonuses,
   TalentEntry,
-} from '~/lib/types/database'
+} from '~/lib/types/domain'
 import careersData from '~/data/careers.json'
 import backgroundsData from '~/data/backgrounds.json'
 import { Button } from '~/components/ui/Button'

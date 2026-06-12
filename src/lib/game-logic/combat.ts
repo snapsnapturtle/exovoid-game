@@ -1,4 +1,4 @@
-import type { CombatParticipant } from '~/lib/types/database'
+import type { CombatParticipant } from '~/lib/types/domain'
 
 /**
  * Sort combat participants: highest current AP first, then higher

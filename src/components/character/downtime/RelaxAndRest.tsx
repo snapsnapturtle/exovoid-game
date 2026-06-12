@@ -1,5 +1,5 @@
 import { createPortal } from 'react-dom'
-import type { Character } from '~/lib/types/database'
+import type { Character } from '~/lib/types/domain'
 import type { AppliedPassiveEffects } from '~/lib/game-logic/passive-effects'
 import { relaxAndRestHealAmount } from '~/lib/game-logic/downtime'
 import { Button } from '~/components/ui/Button'

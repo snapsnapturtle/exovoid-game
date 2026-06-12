@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useRealtimeSubscription } from './useRealtimeSubscription'
 import { getSupabaseBrowserClient } from '~/lib/supabase/client'
-import type { Character } from '~/lib/types/database'
+import type { Character } from '~/lib/types/domain'
 
 /**
  * Live character snapshot. Bootstraps from `initial` (the route loader's

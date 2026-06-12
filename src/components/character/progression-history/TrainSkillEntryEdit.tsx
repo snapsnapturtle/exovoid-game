@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useRouter } from '@tanstack/react-router'
-import type { Character, ProgressionEntry } from '~/lib/types/database'
+import type { Character, ProgressionEntry } from '~/lib/types/domain'
 import { SKILLS } from '~/lib/game-logic/skills'
 import { updateCharacter } from '~/lib/server/characters'
 import { updateProgression } from '~/lib/server/progression'

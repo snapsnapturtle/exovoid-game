@@ -1,4 +1,4 @@
-import type { CharacterAttributes } from '~/lib/types/database'
+import type { CharacterAttributes } from '~/lib/types/domain'
 import { ATTRIBUTE_DEFINITIONS } from '~/lib/game-logic/attributes'
 import type { AttributeId } from '~/lib/game-logic/attributes'
 import type { Contribution } from '~/lib/game-logic/passive-effects'

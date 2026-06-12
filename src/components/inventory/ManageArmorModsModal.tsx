@@ -7,7 +7,7 @@ import {
   type ArmorModData,
 } from '~/lib/game-logic/armor-mods'
 import { effectiveArmorModLimit, type ArmorData } from '~/lib/game-logic/armors'
-import type { InventoryItem } from '~/lib/types/database'
+import type { InventoryItem } from '~/lib/types/domain'
 
 interface ManageArmorModsModalProps {
   item: InventoryItem

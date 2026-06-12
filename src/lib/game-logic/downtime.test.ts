@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { ProgressionEntry } from '~/lib/types/database'
+import type { ProgressionEntry } from '~/lib/types/domain'
 import {
   DOWNTIME_ACTIVITIES,
   isActivityAvailable,

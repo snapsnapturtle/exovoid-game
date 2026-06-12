@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { act, renderHook } from '@testing-library/react'
-import type { Character } from '~/lib/types/database'
+import type { Character } from '~/lib/types/domain'
 
 vi.mock('~/lib/server/characters', () => ({
   updateCharacter: vi.fn(async () => ({})),

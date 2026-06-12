@@ -6,7 +6,7 @@ import { Badge } from '~/components/ui/Badge'
 import { Button } from '~/components/ui/Button'
 import { Modal } from '~/components/ui/Modal'
 import { removePendingSupport, type DiceRollEntry } from '~/lib/server/dice'
-import type { PendingBonus, PendingSupport } from '~/lib/types/database'
+import type { PendingBonus, PendingSupport } from '~/lib/types/domain'
 
 export interface PendingBonusEntry {
   characterId: string

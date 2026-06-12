@@ -9,7 +9,8 @@ import {
   type RollPool,
   type RollResult,
 } from '~/lib/game-logic/dice'
-import type { Database, PendingSupport } from '~/lib/types/database'
+import type { Database } from '~/lib/types/database'
+import type { PendingSupport } from '~/lib/types/domain'
 
 type DiceRollRow = Database['public']['Tables']['dice_rolls']['Row']
 

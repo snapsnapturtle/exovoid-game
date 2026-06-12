@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import type { Character } from '~/lib/types/database'
+import type { Character } from '~/lib/types/domain'
 import careersData from '~/data/careers.json'
 import talentsData from '~/data/talents.json'
 import { careersOfCharacter, type CareerData } from '~/lib/game-logic/talents'

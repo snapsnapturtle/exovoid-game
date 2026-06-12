@@ -5,7 +5,7 @@ import { Button } from '~/components/ui/Button'
 import { Checkbox } from '~/components/ui/Checkbox'
 import { Alert } from '~/components/ui/Alert'
 import { CharacterPortrait } from '~/components/character/CharacterPortrait'
-import type { Character } from '~/lib/types/database'
+import type { Character } from '~/lib/types/domain'
 
 interface CombatPickerModalProps {
   title: string

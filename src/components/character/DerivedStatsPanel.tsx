@@ -9,7 +9,7 @@ import { Button } from '~/components/ui/Button'
 import { Textarea } from '~/components/ui/Input'
 import { DiceRoller } from '~/components/dice/DiceRoller'
 import type { ApplyBonusInput } from '~/components/dice/RollResultView'
-import type { PendingBonus } from '~/lib/types/database'
+import type { PendingBonus } from '~/lib/types/domain'
 
 interface DerivedStatsPanelProps {
   stats: DerivedStats

@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react'
-import type { Character } from '~/lib/types/database'
+import type { Character } from '~/lib/types/domain'
 
 interface GameMemberLike {
   user_id: string

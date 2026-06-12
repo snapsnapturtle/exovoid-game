@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useRealtimeSubscription } from './useRealtimeSubscription'
-import type { Character } from '~/lib/types/database'
+import type { Character } from '~/lib/types/domain'
 
 /**
  * Live-subscribe to all characters in a game. Used by the combat tracker so

@@ -8,7 +8,7 @@ import type {
   CyberwareEntry,
   InventoryItem,
   TalentEntry,
-} from '~/lib/types/database'
+} from '~/lib/types/domain'
 
 type Tab = 'actions' | 'inventory' | 'talents' | 'cyberware' | 'background'
 

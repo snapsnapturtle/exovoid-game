@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import type { Character, ProgressionEntry } from '~/lib/types/database'
+import type { Character, ProgressionEntry } from '~/lib/types/domain'
 import { SKILLS } from '~/lib/game-logic/skills'
 import { isLevelUpPicks, type LevelUpPicks } from '~/lib/game-logic/level-up'
 import { useCharacterProgression } from '~/lib/hooks/useCharacterProgression'

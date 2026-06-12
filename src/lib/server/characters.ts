@@ -7,7 +7,7 @@ import type {
   InjuryEntry,
   PendingBonus,
   TalentEntry,
-} from '~/lib/types/database'
+} from '~/lib/types/domain'
 import type { CareerData } from '~/lib/game-logic/talents'
 import { validateCreation } from '~/lib/game-logic/character-creation'
 import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'

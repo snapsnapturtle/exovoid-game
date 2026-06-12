@@ -1,4 +1,4 @@
-import type { InventoryItem } from '~/lib/types/database'
+import type { InventoryItem } from '~/lib/types/domain'
 import type { WeaponData } from '~/lib/game-logic/weapons'
 import { QualityBadge } from '~/components/inventory/QualityBadge'
 import { EffectTooltip } from '~/components/inventory/EffectTooltip'

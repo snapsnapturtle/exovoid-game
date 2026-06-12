@@ -4,7 +4,7 @@ import type {
   DerivedStatBonuses,
   InventoryItem,
   TalentEntry,
-} from '~/lib/types/database'
+} from '~/lib/types/domain'
 import type { AttributeId } from '~/lib/game-logic/attributes'
 import {
   computeAllDerivedStats,

@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import type { Character, PendingBonus } from '~/lib/types/database'
+import type { Character, PendingBonus } from '~/lib/types/domain'
 import type { AppliedPassiveEffects } from '~/lib/game-logic/passive-effects'
 import { SKILLS } from '~/lib/game-logic/skills'
 import { computeAttributeAverage, computeDicePool } from '~/lib/game-logic/dice'

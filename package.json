@@ -10,7 +10,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "gen:types": "supabase gen types typescript --local > src/lib/types/database.ts"
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.19",

@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/react-start'
 import { getSupabaseServerClient } from '~/lib/supabase/server'
 import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
-import type { Character, CharacterAttributes } from '~/lib/types/database'
+import type { Character, CharacterAttributes } from '~/lib/types/domain'
 
 /**
  * Create an NPC inside a game. Lighter than PC creation: no career

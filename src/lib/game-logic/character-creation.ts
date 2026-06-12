@@ -1,4 +1,4 @@
-import type { CharacterAttributes, TalentEntry } from '~/lib/types/database'
+import type { CharacterAttributes, TalentEntry } from '~/lib/types/domain'
 import {
   ATTRIBUTE_DEFINITIONS,
   CREATION_HIGH_CAP,

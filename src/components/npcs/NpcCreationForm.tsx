@@ -6,7 +6,7 @@ import {
   MAX_ATTRIBUTE_LEVEL,
 } from '~/lib/game-logic/attributes'
 import { SKILLS, MAX_SKILL_LEVEL } from '~/lib/game-logic/skills'
-import type { CharacterAttributes } from '~/lib/types/database'
+import type { CharacterAttributes } from '~/lib/types/domain'
 import { Button } from '~/components/ui/Button'
 import { Checkbox } from '~/components/ui/Checkbox'
 import { Alert } from '~/components/ui/Alert'

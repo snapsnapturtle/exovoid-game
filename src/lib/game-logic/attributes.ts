@@ -1,4 +1,4 @@
-import type { CharacterAttributes } from '~/lib/types/database'
+import type { CharacterAttributes } from '~/lib/types/domain'
 
 export const ATTRIBUTE_DEFINITIONS = [
   {

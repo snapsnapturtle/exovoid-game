@@ -24,7 +24,7 @@ import {
   type MeleeModData,
   type MeleeModSlot,
 } from '~/lib/game-logic/melee-mods'
-import type { InventoryItem } from '~/lib/types/database'
+import type { InventoryItem } from '~/lib/types/domain'
 
 interface ManageWeaponModsModalProps {
   item: InventoryItem

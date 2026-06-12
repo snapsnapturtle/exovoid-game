@@ -1,5 +1,5 @@
 import armorsData from '~/data/armors.json'
-import type { InventoryItem } from '~/lib/types/database'
+import type { InventoryItem } from '~/lib/types/domain'
 import { lookupManufacturer } from '~/lib/game-logic/manufacturers'
 
 export interface ArmorData {

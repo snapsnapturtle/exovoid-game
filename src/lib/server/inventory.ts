@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/react-start'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { getSupabaseServerClient } from '~/lib/supabase/server'
-import type { GameState, InventoryItem } from '~/lib/types/database'
+import type { GameState, InventoryItem } from '~/lib/types/domain'
 import { lookupItem } from '~/lib/game-logic/items'
 import {
   effectiveWeaponModLimit,

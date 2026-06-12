@@ -10,7 +10,7 @@ import { useRealtimeCharacters } from '~/lib/hooks/useRealtimeCharacters'
 import { DiceFeedContext } from '~/lib/hooks/diceFeedContext'
 import { DiceFeed } from '~/components/dice/DiceFeed'
 import type { PendingBonusEntry } from '~/components/dice/DiceFeed'
-import type { PendingBonus } from '~/lib/types/database'
+import type { PendingBonus } from '~/lib/types/domain'
 
 export const Route = createFileRoute('/_app/games/$gameId')({
   loader: async ({ params }) => {
