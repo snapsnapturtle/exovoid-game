@@ -140,11 +140,12 @@ npm run gen:types     # Regenerate src/lib/types/database.ts from the local DB
 
 ### Database types
 
-`src/lib/types/database.ts` is a **generated artifact** — `npm run gen:types` overwrites it from the local Supabase schema. Re-run it after every migration; never hand-edit it. It's excluded from Prettier (raw double-quoted CLI output), so leave the formatting as the generator emits it. Hand-written types that narrow its `Json` columns live in `domain.ts` (which imports from `database.ts`).
+`src/lib/types/database.ts` is a **generated artifact** — `npm run gen:types` overwrites it from the local Supabase schema (via your installed `supabase` CLI). Re-run it after every migration; never hand-edit it. It's excluded from Prettier (raw double-quoted CLI output), so leave the formatting as the generator emits it. Hand-written types that narrow its `Json` columns live in `domain.ts` (which imports from `database.ts`).
 
-The `supabase` CLI used for generation is a **pinned devDependency** (not the brew CLI) — `npm run gen:types` runs it via `node_modules/.bin`, so the generator version is consistent and dependabot keeps it current. Bumping that dependency is the only way the generator version changes; brew's `supabase` is still fine for running the stack day-to-day.
+Two gotchas when regenerating:
 
-One gotcha when regenerating: **run `supabase db reset` first.** `gen:types` reflects whatever is in your _running_ local DB. If you've checked out a feature branch (e.g. `ship-builder` and its `ships` table), reset back to a clean, migrations-only state or its tables will leak into the committed file.
+- **Run `supabase db reset` first.** `gen:types` reflects whatever is in your _running_ local DB. If you've checked out a feature branch (e.g. `ship-builder` and its `ships` table), reset back to a clean, migrations-only state or its tables will leak into the committed file.
+- **Generator output is CLI-version-specific.** The committed file was generated with `supabase` **2.106.0**; an older/newer CLI can emit a slightly different shape. If a regen produces unexpected diffs, check your CLI version before committing.
 
 ## Environment Variables
 
