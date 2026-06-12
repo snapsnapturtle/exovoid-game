@@ -380,3 +380,21 @@
     0 1px 0 #000,
     0 -1px 0 #000;
 }
+
+/* Paints a gradient *border* that respects border-radius. `border-image`
+   can't (it squares off rounded corners), so we use the standard
+   mask-composite carve-out: apply to an absolutely-positioned overlay
+   (inset-0, matching rounded-*, p-px) whose own background is the gradient —
+   the mask keeps only the padding ring, hiding the filled centre. Lets a
+   card's edge fade from one colour to another the same way its background
+   gradient does. */
+.border-mask {
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
