@@ -6,6 +6,8 @@ import { Modal } from '~/components/ui/Modal'
 import { Alert } from '~/components/ui/Alert'
 import { Stepper } from '~/components/ui/Stepper'
 import { StatusDot } from '~/components/ui/StatusDot'
+import { DotMatrix } from '~/components/ui/DotMatrix'
+import { LoadingBar } from '~/components/ui/LoadingBar'
 import { surfaceCardClasses, SurfaceArrow } from '~/components/ui/Surface'
 import { InlineStepper } from '~/components/ui/InlineStepper'
 import { Drawer } from '~/components/ui/Drawer'
@@ -325,6 +327,56 @@ function StyleguidePage() {
                 Kira Vance
               </span>
             </span>
+          </Row>
+        </Section>
+
+        <Section
+          title="DotMatrix loader"
+          description="A compact dot-matrix loader — a square grid of dots that ripple diagonally, a bright wave sweeping corner-to-corner. A general-purpose loading/activity indicator for small inline spots (navigation itself uses the LoadingBar below). Colour follows currentColor, so set it with a text-* class on (or above) the grid; align-middle keeps it centred next to text. Honours prefers-reduced-motion by holding the dots at a steady opacity instead of animating."
+        >
+          <Row label="Default (3×3, accent)">
+            <DotMatrix className="text-accent-900" />
+          </Row>
+          <Row label="currentColor">
+            <DotMatrix className="text-gray-1000" />
+            <DotMatrix className="text-warning-900" />
+            <DotMatrix className="text-danger-900" />
+            <DotMatrix className="text-success-900" />
+          </Row>
+          <Row label="Larger (4×4, bigger dots)">
+            <DotMatrix
+              grid={4}
+              dotSize={4}
+              gap={3}
+              className="text-accent-900"
+            />
+          </Row>
+          <Row label="Inactive (static, off-screen state)">
+            <DotMatrix active={false} className="text-accent-900" />
+          </Row>
+          <Row label="Inline with text">
+            <span className="inline-flex items-center gap-2">
+              <span className="text-base font-semibold text-white">
+                Loading
+              </span>
+              <DotMatrix label="Loading" className="text-accent-900" />
+            </span>
+          </Row>
+        </Section>
+
+        <Section
+          title="LoadingBar"
+          description="A thin indeterminate loading bar: the accent fill grows in from the left, fills the track, then recedes off to the right on a loop. Used pinned just below the app header during navigation (driven by useNavigationPending, gated to >150ms so quick/preloaded loads never flash it). Decorative (aria-hidden) — the header dot-matrix carries the role=status label. Holds a faint static fill under prefers-reduced-motion. In the app it spans full width; the box below is just a demo frame."
+        >
+          <Row label="Active (indeterminate)">
+            <div className="relative w-full max-w-sm rounded bg-gray-100">
+              <LoadingBar active />
+            </div>
+          </Row>
+          <Row label="Idle (nothing paints)">
+            <div className="relative w-full max-w-sm rounded bg-gray-100">
+              <LoadingBar active={false} />
+            </div>
           </Row>
         </Section>
 
