@@ -9,9 +9,6 @@ interface ActionsTabProps {
   gameId: string
   characterId: string
   canEdit: boolean
-  /** NPC mode hides the "go to inventory" hint when nothing is equipped —
-   * NPCs use the inline Inventory tab on the same sheet. */
-  isNpc?: boolean
 }
 
 /**
@@ -25,7 +22,6 @@ export function ActionsTab({
   gameId,
   characterId,
   canEdit,
-  isNpc = false,
 }: ActionsTabProps) {
   const weapons = inventory.filter(
     (i) => i.source === 'weapon' && i.equipped && i.weaponRef,

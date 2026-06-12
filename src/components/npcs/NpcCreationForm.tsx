@@ -100,8 +100,8 @@ export function NpcCreationForm({
       })
       await router.invalidate()
       navigate({
-        to: '/games/$gameId/npcs/$npcId',
-        params: { gameId, npcId: npc.id },
+        to: '/games/$gameId/characters/$characterId',
+        params: { gameId, characterId: npc.id },
       })
     } catch (e) {
       setSubmitting(false)

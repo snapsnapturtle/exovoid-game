@@ -169,8 +169,8 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
       // stays mounted across the navigation and we must clear the flag
       // ourselves once the new sheet has loaded.
       await navigate({
-        to: '/games/$gameId/npcs/$npcId',
-        params: { gameId: row.game_id, npcId: row.id },
+        to: '/games/$gameId/characters/$characterId',
+        params: { gameId: row.game_id, characterId: row.id },
       })
     } catch (e) {
       alert(e instanceof Error ? e.message : 'Failed to duplicate NPC')
@@ -296,7 +296,6 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
             career={character.career}
             gameId={character.game_id}
             characterId={character.id}
-            isNpc={character.is_npc}
             deleting={deleting}
             onNameChange={(v) => updateField('name', v)}
             onGenderChange={(v) => updateField('gender', v)}

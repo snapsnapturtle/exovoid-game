@@ -1,11 +1,12 @@
 import { createFileRoute, getRouteApi, Link } from '@tanstack/react-router'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { IconCheck, IconCopy } from '@tabler/icons-react'
-import { Badge } from '~/components/ui/Badge'
 import { Button, buttonClasses } from '~/components/ui/Button'
 import { Input } from '~/components/ui/Input'
 import { surfaceCardClasses, SurfaceArrow } from '~/components/ui/Surface'
 import { CharacterPortrait } from '~/components/character/CharacterPortrait'
+import { NpcRosterCard } from '~/components/npcs/NpcRosterCard'
+import { useNpcControllers } from '~/components/npcs/useNpcControllers'
 import { listNpcs } from '~/lib/server/npcs'
 
 const gameRoute = getRouteApi('/_app/games/$gameId')
@@ -23,18 +24,11 @@ function GameLobbyPage() {
     gameRoute.useLoaderData()
   const { npcs } = Route.useLoaderData()
   const [copied, setCopied] = useState(false)
-
-  const gmName = useMemo(() => {
-    const gm = members.find((m) => m.role === 'gm')
-    const name = gm?.profiles?.display_name || 'GM'
-    return `${name} (GM)`
-  }, [members])
-  const nameByUserId = useMemo(() => {
-    const map = new Map<string, string>()
-    for (const m of members)
-      map.set(m.user_id, m.profiles?.display_name || 'Unknown')
-    return map
-  }, [members])
+  const { nameByUserId, controllerLabel, isYours } = useNpcControllers(
+    members,
+    currentUserId,
+    isGm,
+  )
 
   function copyInviteCode() {
     navigator.clipboard.writeText(game.invite_code)
@@ -171,57 +165,17 @@ function GameLobbyPage() {
               <p className="text-sm text-gray-700">No NPCs yet.</p>
             ) : (
               <ul className="space-y-2">
-                {npcs.map((npc) => {
-                  const youControl =
-                    npc.controller_user_id === currentUserId ||
-                    (isGm && npc.controller_user_id === null)
-                  const controller =
-                    npc.controller_user_id === null
-                      ? gmName
-                      : (nameByUserId.get(npc.controller_user_id) ?? 'Unknown')
-                  return (
-                    <li key={npc.id}>
-                      <Link
-                        to="/games/$gameId/npcs/$npcId"
-                        params={{ gameId: game.id, npcId: npc.id }}
-                        className={surfaceCardClasses()}
-                      >
-                        <CharacterPortrait
-                          name={npc.name}
-                          portraitUrl={npc.portrait_url}
-                          size="sm"
-                        />
-                        <div className="min-w-0 flex-1">
-                          <div className="flex flex-wrap items-center gap-1.5">
-                            <p className="truncate font-medium text-white">
-                              {npc.name}
-                            </p>
-                            {npc.is_minion && (
-                              <Badge tone="warning" uppercase>
-                                Minion
-                              </Badge>
-                            )}
-                            {!npc.visible_to_players && (
-                              <Badge
-                                tone="neutral"
-                                uppercase
-                                title="Hidden from other players"
-                              >
-                                Hidden
-                              </Badge>
-                            )}
-                          </div>
-                          {!youControl && (
-                            <p className="mt-0.5 text-xs text-gray-700">
-                              Controlled by {controller}
-                            </p>
-                          )}
-                        </div>
-                        <SurfaceArrow />
-                      </Link>
-                    </li>
-                  )
-                })}
+                {npcs.map((npc) => (
+                  <li key={npc.id}>
+                    <NpcRosterCard
+                      npc={npc}
+                      gameId={game.id}
+                      controllerLabel={
+                        isYours(npc) ? null : controllerLabel(npc)
+                      }
+                    />
+                  </li>
+                ))}
               </ul>
             )}
 

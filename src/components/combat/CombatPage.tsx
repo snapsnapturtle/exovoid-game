@@ -656,16 +656,8 @@ function ParticipantCard({
         >
           <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
             <Link
-              to={
-                character.is_npc
-                  ? '/games/$gameId/npcs/$npcId'
-                  : '/games/$gameId/characters/$characterId'
-              }
-              params={
-                character.is_npc
-                  ? { gameId, npcId: character.id }
-                  : { gameId, characterId: character.id }
-              }
+              to="/games/$gameId/characters/$characterId"
+              params={{ gameId, characterId: character.id }}
               onClick={(e) => e.stopPropagation()}
               className="text-base font-semibold text-gray-1000 transition hover:text-accent-900"
             >
