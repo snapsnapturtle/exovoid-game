@@ -37,19 +37,48 @@ async function loadGameState(
   return data as unknown as GameState
 }
 
-async function writeCombat(
+/** Returned by a `mutateCombat` transform to signal "no write needed". */
+const SKIP = Symbol('no-op')
+
+/**
+ * Load `game_state`, compute the next combat from it, and write it back under
+ * an optimistic compare-and-swap on `updated_at` (auto-bumped by the
+ * `set_updated_at` trigger). If a concurrent write landed between our read and
+ * write the CAS matches 0 rows and we retry against fresh state — so e.g. a GM
+ * advancing the round no longer silently drops a player's AP adjustment.
+ *
+ * Auth/validation that doesn't depend on `game_state` belongs *outside* this
+ * helper (callers do it once); only the read-modify-write of the combat blob
+ * goes through here. The transform may be async (e.g. `nextRound` re-reads
+ * characters) and may throw to abort, or return `SKIP` for a no-op.
+ */
+async function mutateCombat(
   supabase: SupabaseClient,
   gameId: string,
-  combat: CombatState | null,
+  transform: (
+    state: GameState,
+  ) =>
+    | Promise<CombatState | null | typeof SKIP>
+    | CombatState
+    | null
+    | typeof SKIP,
 ): Promise<GameState> {
-  const { data, error } = await supabase
-    .from('game_state')
-    .update({ combat } as never)
-    .eq('game_id', gameId)
-    .select()
-    .single()
-  if (error) throw new Error(error.message)
-  return data as unknown as GameState
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const state = await loadGameState(supabase, gameId)
+    const next = await transform(state)
+    if (next === SKIP) return state
+    const { data, error } = await supabase
+      .from('game_state')
+      .update({ combat: next } as never)
+      .eq('game_id', gameId)
+      .eq('updated_at', state.updated_at)
+      .select()
+      .maybeSingle()
+    if (error) throw new Error(error.message)
+    if (data) return data as unknown as GameState
+    // 0 rows ⇒ updated_at moved under us ⇒ a concurrent write won; retry.
+  }
+  throw new Error('Combat update conflicted repeatedly; please retry')
 }
 
 /**
@@ -108,11 +137,6 @@ export const startCombat = createServerFn({ method: 'POST' })
     const { supabase, user } = context
     await requireGm(supabase, data.gameId, user.id)
 
-    const state = await loadGameState(supabase, data.gameId)
-    if (state.combat) {
-      throw new Error('Combat already active — end it first')
-    }
-
     const characters = await loadCharactersByIds(
       supabase,
       data.gameId,
@@ -122,12 +146,16 @@ export const startCombat = createServerFn({ method: 'POST' })
       throw new Error('Pick at least one character to start combat')
     }
 
-    const combat: CombatState = {
-      round: 1,
-      startedAt: new Date().toISOString(),
-      participants: characters.map((c) => snapshotParticipant(c)),
-    }
-    return writeCombat(supabase, data.gameId, combat)
+    return mutateCombat(supabase, data.gameId, (state) => {
+      if (state.combat) {
+        throw new Error('Combat already active — end it first')
+      }
+      return {
+        round: 1,
+        startedAt: new Date().toISOString(),
+        participants: characters.map((c) => snapshotParticipant(c)),
+      }
+    })
   })
 
 /**
@@ -174,22 +202,23 @@ export const joinCombat = createServerFn({ method: 'POST' })
       throw new Error('Not allowed to add this character to combat')
     }
 
-    const state = await loadGameState(supabase, data.gameId)
-    if (!state.combat) throw new Error('No combat active')
-    if (
-      state.combat.participants.some((p) => p.characterId === data.characterId)
-    ) {
-      throw new Error('Already in this combat')
-    }
-
-    const combat: CombatState = {
-      ...state.combat,
-      participants: [
-        ...state.combat.participants,
-        snapshotParticipant(character),
-      ],
-    }
-    return writeCombat(supabase, data.gameId, combat)
+    return mutateCombat(supabase, data.gameId, (state) => {
+      if (!state.combat) throw new Error('No combat active')
+      if (
+        state.combat.participants.some(
+          (p) => p.characterId === data.characterId,
+        )
+      ) {
+        throw new Error('Already in this combat')
+      }
+      return {
+        ...state.combat,
+        participants: [
+          ...state.combat.participants,
+          snapshotParticipant(character),
+        ],
+      }
+    })
   })
 
 export const nextRound = createServerFn({ method: 'POST' })
@@ -199,35 +228,35 @@ export const nextRound = createServerFn({ method: 'POST' })
     const { supabase, user } = context
     await requireGm(supabase, data.gameId, user.id)
 
-    const state = await loadGameState(supabase, data.gameId)
-    if (!state.combat) throw new Error('No combat active')
+    return mutateCombat(supabase, data.gameId, async (state) => {
+      if (!state.combat) throw new Error('No combat active')
 
-    // Re-snapshot from current character state so mid-encounter changes
-    // (e.g. wounds, attribute swaps, gear swaps) reflect in the new round.
-    const ids = state.combat.participants.map((p) => p.characterId)
-    const { data: chars, error } = await supabase
-      .from('characters')
-      .select('*')
-      .in('id', ids)
-    if (error) throw new Error(error.message)
-    const byId = new Map(
-      (chars as unknown as Character[]).map((c) => [c.id, c]),
-    )
+      // Re-snapshot from current character state so mid-encounter changes
+      // (e.g. wounds, attribute swaps, gear swaps) reflect in the new round.
+      const ids = state.combat.participants.map((p) => p.characterId)
+      const { data: chars, error } = await supabase
+        .from('characters')
+        .select('*')
+        .in('id', ids)
+      if (error) throw new Error(error.message)
+      const byId = new Map(
+        (chars as unknown as Character[]).map((c) => [c.id, c]),
+      )
 
-    const participants = state.combat.participants
-      .map((p) => {
-        const c = byId.get(p.characterId)
-        // If a character was deleted mid-combat, drop them.
-        return c ? snapshotParticipant(c, p) : null
-      })
-      .filter((p): p is CombatParticipant => p !== null)
+      const participants = state.combat.participants
+        .map((p) => {
+          const c = byId.get(p.characterId)
+          // If a character was deleted mid-combat, drop them.
+          return c ? snapshotParticipant(c, p) : null
+        })
+        .filter((p): p is CombatParticipant => p !== null)
 
-    const combat: CombatState = {
-      ...state.combat,
-      round: state.combat.round + 1,
-      participants,
-    }
-    return writeCombat(supabase, data.gameId, combat)
+      return {
+        ...state.combat,
+        round: state.combat.round + 1,
+        participants,
+      }
+    })
   })
 
 /**
@@ -266,16 +295,16 @@ export const leaveCombat = createServerFn({ method: 'POST' })
       throw new Error('Not allowed to remove this character from combat')
     }
 
-    const state = await loadGameState(supabase, data.gameId)
-    if (!state.combat) return state
+    return mutateCombat(supabase, data.gameId, (state) => {
+      if (!state.combat) return SKIP
 
-    const next = state.combat.participants.filter(
-      (p) => p.characterId !== data.characterId,
-    )
-    if (next.length === state.combat.participants.length) return state
+      const next = state.combat.participants.filter(
+        (p) => p.characterId !== data.characterId,
+      )
+      if (next.length === state.combat.participants.length) return SKIP
 
-    const combat: CombatState = { ...state.combat, participants: next }
-    return writeCombat(supabase, data.gameId, combat)
+      return { ...state.combat, participants: next }
+    })
   })
 
 export const adjustAp = createServerFn({ method: 'POST' })
@@ -299,17 +328,17 @@ export const adjustAp = createServerFn({ method: 'POST' })
       await requireGm(supabase, data.gameId, user.id)
     }
 
-    const state = await loadGameState(supabase, data.gameId)
-    if (!state.combat) throw new Error('No combat active')
-    const idx = state.combat.participants.findIndex(
-      (p) => p.characterId === data.characterId,
-    )
-    if (idx < 0) throw new Error('Character is not in the current combat')
+    return mutateCombat(supabase, data.gameId, (state) => {
+      if (!state.combat) throw new Error('No combat active')
+      const idx = state.combat.participants.findIndex(
+        (p) => p.characterId === data.characterId,
+      )
+      if (idx < 0) throw new Error('Character is not in the current combat')
 
-    const next = state.combat.participants.slice()
-    next[idx] = { ...next[idx], ap: next[idx].ap + data.delta }
-    const combat: CombatState = { ...state.combat, participants: next }
-    return writeCombat(supabase, data.gameId, combat)
+      const next = state.combat.participants.slice()
+      next[idx] = { ...next[idx], ap: next[idx].ap + data.delta }
+      return { ...state.combat, participants: next }
+    })
   })
 
 export const loadCombatCharacters = createServerFn({ method: 'GET' })
@@ -334,5 +363,5 @@ export const endCombat = createServerFn({ method: 'POST' })
     const { supabase, user } = context
     await requireGm(supabase, data.gameId, user.id)
 
-    return writeCombat(supabase, data.gameId, null)
+    return mutateCombat(supabase, data.gameId, () => null)
   })
