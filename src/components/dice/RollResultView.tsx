@@ -432,11 +432,11 @@ function WeaponTriggerPanel({
   const [open, setOpen] = useState(defaultOpen)
   const resolved = names
     .map((raw) => {
-      const { name, level } = parseQuality(raw)
-      const quality = lookupQuality(name)
+      const { name } = parseQuality(raw)
+      const quality = lookupQuality(name, 'Trigger Option')
       return quality
         ? {
-            display: level !== null ? `${name} (${level})` : name,
+            display: raw.trim(),
             effect: quality.effect,
           }
         : null

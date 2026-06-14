@@ -14,6 +14,7 @@ import {
 } from '@floating-ui/react'
 import { parseQuality } from '~/lib/game-logic/weapons'
 import { lookupQuality } from '~/lib/game-logic/item-qualities'
+import type { QualityType } from '~/lib/game-logic/item-qualities'
 
 interface QualityBadgeProps {
   /** Raw quality string from the catalog, e.g. "Concealed (1)" or "Penetrating". */
@@ -28,9 +29,11 @@ interface QualityBadgeProps {
  * overflow. Unknown names render as a plain badge with no tooltip.
  */
 export function QualityBadge({ raw, variant = 'quality' }: QualityBadgeProps) {
-  const { name, level } = parseQuality(raw)
-  const quality = lookupQuality(name)
-  const display = level !== null ? `${name} (${level})` : name
+  const { name } = parseQuality(raw)
+  const type: QualityType =
+    variant === 'trigger' ? 'Trigger Option' : 'Item Quality'
+  const quality = lookupQuality(name, type)
+  const display = raw.trim()
   const tone =
     variant === 'trigger'
       ? 'border-accent-700/40 bg-accent-700/10 text-accent-900'
