@@ -4,11 +4,7 @@ import { ActionsTab } from './ActionsTab'
 import { TalentsTab } from '~/components/talents/TalentsTab'
 import { CyberwareTab } from '~/components/cyberware/CyberwareTab'
 import { InventoryTab } from '~/components/inventory/InventoryTab'
-import type {
-  CyberwareEntry,
-  InventoryItem,
-  TalentEntry,
-} from '~/lib/types/domain'
+import type { Character } from '~/lib/types/domain'
 
 type Tab = 'actions' | 'inventory' | 'talents' | 'cyberware' | 'background'
 
@@ -21,26 +17,12 @@ const TABS: { id: Tab; label: string }[] = [
 ]
 
 interface EquipmentTabsProps {
-  name: string
-  gender: string
-  age: number | null
-  backgroundNotes: string
-  canEdit: boolean
-  talents: TalentEntry[]
-  cyberware: CyberwareEntry[]
+  character: Character
+  /** Derived Cyber Immunity capacity — computed on the sheet, not a column. */
   cyberImmunityCapacity: number
-  inventory: InventoryItem[]
-  credits: number
-  assets: number
-  level: number
-  career: string
-  gameId: string
-  characterId: string
+  canEdit: boolean
   deleting: boolean
-  onNameChange: (value: string) => void
-  onGenderChange: (value: string) => void
-  onAgeChange: (value: number | null) => void
-  onBackgroundNotesChange: (value: string) => void
+  updateField: <K extends keyof Character>(key: K, value: Character[K]) => void
   onDelete: () => void
 }
 
@@ -50,29 +32,16 @@ interface EquipmentTabsProps {
  * sheet level so it stays one click away during play.
  */
 export function EquipmentTabs({
-  name,
-  gender,
-  age,
-  backgroundNotes,
-  canEdit,
-  talents,
-  cyberware,
+  character,
   cyberImmunityCapacity,
-  inventory,
-  credits,
-  assets,
-  level,
-  career,
-  gameId,
-  characterId,
+  canEdit,
   deleting,
-  onNameChange,
-  onGenderChange,
-  onAgeChange,
-  onBackgroundNotesChange,
+  updateField,
   onDelete,
 }: EquipmentTabsProps) {
   const [tab, setTab] = useState<Tab>('actions')
+  const gameId = character.game_id
+  const characterId = character.id
 
   return (
     <div className="rounded-xl border border-gray-400 bg-background-200">
@@ -94,7 +63,7 @@ export function EquipmentTabs({
       <div className="p-3">
         {tab === 'actions' && (
           <ActionsTab
-            inventory={inventory}
+            inventory={character.inventory}
             gameId={gameId}
             characterId={characterId}
             canEdit={canEdit}
@@ -102,25 +71,25 @@ export function EquipmentTabs({
         )}
         {tab === 'inventory' && (
           <InventoryTab
-            inventory={inventory}
-            credits={credits}
-            assets={assets}
+            inventory={character.inventory}
+            credits={character.credits}
+            assets={character.assets}
             gameId={gameId}
             characterId={characterId}
           />
         )}
         {tab === 'talents' && (
           <TalentsTab
-            talents={talents}
-            level={level}
-            career={career}
+            talents={character.talents}
+            level={character.level}
+            career={character.career}
             gameId={gameId}
             characterId={characterId}
           />
         )}
         {tab === 'cyberware' && (
           <CyberwareTab
-            cyberware={cyberware}
+            cyberware={character.cyberware}
             capacity={cyberImmunityCapacity}
             gameId={gameId}
             characterId={characterId}
@@ -128,17 +97,17 @@ export function EquipmentTabs({
         )}
         {tab === 'background' && (
           <BackgroundTab
-            name={name}
-            career={career}
-            gender={gender}
-            age={age}
-            backgroundNotes={backgroundNotes}
+            name={character.name}
+            career={character.career}
+            gender={character.gender}
+            age={character.age}
+            backgroundNotes={character.background_notes}
             canEdit={canEdit}
             deleting={deleting}
-            onNameChange={onNameChange}
-            onGenderChange={onGenderChange}
-            onAgeChange={onAgeChange}
-            onBackgroundNotesChange={onBackgroundNotesChange}
+            onNameChange={(v) => updateField('name', v)}
+            onGenderChange={(v) => updateField('gender', v)}
+            onAgeChange={(v) => updateField('age', v)}
+            onBackgroundNotesChange={(v) => updateField('background_notes', v)}
             onDelete={onDelete}
           />
         )}

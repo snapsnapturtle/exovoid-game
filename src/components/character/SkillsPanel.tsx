@@ -1,9 +1,5 @@
 import { useState } from 'react'
-import type {
-  CharacterAttributes,
-  PendingBonus,
-  PendingSupport,
-} from '~/lib/types/domain'
+import type { CharacterAttributes, PendingSupport } from '~/lib/types/domain'
 import { SKILLS } from '~/lib/game-logic/skills'
 import {
   computeAttributeAverage,
@@ -14,7 +10,6 @@ import {
 import { DiceRoller } from '~/components/dice/DiceRoller'
 import { Input } from '~/components/ui/Input'
 import { IconStar, IconStarFilled } from '@tabler/icons-react'
-import type { ApplyBonusInput } from '~/components/dice/RollResultView'
 
 interface SkillsPanelProps {
   attributes: CharacterAttributes
@@ -27,16 +22,6 @@ interface SkillsPanelProps {
   onToggleFavorite: (skillId: string) => void
   gameId: string
   characterId: string
-  /** Pass `undefined` for NPCs to hide the spend-Edge affordance entirely. */
-  edgeAvailable: number | undefined
-  onSpendEdge: () => void
-  pendingBonuses: PendingBonus[]
-  onApplyBonus: (bonus: ApplyBonusInput) => string
-  onConsumeBonuses: (ids: string[]) => void
-  onRemoveBonus: (id: string) => void
-  /** Initial state for the roll modal's "Hidden roll" checkbox. True for
-   * hidden NPCs so the GM doesn't have to remember to tick it. */
-  defaultHidden?: boolean
   /** Pre-rolled support contributions available in this game (any skill). The
    * panel filters by current skill id at the per-row level when opening the
    * Roll modal. */
@@ -54,13 +39,6 @@ export function SkillsPanel({
   onToggleFavorite,
   gameId,
   characterId,
-  edgeAvailable,
-  onSpendEdge,
-  pendingBonuses,
-  onApplyBonus,
-  onConsumeBonuses,
-  onRemoveBonus,
-  defaultHidden,
   availableSupport,
   characterName,
 }: SkillsPanelProps) {
@@ -214,13 +192,6 @@ export function SkillsPanel({
                 )
               : undefined
           }
-          edgeAvailable={rolling.mode === 'support' ? undefined : edgeAvailable}
-          onSpendEdge={onSpendEdge}
-          pendingBonuses={pendingBonuses}
-          onApplyBonus={onApplyBonus}
-          onConsumeBonuses={onConsumeBonuses}
-          onRemoveBonus={onRemoveBonus}
-          defaultHidden={defaultHidden}
           onClose={() => setRolling(null)}
         />
       )}

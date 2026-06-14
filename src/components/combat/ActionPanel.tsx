@@ -2,8 +2,7 @@ import { useState } from 'react'
 import { Button } from '~/components/ui/Button'
 import { COMBAT_ACTIONS, type CombatAction } from '~/data/combat-actions'
 import { CombatRollModal } from './CombatRollModal'
-import type { CharacterAttributes, PendingBonus } from '~/lib/types/domain'
-import type { ApplyBonusInput } from '~/components/dice/RollResultView'
+import type { CharacterAttributes } from '~/lib/types/domain'
 
 interface ActionPanelProps {
   gameId: string
@@ -13,17 +12,6 @@ interface ActionPanelProps {
   canEdit: boolean
   /** Called to debit AP. Used for both direct actions and as the post-roll commit. */
   onDebitAp: (amount: number) => void | Promise<void>
-  /** Current Edge available — passed into the roll modal for Edge spend
-   * buttons. Pass `undefined` for NPCs to hide the affordance entirely. */
-  edgeAvailable: number | undefined
-  /** Decrement Edge by 1 — fired by Edge spend buttons in the roll modal. */
-  onSpendEdge: () => void
-  pendingBonuses: PendingBonus[]
-  onApplyBonus: (bonus: ApplyBonusInput) => string
-  onConsumeBonuses: (ids: string[]) => void
-  onRemoveBonus: (id: string) => void
-  /** Initial state for the "Hidden roll" checkbox — true for hidden NPCs. */
-  defaultHidden?: boolean
 }
 
 /**
@@ -39,13 +27,6 @@ export function ActionPanel({
   skills,
   canEdit,
   onDebitAp,
-  edgeAvailable,
-  onSpendEdge,
-  pendingBonuses,
-  onApplyBonus,
-  onConsumeBonuses,
-  onRemoveBonus,
-  defaultHidden,
 }: ActionPanelProps) {
   const [rolling, setRolling] = useState<CombatAction | null>(null)
 
@@ -92,13 +73,6 @@ export function ActionPanel({
           initialModifier={rolling.poolModifier}
           apCost={rolling.apCost}
           contextLabel={`Combat · ${rolling.name}`}
-          edgeAvailable={edgeAvailable}
-          onSpendEdge={onSpendEdge}
-          pendingBonuses={pendingBonuses}
-          onApplyBonus={onApplyBonus}
-          onConsumeBonuses={onConsumeBonuses}
-          onRemoveBonus={onRemoveBonus}
-          defaultHidden={defaultHidden}
           onApCommit={() => onDebitAp(rolling.apCost)}
           onClose={() => setRolling(null)}
         />

@@ -10,7 +10,8 @@ import {
   useDiceFeedBroadcast,
   useDiceFeedRefresh,
 } from '~/lib/hooks/diceFeedContext'
-import { RollResultView, type ApplyBonusInput } from './RollResultView'
+import { RollResultView } from './RollResultView'
+import { useRollContext } from '~/lib/hooks/rollContext'
 import { Badge } from '~/components/ui/Badge'
 import { Button } from '~/components/ui/Button'
 import { Checkbox } from '~/components/ui/Checkbox'
@@ -46,23 +47,11 @@ interface DiceRollerProps {
   contextLabel?: string
   /** Fired after a successful roll persists. Use to debit AP or apply other side effects. */
   onAfterRoll?: (rollData: DiceRollData) => Promise<void> | void
-  /** Current Edge available to the character. Edge buttons render only when both this and onSpendEdge are provided. */
-  edgeAvailable?: number
-  /** Decrement Edge by 1 — called whenever an Edge action commits (pool bonus on the first roll, or each "Spend edge: re-roll"). */
-  onSpendEdge?: () => Promise<void> | void
-  /** Pending pool-modifier bonuses carried on the character (Flow etc.) — auto-applied to this roll and consumed when it commits. */
-  pendingBonuses?: PendingBonus[]
-  /** Remove the given pending bonus IDs from the character — fired after a roll consumes them. */
-  onConsumeBonuses?: (ids: string[]) => Promise<void> | void
-  /** Persist a new pending bonus on the character (from a trigger option's Apply button). Returns the new bonus's id. */
-  onApplyBonus?: (bonus: ApplyBonusInput) => string
-  /** Remove a previously-applied pending bonus by id — used to un-apply within the trigger panel. */
-  onRemoveBonus?: (id: string) => void
-  /** Initial state for the "Hidden roll" checkbox. The GM can still untick
-   * before rolling — this is purely the default. Set to true when rolling
-   * for a hidden NPC. */
-  defaultHidden?: boolean
 }
+
+// The edge/pending-bonus/hidden bundle (formerly seven pass-through props) now
+// arrives via RollContext — see `useRollContext`. Support rolls render outside
+// any provider, where these affordances are suppressed anyway.
 
 const SUPPORT_SYMBOL_ORDER = [
   'success',
@@ -102,15 +91,18 @@ export function DiceRoller({
   showCombatTriggers = false,
   contextLabel,
   onAfterRoll,
-  edgeAvailable,
-  onSpendEdge,
-  pendingBonuses,
-  onConsumeBonuses,
-  onApplyBonus,
-  onRemoveBonus,
-  defaultHidden = false,
 }: DiceRollerProps) {
   const isSupport = mode === 'support'
+  // The roll bundle (edge + pending bonuses + hidden default) comes from the
+  // nearest RollContext provider. Absent in support mode, where it's unused.
+  const roll = useRollContext()
+  const pendingBonuses = roll?.pendingBonuses
+  const onApplyBonus = roll?.applyBonus
+  const onConsumeBonuses = roll?.consumeBonuses
+  const onRemoveBonus = roll?.removeBonus
+  const edgeAvailable = roll?.edgeAvailable
+  const onSpendEdge = roll?.onSpendEdge
+  const defaultHidden = roll?.defaultHidden ?? false
   const [modifier, setModifier] = useState(initialModifier)
   const [hidden, setHidden] = useState(defaultHidden)
   const [rolling, setRolling] = useState(false)

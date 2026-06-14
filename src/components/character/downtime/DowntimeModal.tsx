@@ -1,7 +1,22 @@
-import { createContext, useContext, useState } from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import type { Character, ProgressionEntry } from '~/lib/types/domain'
+import type {
+  Character,
+  PendingBonus,
+  ProgressionEntry,
+} from '~/lib/types/domain'
 import type { AppliedPassiveEffects } from '~/lib/game-logic/passive-effects'
+import { usePendingBonuses } from '~/lib/hooks/usePendingBonuses'
+import {
+  RollContextProvider,
+  type RollContextValue,
+} from '~/lib/hooks/rollContext'
 import {
   DOWNTIME_ACTIVITIES,
   isActivityAvailable,
@@ -57,6 +72,27 @@ export function DowntimeModal({
   const [footerEl, setFooterEl] = useState<HTMLDivElement | null>(null)
   const navigate = useNavigate()
 
+  // One RollContext for every roll activity in this modal — the apply/consume/
+  // remove trio and edge spend all route through the same `onUpdateField` sink.
+  const persistBonuses = useCallback(
+    (next: PendingBonus[]) => onUpdateField('pending_bonuses', next),
+    [onUpdateField],
+  )
+  const bonuses = usePendingBonuses(character.pending_bonuses, persistBonuses)
+  const rollValue = useMemo<RollContextValue>(
+    () => ({
+      pendingBonuses: character.pending_bonuses,
+      applyBonus: bonuses.apply,
+      consumeBonuses: bonuses.consume,
+      removeBonus: bonuses.remove,
+      edgeAvailable: character.edge_current,
+      onSpendEdge: () =>
+        onUpdateField('edge_current', Math.max(0, character.edge_current - 1)),
+      defaultHidden: false,
+    }),
+    [character.pending_bonuses, character.edge_current, bonuses, onUpdateField],
+  )
+
   function choose(activity: DowntimeActivity) {
     if (activity.id === 'install-cyberware') {
       onClose()
@@ -107,26 +143,28 @@ export function DowntimeModal({
         )
       }
     >
-      <DowntimeFooterContext.Provider value={footerEl}>
-        {view.kind === 'list' && (
-          <ActivityList
-            character={character}
-            progression={progression}
-            onChoose={choose}
-          />
-        )}
-        {view.kind === 'activity' && activeActivity && (
-          <ActivityDispatcher
-            activity={activeActivity}
-            character={character}
-            effects={effects}
-            gameId={gameId}
-            characterId={characterId}
-            onCloseAll={onClose}
-            onUpdateField={onUpdateField}
-          />
-        )}
-      </DowntimeFooterContext.Provider>
+      <RollContextProvider value={rollValue}>
+        <DowntimeFooterContext.Provider value={footerEl}>
+          {view.kind === 'list' && (
+            <ActivityList
+              character={character}
+              progression={progression}
+              onChoose={choose}
+            />
+          )}
+          {view.kind === 'activity' && activeActivity && (
+            <ActivityDispatcher
+              activity={activeActivity}
+              character={character}
+              effects={effects}
+              gameId={gameId}
+              characterId={characterId}
+              onCloseAll={onClose}
+              onUpdateField={onUpdateField}
+            />
+          )}
+        </DowntimeFooterContext.Provider>
+      </RollContextProvider>
     </Modal>
   )
 }
@@ -251,7 +289,6 @@ function ActivityDispatcher(props: DispatcherProps) {
           gameId={props.gameId}
           characterId={props.characterId}
           onCloseAll={props.onCloseAll}
-          onUpdateField={props.onUpdateField}
         />
       )
     case 'networking':
@@ -262,7 +299,6 @@ function ActivityDispatcher(props: DispatcherProps) {
           gameId={props.gameId}
           characterId={props.characterId}
           onCloseAll={props.onCloseAll}
-          onUpdateField={props.onUpdateField}
         />
       )
     case 'forge-id':
@@ -273,7 +309,6 @@ function ActivityDispatcher(props: DispatcherProps) {
           gameId={props.gameId}
           characterId={props.characterId}
           onCloseAll={props.onCloseAll}
-          onUpdateField={props.onUpdateField}
         />
       )
     default:

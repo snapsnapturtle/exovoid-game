@@ -2,6 +2,11 @@ import { useCallback, useMemo, useState } from 'react'
 import { getRouteApi, useNavigate, useRouter } from '@tanstack/react-router'
 import type { Character, PendingBonus } from '~/lib/types/domain'
 import { useCharacter } from '~/lib/hooks/useCharacter'
+import { usePendingBonuses } from '~/lib/hooks/usePendingBonuses'
+import {
+  RollContextProvider,
+  type RollContextValue,
+} from '~/lib/hooks/rollContext'
 import { useCharacterProgression } from '~/lib/hooks/useCharacterProgression'
 import { useRealtimeGameState } from '~/lib/hooks/useRealtimeGameState'
 import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
@@ -18,7 +23,6 @@ import { EquipmentTabs } from './EquipmentTabs'
 import { DowntimeModal } from './downtime/DowntimeModal'
 import { LevelUpModal } from './level-up/LevelUpModal'
 import { NpcSheetControls } from '~/components/npcs/NpcSheetControls'
-import type { ApplyBonusInput } from '~/components/dice/RollResultView'
 
 const gameRoute = getRouteApi('/_app/games/$gameId')
 
@@ -92,36 +96,33 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
     }
   }
 
-  const applyPendingBonus = useCallback(
-    (bonus: ApplyBonusInput): string => {
-      const entry: PendingBonus = {
-        id: crypto.randomUUID(),
-        label: bonus.label,
-        modifier: bonus.modifier,
-        source: bonus.source,
-        addedAt: new Date().toISOString(),
-      }
-      updateField('pending_bonuses', [...character.pending_bonuses, entry])
-      return entry.id
-    },
-    [character.pending_bonuses, updateField],
+  const persistBonuses = useCallback(
+    (next: PendingBonus[]) => updateField('pending_bonuses', next),
+    [updateField],
   )
+  const bonuses = usePendingBonuses(character.pending_bonuses, persistBonuses)
 
-  const consumePendingBonuses = useCallback(
-    (ids: string[]) => {
-      if (ids.length === 0) return
-      const drop = new Set(ids)
-      updateField(
-        'pending_bonuses',
-        character.pending_bonuses.filter((b) => !drop.has(b.id)),
-      )
-    },
-    [character.pending_bonuses, updateField],
-  )
-
-  const removePendingBonus = useCallback(
-    (id: string) => consumePendingBonuses([id]),
-    [consumePendingBonuses],
+  // Single RollContext for both roll surfaces on the sheet (SkillsPanel +
+  // DerivedStatsPanel). NPCs hidden from players default to a hidden roll.
+  const rollValue = useMemo<RollContextValue>(
+    () => ({
+      pendingBonuses: character.pending_bonuses,
+      applyBonus: bonuses.apply,
+      consumeBonuses: bonuses.consume,
+      removeBonus: bonuses.remove,
+      edgeAvailable: character.edge_current,
+      onSpendEdge: () =>
+        updateField('edge_current', Math.max(0, character.edge_current - 1)),
+      defaultHidden: character.is_npc && !character.visible_to_players,
+    }),
+    [
+      character.pending_bonuses,
+      character.edge_current,
+      character.is_npc,
+      character.visible_to_players,
+      bonuses,
+      updateField,
+    ],
   )
 
   const toggleFavoriteSkill = useCallback(
@@ -237,74 +238,40 @@ export function CharacterSheet({ initial, canEdit }: CharacterSheetProps) {
         </div>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <SkillsPanel
-          attributes={effects.attributes}
-          skills={character.skills}
-          favoriteSkills={character.favorite_skills}
-          canFavorite={canEdit}
-          onToggleFavorite={toggleFavoriteSkill}
-          gameId={character.game_id}
-          characterId={character.id}
-          characterName={character.name}
-          availableSupport={liveGameState.pending_support}
-          edgeAvailable={character.edge_current}
-          onSpendEdge={() =>
-            updateField('edge_current', Math.max(0, character.edge_current - 1))
-          }
-          pendingBonuses={character.pending_bonuses}
-          onApplyBonus={applyPendingBonus}
-          onConsumeBonuses={consumePendingBonuses}
-          onRemoveBonus={removePendingBonus}
-          defaultHidden={character.is_npc && !character.visible_to_players}
-        />
-        <div className="space-y-4">
-          <DerivedStatsPanel
-            stats={derivedStats}
-            contributions={effects.derivedContributions}
+      <RollContextProvider value={rollValue}>
+        <div className="grid gap-4 lg:grid-cols-2">
+          <SkillsPanel
+            attributes={effects.attributes}
+            skills={character.skills}
+            favoriteSkills={character.favorite_skills}
+            canFavorite={canEdit}
+            onToggleFavorite={toggleFavoriteSkill}
             gameId={character.game_id}
             characterId={character.id}
-            edgeAvailable={character.edge_current}
-            onSpendEdge={() =>
-              updateField(
-                'edge_current',
-                Math.max(0, character.edge_current - 1),
-              )
-            }
-            pendingBonuses={character.pending_bonuses}
-            onApplyBonus={applyPendingBonus}
-            onConsumeBonuses={consumePendingBonuses}
-            onRemoveBonus={removePendingBonus}
-            defaultHidden={character.is_npc && !character.visible_to_players}
-            notes={character.notes}
-            onNotesChange={(v) => updateField('notes', v)}
-            canEditNotes={canEdit}
+            characterName={character.name}
+            availableSupport={liveGameState.pending_support}
           />
-          <EquipmentTabs
-            name={character.name}
-            gender={character.gender}
-            age={character.age}
-            backgroundNotes={character.background_notes}
-            canEdit={canEdit}
-            talents={character.talents}
-            cyberware={character.cyberware}
-            cyberImmunityCapacity={derivedStats.cyberImmunity}
-            inventory={character.inventory}
-            credits={character.credits}
-            assets={character.assets}
-            level={character.level}
-            career={character.career}
-            gameId={character.game_id}
-            characterId={character.id}
-            deleting={deleting}
-            onNameChange={(v) => updateField('name', v)}
-            onGenderChange={(v) => updateField('gender', v)}
-            onAgeChange={(v) => updateField('age', v)}
-            onBackgroundNotesChange={(v) => updateField('background_notes', v)}
-            onDelete={handleDelete}
-          />
+          <div className="space-y-4">
+            <DerivedStatsPanel
+              stats={derivedStats}
+              contributions={effects.derivedContributions}
+              gameId={character.game_id}
+              characterId={character.id}
+              notes={character.notes}
+              onNotesChange={(v) => updateField('notes', v)}
+              canEditNotes={canEdit}
+            />
+            <EquipmentTabs
+              character={character}
+              cyberImmunityCapacity={derivedStats.cyberImmunity}
+              canEdit={canEdit}
+              deleting={deleting}
+              updateField={updateField}
+              onDelete={handleDelete}
+            />
+          </div>
         </div>
-      </div>
+      </RollContextProvider>
 
       {downtimeOpen && (
         <DowntimeModal
