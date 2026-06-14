@@ -33,7 +33,7 @@ Digital companion app for the Exovoid tabletop RPG. Think D&D Beyond for a sci-f
 
 - All database writes go through `createServerFn` in `src/lib/server/`
 - Gate auth with `.middleware([authMiddleware])` (`src/lib/server/middleware.ts`) rather than re-deriving it inline. The middleware creates the request-scoped Supabase client, resolves the user, throws `Not authenticated` when there is none, and exposes `{ supabase, user }` on the handler's `context` — so handlers open with `const { supabase, user } = context` (drop `user` when unused). `getAuthUser` (auth.ts) is the deliberate exception: it returns `{ user: null }` instead of throwing, for checks that tolerate an unauthenticated caller.
-- Use `.validator()` for input validation (`.inputValidator()` is the deprecated alias in current TanStack Start)
+- Validate every input by passing a **zod schema** to `.validator()` — never the identity `(d: {…}) => d` (that only type-ascribes; nothing is checked at runtime). TanStack Start accepts a zod schema directly (it's a Standard Schema). Compose the shared primitives in `src/lib/server/validation.ts` (`uuidSchema`, `attributesSchema`, `ownerSchema`, `rollPoolSchema`, `jsonSchema`, …) and define the per-fn schema inline above the handler. Use `z.object` for top-level args (unknown keys are stripped, so they can't reach PostgREST) and `z.strictObject` for any column allow-list that feeds straight into `.update()` (so a stray `credits`/`user_id` is rejected, not forwarded). (`.inputValidator()` is the deprecated alias in current TanStack Start.)
 
 ### Game Logic
 

@@ -1,6 +1,8 @@
 import { createServerFn } from '@tanstack/react-start'
+import { z } from 'zod'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { authMiddleware } from '~/lib/server/middleware'
+import { ownerSchema, uuidSchema } from '~/lib/server/validation'
 import type { GameState, InventoryItem } from '~/lib/types/domain'
 import { lookupItem } from '~/lib/game-logic/items'
 import {
@@ -26,8 +28,6 @@ import {
 type Owner =
   | { type: 'character'; characterId: string }
   | { type: 'game'; gameId: string }
-
-type CurrencyKind = 'credits' | 'assets'
 
 // Flatten the `Owner` union into the `{type, id}` shape the atomic-transfer
 // RPCs take.
@@ -113,14 +113,14 @@ function buildEntry(input: {
 
 export const addInventoryItem = createServerFn({ method: 'POST' })
   .validator(
-    (d: {
-      owner: Owner
-      source: 'catalog' | 'custom'
-      name: string
-      quantity: number
-      location?: string
-      description?: string
-    }) => d,
+    z.object({
+      owner: ownerSchema,
+      source: z.enum(['catalog', 'custom']),
+      name: z.string(),
+      quantity: z.number().int(),
+      location: z.string().optional(),
+      description: z.string().optional(),
+    }),
   )
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
@@ -134,22 +134,22 @@ export const addInventoryItem = createServerFn({ method: 'POST' })
 
 export const updateInventoryItem = createServerFn({ method: 'POST' })
   .validator(
-    (d: {
-      owner: Owner
-      itemId: string
-      updates: {
-        quantity?: number
-        location?: string
-        description?: string
-        name?: string
-        currentDurability?: number
-        currentAmmo?: number
+    z.object({
+      owner: ownerSchema,
+      itemId: uuidSchema,
+      updates: z.object({
+        quantity: z.number().int().optional(),
+        location: z.string().optional(),
+        description: z.string().optional(),
+        name: z.string().optional(),
+        currentDurability: z.number().int().optional(),
+        currentAmmo: z.number().int().optional(),
         /** `null` clears the manufacturer; only allowed on weapon/armor entries. */
-        manufacturerRef?: string | null
+        manufacturerRef: z.string().nullable().optional(),
         /** Replace the attached mod list. Validated against the item's allow-list. */
-        mods?: string[]
-      }
-    }) => d,
+        mods: z.array(z.string()).optional(),
+      }),
+    }),
   )
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
@@ -356,7 +356,7 @@ export const updateInventoryItem = createServerFn({ method: 'POST' })
   })
 
 export const removeInventoryItem = createServerFn({ method: 'POST' })
-  .validator((d: { owner: Owner; itemId: string }) => d)
+  .validator(z.object({ owner: ownerSchema, itemId: uuidSchema }))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase } = context
@@ -370,13 +370,13 @@ export const removeInventoryItem = createServerFn({ method: 'POST' })
 
 export const transferInventoryItem = createServerFn({ method: 'POST' })
   .validator(
-    (d: {
-      from: Owner
-      to: Owner
-      itemId: string
+    z.object({
+      from: ownerSchema,
+      to: ownerSchema,
+      itemId: uuidSchema,
       /** Partial transfer; omit to move the entire stack. */
-      quantity?: number
-    }) => d,
+      quantity: z.number().int().optional(),
+    }),
   )
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
@@ -433,15 +433,15 @@ export const transferInventoryItem = createServerFn({ method: 'POST' })
 
 export const addWeapon = createServerFn({ method: 'POST' })
   .validator(
-    (d: {
-      owner: Owner
-      weaponRef: string
+    z.object({
+      owner: ownerSchema,
+      weaponRef: z.string(),
       /** Throwing weapons (modLimit 0) skip the manufacturer step entirely. */
-      manufacturerRef?: string
+      manufacturerRef: z.string().optional(),
       /** Optional override; defaults to the catalog's illustrative name. */
-      name?: string
-      location?: string
-    }) => d,
+      name: z.string().optional(),
+      location: z.string().optional(),
+    }),
   )
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
@@ -494,7 +494,11 @@ function weaponManufacturerType(weapon: WeaponData): 'firearms' | 'melee' {
 
 export const setEquipped = createServerFn({ method: 'POST' })
   .validator(
-    (d: { characterId: string; itemId: string; equipped: boolean }) => d,
+    z.object({
+      characterId: uuidSchema,
+      itemId: uuidSchema,
+      equipped: z.boolean(),
+    }),
   )
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
@@ -529,13 +533,13 @@ export const setEquipped = createServerFn({ method: 'POST' })
 
 export const addArmor = createServerFn({ method: 'POST' })
   .validator(
-    (d: {
-      owner: Owner
-      armorRef: string
-      manufacturerRef: string
-      name?: string
-      location?: string
-    }) => d,
+    z.object({
+      owner: ownerSchema,
+      armorRef: z.string(),
+      manufacturerRef: z.string(),
+      name: z.string().optional(),
+      location: z.string().optional(),
+    }),
   )
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
@@ -580,7 +584,13 @@ export const addArmor = createServerFn({ method: 'POST' })
 // Currency operations.
 
 export const setCurrency = createServerFn({ method: 'POST' })
-  .validator((d: { owner: Owner; credits?: number; assets?: number }) => d)
+  .validator(
+    z.object({
+      owner: ownerSchema,
+      credits: z.number().int().optional(),
+      assets: z.number().int().optional(),
+    }),
+  )
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase } = context
@@ -616,7 +626,12 @@ export const setCurrency = createServerFn({ method: 'POST' })
 
 export const transferCurrency = createServerFn({ method: 'POST' })
   .validator(
-    (d: { from: Owner; to: Owner; kind: CurrencyKind; amount: number }) => d,
+    z.object({
+      from: ownerSchema,
+      to: ownerSchema,
+      kind: z.enum(['credits', 'assets']),
+      amount: z.number().int(),
+    }),
   )
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
@@ -643,7 +658,7 @@ export const transferCurrency = createServerFn({ method: 'POST' })
 // Loader.
 
 export const loadGameState = createServerFn({ method: 'GET' })
-  .validator((d: { gameId: string }) => d)
+  .validator(z.object({ gameId: uuidSchema }))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase } = context

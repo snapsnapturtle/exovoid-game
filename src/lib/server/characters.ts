@@ -1,13 +1,16 @@
 import { createServerFn } from '@tanstack/react-start'
+import { z } from 'zod'
 import { authMiddleware } from '~/lib/server/middleware'
-import type {
-  Character,
-  CharacterAttributes,
-  DerivedStatBonuses,
-  InjuryEntry,
-  PendingBonus,
-  TalentEntry,
-} from '~/lib/types/domain'
+import {
+  attributesSchema,
+  derivedStatBonusesSchema,
+  injuryEntrySchema,
+  pendingBonusSchema,
+  skillsSchema,
+  talentEntrySchema,
+  uuidSchema,
+} from '~/lib/server/validation'
+import type { Character, TalentEntry } from '~/lib/types/domain'
 import type { CareerData } from '~/lib/game-logic/talents'
 import { validateCreation } from '~/lib/game-logic/character-creation'
 import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
@@ -26,31 +29,29 @@ const careers = careersData as CareerData[]
 
 export const createCharacter = createServerFn({ method: 'POST' })
   .validator(
-    (d: {
-      gameId: string
-      name: string
-      career: string
-      gender?: string
-      age?: number | null
-      background_notes?: string
-      attributes: CharacterAttributes
+    z.object({
+      gameId: uuidSchema,
+      name: z.string().trim().min(1, 'Name is required'),
+      career: z.string(),
+      gender: z.string().optional(),
+      age: z.number().int().min(0).nullable().optional(),
+      background_notes: z.string().optional(),
+      attributes: attributesSchema,
       /** Pre-bonus attribute allocation, validated separately against the 28+6/4 caps. */
-      baseAttributes?: CharacterAttributes
-      skills: Record<string, number>
+      baseAttributes: attributesSchema.optional(),
+      skills: skillsSchema,
       /** Pre-bonus final skills (career baseline + spent points), validated separately. */
-      baseFinalSkills?: Record<string, number>
-      talents?: TalentEntry[]
-      credits?: number
-      assets?: number
-      derived_stat_bonuses?: DerivedStatBonuses
-      skillPointsBudget?: number
-    }) => d,
+      baseFinalSkills: skillsSchema.optional(),
+      talents: z.array(talentEntrySchema).optional(),
+      credits: z.number().int().min(0).optional(),
+      assets: z.number().int().min(0).optional(),
+      derived_stat_bonuses: derivedStatBonusesSchema.optional(),
+      skillPointsBudget: z.number().int().optional(),
+    }),
   )
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase, user } = context
-
-    if (!data.name.trim()) throw new Error('Name is required')
 
     const check = validateCreation(
       {
@@ -93,7 +94,7 @@ export const createCharacter = createServerFn({ method: 'POST' })
   })
 
 export const getCharacter = createServerFn()
-  .validator((d: { characterId: string }) => d)
+  .validator(z.object({ characterId: uuidSchema }))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase, user } = context
@@ -135,29 +136,31 @@ export const getCharacter = createServerFn()
 
 export const updateCharacter = createServerFn({ method: 'POST' })
   .validator(
-    (d: {
-      characterId: string
-      updates: {
-        name?: string
-        career?: string
-        level?: number
-        experience?: number
-        gender?: string
-        age?: number | null
-        background_notes?: string
-        attributes?: CharacterAttributes
-        skills?: Record<string, number>
-        talents?: TalentEntry[]
-        edge_current?: number
-        health_current?: number | null
-        injuries?: InjuryEntry[]
-        pending_bonuses?: PendingBonus[]
-        favorite_skills?: string[]
-        notes?: string
-        portrait_url?: string | null
-        downtime_uses_used?: Record<string, number>
-      }
-    }) => d,
+    z.object({
+      characterId: uuidSchema,
+      // Strict allow-list: anything outside these columns (credits, user_id,
+      // game_id, …) is rejected rather than forwarded wholesale to `.update()`.
+      updates: z.strictObject({
+        name: z.string().optional(),
+        career: z.string().optional(),
+        level: z.number().int().optional(),
+        experience: z.number().int().optional(),
+        gender: z.string().optional(),
+        age: z.number().int().nullable().optional(),
+        background_notes: z.string().optional(),
+        attributes: attributesSchema.optional(),
+        skills: skillsSchema.optional(),
+        talents: z.array(talentEntrySchema).optional(),
+        edge_current: z.number().int().optional(),
+        health_current: z.number().int().nullable().optional(),
+        injuries: z.array(injuryEntrySchema).optional(),
+        pending_bonuses: z.array(pendingBonusSchema).optional(),
+        favorite_skills: z.array(z.string()).optional(),
+        notes: z.string().optional(),
+        portrait_url: z.string().nullable().optional(),
+        downtime_uses_used: z.record(z.string(), z.number().int()).optional(),
+      }),
+    }),
   )
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
@@ -175,7 +178,7 @@ export const updateCharacter = createServerFn({ method: 'POST' })
   })
 
 export const grantTalent = createServerFn({ method: 'POST' })
-  .validator((d: { characterId: string; talentName: string }) => d)
+  .validator(z.object({ characterId: uuidSchema, talentName: z.string() }))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase } = context
@@ -212,7 +215,7 @@ export const grantTalent = createServerFn({ method: 'POST' })
   })
 
 export const installCyberware = createServerFn({ method: 'POST' })
-  .validator((d: { characterId: string; cyberwareName: string }) => d)
+  .validator(z.object({ characterId: uuidSchema, cyberwareName: z.string() }))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase } = context
@@ -259,7 +262,7 @@ export const installCyberware = createServerFn({ method: 'POST' })
   })
 
 export const uninstallCyberware = createServerFn({ method: 'POST' })
-  .validator((d: { characterId: string; cyberwareName: string }) => d)
+  .validator(z.object({ characterId: uuidSchema, cyberwareName: z.string() }))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase } = context
@@ -312,7 +315,12 @@ function withAllocationReset(
 }
 
 export const setMalfunctionAllocations = createServerFn({ method: 'POST' })
-  .validator((d: { characterId: string; allocations: number[] }) => d)
+  .validator(
+    z.object({
+      characterId: uuidSchema,
+      allocations: z.array(z.number().int()),
+    }),
+  )
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase } = context
@@ -349,7 +357,7 @@ export const setMalfunctionAllocations = createServerFn({ method: 'POST' })
   })
 
 export const deleteCharacter = createServerFn({ method: 'POST' })
-  .validator((d: { characterId: string }) => d)
+  .validator(z.object({ characterId: uuidSchema }))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase } = context
@@ -389,7 +397,12 @@ export const deleteCharacter = createServerFn({ method: 'POST' })
   })
 
 export const updatePortraitUrl = createServerFn({ method: 'POST' })
-  .validator((d: { characterId: string; portraitUrl: string | null }) => d)
+  .validator(
+    z.object({
+      characterId: uuidSchema,
+      portraitUrl: z.string().nullable(),
+    }),
+  )
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase } = context

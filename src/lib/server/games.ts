@@ -1,5 +1,7 @@
 import { createServerFn } from '@tanstack/react-start'
+import { z } from 'zod'
 import { authMiddleware } from '~/lib/server/middleware'
+import { uuidSchema } from '~/lib/server/validation'
 import type { Database } from '~/lib/types/database'
 
 type GameRow = Database['public']['Tables']['games']['Row']
@@ -46,7 +48,7 @@ export const getUserGames = createServerFn()
   })
 
 export const createGame = createServerFn({ method: 'POST' })
-  .validator((d: { name: string }) => d)
+  .validator(z.object({ name: z.string().trim().min(1, 'Name is required') }))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase, user } = context
@@ -68,7 +70,7 @@ export const createGame = createServerFn({ method: 'POST' })
   })
 
 export const joinGame = createServerFn({ method: 'POST' })
-  .validator((d: { inviteCode: string }) => d)
+  .validator(z.object({ inviteCode: z.string().trim().min(1) }))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase, user } = context
@@ -98,7 +100,7 @@ export const joinGame = createServerFn({ method: 'POST' })
   })
 
 export const getGame = createServerFn()
-  .validator((d: { gameId: string }) => d)
+  .validator(z.object({ gameId: uuidSchema }))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase, user } = context
