@@ -1,5 +1,11 @@
 import { createServerFn } from '@tanstack/react-start'
+import { z } from 'zod'
 import { authMiddleware } from '~/lib/server/middleware'
+import {
+  attributesSchema,
+  skillsSchema,
+  uuidSchema,
+} from '~/lib/server/validation'
 import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
 import type { Character, CharacterAttributes } from '~/lib/types/domain'
 
@@ -21,24 +27,23 @@ import type { Character, CharacterAttributes } from '~/lib/types/domain'
  */
 export const createNpc = createServerFn({ method: 'POST' })
   .validator(
-    (d: {
-      gameId: string
-      name: string
-      is_minion?: boolean
-      visible_to_players?: boolean
-      controller_user_id?: string | null
-      attributes?: CharacterAttributes
-      skills?: Record<string, number>
-      health_current?: number | null
-      background_notes?: string
-    }) => d,
+    z.object({
+      gameId: uuidSchema,
+      name: z.string().trim().min(1, 'Name is required'),
+      is_minion: z.boolean().optional(),
+      visible_to_players: z.boolean().optional(),
+      controller_user_id: uuidSchema.nullable().optional(),
+      attributes: attributesSchema.optional(),
+      skills: skillsSchema.optional(),
+      health_current: z.number().int().nullable().optional(),
+      background_notes: z.string().optional(),
+    }),
   )
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase, user } = context
 
-    const trimmed = data.name.trim()
-    if (!trimmed) throw new Error('Name is required')
+    const trimmed = data.name
 
     const { data: game } = await supabase
       .from('games')
@@ -107,7 +112,7 @@ export const createNpc = createServerFn({ method: 'POST' })
  * The name is prefixed "Copy of …"; rename in the new NPC's sheet.
  */
 export const duplicateNpc = createServerFn({ method: 'POST' })
-  .validator((d: { npcId: string }) => d)
+  .validator(z.object({ npcId: uuidSchema }))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase, user } = context
@@ -175,14 +180,15 @@ export const duplicateNpc = createServerFn({ method: 'POST' })
  */
 export const updateNpcFlags = createServerFn({ method: 'POST' })
   .validator(
-    (d: {
-      characterId: string
-      updates: {
-        is_minion?: boolean
-        visible_to_players?: boolean
-        controller_user_id?: string | null
-      }
-    }) => d,
+    z.object({
+      characterId: uuidSchema,
+      // Strict allow-list: only the three banner flags, never stat columns.
+      updates: z.strictObject({
+        is_minion: z.boolean().optional(),
+        visible_to_players: z.boolean().optional(),
+        controller_user_id: uuidSchema.nullable().optional(),
+      }),
+    }),
   )
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
@@ -206,7 +212,7 @@ export const updateNpcFlags = createServerFn({ method: 'POST' })
  * Returns full rows so the roster can show portrait + summary stats.
  */
 export const listNpcs = createServerFn({ method: 'GET' })
-  .validator((d: { gameId: string }) => d)
+  .validator(z.object({ gameId: uuidSchema }))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase } = context

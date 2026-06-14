@@ -1,6 +1,8 @@
 import { createServerFn } from '@tanstack/react-start'
+import { z } from 'zod'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { authMiddleware } from '~/lib/server/middleware'
+import { uuidSchema } from '~/lib/server/validation'
 import type {
   Character,
   CombatParticipant,
@@ -131,7 +133,9 @@ function snapshotParticipant(
 }
 
 export const startCombat = createServerFn({ method: 'POST' })
-  .validator((d: { gameId: string; characterIds: string[] }) => d)
+  .validator(
+    z.object({ gameId: uuidSchema, characterIds: z.array(uuidSchema) }),
+  )
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase, user } = context
@@ -172,7 +176,7 @@ export const startCombat = createServerFn({ method: 'POST' })
  * overflow (clean entry).
  */
 export const joinCombat = createServerFn({ method: 'POST' })
-  .validator((d: { gameId: string; characterId: string }) => d)
+  .validator(z.object({ gameId: uuidSchema, characterId: uuidSchema }))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase, user } = context
@@ -222,7 +226,7 @@ export const joinCombat = createServerFn({ method: 'POST' })
   })
 
 export const nextRound = createServerFn({ method: 'POST' })
-  .validator((d: { gameId: string }) => d)
+  .validator(z.object({ gameId: uuidSchema }))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase, user } = context
@@ -266,7 +270,7 @@ export const nextRound = createServerFn({ method: 'POST' })
  * concurrent "Leave" clicks don't surface a confusing error.
  */
 export const leaveCombat = createServerFn({ method: 'POST' })
-  .validator((d: { gameId: string; characterId: string }) => d)
+  .validator(z.object({ gameId: uuidSchema, characterId: uuidSchema }))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase, user } = context
@@ -308,7 +312,15 @@ export const leaveCombat = createServerFn({ method: 'POST' })
   })
 
 export const adjustAp = createServerFn({ method: 'POST' })
-  .validator((d: { gameId: string; characterId: string; delta: number }) => d)
+  .validator(
+    z.object({
+      gameId: uuidSchema,
+      characterId: uuidSchema,
+      // A single AP nudge — bounded to a sane gameplay range so a runaway
+      // client can't write an absurd value into the shared combat blob.
+      delta: z.number().int().min(-999).max(999),
+    }),
+  )
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase, user } = context
@@ -342,7 +354,7 @@ export const adjustAp = createServerFn({ method: 'POST' })
   })
 
 export const loadCombatCharacters = createServerFn({ method: 'GET' })
-  .validator((d: { gameId: string }) => d)
+  .validator(z.object({ gameId: uuidSchema }))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase } = context
@@ -357,7 +369,7 @@ export const loadCombatCharacters = createServerFn({ method: 'GET' })
   })
 
 export const endCombat = createServerFn({ method: 'POST' })
-  .validator((d: { gameId: string }) => d)
+  .validator(z.object({ gameId: uuidSchema }))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase, user } = context

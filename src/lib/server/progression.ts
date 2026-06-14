@@ -1,6 +1,7 @@
 import { createServerFn } from '@tanstack/react-start'
+import { z } from 'zod'
 import { authMiddleware } from '~/lib/server/middleware'
-import type { Json } from '~/lib/types/database'
+import { jsonSchema, uuidSchema } from '~/lib/server/validation'
 import type { ProgressionEntry } from '~/lib/types/domain'
 
 /**
@@ -11,8 +12,12 @@ import type { ProgressionEntry } from '~/lib/types/domain'
  */
 export const recordProgression = createServerFn({ method: 'POST' })
   .validator(
-    (d: { characterId: string; level: number; source: string; picks: Json }) =>
-      d,
+    z.object({
+      characterId: uuidSchema,
+      level: z.number().int().min(1),
+      source: z.string().trim().min(1),
+      picks: jsonSchema,
+    }),
   )
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
@@ -38,7 +43,7 @@ export const recordProgression = createServerFn({ method: 'POST' })
  * so callers can render a stable timeline.
  */
 export const listProgression = createServerFn({ method: 'POST' })
-  .validator((d: { characterId: string }) => d)
+  .validator(z.object({ characterId: uuidSchema }))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase } = context
@@ -61,7 +66,7 @@ export const listProgression = createServerFn({ method: 'POST' })
  * 20260529002537_progression_owner_edits_and_realtime.sql).
  */
 export const updateProgression = createServerFn({ method: 'POST' })
-  .validator((d: { id: string; picks: Json }) => d)
+  .validator(z.object({ id: uuidSchema, picks: jsonSchema }))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase } = context
@@ -81,7 +86,7 @@ export const updateProgression = createServerFn({ method: 'POST' })
  * disagrees with a row should edit it, not nuke it.
  */
 export const deleteProgression = createServerFn({ method: 'POST' })
-  .validator((d: { id: string }) => d)
+  .validator(z.object({ id: uuidSchema }))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase } = context

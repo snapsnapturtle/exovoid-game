@@ -1,5 +1,12 @@
 import { createServerFn } from '@tanstack/react-start'
+import { z } from 'zod'
 import { authMiddleware } from '~/lib/server/middleware'
+import {
+  pendingSupportSchema,
+  polyPoolSchema,
+  rollPoolSchema,
+  uuidSchema,
+} from '~/lib/server/validation'
 import {
   rollPool,
   rollPolyPool,
@@ -51,22 +58,22 @@ const FEED_LIMIT = 50
 
 export const rollDice = createServerFn({ method: 'POST' })
   .validator(
-    (d: {
-      gameId: string
-      characterId?: string | null
-      skillName?: string | null
-      pool: RollPool
-      modifier?: number
-      isHidden?: boolean
+    z.object({
+      gameId: uuidSchema,
+      characterId: uuidSchema.nullable().optional(),
+      skillName: z.string().nullable().optional(),
+      pool: rollPoolSchema,
+      modifier: z.number().int().optional(),
+      isHidden: z.boolean().optional(),
       /** Pending-support entry ids to absorb. The server merges their summaries
        * into this roll's summary and removes them from game_state.pending_support. */
-      absorbSupportIds?: string[]
+      absorbSupportIds: z.array(uuidSchema).optional(),
       /** Already-consumed support snapshots — passed by client-side re-rolls
        * (Edge re-roll) so the support contribution persists across re-rolls
        * even after the original entry left game_state.pending_support. The
        * server merges these into the summary but does NOT touch game_state. */
-      preAbsorbedSupports?: PendingSupport[]
-    }) => d,
+      preAbsorbedSupports: z.array(pendingSupportSchema).optional(),
+    }),
   )
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
@@ -143,13 +150,13 @@ export const rollDice = createServerFn({ method: 'POST' })
  */
 export const rollPolyDice = createServerFn({ method: 'POST' })
   .validator(
-    (d: {
-      gameId: string
-      characterId?: string | null
-      skillName?: string | null
-      pool: PolyPool
-      isHidden?: boolean
-    }) => d,
+    z.object({
+      gameId: uuidSchema,
+      characterId: uuidSchema.nullable().optional(),
+      skillName: z.string().nullable().optional(),
+      pool: polyPoolSchema,
+      isHidden: z.boolean().optional(),
+    }),
   )
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
@@ -188,16 +195,16 @@ export const rollPolyDice = createServerFn({ method: 'POST' })
 
 export const rollSupportContribution = createServerFn({ method: 'POST' })
   .validator(
-    (d: {
-      gameId: string
-      characterId: string | null
-      skillId: string
-      skillName: string
+    z.object({
+      gameId: uuidSchema,
+      characterId: uuidSchema.nullable(),
+      skillId: z.string(),
+      skillName: z.string(),
       /** Caller computes via computeSupportPool(skillLevel). */
-      pool: RollPool
+      pool: rollPoolSchema,
       /** Cached display label for the chip. */
-      supporterName: string
-    }) => d,
+      supporterName: z.string(),
+    }),
   )
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
@@ -273,7 +280,7 @@ export const rollSupportContribution = createServerFn({ method: 'POST' })
   })
 
 export const removePendingSupport = createServerFn({ method: 'POST' })
-  .validator((d: { gameId: string; supportId: string }) => d)
+  .validator(z.object({ gameId: uuidSchema, supportId: uuidSchema }))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase } = context
@@ -299,7 +306,7 @@ export const removePendingSupport = createServerFn({ method: 'POST' })
   })
 
 export const getRecentRolls = createServerFn()
-  .validator((d: { gameId: string }) => d)
+  .validator(z.object({ gameId: uuidSchema }))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { supabase } = context
