@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useRouter } from '@tanstack/react-router'
 import { IconLogout, IconSwords } from '@tabler/icons-react'
 import type {
@@ -10,7 +10,11 @@ import type {
   InventoryItem,
   PendingBonus,
 } from '~/lib/types/domain'
-import type { ApplyBonusInput } from '~/components/dice/RollResultView'
+import { usePendingBonuses } from '~/lib/hooks/usePendingBonuses'
+import {
+  RollContextProvider,
+  type RollContextValue,
+} from '~/lib/hooks/rollContext'
 import { applyPassiveEffects } from '~/lib/game-logic/passive-effects'
 import { edgeCap } from '~/lib/game-logic/derived-stats'
 import { sortByTurnOrder } from '~/lib/game-logic/combat'
@@ -507,37 +511,51 @@ function ParticipantCard({
     setPendingBonuses(character.pending_bonuses)
   }, [character.pending_bonuses])
 
-  async function savePendingBonuses(next: PendingBonus[]) {
-    setPendingBonuses(next)
-    try {
-      await updateCharacter({
-        data: {
-          characterId: character.id,
-          updates: { pending_bonuses: next },
-        },
-      })
-    } catch (e) {
-      onSaveError(e)
-    }
-  }
+  const savePendingBonuses = useCallback(
+    async (next: PendingBonus[]) => {
+      setPendingBonuses(next)
+      try {
+        await updateCharacter({
+          data: {
+            characterId: character.id,
+            updates: { pending_bonuses: next },
+          },
+        })
+      } catch (e) {
+        onSaveError(e)
+      }
+    },
+    [character.id, onSaveError],
+  )
 
-  const applyBonus = (bonus: ApplyBonusInput): string => {
-    const entry: PendingBonus = {
-      id: crypto.randomUUID(),
-      label: bonus.label,
-      modifier: bonus.modifier,
-      source: bonus.source,
-      addedAt: new Date().toISOString(),
-    }
-    void savePendingBonuses([...pendingBonuses, entry])
-    return entry.id
-  }
-  const consumeBonuses = (ids: string[]) => {
-    if (ids.length === 0) return
-    const drop = new Set(ids)
-    void savePendingBonuses(pendingBonuses.filter((b) => !drop.has(b.id)))
-  }
-  const removeBonus = (id: string) => consumeBonuses([id])
+  const persistBonuses = useCallback(
+    (next: PendingBonus[]) => void savePendingBonuses(next),
+    [savePendingBonuses],
+  )
+  const bonuses = usePendingBonuses(pendingBonuses, persistBonuses)
+  const removeBonus = bonuses.remove
+
+  // Per-participant RollContext — each card owns its own edge/bonus state, so
+  // the provider wraps just this card's roll surfaces (WeaponRow, ActionPanel).
+  const rollValue = useMemo<RollContextValue>(
+    () => ({
+      pendingBonuses,
+      applyBonus: bonuses.apply,
+      consumeBonuses: bonuses.consume,
+      removeBonus: bonuses.remove,
+      edgeAvailable: edgeCurrent,
+      onSpendEdge: () => setEdgeCurrent(Math.max(0, edgeCurrent - 1)),
+      defaultHidden: character.is_npc && !character.visible_to_players,
+    }),
+    [
+      pendingBonuses,
+      bonuses,
+      edgeCurrent,
+      setEdgeCurrent,
+      character.is_npc,
+      character.visible_to_players,
+    ],
+  )
 
   // One card, two faces. The header swaps between a compact summary row
   // (collapsed) and the full title row (expanded); the body below always
@@ -547,304 +565,287 @@ function ParticipantCard({
   // The active combatant is signalled solely by the StatusDot now — the card
   // chrome depends only on whether it's open, not whose turn it is.
   return (
-    <article
-      className={`group relative overflow-hidden rounded-xl border border-transparent bg-background-200 transition-colors duration-75 ${
-        expanded ? '' : 'hover:bg-gray-100'
-      }`}
-    >
-      {/* Accent gradient on its own layer so it can fade with the expansion —
+    <RollContextProvider value={rollValue}>
+      <article
+        className={`group relative overflow-hidden rounded-xl border border-transparent bg-background-200 transition-colors duration-75 ${
+          expanded ? '' : 'hover:bg-gray-100'
+        }`}
+      >
+        {/* Accent gradient on its own layer so it can fade with the expansion —
           background-image can't be transitioned, but opacity can. Timed to
           match the 300ms grid-rows height animation; content is lifted above
           it with `relative`. */}
-      <div
-        aria-hidden
-        className={`pointer-events-none absolute inset-0 bg-gradient-to-b from-accent-700/20 via-background-200 to-background-200 transition-opacity duration-300 ${
-          expanded ? 'opacity-100' : 'opacity-0'
-        }`}
-      />
-      {/* The edge is drawn as two stacked ring overlays (a gradient border
+        <div
+          aria-hidden
+          className={`pointer-events-none absolute inset-0 bg-gradient-to-b from-accent-700/20 via-background-200 to-background-200 transition-opacity duration-300 ${
+            expanded ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+        {/* The edge is drawn as two stacked ring overlays (a gradient border
           that keeps the rounded corners — see `.border-mask`) rather than a
           plain CSS border, so the accent can fade top→bottom and cross-fade
           with the expansion the same way the background does. Painted after
           the background layer (which is opaque in its lower half) so the ring
           stays visible all the way down. Gray ring is the resting edge; the
           accent ring sits on top and fades in when expanded. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 rounded-xl border-mask bg-gray-400 p-px transition-colors duration-75 group-hover:bg-gray-500"
-      />
-      <div
-        aria-hidden
-        className={`pointer-events-none absolute inset-0 rounded-xl border-mask bg-gradient-to-b from-accent-600 to-gray-400 p-px transition-opacity duration-300 ${
-          expanded ? 'opacity-100' : 'opacity-0'
-        }`}
-      />
-      {!expanded ? (
-        <button
-          type="button"
-          onClick={onToggleExpanded}
-          className="relative flex w-full items-baseline gap-2 px-4 py-2.5 text-left"
-          aria-expanded={false}
-          aria-label={`Expand ${character.name}`}
-        >
-          {/* Name leads the row in both states (the chevron sits at the end),
-              so it keeps the same position and size when the card toggles. */}
-          <span className="flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-0.5">
-            <span className="truncate text-base font-semibold text-gray-1000">
-              {character.name}
-            </span>
-            {isActive && (
-              <StatusDot
-                tone="accent"
-                pulse
-                label="Active"
-                className="self-center"
-              />
-            )}
-          </span>
-          <span className="ml-auto flex shrink-0 items-center gap-1 self-center">
-            {pendingBonuses.length > 0 && (
-              // Read-only in the compact row — nested clickable buttons would
-              // be invalid HTML inside the row's own button. Expand to remove.
-              <PendingBonusChips
-                bonuses={pendingBonuses}
-                canEdit={false}
-                onRemove={removeBonus}
-                compact
-              />
-            )}
-            <Badge tone={participant.ap < 0 ? 'danger' : 'accent'}>
-              <span>AP</span>
-              <span className="font-semibold tabular-nums">
-                {participant.ap}
-              </span>
-            </Badge>
-            <Badge tone={healthCurrent <= 0 ? 'danger' : 'neutral'}>
-              <span>HP</span>
-              <span className="font-semibold tabular-nums">
-                {healthCurrent}/{derived.health}
-              </span>
-            </Badge>
-            <Badge tone="neutral">
-              <span>Edge</span>
-              <span className="font-semibold tabular-nums">
-                {edgeCurrent}/{derived.edge}
-              </span>
-            </Badge>
-          </span>
-        </button>
-      ) : (
-        // Clicking anywhere on the header collapses the card — except the
-        // name link and the Leave button, which stop propagation so they keep
-        // their own behaviour. role/tabIndex/onKeyDown keep it keyboard-
-        // operable; the keydown guard ignores Enter/Space that originated on a
-        // focusable child so those still trigger the child, not the toggle.
         <div
-          role="button"
-          tabIndex={0}
-          onClick={onToggleExpanded}
-          onKeyDown={(e) => {
-            if (e.target !== e.currentTarget) return
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault()
-              onToggleExpanded()
-            }
-          }}
-          aria-expanded={true}
-          aria-label={`Collapse ${character.name}`}
-          className="relative flex flex-wrap items-baseline gap-2 px-4 pb-3 pt-2.5"
-        >
-          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-            <Link
-              to="/games/$gameId/characters/$characterId"
-              params={{ gameId, characterId: character.id }}
-              onClick={(e) => e.stopPropagation()}
-              className="text-base font-semibold text-gray-1000 transition hover:text-accent-900"
-            >
-              {character.name}
-            </Link>
-            {isActive && (
-              <StatusDot
-                tone="accent"
-                pulse
-                label="Active"
-                className="self-center"
-              />
-            )}
-            <span className="text-[11px] text-gray-700">
-              base {participant.baseAp} + d6:{participant.rolled}
-              {participant.apOverflow != null && participant.apOverflow < 0 && (
-                <span className="text-danger-900">
-                  {' '}
-                  − {Math.abs(participant.apOverflow)} carry
-                </span>
-              )}{' '}
-              ={' '}
-              <span className="text-gray-1000">
-                {participant.baseAp +
-                  participant.rolled +
-                  (participant.apOverflow ?? 0)}
+          aria-hidden
+          className="pointer-events-none absolute inset-0 rounded-xl border-mask bg-gray-400 p-px transition-colors duration-75 group-hover:bg-gray-500"
+        />
+        <div
+          aria-hidden
+          className={`pointer-events-none absolute inset-0 rounded-xl border-mask bg-gradient-to-b from-accent-600 to-gray-400 p-px transition-opacity duration-300 ${
+            expanded ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+        {!expanded ? (
+          <button
+            type="button"
+            onClick={onToggleExpanded}
+            className="relative flex w-full items-baseline gap-2 px-4 py-2.5 text-left"
+            aria-expanded={false}
+            aria-label={`Expand ${character.name}`}
+          >
+            {/* Name leads the row in both states (the chevron sits at the end),
+              so it keeps the same position and size when the card toggles. */}
+            <span className="flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-0.5">
+              <span className="truncate text-base font-semibold text-gray-1000">
+                {character.name}
               </span>
+              {isActive && (
+                <StatusDot
+                  tone="accent"
+                  pulse
+                  label="Active"
+                  className="self-center"
+                />
+              )}
             </span>
-          </div>
-          {canAdjust && (
-            <Button
-              variant="ghostDanger"
-              size="sm"
-              onClick={(e) => {
-                e.stopPropagation()
-                void onLeave()
-              }}
-              aria-label={`Remove ${character.name} from combat`}
-              title="Leave combat"
-              className="ml-auto gap-1 self-center"
-            >
-              <IconLogout size={14} aria-hidden />
-              <span>Leave</span>
-            </Button>
-          )}
-        </div>
-      )}
-
-      <div
-        className={`relative grid transition-[grid-template-rows] duration-300 ease-out ${
-          expanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
-        }`}
-      >
-        <div className="overflow-hidden">
-          <div className="px-4 pb-4" inert={!expanded}>
-            <div className="grid gap-3 sm:grid-cols-3">
-              <Stepper
-                label="AP"
-                value={participant.ap}
-                onAdjust={(delta) => onAdjustAp(delta)}
-                canEdit={canAdjust}
-                busy={apBusy}
-                valueTone={participant.ap < 0 ? 'danger' : 'accent'}
-              />
-              <Stepper
-                label="Health"
-                value={healthCurrent}
-                max={derived.health}
-                min={0}
-                onAdjust={(delta) =>
-                  setHealthCurrent(
-                    Math.max(
-                      0,
-                      Math.min(derived.health, healthCurrent + delta),
-                    ),
-                  )
-                }
-                canEdit={canAdjust}
-              />
-              <Stepper
-                label="Edge"
-                value={edgeCurrent}
-                max={derived.edge}
-                hardMax={edgeHardMax}
-                min={0}
-                onAdjust={(delta) =>
-                  setEdgeCurrent(
-                    Math.max(0, Math.min(edgeHardMax, edgeCurrent + delta)),
-                  )
-                }
-                canEdit={canAdjust}
-              />
-            </div>
-
-            <div className="mt-3">
-              <InjuryControls
-                gameId={gameId}
-                characterId={character.id}
-                injuries={injuries}
-                edgeCurrent={edgeCurrent}
-                edgeHardMax={edgeHardMax}
-                canEdit={canAdjust}
-                isMinion={character.is_minion}
-                defaultHidden={
-                  character.is_npc && !character.visible_to_players
-                }
-                onInjuriesChange={saveInjuries}
-                onEdgeChange={setEdgeCurrent}
-              />
-            </div>
-
-            {pendingBonuses.length > 0 && (
-              <div className="mt-3">
+            <span className="ml-auto flex shrink-0 items-center gap-1 self-center">
+              {pendingBonuses.length > 0 && (
+                // Read-only in the compact row — nested clickable buttons would
+                // be invalid HTML inside the row's own button. Expand to remove.
                 <PendingBonusChips
                   bonuses={pendingBonuses}
-                  canEdit={canAdjust}
+                  canEdit={false}
                   onRemove={removeBonus}
+                  compact
+                />
+              )}
+              <Badge tone={participant.ap < 0 ? 'danger' : 'accent'}>
+                <span>AP</span>
+                <span className="font-semibold tabular-nums">
+                  {participant.ap}
+                </span>
+              </Badge>
+              <Badge tone={healthCurrent <= 0 ? 'danger' : 'neutral'}>
+                <span>HP</span>
+                <span className="font-semibold tabular-nums">
+                  {healthCurrent}/{derived.health}
+                </span>
+              </Badge>
+              <Badge tone="neutral">
+                <span>Edge</span>
+                <span className="font-semibold tabular-nums">
+                  {edgeCurrent}/{derived.edge}
+                </span>
+              </Badge>
+            </span>
+          </button>
+        ) : (
+          // Clicking anywhere on the header collapses the card — except the
+          // name link and the Leave button, which stop propagation so they keep
+          // their own behaviour. role/tabIndex/onKeyDown keep it keyboard-
+          // operable; the keydown guard ignores Enter/Space that originated on a
+          // focusable child so those still trigger the child, not the toggle.
+          <div
+            role="button"
+            tabIndex={0}
+            onClick={onToggleExpanded}
+            onKeyDown={(e) => {
+              if (e.target !== e.currentTarget) return
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                onToggleExpanded()
+              }
+            }}
+            aria-expanded={true}
+            aria-label={`Collapse ${character.name}`}
+            className="relative flex flex-wrap items-baseline gap-2 px-4 pb-3 pt-2.5"
+          >
+            <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+              <Link
+                to="/games/$gameId/characters/$characterId"
+                params={{ gameId, characterId: character.id }}
+                onClick={(e) => e.stopPropagation()}
+                className="text-base font-semibold text-gray-1000 transition hover:text-accent-900"
+              >
+                {character.name}
+              </Link>
+              {isActive && (
+                <StatusDot
+                  tone="accent"
+                  pulse
+                  label="Active"
+                  className="self-center"
+                />
+              )}
+              <span className="text-[11px] text-gray-700">
+                base {participant.baseAp} + d6:{participant.rolled}
+                {participant.apOverflow != null &&
+                  participant.apOverflow < 0 && (
+                    <span className="text-danger-900">
+                      {' '}
+                      − {Math.abs(participant.apOverflow)} carry
+                    </span>
+                  )}{' '}
+                ={' '}
+                <span className="text-gray-1000">
+                  {participant.baseAp +
+                    participant.rolled +
+                    (participant.apOverflow ?? 0)}
+                </span>
+              </span>
+            </div>
+            {canAdjust && (
+              <Button
+                variant="ghostDanger"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  void onLeave()
+                }}
+                aria-label={`Remove ${character.name} from combat`}
+                title="Leave combat"
+                className="ml-auto gap-1 self-center"
+              >
+                <IconLogout size={14} aria-hidden />
+                <span>Leave</span>
+              </Button>
+            )}
+          </div>
+        )}
+
+        <div
+          className={`relative grid transition-[grid-template-rows] duration-300 ease-out ${
+            expanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+          }`}
+        >
+          <div className="overflow-hidden">
+            <div className="px-4 pb-4" inert={!expanded}>
+              <div className="grid gap-3 sm:grid-cols-3">
+                <Stepper
+                  label="AP"
+                  value={participant.ap}
+                  onAdjust={(delta) => onAdjustAp(delta)}
+                  canEdit={canAdjust}
+                  busy={apBusy}
+                  valueTone={participant.ap < 0 ? 'danger' : 'accent'}
+                />
+                <Stepper
+                  label="Health"
+                  value={healthCurrent}
+                  max={derived.health}
+                  min={0}
+                  onAdjust={(delta) =>
+                    setHealthCurrent(
+                      Math.max(
+                        0,
+                        Math.min(derived.health, healthCurrent + delta),
+                      ),
+                    )
+                  }
+                  canEdit={canAdjust}
+                />
+                <Stepper
+                  label="Edge"
+                  value={edgeCurrent}
+                  max={derived.edge}
+                  hardMax={edgeHardMax}
+                  min={0}
+                  onAdjust={(delta) =>
+                    setEdgeCurrent(
+                      Math.max(0, Math.min(edgeHardMax, edgeCurrent + delta)),
+                    )
+                  }
+                  canEdit={canAdjust}
                 />
               </div>
-            )}
 
-            {(equippedWeapons.length > 0 || worn) && (
-              <div className="mt-3 space-y-2 border-t border-gray-400 pt-3">
-                {equippedWeapons.map((entry) => {
-                  const w = lookupWeapon(entry.weaponRef!)
-                  if (!w) return null
-                  return (
-                    <WeaponRow
-                      key={entry.id}
-                      entry={entry}
-                      weapon={w}
-                      gameId={gameId}
+              <div className="mt-3">
+                <InjuryControls
+                  gameId={gameId}
+                  characterId={character.id}
+                  injuries={injuries}
+                  edgeCurrent={edgeCurrent}
+                  edgeHardMax={edgeHardMax}
+                  canEdit={canAdjust}
+                  isMinion={character.is_minion}
+                  defaultHidden={
+                    character.is_npc && !character.visible_to_players
+                  }
+                  onInjuriesChange={saveInjuries}
+                  onEdgeChange={setEdgeCurrent}
+                />
+              </div>
+
+              {pendingBonuses.length > 0 && (
+                <div className="mt-3">
+                  <PendingBonusChips
+                    bonuses={pendingBonuses}
+                    canEdit={canAdjust}
+                    onRemove={removeBonus}
+                  />
+                </div>
+              )}
+
+              {(equippedWeapons.length > 0 || worn) && (
+                <div className="mt-3 space-y-2 border-t border-gray-400 pt-3">
+                  {equippedWeapons.map((entry) => {
+                    const w = lookupWeapon(entry.weaponRef!)
+                    if (!w) return null
+                    return (
+                      <WeaponRow
+                        key={entry.id}
+                        entry={entry}
+                        weapon={w}
+                        gameId={gameId}
+                        characterId={character.id}
+                        effectiveAttributes={effectiveAttributes}
+                        skills={character.skills}
+                        canEdit={canAdjust}
+                        onSaveError={onSaveError}
+                        onDebitAp={(amount) => onAdjustAp(-amount)}
+                      />
+                    )
+                  })}
+                  {worn && (
+                    <ArmorRow
+                      entry={worn.entry}
+                      armor={worn.data}
                       characterId={character.id}
-                      effectiveAttributes={effectiveAttributes}
-                      skills={character.skills}
                       canEdit={canAdjust}
                       onSaveError={onSaveError}
-                      onDebitAp={(amount) => onAdjustAp(-amount)}
-                      edgeAvailable={edgeCurrent}
-                      onSpendEdge={() =>
-                        setEdgeCurrent(Math.max(0, edgeCurrent - 1))
-                      }
-                      pendingBonuses={pendingBonuses}
-                      onApplyBonus={applyBonus}
-                      onConsumeBonuses={consumeBonuses}
-                      onRemoveBonus={removeBonus}
-                      defaultHidden={
-                        character.is_npc && !character.visible_to_players
-                      }
                     />
-                  )
-                })}
-                {worn && (
-                  <ArmorRow
-                    entry={worn.entry}
-                    armor={worn.data}
-                    characterId={character.id}
-                    canEdit={canAdjust}
-                    onSaveError={onSaveError}
-                  />
-                )}
-              </div>
-            )}
+                  )}
+                </div>
+              )}
 
-            <div className="mt-3 border-t border-gray-400 pt-3">
-              <ActionPanel
-                gameId={gameId}
-                characterId={character.id}
-                effectiveAttributes={effectiveAttributes}
-                skills={character.skills}
-                canEdit={canAdjust}
-                onDebitAp={(amount) => onAdjustAp(-amount)}
-                edgeAvailable={edgeCurrent}
-                onSpendEdge={() => setEdgeCurrent(Math.max(0, edgeCurrent - 1))}
-                pendingBonuses={pendingBonuses}
-                onApplyBonus={applyBonus}
-                onConsumeBonuses={consumeBonuses}
-                onRemoveBonus={removeBonus}
-                defaultHidden={
-                  character.is_npc && !character.visible_to_players
-                }
-              />
+              <div className="mt-3 border-t border-gray-400 pt-3">
+                <ActionPanel
+                  gameId={gameId}
+                  characterId={character.id}
+                  effectiveAttributes={effectiveAttributes}
+                  skills={character.skills}
+                  canEdit={canAdjust}
+                  onDebitAp={(amount) => onAdjustAp(-amount)}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </article>
+      </article>
+    </RollContextProvider>
   )
 }
 
@@ -859,14 +860,6 @@ interface WeaponRowProps {
   onSaveError: (error: unknown) => void
   /** Positive amount = AP to subtract. */
   onDebitAp: (amount: number) => void
-  /** Pass `undefined` for NPCs to hide the spend-Edge affordance. */
-  edgeAvailable: number | undefined
-  onSpendEdge: () => void
-  pendingBonuses: PendingBonus[]
-  onApplyBonus: (bonus: ApplyBonusInput) => string
-  onConsumeBonuses: (ids: string[]) => void
-  onRemoveBonus: (id: string) => void
-  defaultHidden?: boolean
 }
 
 function WeaponRow({
@@ -879,13 +872,6 @@ function WeaponRow({
   canEdit,
   onSaveError,
   onDebitAp,
-  edgeAvailable,
-  onSpendEdge,
-  pendingBonuses,
-  onApplyBonus,
-  onConsumeBonuses,
-  onRemoveBonus,
-  defaultHidden,
 }: WeaponRowProps) {
   const hasAmmo = weapon.magazine != null
   const [ammo, setAmmo] = useDebouncedNumber({
@@ -984,13 +970,6 @@ function WeaponRow({
           apCost={weapon.attackAP}
           contextLabel={`Combat · Attack — ${entry.name}`}
           weapon={weapon}
-          edgeAvailable={edgeAvailable}
-          onSpendEdge={onSpendEdge}
-          pendingBonuses={pendingBonuses}
-          onApplyBonus={onApplyBonus}
-          onConsumeBonuses={onConsumeBonuses}
-          onRemoveBonus={onRemoveBonus}
-          defaultHidden={defaultHidden}
           onApCommit={() => onDebitAp(weapon.attackAP)}
           onClose={() => setAttacking(false)}
         />
