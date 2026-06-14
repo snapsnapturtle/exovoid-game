@@ -75,7 +75,9 @@ export const pendingSupportSchema = z.object({
   supporterName: z.string(),
   skillId: z.string(),
   skillName: z.string(),
-  summary: z.record(z.string(), z.number()),
+  // Aggregated symbol counts (see summarizeRoll) — always non-negative ints.
+  // Bounding them closes a cheating surface via rollDice's preAbsorbedSupports.
+  summary: z.record(z.string(), z.number().int().min(0)),
   createdAt: z.string(),
 })
 

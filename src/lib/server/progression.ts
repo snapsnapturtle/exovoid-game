@@ -15,7 +15,7 @@ export const recordProgression = createServerFn({ method: 'POST' })
     z.object({
       characterId: uuidSchema,
       level: z.number().int().min(1),
-      source: z.string().min(1),
+      source: z.string().trim().min(1),
       picks: jsonSchema,
     }),
   )
