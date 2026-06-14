@@ -73,8 +73,9 @@ begin
     ) using p_amount, p_to_id;
   end if;
   get diagnostics v_rows = row_count;
+  -- 0 rows: recipient missing, or RLS blocked the credit to an existing row.
   if v_rows = 0 then
-    raise exception 'Recipient not found';
+    raise exception 'Recipient not found or not permitted';
   end if;
 
   return p_amount;
@@ -136,8 +137,9 @@ begin
       where game_id = p_to_id;
   end if;
   get diagnostics v_rows = row_count;
+  -- 0 rows: recipient missing, or RLS blocked the append to an existing row.
   if v_rows = 0 then
-    raise exception 'Recipient not found';
+    raise exception 'Recipient not found or not permitted';
   end if;
 end;
 $$;
