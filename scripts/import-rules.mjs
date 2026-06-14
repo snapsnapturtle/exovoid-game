@@ -254,12 +254,27 @@ function nullableInt(raw) {
   return Number.isFinite(n) ? n : null
 }
 
+// Split a comma-separated quality list, but NOT on commas inside parentheses —
+// a quality annotation can itself contain a comma, e.g. "Defensive (1, Melee)"
+// or a Throwable range. A naive `.split(',')` shredded those into garbage
+// fragments ("Defensive (1" + "Melee)").
 function parseQualityList(raw) {
   if (!raw || raw.trim() === '') return []
-  return raw
-    .split(',')
-    .map((s) => s.trim())
-    .filter(Boolean)
+  const parts = []
+  let depth = 0
+  let cur = ''
+  for (const ch of raw) {
+    if (ch === '(') depth++
+    else if (ch === ')') depth = Math.max(0, depth - 1)
+    if (ch === ',' && depth === 0) {
+      parts.push(cur)
+      cur = ''
+    } else {
+      cur += ch
+    }
+  }
+  parts.push(cur)
+  return parts.map((s) => s.trim()).filter(Boolean)
 }
 
 const weapons = weaponRows.map((r) => ({

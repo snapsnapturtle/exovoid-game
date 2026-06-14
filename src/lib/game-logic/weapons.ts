@@ -102,15 +102,18 @@ export function effectiveWeaponModLimit(
 }
 
 /**
- * Parse a quality string like "Concealed (1)" or "Silenced" into its
- * base name and numeric level. The base name is the lookup key into
- * item-qualities.json; level (if any) is the magnitude annotation.
+ * Parse a quality string like "Concealed (1)", "Throwable (2-8 | 15)" or
+ * "Silenced" into its base name and the parenthetical annotation. The base
+ * name is the lookup key into item-qualities.json; the annotation is the raw
+ * text in the trailing parens (its meaning varies by quality — a level for
+ * Concealed/Defensive, an ammo cost for the firing modes, a range for
+ * Throwable — so it's kept as an opaque string and only ever displayed).
  */
 export function parseQuality(raw: string): {
   name: string
-  level: number | null
+  annotation: string | null
 } {
-  const m = raw.match(/^(.+?)\s*\((\d+)\)\s*$/)
-  if (!m) return { name: raw.trim(), level: null }
-  return { name: m[1].trim(), level: parseInt(m[2], 10) }
+  const m = raw.match(/^(.*\S)\s*\((.+)\)\s*$/)
+  if (!m) return { name: raw.trim(), annotation: null }
+  return { name: m[1].trim(), annotation: m[2].trim() }
 }
