@@ -424,6 +424,28 @@ export type Database = {
         }
       }
       get_user_game_ids: { Args: never; Returns: string[] }
+      transfer_currency: {
+        Args: {
+          p_amount: number
+          p_from_id: string
+          p_from_type: string
+          p_kind: string
+          p_to_id: string
+          p_to_type: string
+        }
+        Returns: number
+      }
+      transfer_inventory_item: {
+        Args: {
+          p_from_id: string
+          p_from_type: string
+          p_moved_item: Json
+          p_new_from_inventory: Json
+          p_to_id: string
+          p_to_type: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

@@ -29,6 +29,14 @@ type Owner =
 
 type CurrencyKind = 'credits' | 'assets'
 
+// Flatten the `Owner` union into the `{type, id}` shape the atomic-transfer
+// RPCs take.
+function ownerArgs(o: Owner): { type: 'character' | 'game'; id: string } {
+  return o.type === 'character'
+    ? { type: 'character', id: o.characterId }
+    : { type: 'game', id: o.gameId }
+}
+
 // ---------------------------------------------------------------------------
 // Internal helpers (one set per owner type, hidden behind a discriminated
 // dispatcher so the public fns stay flat).
@@ -401,11 +409,21 @@ export const transferInventoryItem = createServerFn({ method: 'POST' })
       moved = rest
     }
 
-    await writeInventory(supabase, data.from, updatedFrom)
-    // If both ends are the same owner this would double-write; the route UI
-    // never offers that, so we don't guard against it.
-    const toInventory = await readInventory(supabase, data.to)
-    await writeInventory(supabase, data.to, [...toInventory, moved])
+    // Single transaction: source-replace + destination-append commit together,
+    // so a failure between them can't lose the item. The destination append is
+    // a JSONB concat (not a read-modify-write) so concurrent additions to the
+    // same destination don't clobber each other.
+    const from = ownerArgs(data.from)
+    const to = ownerArgs(data.to)
+    const { error } = await supabase.rpc('transfer_inventory_item', {
+      p_from_type: from.type,
+      p_from_id: from.id,
+      p_new_from_inventory: updatedFrom as never,
+      p_to_type: to.type,
+      p_to_id: to.id,
+      p_moved_item: moved as never,
+    })
+    if (error) throw new Error(error.message)
 
     return { moved }
   })
@@ -605,65 +623,21 @@ export const transferCurrency = createServerFn({ method: 'POST' })
     const { supabase } = context
     if (data.amount < 1) throw new Error('Amount must be at least 1')
 
-    const fromBalance = await readCurrency(supabase, data.from, data.kind)
-    if (fromBalance < data.amount) {
-      throw new Error('Not enough ' + data.kind + ' to transfer')
-    }
-    const toBalance = await readCurrency(supabase, data.to, data.kind)
-
-    await writeCurrency(
-      supabase,
-      data.from,
-      data.kind,
-      fromBalance - data.amount,
-    )
-    await writeCurrency(supabase, data.to, data.kind, toBalance + data.amount)
+    const from = ownerArgs(data.from)
+    const to = ownerArgs(data.to)
+    // Single transaction: the debit's balance check lives inside the function's
+    // WHERE clause, so concurrent transfers can't both overdraw the same source.
+    const { error } = await supabase.rpc('transfer_currency', {
+      p_from_type: from.type,
+      p_from_id: from.id,
+      p_to_type: to.type,
+      p_to_id: to.id,
+      p_kind: data.kind,
+      p_amount: data.amount,
+    })
+    if (error) throw new Error(error.message)
     return { moved: data.amount }
   })
-
-async function readCurrency(
-  supabase: SupabaseClient,
-  owner: Owner,
-  kind: CurrencyKind,
-): Promise<number> {
-  if (owner.type === 'character') {
-    const { data, error } = await supabase
-      .from('characters')
-      .select(kind)
-      .eq('id', owner.characterId)
-      .single()
-    if (error || !data) throw new Error('Character not found')
-    return (data as Record<string, number>)[kind]
-  }
-  const { data, error } = await supabase
-    .from('game_state')
-    .select(kind)
-    .eq('game_id', owner.gameId)
-    .single()
-  if (error || !data) throw new Error('Game state not found')
-  return (data as Record<string, number>)[kind]
-}
-
-async function writeCurrency(
-  supabase: SupabaseClient,
-  owner: Owner,
-  kind: CurrencyKind,
-  value: number,
-): Promise<void> {
-  if (owner.type === 'character') {
-    const { error } = await supabase
-      .from('characters')
-      .update({ [kind]: value } as never)
-      .eq('id', owner.characterId)
-    if (error) throw new Error(error.message)
-  } else {
-    const { error } = await supabase
-      .from('game_state')
-      .update({ [kind]: value } as never)
-      .eq('game_id', owner.gameId)
-    if (error) throw new Error(error.message)
-  }
-}
 
 // ---------------------------------------------------------------------------
 // Loader.
