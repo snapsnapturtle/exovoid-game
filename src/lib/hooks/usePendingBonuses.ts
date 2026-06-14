@@ -1,7 +1,9 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import type { PendingBonus } from '~/lib/types/domain'
-import type { ApplyBonusInput } from '~/components/dice/RollResultView'
-import { makePendingBonus } from '~/lib/game-logic/pending-bonuses'
+import {
+  makePendingBonus,
+  type PendingBonusInput,
+} from '~/lib/game-logic/pending-bonuses'
 
 /**
  * The apply/consume/remove trio shared by every roll surface. The only thing
@@ -16,7 +18,7 @@ export function usePendingBonuses(
   persist: (next: PendingBonus[]) => void,
 ) {
   const apply = useCallback(
-    (bonus: ApplyBonusInput): string => {
+    (bonus: PendingBonusInput): string => {
       const entry = makePendingBonus(bonus)
       persist([...bonuses, entry])
       return entry.id
@@ -35,5 +37,7 @@ export function usePendingBonuses(
 
   const remove = useCallback((id: string) => consume([id]), [consume])
 
-  return { apply, consume, remove }
+  // Stable identity so callers can put the returned object in a useMemo dep
+  // list without it re-firing every render.
+  return useMemo(() => ({ apply, consume, remove }), [apply, consume, remove])
 }

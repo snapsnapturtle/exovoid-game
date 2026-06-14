@@ -1,6 +1,6 @@
 import { createContext, useContext, type ReactNode } from 'react'
 import type { PendingBonus } from '~/lib/types/domain'
-import type { ApplyBonusInput } from '~/components/dice/RollResultView'
+import type { PendingBonusInput } from '~/lib/game-logic/pending-bonuses'
 
 /**
  * The roll-surface bundle that every descendant of a sheet/participant/downtime
@@ -12,7 +12,7 @@ import type { ApplyBonusInput } from '~/components/dice/RollResultView'
  */
 export interface RollContextValue {
   pendingBonuses: PendingBonus[]
-  applyBonus: (bonus: ApplyBonusInput) => string
+  applyBonus: (bonus: PendingBonusInput) => string
   consumeBonuses: (ids: string[]) => void
   removeBonus: (id: string) => void
   edgeAvailable: number | undefined
