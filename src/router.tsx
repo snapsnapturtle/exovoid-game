@@ -1,6 +1,8 @@
 import { createRouter, Link } from '@tanstack/react-router'
+import { IconMapPinOff } from '@tabler/icons-react'
 import { routeTree } from './routeTree.gen'
 import { buttonClasses } from '~/components/ui/Button'
+import { EmptyState } from '~/components/ui/EmptyState'
 
 export function getRouter() {
   const router = createRouter({
@@ -19,20 +21,17 @@ export function getRouter() {
 function NotFound() {
   return (
     <main className="flex min-h-screen items-center justify-center p-6">
-      <div className="w-full max-w-md rounded-xl border border-gray-400 bg-background-200 p-8 text-center">
-        <p className="text-xs font-semibold uppercase tracking-wide text-gray-700">
-          404
-        </p>
-        <h1 className="mt-2 text-xl font-semibold text-white">
-          Page not found
-        </h1>
-        <p className="mt-2 text-sm text-gray-900">
-          The page you’re looking for doesn’t exist or has been moved.
-        </p>
-        <Link to="/" className={`${buttonClasses('primary', 'md')} mt-5`}>
-          Back to dashboard
-        </Link>
-      </div>
+      <EmptyState
+        className="w-full max-w-md"
+        icon={<IconMapPinOff />}
+        title="Page not found"
+        description="The page you’re looking for doesn’t exist or has been moved."
+        action={
+          <Link to="/" className={buttonClasses('subtle', 'md')}>
+            Back to dashboard
+          </Link>
+        }
+      />
     </main>
   )
 }
