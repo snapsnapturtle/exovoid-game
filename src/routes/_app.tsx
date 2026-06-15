@@ -186,7 +186,15 @@ function AppLayoutInner() {
       <span role="status" aria-live="polite" className="sr-only">
         {navPending ? 'Loading page' : ''}
       </span>
-      <main className="min-h-0 flex-1 overflow-y-auto">
+      {/* `scrollbar-gutter:stable` reserves the scrollbar's gutter even when
+          the page doesn't scroll, so navigating between a scrolling and a
+          non-scrolling page never shifts the centred content horizontally by
+          the scrollbar's width. Kept inline (not a global CSS rule) so it
+          stays scoped to this one page-level scroll container — a broad
+          `* { scrollbar-gutter: stable }` reserves a dead gutter on every
+          nested overflow-auto panel too, which with a classic (non-overlay)
+          mouse scrollbar piles up into visible empty space on the right. */}
+      <main className="min-h-0 flex-1 overflow-y-auto [scrollbar-gutter:stable]">
         <Outlet />
       </main>
     </div>

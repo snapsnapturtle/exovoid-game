@@ -29,18 +29,10 @@
    and font-variant-numeric together on the same element; some browsers reset
    one when the other is set. */
 
-/* Reserve the scrollbar's gutter on the page-level scroll container (the
-   `_app` layout's <main>) so navigating between a page that scrolls and one
-   that doesn't never shifts the centred content horizontally by the
-   scrollbar's width. Scoped to <main> on purpose: a universal `*` apply
-   reserves a dead gutter on every nested `overflow: auto` panel (modal /
-   drawer bodies, scrollable lists, the dice feed) too, which with a classic
-   (non-overlay) mouse scrollbar piles up into visible empty space on the
-   right. Those inner panels don't suffer the navigation shift this guards
-   against, so they don't need the gutter. */
-main {
-  scrollbar-gutter: stable;
-}
+/* The page-level scroll container's stable scrollbar gutter is declared
+   inline on the `_app` layout's <main> (`[scrollbar-gutter:stable]`), not
+   here — it's scoped to that one element so it can't leak onto other scroll
+   containers. See the comment there for the rationale. */
 
 /* Scrollbar theming. The OS default light-gray bar reads as a bright
    intrusion on the pure-black page, so tint every scrollbar to the neutral
