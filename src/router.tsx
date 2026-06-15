@@ -21,6 +21,7 @@ export function getRouter() {
 function NotFound() {
   return (
     <main className="flex min-h-screen items-center justify-center p-6">
+      <h1 className="sr-only">Page not found</h1>
       <EmptyState
         className="w-full max-w-md"
         icon={<IconMapPinOff />}
