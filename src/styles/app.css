@@ -29,14 +29,54 @@
    and font-variant-numeric together on the same element; some browsers reset
    one when the other is set. */
 
-/* Reserve the scrollbar's gutter on every scroll container — even when
-   content fits without scrolling — so transient overlays (modals,
-   drawers) that briefly hide a container's scrollbar don't shift its
-   content horizontally by the scrollbar's width. Only has effect on
-   elements with `overflow: auto` or `overflow: scroll`, so the `*`
-   selector is a safe broad apply. */
-* {
-  scrollbar-gutter: stable;
+/* The page-level scroll container's stable scrollbar gutter is declared
+   inline on the `_app` layout's <main> (`[scrollbar-gutter:stable]`), not
+   here — it's scoped to that one element so it can't leak onto other scroll
+   containers. See the comment there for the rationale. */
+
+/* Scrollbar theming. The OS default light-gray bar reads as a bright
+   intrusion on the pure-black page, so tint every scrollbar to the neutral
+   gray ramp: a muted thumb at the default-border tone (gray-500) over a
+   transparent track, brightening toward gray-600 on hover/active — the same
+   400→500→600 border progression the rest of the chrome follows.
+
+   `scrollbar-width` / `scrollbar-color` are the standardised properties
+   (all current browsers) and inherit, so declaring them on `html` reaches
+   every scroll container. The `::-webkit-scrollbar` block below is the
+   Chromium/Safari-only layer that adds a rounded thumb and a true hover
+   state (the standard `scrollbar-color` can't target thumb hover on its
+   own); it's purely additive — browsers without it fall back to the
+   standard properties above. macOS overlay (trackpad) scrollbars auto-hide
+   regardless, so this only really shows for mouse users. */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-gray-500) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-gray-500);
+  border-radius: 8px;
+  /* Transparent border + padding-box clip insets the thumb, so it reads as
+     a slim pill with breathing room rather than filling the full track. */
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-gray-600);
+}
+::-webkit-scrollbar-thumb:active {
+  background-color: var(--color-gray-700);
+}
+/* Suppress the little corner box where vertical and horizontal bars meet. */
+::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 /* Fixed height of the overlaid app header (_app layout). The header is
