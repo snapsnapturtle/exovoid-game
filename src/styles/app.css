@@ -230,24 +230,67 @@ html {
   --color-gray-1000: hsla(0, 0%, 93%, 1);
 }
 
-@keyframes roll-flash {
+/* A new roll arriving in the feed: it pops + grows into place (fast, with a
+   slight overshoot), then a teal wash — ring + background tint — fades out so
+   it clearly reads as "just landed" before settling to the resting card. The
+   two animations are layered: roll-pop owns transform/opacity (quick),
+   roll-flash owns the colour wash (slower). */
+@keyframes roll-pop {
   0% {
-    box-shadow: 0 0 0 0 transparent;
-    border-color: var(--color-gray-400);
+    opacity: 0;
+    transform: scale(0.9);
   }
-  8% {
-    box-shadow: 0 0 0 6px
-      color-mix(in oklch, var(--color-accent-600) 65%, transparent);
-    border-color: var(--color-accent-600);
+  55% {
+    opacity: 1;
+    transform: scale(1.03);
   }
   100% {
-    box-shadow: 0 0 0 0 transparent;
-    border-color: var(--color-gray-400);
+    transform: scale(1);
   }
 }
 
-.roll-flash {
-  animation: roll-flash 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+@keyframes roll-flash {
+  0% {
+    box-shadow: 0 0 0 4px
+      color-mix(in oklch, var(--color-accent-600) 60%, transparent);
+    border-color: var(--color-accent-600);
+    background-color: color-mix(
+      in oklch,
+      var(--color-accent-700) 30%,
+      var(--color-background-200)
+    );
+  }
+  /* The ring collapses quickly, but the border + background tint hold at full
+     strength… */
+  12% {
+    box-shadow: 0 0 0 0 transparent;
+    border-color: var(--color-accent-600);
+    background-color: color-mix(
+      in oklch,
+      var(--color-accent-700) 30%,
+      var(--color-background-200)
+    );
+  }
+  35% {
+    border-color: var(--color-accent-600);
+    background-color: color-mix(
+      in oklch,
+      var(--color-accent-700) 30%,
+      var(--color-background-200)
+    );
+  }
+  /* …then drain away over a long, slow tail. */
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+    border-color: var(--color-gray-400);
+    background-color: var(--color-background-200);
+  }
+}
+
+.roll-enter {
+  animation:
+    roll-pop 440ms cubic-bezier(0.34, 1.56, 0.64, 1) backwards,
+    roll-flash 4s ease-out;
 }
 
 @keyframes die-tumble-in {
