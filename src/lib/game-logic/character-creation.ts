@@ -1,4 +1,8 @@
-import type { CharacterAttributes, TalentEntry } from '~/lib/types/domain'
+import type {
+  CharacterAttributes,
+  DerivedStatBonuses,
+  TalentEntry,
+} from '~/lib/types/domain'
 import {
   ATTRIBUTE_DEFINITIONS,
   CREATION_HIGH_CAP,
@@ -6,9 +10,11 @@ import {
   CREATION_LOW_CAP,
   MAX_ATTRIBUTE_LEVEL,
   TOTAL_ATTRIBUTE_POINTS,
+  type AttributeId,
 } from './attributes'
 import { MAX_SKILL_LEVEL, SKILLS } from './skills'
-import { isLegalTalentSet, type CareerData } from './talents'
+import { isLegalTalentSet, makeTalentEntry, type CareerData } from './talents'
+import type { BonusProjection } from './background-bonuses'
 
 /**
  * Shared creation-time validation used by both the wizard (for inline
@@ -29,6 +35,25 @@ export const CREATION_TALENT_MAX_TIER = 1
 export function pointsForSkillLevel(level: number): number {
   if (level <= 4) return level
   return 4 + (level - 4) * 2
+}
+
+/**
+ * Skill points spent to raise every skill from its career baseline to its
+ * final level (the career baseline itself is free). Negative contributions
+ * cancel out, so a final below baseline reads as a refund — callers that
+ * forbid downgrades validate that separately.
+ */
+export function skillPointsSpent(
+  finalSkills: Record<string, number>,
+  careerBaseline: Record<string, number>,
+): number {
+  let total = 0
+  for (const skill of SKILLS) {
+    const base = careerBaseline[skill.id] ?? 0
+    const final = finalSkills[skill.id] ?? 0
+    total += pointsForSkillLevel(final) - pointsForSkillLevel(base)
+  }
+  return total
 }
 
 export interface ValidationResult {
@@ -97,7 +122,6 @@ export function validateCreationSkills(
   budget: number = CREATION_SKILL_POINTS,
 ): ValidationResult {
   const errors: string[] = []
-  let pointsSpent = 0
   for (const skill of SKILLS) {
     const base = careerBaseline[skill.id] ?? 0
     const final = finalSkills[skill.id] ?? 0
@@ -113,8 +137,8 @@ export function validateCreationSkills(
     if (final < base) {
       errors.push(`${skill.name} is below the career baseline of ${base}.`)
     }
-    pointsSpent += pointsForSkillLevel(final) - pointsForSkillLevel(base)
   }
+  const pointsSpent = skillPointsSpent(finalSkills, careerBaseline)
   if (pointsSpent > budget) {
     errors.push(`Spent ${pointsSpent} skill points; budget is ${budget}.`)
   }
@@ -305,4 +329,97 @@ export function careerSkillBaseline(
     if (id) out[id] = s.level
   }
   return out
+}
+
+export interface AssembleCreationInput {
+  career: CareerData
+  /** Base 28-point attribute allocation, before background bonuses. */
+  baseAttributes: CharacterAttributes
+  /** Player-spent skill levels on top of the career baseline. */
+  skillsSpent: Record<string, number>
+  /** Career-tree talent names the player picked. */
+  startingTalents: string[]
+  /** Aggregate of every resolved background bonus (`projectResolvedBonuses`). */
+  projection: BonusProjection
+}
+
+export interface AssembledCreation {
+  /** Base attributes + background attribute bumps. */
+  finalAttrs: CharacterAttributes
+  /** Career baseline + spent points + background skill bumps. */
+  finalSkills: Record<string, number>
+  /** Career baseline + spent points, before background bumps. */
+  baseFinalSkills: Record<string, number>
+  /** Career-tree picks plus background-granted talents (flagged `granted`). */
+  talentEntries: TalentEntry[]
+  /** Only the non-zero derived-stat bonuses (sparse, ready for the row). */
+  derivedStatBonuses: DerivedStatBonuses
+  /** Starting credits: 1000 base plus any background credit delta. */
+  credits: number
+  /** Starting assets from background bonuses. */
+  assets: number
+  /** Skill-point budget after background `skill-points-bonus` shifts. */
+  skillPointsBudget: number
+}
+
+/**
+ * Fold the wizard's creation inputs into the canonical final character. This
+ * is the single source of truth for the baseline → spent → background-bonus
+ * stack; the wizard's validation, submit, and review all consume it so they
+ * cannot diverge.
+ */
+export function assembleCreation(
+  input: AssembleCreationInput,
+): AssembledCreation {
+  const { career, baseAttributes, skillsSpent, startingTalents, projection } =
+    input
+
+  const baseFinalSkills: Record<string, number> = {
+    ...careerSkillBaseline(career),
+  }
+  for (const [id, spent] of Object.entries(skillsSpent)) {
+    baseFinalSkills[id] = (baseFinalSkills[id] ?? 0) + spent
+  }
+
+  const finalSkills: Record<string, number> = { ...baseFinalSkills }
+  for (const [id, delta] of Object.entries(projection.skillDeltas)) {
+    finalSkills[id] = (finalSkills[id] ?? 0) + delta
+  }
+
+  const finalAttrs: CharacterAttributes = { ...baseAttributes }
+  for (const [id, delta] of Object.entries(projection.attributeDeltas)) {
+    const a = id as AttributeId
+    finalAttrs[a] = finalAttrs[a] + (delta ?? 0)
+  }
+
+  const talentEntries: TalentEntry[] = startingTalents.map((name) => {
+    const ref = career.talents.find((t) => t.talent === name)
+    return makeTalentEntry(name, career.name, ref?.tier ?? 0, 0)
+  })
+  for (const talentId of projection.grantedTalentNames) {
+    if (talentEntries.some((t) => t.name === talentId)) continue
+    const entry = makeTalentEntry(talentId, '', 0, 0)
+    entry.granted = true
+    talentEntries.push(entry)
+  }
+
+  const derivedStatBonuses: DerivedStatBonuses = {}
+  if (projection.derivedStatBonuses.maxHealth !== 0)
+    derivedStatBonuses.maxHealth = projection.derivedStatBonuses.maxHealth
+  if (projection.derivedStatBonuses.maxEdge !== 0)
+    derivedStatBonuses.maxEdge = projection.derivedStatBonuses.maxEdge
+  if (projection.derivedStatBonuses.cyberImmunity !== 0)
+    derivedStatBonuses.cyberImmunity =
+      projection.derivedStatBonuses.cyberImmunity
+
+  return {
+    finalAttrs,
+    finalSkills,
+    baseFinalSkills,
+    talentEntries,
+    derivedStatBonuses,
+    credits: 1000 + projection.creditDelta,
+    assets: projection.assetDelta,
+    skillPointsBudget: CREATION_SKILL_POINTS + projection.skillPointsBonus,
+  }
 }

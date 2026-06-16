@@ -259,6 +259,26 @@ export function rollPolyPool(pool: PolyPool): RolledPolyDie[] {
 }
 
 /**
+ * Roll `count` distinct results in `1..max`, skipping any value already in
+ * `exclude` (and never repeating within the draw). Used by character
+ * creation to roll background tables without collisions. The returned array
+ * is `[...exclude, ...newRolls]` so callers can append fresh unique rolls to
+ * an existing set.
+ */
+export function uniqueRolls(
+  count: number,
+  max: number,
+  exclude: number[] = [],
+): number[] {
+  const out = [...exclude]
+  while (out.length < count + exclude.length) {
+    const r = Math.floor(Math.random() * max) + 1
+    if (!out.includes(r)) out.push(r)
+  }
+  return out
+}
+
+/**
  * Compute the attribute average for a skill check.
  * Per rules: average of linked attributes, rounded up (ceil).
  */

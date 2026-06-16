@@ -11,20 +11,19 @@ import {
   type AttributeId,
 } from '~/lib/game-logic/attributes'
 import { SKILLS } from '~/lib/game-logic/skills'
-import { isLegalTalentSet, makeTalentEntry } from '~/lib/game-logic/talents'
+import { isLegalTalentSet } from '~/lib/game-logic/talents'
 import {
+  assembleCreation,
+  careerSkillBaseline,
   CREATION_SKILL_MAX,
   CREATION_SKILL_POINTS,
   CREATION_TALENT_LIMIT,
   CREATION_TALENT_MAX_TIER,
-  pointsForSkillLevel,
+  skillPointsSpent,
   validateCreation,
 } from '~/lib/game-logic/character-creation'
-import type {
-  CharacterAttributes,
-  DerivedStatBonuses,
-  TalentEntry,
-} from '~/lib/types/domain'
+import { uniqueRolls } from '~/lib/game-logic/dice'
+import type { CharacterAttributes } from '~/lib/types/domain'
 import careersData from '~/data/careers.json'
 import backgroundsData from '~/data/backgrounds.json'
 import { Button } from '~/components/ui/Button'
@@ -37,14 +36,12 @@ import {
   projectResolvedBonuses,
   resolveFixed,
   type BackgroundBonus,
+  type BonusProjection,
   type LeafBonus,
   type ResolvedBonus,
 } from '~/lib/game-logic/background-bonuses'
 
 // ---------- Types and rule constants ----------
-
-const CAREER_SKILL_NAME_TO_ID = new Map<string, string>()
-SKILLS.forEach((s) => CAREER_SKILL_NAME_TO_ID.set(s.name.toLowerCase(), s.id))
 
 interface CareerJson {
   name: string
@@ -144,43 +141,7 @@ const initialAttributes: CharacterAttributes = {
   coo: 0,
 }
 
-const STEP_LABELS = [
-  'Career',
-  'Attributes',
-  'Background',
-  'Skills',
-  'Final touches',
-  'Review',
-]
-
 // ---------- Derivations ----------
-
-function uniqueRolls(
-  count: number,
-  max: number,
-  exclude: number[] = [],
-): number[] {
-  const out = [...exclude]
-  while (out.length < count + exclude.length) {
-    const r = Math.floor(Math.random() * max) + 1
-    if (!out.includes(r)) out.push(r)
-  }
-  return out
-}
-
-function careerSkillBaseline(
-  careerName: string | null,
-): Record<string, number> {
-  if (!careerName) return {}
-  const career = careers.find((c) => c.name === careerName)
-  if (!career) return {}
-  const map: Record<string, number> = {}
-  for (const s of career.startingSkills) {
-    const id = CAREER_SKILL_NAME_TO_ID.get(s.name.toLowerCase())
-    if (id) map[id] = s.level
-  }
-  return map
-}
 
 interface ChosenBonus {
   table: BgKey
@@ -203,19 +164,123 @@ function attrCap(state: State, id: AttributeId): number {
   return state.highCapAttrs.includes(id) ? CREATION_HIGH_CAP : CREATION_LOW_CAP
 }
 
-function totalSkillPointsSpent(
+/** Career baseline + the player's spent levels, keyed by skill id. */
+function baseFinalSkillsFor(
   state: State,
   baseline: Record<string, number>,
-): number {
-  let total = 0
-  for (const skill of SKILLS) {
-    const base = baseline[skill.id] ?? 0
-    const spent = state.skillsSpent[skill.id] ?? 0
-    const final = base + spent
-    total += pointsForSkillLevel(final) - pointsForSkillLevel(base)
+): Record<string, number> {
+  const out: Record<string, number> = { ...baseline }
+  for (const [id, spent] of Object.entries(state.skillsSpent)) {
+    out[id] = (out[id] ?? 0) + spent
   }
-  return total
+  return out
 }
+
+// ---------- Step registry ----------
+
+/**
+ * Everything a step's `render`/`isValid` may read, bundled once per render so
+ * the registry entries stay declarative. Steps still receive narrowed props
+ * via `render` — this context is the wiring, not the components' surface.
+ */
+interface StepContext {
+  state: State
+  setState: React.Dispatch<React.SetStateAction<State>>
+  careerData: CareerJson | null
+  baseAttrPointsRemaining: number
+  skillBaseline: Record<string, number>
+  skillsUsed: number
+  skillsBudget: number
+  skillsRemaining: number
+  bonusProjection: BonusProjection
+  bgChosen: ChosenBonus[]
+  allResolvedBonuses: ResolvedBonus[]
+  validationErrors: string[]
+}
+
+interface StepDef {
+  id: string
+  label: string
+  /** Gate for advancing past this step — the old per-step `switch` arm. */
+  isValid: (c: StepContext) => boolean
+  render: (c: StepContext) => React.ReactNode
+}
+
+const STEPS: StepDef[] = [
+  {
+    id: 'career',
+    label: 'Career',
+    isValid: (c) =>
+      c.state.career != null && c.state.startingTalents.length <= 2,
+    render: (c) => <CareerStep state={c.state} setState={c.setState} />,
+  },
+  {
+    id: 'attributes',
+    label: 'Attributes',
+    isValid: (c) =>
+      c.baseAttrPointsRemaining === 0 &&
+      c.state.highCapAttrs.length === CREATION_HIGH_COUNT &&
+      ATTRIBUTE_DEFINITIONS.every(
+        (a) => c.state.baseAttributes[a.id] <= attrCap(c.state, a.id),
+      ),
+    render: (c) => (
+      <AttributesStep
+        state={c.state}
+        setState={c.setState}
+        pointsRemaining={c.baseAttrPointsRemaining}
+      />
+    ),
+  },
+  {
+    id: 'background',
+    label: 'Background',
+    isValid: (c) =>
+      BG_KEYS.every((k) => {
+        const pick = c.state.bg[k]
+        if (pick.chosen == null) return false
+        const entry = bgTable(k).find((e) => e.id === pick.chosen)
+        const needsChoice = (entry?.bonuses ?? []).some(bonusNeedsChoice)
+        return needsChoice ? pick.resolvedBonuses != null : true
+      }),
+    render: (c) => <BackgroundStep state={c.state} setState={c.setState} />,
+  },
+  {
+    id: 'skills',
+    label: 'Skills',
+    isValid: (c) => c.skillsRemaining >= 0,
+    render: (c) => (
+      <SkillsStep
+        state={c.state}
+        setState={c.setState}
+        baseline={c.skillBaseline}
+        spent={c.skillsUsed}
+        budget={c.skillsBudget}
+        bonusDeltas={c.bonusProjection.skillDeltas}
+      />
+    ),
+  },
+  {
+    id: 'final',
+    label: 'Final touches',
+    isValid: (c) => c.state.name.trim().length > 0,
+    render: (c) => <FinalStep state={c.state} setState={c.setState} />,
+  },
+  {
+    id: 'review',
+    label: 'Review',
+    isValid: () => true,
+    render: (c) => (
+      <ReviewStep
+        state={c.state}
+        careerData={c.careerData}
+        bgChosen={c.bgChosen}
+        projection={c.bonusProjection}
+        resolvedBonuses={c.allResolvedBonuses}
+        validationErrors={c.validationErrors}
+      />
+    ),
+  },
+]
 
 // ---------- Component ----------
 
@@ -268,9 +333,14 @@ export function CreationWizard({ gameId }: CreationWizardProps) {
     error: null,
   }))
 
-  const skillBaseline = useMemo(
-    () => careerSkillBaseline(state.career),
+  const careerData = useMemo(
+    () => careers.find((c) => c.name === state.career) ?? null,
     [state.career],
+  )
+
+  const skillBaseline = useMemo(
+    () => (careerData ? careerSkillBaseline(careerData) : {}),
+    [careerData],
   )
 
   const bgChosen = useMemo(() => chosenBackgroundBonuses(state), [state])
@@ -298,7 +368,8 @@ export function CreationWizard({ gameId }: CreationWizardProps) {
   const baseAttrPointsRemaining = TOTAL_ATTRIBUTE_POINTS - baseAttrPointsUsed
 
   const skillsUsed = useMemo(
-    () => totalSkillPointsSpent(state, skillBaseline),
+    () =>
+      skillPointsSpent(baseFinalSkillsFor(state, skillBaseline), skillBaseline),
     [state.skillsSpent, skillBaseline],
   )
   // Background "skill-points-bonus" entries widen (or narrow) the budget;
@@ -310,108 +381,68 @@ export function CreationWizard({ gameId }: CreationWizardProps) {
   // step-level checks should keep this passing throughout the wizard;
   // it acts as a final guard plus a place to render rule violations.
   const validation = useMemo(() => {
-    if (!state.career) return { ok: true, errors: [] }
-    const careerData = careers.find((c) => c.name === state.career)
-    if (!careerData) return { ok: true, errors: [] }
-    const baseFinalSkills: Record<string, number> = { ...skillBaseline }
-    for (const [id, spent] of Object.entries(state.skillsSpent)) {
-      baseFinalSkills[id] = (baseFinalSkills[id] ?? 0) + spent
-    }
-    const finalSkills: Record<string, number> = { ...baseFinalSkills }
-    for (const [id, delta] of Object.entries(bonusProjection.skillDeltas)) {
-      finalSkills[id] = (finalSkills[id] ?? 0) + delta
-    }
-    const finalAttrs: CharacterAttributes = { ...state.baseAttributes }
-    for (const [id, delta] of Object.entries(bonusProjection.attributeDeltas)) {
-      const a = id as AttributeId
-      finalAttrs[a] = finalAttrs[a] + (delta ?? 0)
-    }
-    const talentEntries: TalentEntry[] = state.startingTalents.map((name) => {
-      const ref = careerData.talents.find((t) => t.talent === name)
-      return makeTalentEntry(name, state.career!, ref?.tier ?? 0, 0)
+    if (!state.career || !careerData) return { ok: true, errors: [] }
+    const assembled = assembleCreation({
+      career: careerData,
+      baseAttributes: state.baseAttributes,
+      skillsSpent: state.skillsSpent,
+      startingTalents: state.startingTalents,
+      projection: bonusProjection,
     })
-    for (const talentId of bonusProjection.grantedTalentNames) {
-      if (talentEntries.some((t) => t.name === talentId)) continue
-      const entry = makeTalentEntry(talentId, '', 0, 0)
-      entry.granted = true
-      talentEntries.push(entry)
-    }
     return validateCreation(
       {
         careerName: state.career,
-        attributes: finalAttrs,
+        attributes: assembled.finalAttrs,
         baseAttributes: state.baseAttributes,
-        finalSkills,
-        baseFinalSkills,
-        talents: talentEntries,
-        skillPointsBudget:
-          CREATION_SKILL_POINTS + bonusProjection.skillPointsBonus,
+        finalSkills: assembled.finalSkills,
+        baseFinalSkills: assembled.baseFinalSkills,
+        talents: assembled.talentEntries,
+        skillPointsBudget: assembled.skillPointsBudget,
       },
       careers,
     )
   }, [
     state.career,
+    careerData,
     state.baseAttributes,
     state.skillsSpent,
     state.startingTalents,
-    skillBaseline,
     bonusProjection,
   ])
 
-  // Step validation
-  const stepValid = useMemo(() => {
-    switch (state.step) {
-      case 0:
-        return state.career != null && state.startingTalents.length <= 2
-      case 1:
-        return (
-          baseAttrPointsRemaining === 0 &&
-          state.highCapAttrs.length === CREATION_HIGH_COUNT &&
-          ATTRIBUTE_DEFINITIONS.every(
-            (a) => state.baseAttributes[a.id] <= attrCap(state, a.id),
-          )
-        )
-      case 2:
-        return BG_KEYS.every((k) => {
-          const pick = state.bg[k]
-          if (pick.chosen == null) return false
-          const entry = bgTable(k).find((e) => e.id === pick.chosen)
-          const needsChoice = (entry?.bonuses ?? []).some(bonusNeedsChoice)
-          return needsChoice ? pick.resolvedBonuses != null : true
-        })
-      case 3:
-        return skillsRemaining >= 0
-      case 4:
-        return state.name.trim().length > 0
-      default:
-        return true
-    }
-  }, [state, baseAttrPointsRemaining, skillsRemaining])
+  // Everything the step registry's render/isValid read, rebuilt each render.
+  const stepCtx: StepContext = {
+    state,
+    setState,
+    careerData,
+    baseAttrPointsRemaining,
+    skillBaseline,
+    skillsUsed,
+    skillsBudget,
+    skillsRemaining,
+    bonusProjection,
+    bgChosen,
+    allResolvedBonuses,
+    validationErrors: validation.errors,
+  }
+
+  const stepValid = STEPS[state.step].isValid(stepCtx)
 
   function setStep(step: number) {
     setState((s) => ({ ...s, step }))
   }
 
   async function submit() {
+    if (!careerData) return
     setState((s) => ({ ...s, submitting: true, error: null }))
     try {
-      // Skill points spent by the player on top of their career baseline;
-      // then background skill-bumps layered on top.
-      const finalSkills: Record<string, number> = { ...skillBaseline }
-      for (const [id, spent] of Object.entries(state.skillsSpent)) {
-        finalSkills[id] = (finalSkills[id] ?? 0) + spent
-      }
-      for (const [id, delta] of Object.entries(bonusProjection.skillDeltas)) {
-        finalSkills[id] = (finalSkills[id] ?? 0) + delta
-      }
-
-      const finalAttrs: CharacterAttributes = { ...state.baseAttributes }
-      for (const [id, delta] of Object.entries(
-        bonusProjection.attributeDeltas,
-      )) {
-        const a = id as AttributeId
-        finalAttrs[a] = finalAttrs[a] + (delta ?? 0)
-      }
+      const assembled = assembleCreation({
+        career: careerData,
+        baseAttributes: state.baseAttributes,
+        skillsSpent: state.skillsSpent,
+        startingTalents: state.startingTalents,
+        projection: bonusProjection,
+      })
 
       // The textual `bonus` still lands in notes for everything the player
       // chose. Entries that have NO mechanised bonuses get a `[ ]` checkbox
@@ -426,53 +457,23 @@ export function CreationWizard({ gameId }: CreationWizardProps) {
         }),
       ].join('\n')
 
-      const careerName = state.career ?? ''
-      const careerData = careers.find((c) => c.name === careerName)
-      const talentEntries: TalentEntry[] = state.startingTalents.map((name) => {
-        const ref = careerData?.talents.find((t) => t.talent === name)
-        return makeTalentEntry(name, careerName, ref?.tier ?? 0, 0)
-      })
-      for (const talentId of bonusProjection.grantedTalentNames) {
-        if (talentEntries.some((t) => t.name === talentId)) continue
-        const entry = makeTalentEntry(talentId, '', 0, 0)
-        entry.granted = true
-        talentEntries.push(entry)
-      }
-
-      const derivedStatBonuses: DerivedStatBonuses = {}
-      if (bonusProjection.derivedStatBonuses.maxHealth !== 0)
-        derivedStatBonuses.maxHealth =
-          bonusProjection.derivedStatBonuses.maxHealth
-      if (bonusProjection.derivedStatBonuses.maxEdge !== 0)
-        derivedStatBonuses.maxEdge = bonusProjection.derivedStatBonuses.maxEdge
-      if (bonusProjection.derivedStatBonuses.cyberImmunity !== 0)
-        derivedStatBonuses.cyberImmunity =
-          bonusProjection.derivedStatBonuses.cyberImmunity
-
       const character = await createCharacter({
         data: {
           gameId,
           name: state.name.trim(),
-          career: careerName,
+          career: careerData.name,
           gender: state.gender.trim(),
           age: state.age.trim() ? parseInt(state.age.trim(), 10) : null,
           background_notes: noteLines,
-          attributes: finalAttrs,
+          attributes: assembled.finalAttrs,
           baseAttributes: state.baseAttributes,
-          skills: finalSkills,
-          baseFinalSkills: (() => {
-            const m: Record<string, number> = { ...skillBaseline }
-            for (const [id, spent] of Object.entries(state.skillsSpent)) {
-              m[id] = (m[id] ?? 0) + spent
-            }
-            return m
-          })(),
-          talents: talentEntries,
-          credits: 1000 + bonusProjection.creditDelta,
-          assets: bonusProjection.assetDelta,
-          derived_stat_bonuses: derivedStatBonuses,
-          skillPointsBudget:
-            CREATION_SKILL_POINTS + bonusProjection.skillPointsBonus,
+          skills: assembled.finalSkills,
+          baseFinalSkills: assembled.baseFinalSkills,
+          talents: assembled.talentEntries,
+          credits: assembled.credits,
+          assets: assembled.assets,
+          derived_stat_bonuses: assembled.derivedStatBonuses,
+          skillPointsBudget: assembled.skillPointsBudget,
         },
       })
 
@@ -494,37 +495,7 @@ export function CreationWizard({ gameId }: CreationWizardProps) {
       <Stepper step={state.step} onJump={(i) => i < state.step && setStep(i)} />
 
       <div className="rounded-xl border border-gray-400 bg-background-200 p-6">
-        {state.step === 0 && <CareerStep state={state} setState={setState} />}
-        {state.step === 1 && (
-          <AttributesStep
-            state={state}
-            setState={setState}
-            pointsRemaining={baseAttrPointsRemaining}
-          />
-        )}
-        {state.step === 2 && (
-          <BackgroundStep state={state} setState={setState} />
-        )}
-        {state.step === 3 && (
-          <SkillsStep
-            state={state}
-            setState={setState}
-            baseline={skillBaseline}
-            spent={skillsUsed}
-            budget={skillsBudget}
-            bonusDeltas={bonusProjection.skillDeltas}
-          />
-        )}
-        {state.step === 4 && <FinalStep state={state} setState={setState} />}
-        {state.step === 5 && (
-          <ReviewStep
-            state={state}
-            baseline={skillBaseline}
-            bgChosen={bgChosen}
-            resolvedBonuses={allResolvedBonuses}
-            validationErrors={validation.errors}
-          />
-        )}
+        {STEPS[state.step].render(stepCtx)}
       </div>
 
       {state.error && <Alert className="px-4 py-3">{state.error}</Alert>}
@@ -537,7 +508,7 @@ export function CreationWizard({ gameId }: CreationWizardProps) {
         >
           ← Back
         </Button>
-        {state.step < STEP_LABELS.length - 1 ? (
+        {state.step < STEPS.length - 1 ? (
           <Button onClick={() => setStep(state.step + 1)} disabled={!stepValid}>
             Next →
           </Button>
@@ -565,11 +536,11 @@ function Stepper({
 }) {
   return (
     <ol className="flex flex-wrap gap-2 text-xs">
-      {STEP_LABELS.map((label, i) => {
+      {STEPS.map(({ id, label }, i) => {
         const active = i === step
         const done = i < step
         return (
-          <li key={label}>
+          <li key={id}>
             <button
               onClick={() => onJump(i)}
               disabled={!done}
@@ -1309,13 +1280,11 @@ function SkillsStep({
       // background that no longer grants +3 skill points) can claw back.
       const tentative = { ...s.skillsSpent, [id]: newSpent }
       if (delta > 0) {
-        let total = 0
-        for (const sk of SKILLS) {
-          const b = baseline[sk.id] ?? 0
-          const c = tentative[sk.id] ?? 0
-          total += pointsForSkillLevel(b + c) - pointsForSkillLevel(b)
+        const tentativeFinal: Record<string, number> = { ...baseline }
+        for (const [sid, spent] of Object.entries(tentative)) {
+          tentativeFinal[sid] = (tentativeFinal[sid] ?? 0) + spent
         }
-        if (total > budget) return s
+        if (skillPointsSpent(tentativeFinal, baseline) > budget) return s
       }
       return { ...s, skillsSpent: tentative }
     })
@@ -1451,30 +1420,29 @@ function FinalStep({
 
 function ReviewStep({
   state,
-  baseline,
+  careerData,
   bgChosen,
+  projection,
   resolvedBonuses,
   validationErrors,
 }: {
   state: State
-  baseline: Record<string, number>
+  careerData: CareerJson | null
   bgChosen: ChosenBonus[]
+  projection: BonusProjection
   resolvedBonuses: ResolvedBonus[]
   validationErrors: string[]
 }) {
-  const projection = projectResolvedBonuses(resolvedBonuses)
-  const finalAttrs: CharacterAttributes = { ...state.baseAttributes }
-  for (const [id, delta] of Object.entries(projection.attributeDeltas)) {
-    const a = id as AttributeId
-    finalAttrs[a] = finalAttrs[a] + (delta ?? 0)
-  }
-  const finalSkills: Record<string, number> = { ...baseline }
-  for (const [id, spent] of Object.entries(state.skillsSpent)) {
-    finalSkills[id] = (finalSkills[id] ?? 0) + spent
-  }
-  for (const [id, delta] of Object.entries(projection.skillDeltas)) {
-    finalSkills[id] = (finalSkills[id] ?? 0) + delta
-  }
+  if (!careerData) return null
+  // Same fold the validator and submit use — never a parallel re-implementation.
+  const assembled = assembleCreation({
+    career: careerData,
+    baseAttributes: state.baseAttributes,
+    skillsSpent: state.skillsSpent,
+    startingTalents: state.startingTalents,
+    projection,
+  })
+  const { finalAttrs, finalSkills } = assembled
   const baseDerived = computeAllDerivedStats(finalAttrs)
   const derived = {
     ...baseDerived,
@@ -1602,15 +1570,11 @@ function ReviewStep({
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           <div className="rounded border border-gray-400 bg-gray-100 px-2 py-1">
             <span className="text-xs text-gray-900">Credits</span>:{' '}
-            <span className="font-medium text-white">
-              {1000 + projection.creditDelta}
-            </span>
+            <span className="font-medium text-white">{assembled.credits}</span>
           </div>
           <div className="rounded border border-gray-400 bg-gray-100 px-2 py-1">
             <span className="text-xs text-gray-900">Assets</span>:{' '}
-            <span className="font-medium text-white">
-              {projection.assetDelta}
-            </span>
+            <span className="font-medium text-white">{assembled.assets}</span>
           </div>
         </div>
       </Section>
