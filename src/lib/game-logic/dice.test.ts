@@ -3,6 +3,7 @@ import {
   POLY_DIE_ORDER,
   POLY_SIDES,
   rollPolyPool,
+  uniqueRolls,
   type PolyDieType,
 } from './dice'
 
@@ -40,5 +41,47 @@ describe('rollPolyPool', () => {
     expect(rollPolyPool({ d6: -3 })).toEqual([])
     expect(rollPolyPool({ d6: NaN })).toEqual([])
     expect(rollPolyPool({ d6: Infinity })).toEqual([])
+  })
+})
+
+describe('uniqueRolls', () => {
+  it('returns `count` fresh rolls appended to the exclude set', () => {
+    const result = uniqueRolls(2, 20, [5, 7])
+    expect(result).toHaveLength(4)
+    expect(result.slice(0, 2)).toEqual([5, 7])
+  })
+
+  it('produces only distinct values', () => {
+    const result = uniqueRolls(10, 10)
+    expect(new Set(result).size).toBe(result.length)
+  })
+
+  it('never repeats a value already in `exclude`', () => {
+    // 8 of 10 faces are excluded, so the 2 fresh rolls must be the 2 unused.
+    const exclude = [1, 2, 3, 4, 5, 6, 7, 8]
+    const result = uniqueRolls(2, 10, exclude)
+    const fresh = result.slice(exclude.length)
+    expect(fresh.every((r) => !exclude.includes(r))).toBe(true)
+    expect(new Set(fresh)).toEqual(new Set([9, 10]))
+  })
+
+  it('rolls within 1..max', () => {
+    const result = uniqueRolls(6, 6)
+    expect(new Set(result)).toEqual(new Set([1, 2, 3, 4, 5, 6]))
+  })
+
+  it('defaults to an empty exclude set', () => {
+    expect(uniqueRolls(3, 20)).toHaveLength(3)
+  })
+
+  it('returns only what is available instead of looping forever on an impossible request', () => {
+    // Asking for 5 distinct values out of 1..3 can never be satisfied.
+    const result = uniqueRolls(5, 3)
+    expect(new Set(result)).toEqual(new Set([1, 2, 3]))
+  })
+
+  it('does not hang when the exclude set already uses every value', () => {
+    const result = uniqueRolls(2, 3, [1, 2, 3])
+    expect(result).toEqual([1, 2, 3])
   })
 })

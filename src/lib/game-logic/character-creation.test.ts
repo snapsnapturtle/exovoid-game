@@ -1,13 +1,21 @@
 import { describe, expect, it } from 'vitest'
 import type { CharacterAttributes } from '~/lib/types/domain'
 import {
+  assembleCreation,
+  skillPointsSpent,
   validateCreation,
   validateCreationAttributes,
   validateCreationAttributesWithBonus,
   validateCreationSkills,
   validateCreationSkillsWithBonus,
 } from './character-creation'
+import { emptyProjection, type BonusProjection } from './background-bonuses'
 import type { CareerData } from './talents'
+
+const proj = (overrides: Partial<BonusProjection> = {}): BonusProjection => ({
+  ...emptyProjection(),
+  ...overrides,
+})
 
 const attrs = (
   overrides: Partial<CharacterAttributes> = {},
@@ -309,5 +317,126 @@ describe('validateCreation', () => {
       careers,
     )
     expect(r.ok).toBe(false)
+  })
+})
+
+describe('skillPointsSpent', () => {
+  it('charges 1 point per level for 1–4', () => {
+    expect(skillPointsSpent({ firearms: 4 }, {})).toBe(4)
+  })
+  it('charges 2 points per level for 5 and 6', () => {
+    // 1+1+1+1+2+2 = 8
+    expect(skillPointsSpent({ firearms: 6 }, {})).toBe(8)
+  })
+  it('treats the career baseline as free', () => {
+    expect(skillPointsSpent({ firearms: 3 }, { firearms: 3 })).toBe(0)
+  })
+  it('only charges the delta above the baseline', () => {
+    // pointsForSkillLevel(4) - pointsForSkillLevel(2) = 4 - 2 = 2
+    expect(skillPointsSpent({ firearms: 4 }, { firearms: 2 })).toBe(2)
+  })
+  it('sums across every skill', () => {
+    expect(skillPointsSpent({ firearms: 4, melee: 2 }, {})).toBe(6)
+  })
+
+  it('never returns NaN for non-finite inputs (those skills contribute 0)', () => {
+    expect(skillPointsSpent({ firearms: NaN, melee: 3 }, {})).toBe(3)
+    expect(skillPointsSpent({ firearms: Infinity }, {})).toBe(0)
+  })
+})
+
+describe('assembleCreation', () => {
+  const career: CareerData = {
+    name: 'Field Medic',
+    startingSkills: [{ name: 'Medicine', level: 2 }],
+    talents: [
+      { talent: 'Triage', tier: 0 },
+      { talent: 'Field Surgery', tier: 1 },
+    ],
+  }
+
+  it('stacks career baseline + spent points + background skill bumps', () => {
+    const result = assembleCreation({
+      career,
+      baseAttributes: attrs(),
+      skillsSpent: { medicine: 2, firearms: 1 },
+      startingTalents: [],
+      projection: proj({ skillDeltas: { medicine: 1 } }),
+    })
+    // baseline 2 + spent 2 = 4 (pre-bonus); + bonus 1 = 5 (final)
+    expect(result.baseFinalSkills.medicine).toBe(4)
+    expect(result.finalSkills.medicine).toBe(5)
+    expect(result.baseFinalSkills.firearms).toBe(1)
+    expect(result.finalSkills.firearms).toBe(1)
+  })
+
+  it('applies background attribute deltas onto the base attributes', () => {
+    const result = assembleCreation({
+      career,
+      baseAttributes: attrs({ con: 4 }),
+      skillsSpent: {},
+      startingTalents: [],
+      projection: proj({ attributeDeltas: { con: 2 } }),
+    })
+    expect(result.finalAttrs.con).toBe(6)
+    expect(result.finalAttrs.str).toBe(4)
+  })
+
+  it('maps career-tree talents with their tier and appends granted ones', () => {
+    const result = assembleCreation({
+      career,
+      baseAttributes: attrs(),
+      skillsSpent: {},
+      startingTalents: ['Field Surgery'],
+      projection: proj({ grantedTalentNames: ['Sprinter'] }),
+    })
+    const picked = result.talentEntries.find((t) => t.name === 'Field Surgery')
+    expect(picked).toMatchObject({ career: 'Field Medic', tier: 1 })
+    expect(picked?.granted).toBeUndefined()
+    const granted = result.talentEntries.find((t) => t.name === 'Sprinter')
+    expect(granted).toMatchObject({ career: '', granted: true })
+  })
+
+  it('does not duplicate a granted talent that was already picked from the tree', () => {
+    const result = assembleCreation({
+      career,
+      baseAttributes: attrs(),
+      skillsSpent: {},
+      startingTalents: ['Triage'],
+      projection: proj({ grantedTalentNames: ['Triage'] }),
+    })
+    expect(
+      result.talentEntries.filter((t) => t.name === 'Triage'),
+    ).toHaveLength(1)
+  })
+
+  it('keeps only the non-zero derived-stat bonuses', () => {
+    const result = assembleCreation({
+      career,
+      baseAttributes: attrs(),
+      skillsSpent: {},
+      startingTalents: [],
+      projection: proj({
+        derivedStatBonuses: { maxHealth: 2, maxEdge: 0, cyberImmunity: 0 },
+      }),
+    })
+    expect(result.derivedStatBonuses).toEqual({ maxHealth: 2 })
+  })
+
+  it('derives credits, assets, and the skill-point budget from the projection', () => {
+    const result = assembleCreation({
+      career,
+      baseAttributes: attrs(),
+      skillsSpent: {},
+      startingTalents: [],
+      projection: proj({
+        creditDelta: 500,
+        assetDelta: 3,
+        skillPointsBonus: 3,
+      }),
+    })
+    expect(result.credits).toBe(1500)
+    expect(result.assets).toBe(3)
+    expect(result.skillPointsBudget).toBe(33)
   })
 })
