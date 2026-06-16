@@ -271,9 +271,19 @@ export function uniqueRolls(
   exclude: number[] = [],
 ): number[] {
   const out = [...exclude]
-  while (out.length < count + exclude.length) {
+  const taken = new Set(out)
+  // Never ask for more distinct results than exist in 1..max after the
+  // exclude set — otherwise the draw loop could never terminate (this also
+  // tolerates an exclude array with out-of-range or duplicate values).
+  let available = 0
+  for (let v = 1; v <= max; v++) if (!taken.has(v)) available++
+  const target = out.length + Math.min(count, available)
+  while (out.length < target) {
     const r = Math.floor(Math.random() * max) + 1
-    if (!out.includes(r)) out.push(r)
+    if (!taken.has(r)) {
+      taken.add(r)
+      out.push(r)
+    }
   }
   return out
 }

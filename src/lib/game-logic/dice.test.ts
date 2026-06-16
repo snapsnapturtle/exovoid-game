@@ -73,4 +73,15 @@ describe('uniqueRolls', () => {
   it('defaults to an empty exclude set', () => {
     expect(uniqueRolls(3, 20)).toHaveLength(3)
   })
+
+  it('returns only what is available instead of looping forever on an impossible request', () => {
+    // Asking for 5 distinct values out of 1..3 can never be satisfied.
+    const result = uniqueRolls(5, 3)
+    expect(new Set(result)).toEqual(new Set([1, 2, 3]))
+  })
+
+  it('does not hang when the exclude set already uses every value', () => {
+    const result = uniqueRolls(2, 3, [1, 2, 3])
+    expect(result).toEqual([1, 2, 3])
+  })
 })

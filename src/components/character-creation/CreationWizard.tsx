@@ -426,7 +426,10 @@ export function CreationWizard({ gameId }: CreationWizardProps) {
     validationErrors: validation.errors,
   }
 
-  const stepValid = STEPS[state.step].isValid(stepCtx)
+  // Guard the lookup so a corrupted/out-of-range step never hard-crashes the
+  // wizard — mirrors the old `switch`'s `default` arm (advance allowed, no UI).
+  const currentStep = STEPS[state.step] ?? null
+  const stepValid = currentStep ? currentStep.isValid(stepCtx) : true
 
   function setStep(step: number) {
     setState((s) => ({ ...s, step }))
@@ -495,7 +498,7 @@ export function CreationWizard({ gameId }: CreationWizardProps) {
       <Stepper step={state.step} onJump={(i) => i < state.step && setStep(i)} />
 
       <div className="rounded-xl border border-gray-400 bg-background-200 p-6">
-        {STEPS[state.step].render(stepCtx)}
+        {currentStep?.render(stepCtx)}
       </div>
 
       {state.error && <Alert className="px-4 py-3">{state.error}</Alert>}

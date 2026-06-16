@@ -51,6 +51,10 @@ export function skillPointsSpent(
   for (const skill of SKILLS) {
     const base = careerBaseline[skill.id] ?? 0
     const final = finalSkills[skill.id] ?? 0
+    // Non-finite values (NaN/Infinity from an untrusted payload) contribute
+    // nothing here; `validateCreationSkills` rejects them via its integer
+    // check, so the total must not silently become NaN and skip the budget.
+    if (!Number.isFinite(base) || !Number.isFinite(final)) continue
     total += pointsForSkillLevel(final) - pointsForSkillLevel(base)
   }
   return total

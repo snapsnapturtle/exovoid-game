@@ -338,6 +338,11 @@ describe('skillPointsSpent', () => {
   it('sums across every skill', () => {
     expect(skillPointsSpent({ firearms: 4, melee: 2 }, {})).toBe(6)
   })
+
+  it('never returns NaN for non-finite inputs (those skills contribute 0)', () => {
+    expect(skillPointsSpent({ firearms: NaN, melee: 3 }, {})).toBe(3)
+    expect(skillPointsSpent({ firearms: Infinity }, {})).toBe(0)
+  })
 })
 
 describe('assembleCreation', () => {
