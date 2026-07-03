@@ -47,8 +47,7 @@ import { SegmentedControl } from '~/components/ui/SegmentedControl'
 import { QualityBadge } from './QualityBadge'
 
 type Owner =
-  | { type: 'character'; characterId: string }
-  | { type: 'game'; gameId: string }
+  { type: 'character'; characterId: string } | { type: 'game'; gameId: string }
 
 interface InventoryPageProps {
   character: Character

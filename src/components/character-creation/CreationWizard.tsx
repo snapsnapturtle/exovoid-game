@@ -67,11 +67,7 @@ const backgrounds = backgroundsData as {
 }
 
 type BgKey =
-  | 'origin'
-  | 'childhood'
-  | 'adolescence'
-  | 'lifeEvent1'
-  | 'lifeEvent2'
+  'origin' | 'childhood' | 'adolescence' | 'lifeEvent1' | 'lifeEvent2'
 
 const BG_KEYS: BgKey[] = [
   'origin',

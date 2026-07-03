@@ -21,9 +21,7 @@ export const FIREARM_MOD_SLOTS: FirearmModSlot[] = [
 ]
 
 export type FirearmCategory =
-  | 'Projectile Firearms'
-  | 'Laser Firearms'
-  | 'Plasma Firearms'
+  'Projectile Firearms' | 'Laser Firearms' | 'Plasma Firearms'
 
 export type FirearmCompatibility = 'Any' | FirearmCategory
 

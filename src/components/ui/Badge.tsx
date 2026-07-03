@@ -2,12 +2,7 @@ import type { ReactNode } from 'react'
 import { IconX } from '@tabler/icons-react'
 
 export type BadgeTone =
-  | 'neutral'
-  | 'accent'
-  | 'warning'
-  | 'danger'
-  | 'success'
-  | 'purple'
+  'neutral' | 'accent' | 'warning' | 'danger' | 'success' | 'purple'
 export type BadgeSize = 'xs' | 'sm'
 
 // Tones follow the documented ramp semantic (CLAUDE.md): a badge is a small

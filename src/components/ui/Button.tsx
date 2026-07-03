@@ -1,12 +1,7 @@
 import type { ButtonHTMLAttributes } from 'react'
 
 export type ButtonVariant =
-  | 'primary'
-  | 'secondary'
-  | 'subtle'
-  | 'ghost'
-  | 'ghostDanger'
-  | 'danger'
+  'primary' | 'secondary' | 'subtle' | 'ghost' | 'ghostDanger' | 'danger'
 export type ButtonSize = 'xs' | 'sm' | 'md'
 
 // Every variant carries a 1px border so the box model is identical across all
