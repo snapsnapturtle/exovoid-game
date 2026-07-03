@@ -33,8 +33,7 @@ export type LeafBonus =
   | { kind: 'skill-points-bonus'; by: number }
 
 export type BackgroundBonus =
-  | LeafBonus
-  | { kind: 'one-of'; options: LeafBonus[] }
+  LeafBonus | { kind: 'one-of'; options: LeafBonus[] }
 
 /**
  * What the modal commits onto the picked background entry — always a leaf

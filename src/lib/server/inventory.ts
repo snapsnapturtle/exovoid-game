@@ -26,8 +26,7 @@ import {
 } from '~/lib/game-logic/melee-mods'
 
 type Owner =
-  | { type: 'character'; characterId: string }
-  | { type: 'game'; gameId: string }
+  { type: 'character'; characterId: string } | { type: 'game'; gameId: string }
 
 // Flatten the `Owner` union into the `{type, id}` shape the atomic-transfer
 // RPCs take.

@@ -1,10 +1,5 @@
 export type StatusDotTone =
-  | 'neutral'
-  | 'accent'
-  | 'warning'
-  | 'danger'
-  | 'success'
-  | 'purple'
+  'neutral' | 'accent' | 'warning' | 'danger' | 'success' | 'purple'
 
 // A status dot is a small always-visible solid pip, so it takes the
 // high-contrast fill position (700) of its ramp rather than the muted
