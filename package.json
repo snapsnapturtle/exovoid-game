@@ -14,7 +14,7 @@
     "gen:types": "supabase gen types typescript --local > src/lib/types/database.ts"
   },
   "dependencies": {
-    "@floating-ui/react": "^0.27.19",
+    "@floating-ui/react": "^0.27.20",
     "@supabase/ssr": "^0.12.1",
     "@supabase/supabase-js": "^2.110.2",
     "@tabler/icons-react": "^3.44.0",
