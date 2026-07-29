@@ -17,7 +17,7 @@
     "@floating-ui/react": "^0.27.20",
     "@supabase/ssr": "^0.12.4",
     "@supabase/supabase-js": "^2.110.9",
-    "@tabler/icons-react": "^3.45.0",
+    "@tabler/icons-react": "^3.46.0",
     "@tanstack/react-router": "^1.170.18",
     "@tanstack/react-router-devtools": "^1.167.0",
     "@tanstack/react-start": "^1.168.32",
