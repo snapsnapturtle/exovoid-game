@@ -31,13 +31,13 @@
     "@types/node": "^26.2.0",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
-    "@vitejs/plugin-react": "^6.0.5",
+    "@vitejs/plugin-react": "^6.1.0",
     "happy-dom": "^20.11.2",
     "nitro": "npm:nitro-nightly@^3.0.260522-beta",
     "prettier": "3.9.6",
     "tailwindcss": "^4.1.4",
     "typescript": "^7.0.2",
-    "vite": "^8.2.1",
+    "vite": "^8.2.2",
     "vitest": "^4.1.11"
   }
 }
