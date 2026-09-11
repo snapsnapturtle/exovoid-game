@@ -15,8 +15,8 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.20",
-    "@supabase/ssr": "^0.12.6",
-    "@supabase/supabase-js": "^2.112.3",
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.116.0",
     "@tabler/icons-react": "^3.46.0",
     "@tanstack/react-router": "^1.170.33",
     "@tanstack/react-router-devtools": "^1.167.1",
